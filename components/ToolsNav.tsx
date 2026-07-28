@@ -18,8 +18,8 @@ export default function ToolsNav({ current }: { current?: string }) {
               aria-current={active ? "page" : undefined}
               className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
                 active
-                  ? "border-poke-red bg-poke-btn text-white"
-                  : "border-poke-border bg-poke-surface text-poke-dim hover:border-poke-red hover:text-poke-red"
+                  ? "border-poke-violet bg-poke-violet text-white"
+                  : "border-poke-border bg-poke-surface text-poke-dim hover:border-poke-violet hover:text-poke-violet"
               }`}
             >
               {t.label}

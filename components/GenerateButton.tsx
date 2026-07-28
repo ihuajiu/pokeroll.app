@@ -13,7 +13,7 @@ export default function GenerateButton({
       onClick={onClick}
       disabled={loading}
       aria-label="Generate another random Pokémon"
-      className="rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover disabled:cursor-not-allowed disabled:opacity-60"
+      className="game-btn game-btn-primary px-5 py-2.5 disabled:cursor-not-allowed"
     >
       {loading ? "Generating…" : "Generate Again"}
     </button>

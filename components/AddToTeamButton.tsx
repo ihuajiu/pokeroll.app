@@ -27,10 +27,8 @@ export default function AddToTeamButton({ pokemon }: { pokemon: Pokemon }) {
       type="button"
       onClick={toggle}
       aria-label="Add to team"
-      className={`rounded-xl border px-5 py-2.5 font-semibold shadow-sm transition ${
-        inTeam
-          ? "border-poke-red bg-poke-btn text-white"
-          : "border-poke-border bg-poke-surface text-poke-ink hover:border-poke-red hover:text-poke-red"
+      className={`game-btn px-5 py-2.5 ${
+        inTeam ? "game-btn-primary" : "game-btn-ghost"
       }`}
     >
       {inTeam ? "✓ In Team" : "Add to Team"}

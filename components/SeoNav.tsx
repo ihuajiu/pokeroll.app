@@ -7,7 +7,7 @@ export default function SeoNav({
   current?: { type: "region" | "type" | "gen"; value: string };
 }) {
   const linkClass = (active: boolean) =>
-    `text-xs underline ${active ? "font-semibold text-poke-red" : "text-poke-dim hover:text-poke-red"}`;
+    `text-xs underline ${active ? "font-semibold text-poke-violet" : "text-poke-dim hover:text-poke-violet"}`;
 
   return (
     <nav className="mt-10 border-t border-poke-border pt-6" aria-label="Pokémon generator index">

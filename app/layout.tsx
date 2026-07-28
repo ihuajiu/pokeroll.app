@@ -35,7 +35,7 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.cn/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap"
+          href="https://fonts.googleapis.cn/css2?family=Fredoka:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
         />
         <script
           dangerouslySetInnerHTML={{
@@ -44,6 +44,16 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen antialiased">
+        <div className="bg-decor" aria-hidden="true">
+          <div className="dots" />
+          <div className="scan" />
+          <svg className="ball" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="48" stroke="currentColor" strokeWidth="4" />
+            <path d="M2 50h96" stroke="currentColor" strokeWidth="4" />
+            <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" strokeWidth="4" />
+            <path d="M2 50a48 48 0 0 1 96 0Z" fill="currentColor" fillOpacity="0.4" />
+          </svg>
+        </div>
         <SiteNav />
 
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">

@@ -29,24 +29,29 @@ export default function SiteNav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-poke-border bg-poke-surface/90 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-poke-border bg-poke-surface/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link
           href="/"
-          className="flex items-center gap-2 font-extrabold text-poke-ink"
+          className="flex items-center gap-2.5 font-display text-lg font-bold text-poke-ink"
         >
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-poke-btn text-sm font-black text-white">
-            P
+          <span className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-poke-violet to-poke-scarlet text-white shadow-[0_3px_0_rgba(0,0,0,0.18)]">
+            <svg viewBox="0 0 100 100" className="h-5 w-5" aria-hidden="true">
+              <path d="M50 8a42 42 0 0 0-42 42h42z" fill="#fff" />
+              <path d="M50 50h42A42 42 0 0 0 50 8z" fill="none" stroke="#fff" strokeWidth="6" />
+              <circle cx="50" cy="50" r="13" fill="#fff" />
+              <circle cx="50" cy="50" r="6" fill="rgb(var(--brand))" />
+            </svg>
           </span>
           Pokémon Generator
         </Link>
 
-        <nav className="hidden items-center gap-5 text-sm font-medium text-poke-dim md:flex">
+        <nav className="hidden items-center gap-6 text-sm font-semibold text-poke-dim md:flex">
           {MAIN.map((m) => (
             <Link
               key={m.href}
               href={m.href}
-              className="transition hover:text-poke-red"
+              className="transition hover:text-poke-violet"
             >
               {m.label}
             </Link>
@@ -62,7 +67,7 @@ export default function SiteNav() {
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label="Browse all tools"
-              className="inline-flex items-center gap-1 rounded-xl border border-poke-border bg-poke-surface px-3 py-2 text-sm font-semibold text-poke-ink transition hover:border-poke-red hover:text-poke-red"
+              className="game-btn game-btn-ghost px-3.5 py-2 text-sm"
             >
               All tools
               <svg
@@ -76,15 +81,12 @@ export default function SiteNav() {
               </svg>
             </button>
             {open && (
-              <div className="absolute right-0 mt-2 w-[28rem] rounded-2xl border border-poke-border bg-poke-surface p-4 shadow-xl">
+              <div className="absolute right-0 mt-3 w-[28rem] rounded-2.5xl border border-poke-border bg-poke-surface p-4 shadow-panel ring-1 ring-poke-violet/15">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {TOOL_GROUPS.map((g) => (
                     <div key={g.id}>
-                      <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-poke-dim">
-                        <GroupIcon
-                          group={g.id}
-                          className="h-4 w-4 text-poke-red"
-                        />
+                      <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-poke-violet">
+                        <GroupIcon group={g.id} className="h-4 w-4" />
                         {g.title}
                       </div>
                       <ul className="space-y-1">
@@ -93,7 +95,7 @@ export default function SiteNav() {
                             <Link
                               href={t.href}
                               onClick={() => setOpen(false)}
-                              className="block rounded-lg px-2 py-1 text-sm text-poke-ink transition hover:bg-poke-red/10 hover:text-poke-red"
+                              className="block rounded-lg px-2 py-1 text-sm font-medium text-poke-ink transition hover:bg-poke-violet/10 hover:text-poke-violet"
                             >
                               {t.label}
                             </Link>
@@ -109,7 +111,7 @@ export default function SiteNav() {
 
           <Link
             href="/"
-            className="hidden rounded-xl bg-poke-btn px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-poke-btnHover sm:inline-block"
+            className="hidden game-btn game-btn-primary px-4 py-2 text-sm sm:inline-flex"
           >
             Random Pokémon
           </Link>
@@ -119,7 +121,7 @@ export default function SiteNav() {
             onClick={() => setMobile((v) => !v)}
             aria-label="Menu"
             aria-expanded={mobile}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-poke-border bg-poke-surface text-poke-ink md:hidden"
+            className="game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center md:hidden"
           >
             <svg
               viewBox="0 0 24 24"
@@ -142,7 +144,7 @@ export default function SiteNav() {
                 key={m.href}
                 href={m.href}
                 onClick={() => setMobile(false)}
-                className="rounded-lg px-2 py-2 text-sm font-medium text-poke-ink transition hover:bg-poke-red/10 hover:text-poke-red"
+                className="rounded-lg px-2 py-2 text-sm font-semibold text-poke-ink transition hover:bg-poke-violet/10 hover:text-poke-violet"
               >
                 {m.label}
               </Link>
@@ -151,8 +153,8 @@ export default function SiteNav() {
           <div className="mt-3 space-y-3">
             {TOOL_GROUPS.map((g) => (
               <div key={g.id}>
-                <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-poke-dim">
-                  <GroupIcon group={g.id} className="h-4 w-4 text-poke-red" />
+                <div className="mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-poke-violet">
+                  <GroupIcon group={g.id} className="h-4 w-4" />
                   {g.title}
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -161,7 +163,7 @@ export default function SiteNav() {
                       key={t.href}
                       href={t.href}
                       onClick={() => setMobile(false)}
-                      className="rounded-full border border-poke-border bg-poke-surface px-3 py-1 text-xs font-medium text-poke-ink transition hover:border-poke-red hover:text-poke-red"
+                      className="rounded-full border border-poke-border bg-poke-surface px-3 py-1 text-xs font-medium text-poke-ink transition hover:border-poke-violet hover:text-poke-violet"
                     >
                       {t.label}
                     </Link>
@@ -173,7 +175,7 @@ export default function SiteNav() {
           <Link
             href="/"
             onClick={() => setMobile(false)}
-            className="mt-4 block rounded-xl bg-poke-btn px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-poke-btnHover"
+            className="game-btn game-btn-primary mt-4 block px-4 py-2 text-center text-sm"
           >
             Random Pokémon
           </Link>

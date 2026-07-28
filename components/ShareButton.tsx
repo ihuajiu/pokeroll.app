@@ -21,7 +21,7 @@ export default function ShareButton({ name }: { name: string }) {
       type="button"
       onClick={share}
       aria-label="Copy share link"
-      className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+      className="game-btn game-btn-ghost px-5 py-2.5"
     >
       {copied ? "Link copied!" : "Share"}
     </button>

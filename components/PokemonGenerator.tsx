@@ -36,13 +36,13 @@ export default function PokemonGenerator({ initial }: { initial: Pokemon }) {
         <AddToTeamButton pokemon={pokemon} />
         <Link
           href="/team"
-          className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+          className="game-btn game-btn-ghost px-5 py-2.5"
         >
           Build Team
         </Link>
         <Link
           href="/challenge"
-          className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+          className="game-btn game-btn-ghost px-5 py-2.5"
         >
           Create Challenge
         </Link>

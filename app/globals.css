@@ -2,75 +2,296 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Modern console theme (Scarlet/Violet inspired)
+   Brand: violet primary + scarlet secondary. Each card carries a
+   --cc type color that drives its glow, badge and stat fills.
+   ============================================================ */
 :root {
-  --bg: 240 233 226;
-  --card: 255 253 251;
-  --surface-2: 251 244 238;
-  --border: 226 210 198;
-  --text: 42 32 24;
-  --text-dim: 108 90 76;
-  --chip-bg: 246 236 228;
-  --accent: 238 59 59;
-  --accent-hover: 176 43 43;
-  --accent-2: 255 122 60;
-  --btn: 214 40 40;
-  --btn-hover: 176 43 43;
-  --wheel-a: 243 244 246;
-  --wheel-b: 229 231 235;
+  --bg: 244 241 252;
+  --card: 255 255 255;
+  --surface-2: 238 234 250;
+  --border: 221 212 240;
+  --text: 34 24 52;
+  --text-dim: 108 94 138;
+  --chip-bg: 236 231 249;
+
+  --brand: 124 77 255; /* violet */
+  --brand-hover: 100 58 230;
+  --accent: 255 92 92; /* scarlet */
+  --accent-hover: 230 62 62;
+  --accent-2: 255 150 120; /* peach */
+
+  --btn: 124 77 255;
+  --btn-hover: 100 58 230;
+
+  --wheel-a: 240 236 251;
+  --wheel-b: 228 221 248;
 }
 
 .dark {
-  --bg: 22 15 16;
-  --card: 32 23 26;
-  --surface-2: 27 19 22;
-  --border: 59 42 45;
-  --text: 246 236 233;
-  --text-dim: 185 167 157;
-  --chip-bg: 42 29 32;
-  --accent: 255 106 90;
-  --accent-hover: 196 58 48;
-  --accent-2: 255 138 92;
-  --btn: 207 42 35;
-  --btn-hover: 150 30 26;
-  --wheel-a: 46 38 42;
-  --wheel-b: 36 28 32;
+  --bg: 16 12 27;
+  --card: 27 21 43;
+  --surface-2: 22 17 36;
+  --border: 47 37 69;
+  --text: 240 236 250;
+  --text-dim: 172 160 198;
+  --chip-bg: 34 27 54;
+
+  --brand: 149 110 255;
+  --brand-hover: 124 77 255;
+  --accent: 255 110 110;
+  --accent-hover: 255 82 82;
+  --accent-2: 255 156 132;
+
+  --btn: 124 77 255;
+  --btn-hover: 149 110 255;
+
+  --wheel-a: 29 23 47;
+  --wheel-b: 21 16 35;
 }
 
 body {
-  font-family: "Outfit", system-ui, -apple-system, sans-serif;
+  font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
   background-color: rgb(var(--bg));
-  background-image:
-    radial-gradient(900px 600px at 85% -10%, #ffd9cf 0%, transparent 60%),
-    linear-gradient(180deg, #f4ede6 0%, #ece2d8 100%);
-  background-attachment: fixed;
   color: rgb(var(--text));
+  background-image:
+    radial-gradient(1000px 720px at 88% -10%, rgba(255, 150, 120, 0.32) 0%, transparent 55%),
+    radial-gradient(900px 620px at -5% 0%, rgba(124, 77, 255, 0.20) 0%, transparent 52%),
+    radial-gradient(820px 820px at 102% 102%, rgba(124, 77, 255, 0.12) 0%, transparent 55%),
+    linear-gradient(180deg, #f6f3fc 0%, #ece6f9 100%);
+  background-attachment: fixed;
 }
 
 .dark body {
   background-image:
-    radial-gradient(900px 600px at 85% -10%, rgba(238, 59, 59, 0.22) 0%, transparent 60%),
-    linear-gradient(180deg, #1a1214 0%, #160f10 100%);
+    radial-gradient(1000px 720px at 88% -10%, rgba(255, 110, 110, 0.18) 0%, transparent 55%),
+    radial-gradient(900px 620px at -5% 0%, rgba(124, 77, 255, 0.26) 0%, transparent 52%),
+    radial-gradient(820px 820px at 102% 102%, rgba(124, 77, 255, 0.16) 0%, transparent 55%),
+    linear-gradient(180deg, #100c1b 0%, #0b0814 100%);
 }
 
-/* Card surface token used across the app — poketools-style rounded card
-   with a soft resting shadow and a type-colored glow on hover.
-   Set `--cc` (the primary type color) per card to drive the glow. */
+/* Display font helper for headings / brand */
+.font-display {
+  font-family: "Fredoka", "Hanken Grotesk", system-ui, sans-serif;
+}
+
+/* ============================================================
+   Fixed background decoration: dot grid + pokeball + faint scan
+   ============================================================ */
+.bg-decor {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-decor .dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgb(var(--brand) / 0.10) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(180deg, #000 0%, transparent 75%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 75%);
+}
+.bg-decor .scan {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.025) 0px,
+    rgb(255 255 255 / 0.025) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  opacity: 0.5;
+}
+.bg-decor .ball {
+  position: absolute;
+  right: -140px;
+  bottom: -160px;
+  width: 460px;
+  height: 460px;
+  opacity: 0.06;
+  color: rgb(var(--brand));
+  animation: float 9s ease-in-out infinite;
+}
+.dark .bg-decor .ball { opacity: 0.10; color: rgb(var(--brand)); }
+
+/* ============================================================
+   Game panel card
+   ============================================================ */
 .poke-card {
+  position: relative;
   background-color: rgb(var(--card));
   border: 1px solid rgb(var(--border));
   color: rgb(var(--text));
-  border-radius: 1rem;
+  border-radius: 1.4rem;
   box-shadow:
     0 1px 2px rgb(0 0 0 / 0.05),
-    0 12px 30px -18px rgb(0 0 0 / 0.28);
+    0 20px 44px -30px rgb(17 13 28 / 0.45);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease,
-    opacity 0.2s ease;
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+/* inner top highlight */
+.poke-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.65), transparent 42%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 .poke-card:hover {
-  transform: translateY(-3px);
-  border-color: rgb(var(--accent) / 0.55);
-  box-shadow: 0 22px 44px -26px var(--cc, rgb(var(--accent)));
+  transform: translateY(-4px);
+  border-color: rgb(var(--brand) / 0.55);
+  box-shadow:
+    0 30px 60px -30px var(--cc, rgb(var(--brand))),
+    0 0 0 1px rgb(var(--brand) / 0.22);
+}
+
+/* ============================================================
+   Type badge — glossy capsule
+   ============================================================ */
+.type-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.22rem 0.72rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  text-transform: capitalize;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    0 2px 6px rgb(0 0 0 / 0.14);
+  overflow: hidden;
+}
+.type-badge::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 48%;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.30), transparent);
+  pointer-events: none;
+}
+
+/* ============================================================
+   Stat bar (type-colored fill)
+   ============================================================ */
+.stat-track {
+  height: 0.55rem;
+  flex: 1;
+  border-radius: 9999px;
+  background: rgb(var(--surface-2));
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.12);
+}
+.stat-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--cc, rgb(var(--brand)));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35);
+  transition: width 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ============================================================
+   Game buttons — thick rounded with top sheen + 3D press
+   ============================================================ */
+.game-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 0.95rem;
+  font-weight: 700;
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  box-shadow:
+    0 4px 0 rgb(0 0 0 / 0.20),
+    0 12px 22px -12px rgb(0 0 0 / 0.35);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    filter 0.12s ease,
+    background-color 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+  overflow: hidden;
+}
+.game-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.22), transparent 46%);
+  pointer-events: none;
+}
+.game-btn:hover { transform: translateY(-1px); filter: brightness(1.04); }
+.game-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.20);
+}
+.game-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  filter: none;
+}
+
+.game-btn-primary { background-color: rgb(var(--btn)); color: #fff; }
+.game-btn-primary:hover { background-color: rgb(var(--btn-hover)); }
+
+.game-btn-accent { background-color: rgb(var(--accent)); color: #fff; }
+.game-btn-accent:hover { background-color: rgb(var(--accent-hover)); }
+
+.game-btn-ghost {
+  background-color: rgb(var(--card));
+  color: rgb(var(--text));
+  border: 1px solid rgb(var(--border));
+  box-shadow: 0 3px 0 rgb(0 0 0 / 0.10), 0 10px 18px -12px rgb(0 0 0 / 0.28);
+}
+.game-btn-ghost:hover {
+  border-color: rgb(var(--brand) / 0.7);
+  color: rgb(var(--brand));
+}
+
+/* ============================================================
+   Section heading chip
+   ============================================================ */
+.section-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(var(--brand) / 0.3);
+  background: rgb(var(--brand) / 0.10);
+  padding: 0.2rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--brand));
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bg-decor .ball { animation: none; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

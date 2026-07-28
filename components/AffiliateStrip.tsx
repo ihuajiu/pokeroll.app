@@ -23,7 +23,7 @@ export default function AffiliateStrip() {
               href={l.href}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="underline hover:text-poke-red"
+              className="underline hover:text-poke-violet"
             >
               {l.label}
             </a>
@@ -34,7 +34,7 @@ export default function AffiliateStrip() {
         As an Amazon Associate we earn from qualifying purchases. This is a
         fan-made, unofficial site and is not affiliated with Nintendo, Game
         Freak or The Pokémon Company. Learn more in our{" "}
-        <Link href="/disclaimer" className="underline hover:text-poke-red">
+        <Link href="/disclaimer" className="underline hover:text-poke-violet">
           disclaimer
         </Link>
         .

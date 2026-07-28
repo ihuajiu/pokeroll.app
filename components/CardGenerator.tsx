@@ -3,36 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
+import { TYPE_HEX, typeGradient } from "@/lib/typeColors";
 import GenerateButton from "./GenerateButton";
 import AddToTeamButton from "./AddToTeamButton";
-
-const TYPE_COLORS: Record<string, { bg: string; text: string }> = {
-  normal: { bg: "#A8A878", text: "#fff" },
-  fire: { bg: "#F08030", text: "#fff" },
-  water: { bg: "#6890F0", text: "#fff" },
-  electric: { bg: "#F8D030", text: "#3b3b3b" },
-  grass: { bg: "#78C850", text: "#fff" },
-  ice: { bg: "#98D8D8", text: "#3b3b3b" },
-  fighting: { bg: "#C03028", text: "#fff" },
-  poison: { bg: "#A040A0", text: "#fff" },
-  ground: { bg: "#E0C068", text: "#3b3b3b" },
-  flying: { bg: "#A890F0", text: "#fff" },
-  psychic: { bg: "#F85888", text: "#fff" },
-  bug: { bg: "#A8B820", text: "#fff" },
-  rock: { bg: "#B8A038", text: "#fff" },
-  ghost: { bg: "#705898", text: "#fff" },
-  dragon: { bg: "#7038F8", text: "#fff" },
-  dark: { bg: "#705848", text: "#fff" },
-  steel: { bg: "#B8B8D0", text: "#3b3b3b" },
-  fairy: { bg: "#EE99AC", text: "#3b3b3b" },
-};
+import TypeBadge from "./TypeBadge";
 
 export default function CardGenerator({ initial }: { initial: Pokemon }) {
   const [pokemon, setPokemon] = useState<Pokemon>(initial);
   const [loading, setLoading] = useState(false);
 
   const main = pokemon.types[0] ?? "normal";
-  const color = TYPE_COLORS[main] ?? TYPE_COLORS.normal;
+  const color = TYPE_HEX[main] ?? TYPE_HEX.normal;
   const move = pokemon.abilities[0] ?? "Tackle";
 
   async function regenerate() {
@@ -59,7 +40,7 @@ export default function CardGenerator({ initial }: { initial: Pokemon }) {
         className={`mx-auto max-w-sm rounded-2xl p-4 shadow-lg transition-opacity ${
           loading ? "opacity-50" : "opacity-100"
         }`}
-        style={{ background: `linear-gradient(160deg, ${color.bg}, #1f2430)` }}
+        style={{ background: typeGradient(main) }}
       >
         <div className="flex items-center justify-between text-white">
           <span className="text-xl font-bold drop-shadow">{pokemon.displayName}</span>
@@ -86,16 +67,7 @@ export default function CardGenerator({ initial }: { initial: Pokemon }) {
 
         <div className="flex flex-wrap gap-2">
           {pokemon.types.map((t) => (
-            <span
-              key={t}
-              className="rounded-full px-3 py-1 text-xs font-semibold capitalize"
-              style={{
-                background: TYPE_COLORS[t]?.bg ?? "#999",
-                color: TYPE_COLORS[t]?.text ?? "#fff",
-              }}
-            >
-              {t}
-            </span>
+            <TypeBadge key={t} type={t} />
           ))}
         </div>
 
@@ -112,7 +84,7 @@ export default function CardGenerator({ initial }: { initial: Pokemon }) {
         <AddToTeamButton pokemon={pokemon} />
         <Link
           href="/team"
-          className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+          className="game-btn game-btn-ghost px-5 py-2.5"
         >
           Build Team
         </Link>

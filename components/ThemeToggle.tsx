@@ -26,7 +26,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       title={dark ? "Light mode" : "Dark mode"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-poke-border bg-poke-surface text-poke-ink transition hover:border-poke-red hover:text-poke-red"
+      className="game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center"
     >
       {dark ? (
         <svg
