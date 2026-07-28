@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Random Pokémon Generator — 8-bit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --scr-off:#0b0f0c;
+    --gb-dk:#0f380f;
+    --gb-mid:#306230;
+    --gb-lt:#8bac0f;
+    --gb-pale:#9bbc0f;
+    --ink:#0b0f0c;
+    --panel:#13241a;
+    --panel-2:#1c3a26;
+    --line:#3a5f3a;
+    --hi:#cfe88a;
+    --accent:#e9c20b;   /* coin yellow */
+    --accent2:#ff5b5b;  /* hp red */
+    /* type blocks */
+    --normal:#9b977f; --fire:#e06a2c; --water:#3f7fd0; --electric:#e9b52b;
+    --grass:#5aa656; --ice:#79c4c9; --fighting:#b23b34; --poison:#8d4f9e;
+    --ground:#cdab5a; --flying:#7c83c9; --psychic:#e4568f; --bug:#92a72f;
+    --rock:#b39a4e; --ghost:#6b5d8c; --dragon:#5a4ad1; --dark:#6b5848;
+    --steel:#9aa0ac; --fairy:#dd93b3;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"VT323",monospace;
+    font-size:20px;
+    color:var(--gb-pale);
+    background:var(--scr-off);
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(139,172,15,.10), transparent 55%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 4px); /* scanlines */
+    line-height:1.35;
+    -webkit-font-smoothing:none;
+    image-rendering:pixelated;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 20px}
+  .pix{font-family:"Press Start 2P",monospace}
+  .accent{color:var(--accent)}
+
+  /* pixel panel: blocky border + hard shadow */
+  .panel{
+    background:var(--panel);
+    border:4px solid var(--line);
+    box-shadow:inset -4px -4px 0 rgba(0,0,0,.35), 6px 6px 0 rgba(0,0,0,.45);
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{border-bottom:4px solid var(--line);background:var(--panel);box-shadow:0 4px 0 rgba(0,0,0,.4);position:relative;z-index:2}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 20px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo .ball{
+    width:26px;height:26px;border-radius:50%;
+    background:
+      linear-gradient(#fff 0 50%, var(--accent2) 50% 100%);
+    border:3px solid var(--gb-pale);
+    box-shadow:inset 0 0 0 3px var(--scr-off);
+  }
+  .logo .name{font-family:"Press Start 2P";font-size:15px;color:var(--gb-pale);letter-spacing:1px}
+  .logo .name b{color:var(--accent)}
+  .topnav{display:flex;gap:8px;flex-wrap:wrap}
+  .topnav a{
+    font-family:"Press Start 2P";font-size:9px;color:var(--gb-pale);
+    padding:9px 11px;border:3px solid var(--line);background:var(--panel-2);
+    box-shadow:3px 3px 0 rgba(0,0,0,.4);transition:0s;
+  }
+  .topnav a:hover{background:var(--gb-mid);transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(0,0,0,.4)}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:46px 0 38px;border-bottom:4px solid var(--line)}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  .blink{animation:blink 1s steps(2,start) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .tagline{font-family:"Press Start 2P";font-size:10px;color:var(--accent);letter-spacing:1px}
+  .hero h1{
+    font-family:"Press Start 2P";font-weight:400;
+    font-size:clamp(20px,3.4vw,34px);line-height:1.5;letter-spacing:1px;
+    margin:.7em 0 .5em;color:var(--gb-pale);
+  }
+  .hero h1 em{color:var(--accent);font-style:normal}
+  .hero p.lede{font-size:21px;color:var(--gb-lt);max-width:46ch;margin:0 0 26px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn{
+    font-family:"Press Start 2P";font-size:11px;letter-spacing:1px;
+    padding:15px 18px;border:4px solid var(--ink);background:var(--gb-lt);color:var(--ink);
+    box-shadow:5px 5px 0 rgba(0,0,0,.5);cursor:pointer;transition:0s;
+  }
+  .btn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 rgba(0,0,0,.5)}
+  .btn:active{transform:translate(5px,5px);box-shadow:0 0 0 rgba(0,0,0,.5)}
+  .btn-primary{background:var(--accent)}
+  .btn-ghost{background:var(--panel-2);color:var(--gb-pale);border-color:var(--line)}
+
+  /* gameboy screen card */
+  .screen{
+    background:#0f1f12;
+    border:5px solid #2a3a22;
+    box-shadow:inset 0 0 0 4px #0b160d, inset 0 0 30px rgba(155,188,15,.18), 6px 6px 0 rgba(0,0,0,.5);
+    padding:18px;position:relative;
+    background-image:repeating-linear-gradient(0deg, rgba(155,188,15,.05) 0 2px, transparent 2px 4px);
+  }
+  .screen .scr-top{display:flex;justify-content:space-between;align-items:center;font-family:"Press Start 2P";font-size:8px;color:var(--gb-lt);margin-bottom:10px}
+  .screen .batt{font-family:"VT323";font-size:18px;color:var(--hi)}
+  .screen .sprite{
+    display:block;margin:8px auto 12px;width:150px;height:150px;object-fit:contain;
+    image-rendering:pixelated;filter:drop-shadow(0 0 10px rgba(155,188,15,.35));
+  }
+  .screen h3{font-family:"Press Start 2P";font-size:16px;color:var(--gb-pale);text-align:center;margin:0;letter-spacing:1px}
+  .screen .sub{text-align:center;font-size:18px;color:var(--gb-lt);margin-top:4px}
+  .screen .typrow{display:flex;gap:8px;justify-content:center;margin:14px 0 4px}
+  .tblock{width:22px;height:22px;border:3px solid var(--ink);box-shadow:2px 2px 0 rgba(0,0,0,.5)}
+  .screen .hp{margin-top:10px}
+  .screen .hp .bar{height:14px;background:#0b160d;border:3px solid #2a3a22;box-shadow:inset 2px 2px 0 rgba(0,0,0,.5)}
+  .screen .hp .fill{height:100%;width:62%;background:repeating-linear-gradient(90deg,var(--gb-lt) 0 6px,var(--gb-mid) 6px 8px)}
+  .screen .hp .lbl{display:flex;justify-content:space-between;font-family:"VT323";font-size:16px;color:var(--hi);margin-bottom:4px}
+
+  /* ---------- Sections ---------- */
+  section.block{padding:40px 0;border-bottom:4px solid var(--line)}
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+  .sec-head .num{font-family:"Press Start 2P";font-size:11px;color:var(--accent)}
+  .sec-head h2{font-family:"Press Start 2P";font-weight:400;font-size:16px;letter-spacing:1px;margin:0;color:var(--gb-pale)}
+  .sec-head .line{flex:1;height:4px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 12px)}
+
+  /* index buttons */
+  .index{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .idx{
+    display:flex;align-items:center;gap:14px;padding:16px 16px;
+    background:var(--panel-2);border:4px solid var(--line);
+    box-shadow:4px 4px 0 rgba(0,0,0,.4);transition:0s;
+  }
+  .idx:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(0,0,0,.4);background:var(--gb-mid)}
+  .idx .key{font-family:"Press Start 2P";font-size:10px;color:var(--accent)}
+  .idx .t{font-size:22px;color:var(--gb-pale);flex:1}
+  .idx .d{font-size:17px;color:var(--gb-lt);max-width:28ch}
+  .idx .arw{font-family:"Press Start 2P";font-size:10px;color:var(--hi)}
+
+  /* category cards */
+  .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .cat{background:var(--panel);border:4px solid var(--line);box-shadow:inset -4px -4px 0 rgba(0,0,0,.3),5px 5px 0 rgba(0,0,0,.45);padding:18px;transition:0s}
+  .cat:hover{transform:translate(2px,2px);box-shadow:inset -4px -4px 0 rgba(0,0,0,.3),3px 3px 0 rgba(0,0,0,.45)}
+  .cat .ch{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .cat .cdot{width:18px;height:18px;border:3px solid var(--ink);box-shadow:2px 2px 0 rgba(0,0,0,.5)}
+  .cat .ct{font-family:"Press Start 2P";font-size:11px;color:var(--gb-pale);letter-spacing:1px}
+  .cat .cd{font-size:17px;color:var(--gb-lt)}
+  .cat .cg{font-family:"Press Start 2P";font-size:8px;color:var(--accent);margin-top:12px;display:inline-block}
+
+  /* featured */
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .art{background:var(--panel-2);border:4px solid var(--line);box-shadow:4px 4px 0 rgba(0,0,0,.4);padding:18px}
+  .art .kick{font-family:"Press Start 2P";font-size:8px;color:var(--accent);letter-spacing:1px;margin-bottom:12px}
+  .art h4{font-family:"Press Start 2P";font-size:12px;color:var(--gb-pale);margin:0 0 10px;line-height:1.6}
+  .art p{font-size:18px;color:var(--gb-lt);margin:0 0 14px}
+
+  /* footer */
+  footer{padding:34px 0 50px}
+  .foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  .colo{max-width:34ch;font-size:18px;color:var(--gb-lt)}
+  .colo .serif{font-family:"Press Start 2P";font-size:12px;color:var(--gb-pale);display:block;margin-bottom:10px}
+  .folinks{display:flex;gap:40px;flex-wrap:wrap}
+  .folinks .col h5{font-family:"Press Start 2P";font-size:8px;letter-spacing:1px;color:var(--accent);margin:0 0 12px}
+  .folinks .col a{display:block;font-size:19px;color:var(--gb-pale);padding:3px 0}
+  .folinks .col a:hover{color:var(--accent)}
+  .disc{margin-top:28px;padding-top:16px;border-top:4px solid var(--line);font-size:16px;color:var(--gb-mid)}
+  .press{font-family:"Press Start 2P";font-size:9px;color:var(--gb-lt);margin-top:18px}
+
+  @media(max-width:820px){
+    .hero-grid{grid-template-columns:1fr;gap:30px}
+    .index{grid-template-columns:1fr}
+    .cat-grid,.feat-grid{grid-template-columns:1fr}
+    .topnav{display:none}
+  }
+</style>
+</head>
+<body>
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="logo">
+        <span class="ball"></span>
+        <span class="name">POKé<b>DEX</b></span>
+      </div>
+      <nav class="topnav">
+        <a href="#jump">GEN</a>
+        <a href="#browse">TYPE</a>
+        <a href="#play">PLAY</a>
+        <a href="/team">TEAM</a>
+        <a href="/challenge">RUN</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="tagline blink">▶ INSERT COIN</span>
+        <h1>SPIN THE<br>DEX &amp; MEET<br><em>SOMEONE NEW</em></h1>
+        <p class="lede">A tiny trainer's tool. One tap, a fresh face pops onto the screen — sprite, types and stats, ready to study or send to battle.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary">▶ GENERATE</button>
+          <a href="/team" class="btn btn-ghost">◆ TEAM</a>
+          <span class="pix" style="font-size:8px;color:var(--gb-lt)">FREE · FAN-MADE</span>
+        </div>
+      </div>
+
+      <div class="screen panel">
+        <div class="scr-top">
+          <span>PL.025</span>
+          <span class="batt">HP ▮▮▮▮▮▯</span>
+        </div>
+        <img class="sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu" />
+        <h3>PIKACHU</h3>
+        <div class="sub">#0025 · MOUSE</div>
+        <div class="typrow">
+          <span class="tblock" style="background:var(--electric)" title="Electric"></span>
+        </div>
+        <div class="hp">
+          <div class="lbl"><span>HP</span><span>62%</span></div>
+          <div class="bar"><div class="fill"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Jump straight in -->
+  <section class="block" id="jump">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>JUMP STRAIGHT IN</h2>
+        <span class="line"></span>
+      </div>
+      <div class="index">
+        <a class="idx" href="#"><span class="key">A</span><span class="t">Random Generator</span><span class="d">One tap, a new 'mon on screen.</span><span class="arw">→</span></a>
+        <a class="idx" href="#"><span class="key">B</span><span class="t">Shiny Mode</span><span class="d">Roll rare alt-color forms.</span><span class="arw">→</span></a>
+        <a class="idx" href="#"><span class="key">C</span><span class="t">Build a Team</span><span class="d">Collect six for a run.</span><span class="arw">→</span></a>
+        <a class="idx" href="#"><span class="key">D</span><span class="t">Create Challenge</span><span class="d">A nuzlocke-style draft.</span><span class="arw">→</span></a>
+        <a class="idx" href="#"><span class="key">E</span><span class="t">Guess the 'mon</span><span class="d">Silhouette quiz mode.</span><span class="arw">→</span></a>
+        <a class="idx" href="#"><span class="key">F</span><span class="t">Type Fusion</span><span class="d">Mash two into a hybrid.</span><span class="arw">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Browse by category -->
+  <section class="block" id="browse">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <h2>BROWSE BY CATEGORY</h2>
+        <span class="line"></span>
+      </div>
+      <div class="cat-grid">
+        <a class="cat" href="#">
+          <div class="ch"><span class="cdot" style="background:var(--fire)"></span><span class="ct">BY TYPE</span></div>
+          <div class="cd">All 18 elemental families, Normal to Fairy.</div>
+          <span class="cg">OPEN INDEX »</span>
+        </a>
+        <a class="cat" href="#">
+          <div class="ch"><span class="cdot" style="background:var(--grass)"></span><span class="ct">BY GEN</span></div>
+          <div class="cd">Kanto through Paldea, region by region.</div>
+          <span class="cg">OPEN INDEX »</span>
+        </a>
+        <a class="cat" href="#">
+          <div class="ch"><span class="cdot" style="background:var(--psychic)"></span><span class="ct">BY ROLE</span></div>
+          <div class="cd">Starters, legendaries &amp; pseudo-legends.</div>
+          <span class="cg">OPEN INDEX »</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured play -->
+  <section class="block" id="play">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">03</span>
+        <h2>FEATURED PLAY</h2>
+        <span class="line"></span>
+      </div>
+      <div class="feat-grid">
+        <article class="art">
+          <div class="kick">MODE·DAILY</div>
+          <h4>THE MORNING ROLL</h4>
+          <p>Start the day with one mystery 'mon. No pressure, just a familiar face.</p>
+          <a class="btn btn-ghost" href="#">OPEN ▶</a>
+        </article>
+        <article class="art">
+          <div class="kick">MODE·ROSTER</div>
+          <h4>SIX FOR A RUN</h4>
+          <p>Generate a balanced team and export it for your next playthrough.</p>
+          <a class="btn btn-ghost" href="#">OPEN ▶</a>
+        </article>
+        <article class="art">
+          <div class="kick">MODE·QUIZ</div>
+          <h4>WHO'S THAT?</h4>
+          <p>Hide the name, guess from sprite alone. A two-minute warm-up.</p>
+          <a class="btn btn-ghost" href="#">OPEN ▶</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="colo">
+          <span class="serif">POKéDEX</span>
+          A small, ad-free generator for trainers who like a little randomness. Rendered in 8-bit since 2024.
+        </div>
+        <div class="folinks">
+          <div class="col">
+            <h5>TOOLS</h5>
+            <a href="#">Random</a><a href="#">Team</a><a href="#">Challenge</a><a href="#">Fusion</a>
+          </div>
+          <div class="col">
+            <h5>BROWSE</h5>
+            <a href="#">By Type</a><a href="#">By Gen</a><a href="#">By Role</a><a href="#">Shiny</a>
+          </div>
+          <div class="col">
+            <h5>ABOUT</h5>
+            <a href="#">Contact</a><a href="#">Privacy</a><a href="#">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <p class="disc">Fan-made, not affiliated with Nintendo, Game Freak, or The Pokémon Company. Pokémon names &amp; images are trademarks of their respective owners. Sprites via PokeAPI.</p>
+      <p class="press blink">© 2024 POKéDEX · PRESS START</p>
+    </div>
+  </footer>
+</body>
+</html>
