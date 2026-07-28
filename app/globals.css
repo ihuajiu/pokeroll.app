@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 240 233 226;
+  --card: 255 253 251;
+  --surface-2: 251 244 238;
+  --border: 226 210 198;
+  --text: 42 32 24;
+  --text-dim: 108 90 76;
+  --chip-bg: 246 236 228;
+  --accent: 238 59 59;
+  --accent-hover: 176 43 43;
+  --accent-2: 255 122 60;
+  --btn: 214 40 40;
+  --btn-hover: 176 43 43;
+  --wheel-a: 243 244 246;
+  --wheel-b: 229 231 235;
+}
+
+.dark {
+  --bg: 22 15 16;
+  --card: 32 23 26;
+  --surface-2: 27 19 22;
+  --border: 59 42 45;
+  --text: 246 236 233;
+  --text-dim: 185 167 157;
+  --chip-bg: 42 29 32;
+  --accent: 255 106 90;
+  --accent-hover: 196 58 48;
+  --accent-2: 255 138 92;
+  --btn: 207 42 35;
+  --btn-hover: 150 30 26;
+  --wheel-a: 46 38 42;
+  --wheel-b: 36 28 32;
+}
+
+body {
+  font-family: "Outfit", system-ui, -apple-system, sans-serif;
+  background-color: rgb(var(--bg));
+  background-image:
+    radial-gradient(900px 600px at 85% -10%, #ffd9cf 0%, transparent 60%),
+    linear-gradient(180deg, #f4ede6 0%, #ece2d8 100%);
+  background-attachment: fixed;
+  color: rgb(var(--text));
+}
+
+.dark body {
+  background-image:
+    radial-gradient(900px 600px at 85% -10%, rgba(238, 59, 59, 0.22) 0%, transparent 60%),
+    linear-gradient(180deg, #1a1214 0%, #160f10 100%);
+}
+
+/* Card surface token used across the app — poketools-style rounded card
+   with a soft resting shadow and a type-colored glow on hover.
+   Set `--cc` (the primary type color) per card to drive the glow. */
+.poke-card {
+  background-color: rgb(var(--card));
+  border: 1px solid rgb(var(--border));
+  color: rgb(var(--text));
+  border-radius: 1rem;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.05),
+    0 12px 30px -18px rgb(0 0 0 / 0.28);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+.poke-card:hover {
+  transform: translateY(-3px);
+  border-color: rgb(var(--accent) / 0.55);
+  box-shadow: 0 22px 44px -26px var(--cc, rgb(var(--accent)));
+}

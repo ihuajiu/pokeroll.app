@@ -1,0 +1,101 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import type { Pokemon } from "@/lib/types";
+import PokemonCard from "./PokemonCard";
+import GenerateButton from "./GenerateButton";
+import AddToTeamButton from "./AddToTeamButton";
+
+export type FusionPayload = { a: Pokemon; b: Pokemon };
+
+function fuseNames(a: string, b: string): string {
+  const cut = Math.max(1, Math.ceil(a.length / 2));
+  return (a.slice(0, cut) + b.slice(Math.floor(b.length / 2))).trim();
+}
+
+function buildFusion(a: Pokemon, b: Pokemon): Pokemon {
+  const types = Array.from(new Set([...a.types, ...b.types]));
+  const stats = {
+    hp: Math.round((a.stats.hp + b.stats.hp) / 2),
+    atk: Math.round((a.stats.atk + b.stats.atk) / 2),
+    def: Math.round((a.stats.def + b.stats.def) / 2),
+    spa: Math.round((a.stats.spa + b.stats.spa) / 2),
+    spd: Math.round((a.stats.spd + b.stats.spd) / 2),
+    spe: Math.round((a.stats.spe + b.stats.spe) / 2),
+  };
+  const bst = stats.hp + stats.atk + stats.def + stats.spa + stats.spd + stats.spe;
+  const fusedName = fuseNames(a.displayName, b.displayName);
+  return {
+    ...a,
+    name: fusedName.toLowerCase(),
+    displayName: fusedName,
+    types,
+    stats,
+    bst,
+    sprite: a.sprite,
+    shinySprite: a.shinySprite,
+    abilities: Array.from(new Set([...a.abilities, ...b.abilities])),
+    isLegendary: a.isLegendary || b.isLegendary,
+    isMythical: a.isMythical || b.isMythical,
+  };
+}
+
+export default function FusionGenerator({ initial }: { initial: FusionPayload }) {
+  const [data, setData] = useState<FusionPayload>(initial);
+  const [loading, setLoading] = useState(false);
+  const fused = buildFusion(data.a, data.b);
+
+  async function regenerate() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/fusion");
+      if (!res.ok) throw new Error("failed");
+      setData(await res.json());
+    } catch {
+      // keep previous result on error
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div>
+      <div className="mb-6 text-center">
+        <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
+        <p className="text-sm text-poke-dim">Fuse two random Pokémon into one!</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        <div>
+          <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-poke-dim">
+            {data.a.displayName}
+          </p>
+          <PokemonCard pokemon={data.a} loading={loading} />
+        </div>
+        <div>
+          <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-poke-dim">
+            {data.b.displayName}
+          </p>
+          <PokemonCard pokemon={data.b} loading={loading} />
+        </div>
+      </div>
+
+      <div className="my-5 text-center text-3xl font-bold text-poke-red">+</div>
+
+      <p className="mb-2 text-center text-sm text-poke-dim">Your fusion is…</p>
+      <PokemonCard pokemon={fused} loading={loading} />
+
+      <div className="mt-5 flex flex-wrap gap-3">
+        <GenerateButton onClick={regenerate} loading={loading} />
+        <AddToTeamButton pokemon={fused} />
+        <Link
+          href="/team"
+          className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+        >
+          Build Team
+        </Link>
+      </div>
+    </div>
+  );
+}
