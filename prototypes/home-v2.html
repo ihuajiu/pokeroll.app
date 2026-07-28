@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Random Pokémon Generator — Card Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0c14;
+    --bg2:#0f1320;
+    --ink:#eef1f8;
+    --muted:#9aa3b8;
+    --accent:#ff5436;
+    --accent2:#ffb020;
+    --line:rgba(255,255,255,.10);
+    --line2:rgba(255,255,255,.16);
+    --glass:rgba(255,255,255,.05);
+    --normal:#9b977f; --fire:#e06a2c; --water:#3f7fd0; --electric:#e9b52b;
+    --grass:#5aa656; --ice:#79c4c9; --fighting:#b23b34; --poison:#8d4f9e;
+    --ground:#cdab5a; --flying:#7c83c9; --psychic:#e4568f; --bug:#92a72f;
+    --rock:#b39a4e; --ghost:#6b5d8c; --dragon:#5a4ad1; --dark:#6b5848;
+    --steel:#9aa0ac; --fairy:#dd93b3;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:"Inter",system-ui,sans-serif;color:var(--ink);
+    background:
+      radial-gradient(60% 50% at 90% -10%, rgba(255,84,54,.14), transparent 60%),
+      radial-gradient(50% 45% at 0% 0%, rgba(63,127,208,.12), transparent 55%),
+      var(--bg);
+    line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .display{font-family:"Sora",sans-serif}
+  .mono{font-family:"Space Mono",ui-monospace,monospace}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+
+  /* ---------- Nav ---------- */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(10,12,20,.72);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"Sora";font-weight:700;font-size:19px}
+  .brand .g{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#1a0c06;font-size:15px}
+  .navlinks{display:flex;gap:26px;font-size:14.5px;font-weight:500;color:var(--muted)}
+  .navlinks a:hover{color:var(--ink)}
+  .nav-cta{display:flex;gap:10px}
+  .btn{font-family:"Inter";font-weight:600;font-size:14px;border-radius:11px;padding:10px 16px;cursor:pointer;border:1px solid transparent;transition:.16s;display:inline-flex;align-items:center;gap:7px}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 6px 18px rgba(255,84,54,.3)}
+  .btn-primary:hover{transform:translateY(-1px)}
+  .btn-ghost{background:var(--glass);color:var(--ink);border-color:var(--line2)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ---------- HERO: tile wall + compact draw card ---------- */
+  .hero{padding:54px 0 40px}
+  .hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:34px;align-items:stretch}
+  .hero-left .eyebrow{display:block;margin-bottom:10px}
+  .hero-left h1{font-family:"Sora";font-weight:800;font-size:clamp(34px,4.6vw,54px);line-height:1.05;letter-spacing:-.025em;margin:0 0 12px}
+  .hero-left h1 .hl{color:var(--accent)}
+  .hero-left p{color:var(--muted);font-size:16px;max-width:48ch;margin:0 0 22px}
+
+  /* TILE WALL (replaces old hero card) */
+  .wall{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .tile{position:relative;border-radius:16px;padding:16px;min-height:118px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;overflow:hidden;transition:.18s;border:1px solid rgba(255,255,255,.14)}
+  .tile:hover{transform:translateY(-3px) scale(1.01)}
+  .tile .ic{font-size:22px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
+  .tile .nm{font-family:"Sora";font-weight:700;font-size:15px;letter-spacing:-.01em}
+  .tile .ds{font-size:11.5px;opacity:.92;margin-top:2px}
+  .tile .go{font-size:11px;font-weight:600;margin-top:8px;display:inline-flex;gap:5px;align-items:center}
+
+  /* COMPACT DRAW CARD (vertical TCG-ish, small) */
+  .draw{display:flex;flex-direction:column;gap:14px}
+  .drawcard{
+    border-radius:18px;overflow:hidden;position:relative;flex:1;
+    background:linear-gradient(170deg,var(--electric),#b9860f);
+    box-shadow:0 16px 40px rgba(0,0,0,.45);
+    border:1px solid rgba(255,255,255,.2);
+    display:flex;flex-direction:column;
+  }
+  .drawcard::after{content:"";position:absolute;top:-40%;left:-30%;width:80%;height:160%;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.45) 50%,transparent 60%);transform:rotate(8deg);pointer-events:none}
+  .drawcard .hd{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;color:#2a1d00;font-weight:700}
+  .drawcard .hd .id{font-family:"Space Mono";font-size:12px}
+  .drawcard .hd .rare{font-size:10px;background:rgba(0,0,0,.25);color:#fff;padding:2px 7px;border-radius:999px}
+  .drawcard .stage{padding:0 14px;color:#2a1d00;font-size:11px;font-weight:600;opacity:.85}
+  .drawcard .art{display:grid;place-items:center;padding:6px 0 10px;position:relative}
+  .drawcard .art::after{content:"";position:absolute;bottom:14px;width:120px;height:26px;background:radial-gradient(ellipse,rgba(0,0,0,.28),transparent 70%);filter:blur(6px)}
+  .drawcard .art img{width:128px;height:128px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.4))}
+  .drawcard .nm{font-family:"Sora";font-weight:800;font-size:21px;text-align:center;color:#2a1d00;letter-spacing:-.01em}
+  .drawcard .hp{display:flex;justify-content:space-between;padding:2px 16px 0;color:#2a1d00;font-size:12px;font-weight:700}
+  .drawcard .body{margin-top:auto;background:rgba(255,255,255,.82);padding:12px 14px;color:#1c1400}
+  .drawcard .type{display:inline-flex;gap:6px;margin-bottom:10px}
+  .drawcard .type span{font-size:11px;font-weight:700;color:#fff;padding:3px 9px;border-radius:999px;background:var(--electric)}
+  .drawcard .moves{display:grid;gap:7px}
+  .drawcard .mv{display:flex;justify-content:space-between;font-size:12px;align-items:center}
+  .drawcard .mv .mn{font-weight:600}
+  .drawcard .mv .dmg{font-family:"Space Mono";font-weight:700;color:#9a2b00}
+  .drawcard .statline{display:flex;justify-content:space-between;margin-top:10px;font-family:"Space Mono";font-size:11px;color:#3a2a00}
+  .drawcard .foot{display:flex;justify-content:space-between;padding:8px 14px;background:rgba(0,0,0,.18);color:#ffe;font-size:10px}
+
+  /* ---------- Scroll-snapping CAROUSEL (replaces category/featured grids) ---------- */
+  .railsec{padding:44px 0 10px}
+  .railsec .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px;flex-wrap:wrap}
+  .railsec h2{font-family:"Sora";font-weight:700;font-size:26px;letter-spacing:-.02em;margin:6px 0 0}
+  .railsec p{color:var(--muted);font-size:14.5px;margin:0}
+  .rail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 22px;scrollbar-width:thin}
+  .rail::-webkit-scrollbar{height:8px}
+  .rail::-webkit-scrollbar-thumb{background:var(--line2);border-radius:99px}
+
+  /* TCG CARD (the new card form) */
+  .tcg{scroll-snap-align:start;flex:0 0 230px;border-radius:18px;overflow:hidden;position:relative;
+    background:linear-gradient(165deg,#fff,#eef1f6);color:#11151f;
+    box-shadow:0 14px 34px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.5);
+    display:flex;flex-direction:column;transition:.18s}
+  .tcg:hover{transform:translateY(-4px)}
+  .tcg::before{content:"";position:absolute;top:-50%;left:-40%;width:90%;height:180%;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.7) 50%,transparent 58%);transform:rotate(8deg);pointer-events:none}
+  .tcg .topband{height:8px}
+  .tcg .hd{display:flex;justify-content:space-between;align-items:center;padding:11px 13px 4px}
+  .tcg .hd .nm{font-family:"Sora";font-weight:800;font-size:16px;letter-spacing:-.01em}
+  .tcg .hd .id{font-family:"Space Mono";font-size:11px;color:#6b7280}
+  .tcg .art{display:grid;place-items:center;padding:4px 0 8px;position:relative}
+  .tcg .art::after{content:"";position:absolute;bottom:12px;width:104px;height:20px;background:radial-gradient(ellipse,rgba(0,0,0,.18),transparent 70%);filter:blur(5px)}
+  .tcg .art img{width:116px;height:116px;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+  .tcg .types{display:flex;gap:6px;justify-content:center;padding:0 13px 8px}
+  .tcg .types span{font-size:10.5px;font-weight:700;color:#fff;padding:3px 9px;border-radius:999px}
+  .tcg .meta{margin-top:auto;background:#f4f6fa;padding:10px 13px;display:grid;gap:6px}
+  .tcg .row{display:flex;justify-content:space-between;font-size:11.5px;align-items:center}
+  .tcg .row .k{color:#6b7280}
+  .tcg .row .v{font-family:"Space Mono";font-weight:700;color:#11151f}
+  .tcg .bar{height:6px;background:#e2e6ec;border-radius:99px;overflow:hidden;width:90px}
+  .tcg .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--line);margin-top:30px;padding:42px 0 38px}
+  .foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  .fcolo{max-width:34ch}
+  .fcolo .brand{margin-bottom:10px}
+  .fcolo p{font-size:14px;color:var(--muted);margin:0}
+  .folinks{display:flex;gap:46px;flex-wrap:wrap}
+  .folinks .col h5{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);opacity:.8;margin:0 0 12px}
+  .folinks .col a{display:block;font-size:14px;color:var(--muted);padding:4px 0}
+  .folinks .col a:hover{color:var(--accent)}
+  .disc{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+
+  @media(max-width:920px){
+    .hero-grid{grid-template-columns:1fr}
+    .wall{grid-template-columns:repeat(2,1fr)}
+    .navlinks{display:none}
+  }
+</style>
+</head>
+<body>
+  <!-- Nav -->
+  <header class="nav">
+    <div class="wrap">
+      <div class="brand"><span class="g">⚡</span>PokeRandom</div>
+      <nav class="navlinks">
+        <a href="#wall">Modes</a><a href="#rail">Browse</a><a href="/team">Team</a><a href="/challenge">Challenge</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="/team" class="btn btn-ghost">Build team</a>
+        <button class="btn btn-primary">Roll →</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO: tile wall + compact draw card -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-left">
+        <span class="eyebrow">Pick a mode, draw a card</span>
+        <h1 class="display">Spin the dex.<br>Meet <span class="hl">someone new</span>.</h1>
+        <p>One click, a fresh Pokémon lands in your hand — sprite, types and moves, ready to study or send into battle. No login, no clutter.</p>
+        <div class="wall" id="wall">
+          <a class="tile" href="#" style="background:linear-gradient(150deg,var(--fire),#9c3414)"><span class="ic">🎲</span><span><span class="nm">Random</span><span class="ds">A new 'mon, one tap</span></span><span class="go">OPEN →</span></a>
+          <a class="tile" href="#" style="background:linear-gradient(150deg,var(--electric),#b9860f)"><span class="ic">✨</span><span><span class="nm">Shiny</span><span class="ds">Rare alt colors</span></span><span class="go">OPEN →</span></a>
+          <a class="tile" href="#" style="background:linear-gradient(150deg,var(--grass),#2f7a37)"><span class="ic">🛡️</span><span><span class="nm">Team</span><span class="ds">Collect six</span></span><span class="go">OPEN →</span></a>
+          <a class="tile" href="#" style="background:linear-gradient(150deg,var(--psychic),#a82d63)"><span class="ic">🗺️</span><span><span class="nm">Challenge</span><span class="ds">Nuzlocke draft</span></span><span class="go">OPEN →</span></a>
+          <a class="tile" href="#" style="background:linear-gradient(150deg,var(--water),#274ea0)"><span class="ic">❓</span><span><span class="nm">Guess</span><span class="ds">Silhouette quiz</span></span><span class="go">OPEN →</span></a>
+          <a class="tile" href="#" style="background:linear-gradient(150deg,var(--poison),#5e2c6e)"><span class="ic">🧬</span><span><span class="nm">Fusion</span><span class="ds">Mash two 'mons</span></span><span class="go">OPEN →</span></a>
+          <a class="tile" href="#" style="background:linear-gradient(150deg,var(--ice),#3f8a8f)"><span class="ic">⏱️</span><span><span class="nm">Daily</span><span class="ds">One each day</span></span><span class="go">OPEN →</span></a>
+          <a class="tile" href="#" style="background:linear-gradient(150deg,var(--dragon),#3a28a0)"><span class="ic">🏆</span><span><span class="nm">Legend</span><span class="ds">Top-tier picks</span></span><span class="go">OPEN →</span></a>
+        </div>
+      </div>
+
+      <!-- compact draw card -->
+      <div class="draw">
+        <div class="drawcard">
+          <div class="hd"><span>Pikachu</span><span class="id">#0025</span></div>
+          <div class="stage">Basic Pokémon · MOUSE</div>
+          <div class="art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu" /></div>
+          <div class="hp"><span>HP</span><span>60</span></div>
+          <div class="body">
+            <div class="type"><span>Electric</span></div>
+            <div class="moves">
+              <div class="mv"><span class="mn">⚡ Thunder Shock</span><span class="dmg">20</span></div>
+              <div class="mv"><span class="mn">⚡ Quick Attack</span><span class="dmg">15</span></div>
+            </div>
+            <div class="statline"><span>ATK 55</span><span>DEF 40</span><span>SPD 90</span></div>
+          </div>
+          <div class="foot"><span>illus. PokeRandom</span><span>★</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scroll-snapping carousel of TCG cards -->
+  <section class="railsec" id="rail">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Browse the roster</span><h2 class="display">Featured draws</h2></div>
+        <p>Swipe through — tap any card to view.</p>
+      </div>
+    </div>
+    <div class="wrap"><div class="rail">
+      <div class="tcg"><div class="topband" style="background:var(--fire)"></div><div class="hd"><span class="nm">Charmander</span><span class="id">#0004</span></div><div class="art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt=""></div><div class="types"><span style="background:var(--fire)">Fire</span></div><div class="meta"><div class="row"><span class="k">HP</span><span class="v">39</span></div><div class="row"><span class="k">ATK</span><div class="bar"><i style="width:52%"></i></div></div><div class="row"><span class="k">SPD</span><div class="bar"><i style="width:65%"></i></div></div></div></div>
+      <div class="tcg"><div class="topband" style="background:var(--water)"></div><div class="hd"><span class="nm">Squirtle</span><span class="id">#0007</span></div><div class="art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" alt=""></div><div class="types"><span style="background:var(--water)">Water</span></div><div class="meta"><div class="row"><span class="k">HP</span><span class="v">44</span></div><div class="row"><span class="k">ATK</span><div class="bar"><i style="width:48%"></i></div></div><div class="row"><span class="k">SPD</span><div class="bar"><i style="width:55%"></i></div></div></div></div>
+      <div class="tcg"><div class="topband" style="background:var(--grass)"></div><div class="hd"><span class="nm">Bulbasaur</span><span class="id">#0001</span></div><div class="art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt=""></div><div class="types"><span style="background:var(--grass)">Grass</span><span style="background:var(--poison)">Poison</span></div><div class="meta"><div class="row"><span class="k">HP</span><span class="v">45</span></div><div class="row"><span class="k">ATK</span><div class="bar"><i style="width:49%"></i></div></div><div class="row"><span class="k">SPD</span><div class="bar"><i style="width:45%"></i></div></div></div></div>
+      <div class="tcg"><div class="topband" style="background:var(--psychic)"></div><div class="hd"><span class="nm">Jigglypuff</span><span class="id">#0039</span></div><div class="art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png" alt=""></div><div class="types"><span style="background:var(--normal)">Normal</span><span style="background:var(--fairy)">Fairy</span></div><div class="meta"><div class="row"><span class="k">HP</span><span class="v">115</span></div><div class="row"><span class="k">ATK</span><div class="bar"><i style="width:30%"></i></div></div><div class="row"><span class="k">SPD</span><div class="bar"><i style="width:35%"></i></div></div></div></div>
+      <div class="tcg"><div class="topband" style="background:var(--electric)"></div><div class="hd"><span class="nm">Pikachu</span><span class="id">#0025</span></div><div class="art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt=""></div><div class="types"><span style="background:var(--electric)">Electric</span></div><div class="meta"><div class="row"><span class="k">HP</span><span class="v">35</span></div><div class="row"><span class="k">ATK</span><div class="bar"><i style="width:55%"></i></div></div><div class="row"><span class="k">SPD</span><div class="bar"><i style="width:90%"></i></div></div></div></div>
+      <div class="tcg"><div class="topband" style="background:var(--ice)"></div><div class="hd"><span class="nm">Lapras</span><span class="id">#0131</span></div><div class="art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" alt=""></div><div class="types"><span style="background:var(--water)">Water</span><span style="background:var(--ice)">Ice</span></div><div class="meta"><div class="row"><span class="k">HP</span><span class="v">130</span></div><div class="row"><span class="k">ATK</span><div class="bar"><i style="width:45%"></i></div></div><div class="row"><span class="k">SPD</span><div class="bar"><i style="width:45%"></i></div></div></div></div>
+      <div class="tcg"><div class="topband" style="background:var(--dragon)"></div><div class="hd"><span class="nm">Dratini</span><span class="id">#0147</span></div><div class="art"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/147.png" alt=""></div><div class="types"><span style="background:var(--dragon)">Dragon</span></div><div class="meta"><div class="row"><span class="k">HP</span><span class="v">41</span></div><div class="row"><span class="k">ATK</span><div class="bar"><i style="width:52%"></i></div></div><div class="row"><span class="k">SPD</span><div class="bar"><i style="width:50%"></i></div></div></div></div>
+    </div></div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="fcolo">
+          <div class="brand"><span class="g">⚡</span>PokeRandom</div>
+          <p>A small, ad-free generator for trainers who like a little randomness. Built with care since 2024.</p>
+        </div>
+        <div class="folinks">
+          <div class="col"><h5>Tools</h5><a href="#">Random</a><a href="#">Team</a><a href="#">Challenge</a><a href="#">Fusion</a></div>
+          <div class="col"><h5>Browse</h5><a href="#">By Type</a><a href="#">By Gen</a><a href="#">By Role</a><a href="#">Shiny</a></div>
+          <div class="col"><h5>About</h5><a href="#">Contact</a><a href="#">Privacy</a><a href="#">Disclaimer</a></div>
+        </div>
+      </div>
+      <p class="disc">Fan-made, not affiliated with Nintendo, Game Freak, or The Pokémon Company. Pokémon names &amp; images are trademarks of their respective owners. Sprites via PokeAPI.</p>
+    </div>
+  </footer>
+</body>
+</html>
