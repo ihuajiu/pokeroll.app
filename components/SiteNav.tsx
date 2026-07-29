@@ -29,21 +29,24 @@ export default function SiteNav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-poke-border bg-poke-surface/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <header
+      className="sticky top-0 z-30 border-b border-poke-border backdrop-blur-md"
+      style={{ background: "var(--header-bg)" }}
+    >
+      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-6 py-3">
         <Link
           href="/"
           className="flex items-center gap-2.5 font-display text-lg font-bold text-poke-ink"
         >
           <span className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-poke-violet to-poke-scarlet text-white shadow-[0_3px_0_rgba(0,0,0,0.18)]">
             <svg viewBox="0 0 100 100" className="h-5 w-5" aria-hidden="true">
-              <path d="M50 8a42 42 0 0 0-42 42h42z" fill="#fff" />
-              <path d="M50 50h42A42 42 0 0 0 50 8z" fill="none" stroke="#fff" strokeWidth="6" />
+              <path d="M50 8a42 42 0 0 0-42 42h84A42 42 0 0 0 50 8z" fill="#fff" />
+              <path d="M8 50h84" stroke="#fff" strokeWidth="6" />
               <circle cx="50" cy="50" r="13" fill="#fff" />
               <circle cx="50" cy="50" r="6" fill="rgb(var(--brand))" />
             </svg>
           </span>
-          Pokémon Generator
+          PokeField
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-semibold text-poke-dim md:flex">

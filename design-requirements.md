@@ -221,11 +221,12 @@ Generation: Gen 1
 | AI 生成图片 | 可选 | 中 |
 
 ### 7.2 禁止项（设计上不得出现）
-- ❌ 官方高清插画（official artwork）
 - ❌ Pokémon Logo
 - ❌ 宝可梦卡牌图片
 - ❌ 游戏截图
 - ❌ 冒充官方（"Official Pokemon Generator" / "Pokemon AI Creator Official"）
+
+> **决策更新**：原型阶段已决定**采用** PokéAPI 的 `official-artwork` endpoint（475×475 官方高清插画，经 jsDelivr / GitHub raw 镜像获取，失败时 fallback）。该做法提升视觉质量，但也提升 IP 合规风险，正式上线前需重新评估。详见 `docs/superpowers/specs/2026-07-28-home-hub-field-guide-design.md`。
 
 ### 7.3 必要声明文案（站点必须包含）
 ```
@@ -234,7 +235,8 @@ Not affiliated with Nintendo or The Pokémon Company.
 ```
 
 ### 7.4 推荐安全做法
-- 只展示**数据 + 小尺寸 Sprite**，不放大尺寸官方艺术图
+- 展示数据 + 官方 artwork（475×475），图片经第三方 CDN 镜像获取并带 fallback
+- Footer 必须含声明："PokeField Guide is a fan project. Not affiliated with Nintendo / Game Freak. Pokémon names, images, and artwork are trademarks of their respective owners. Artwork via PokéAPI."
 - 若用 AI 图片：生成"受闪电启发的可爱电击鼠生物"，**不要生成 Pikachu 克隆**
 - 定位为 "Fan-made tool"，明确非官方、非冒充、非大量商业化
 

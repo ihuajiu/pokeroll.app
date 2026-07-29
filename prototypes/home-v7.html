@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pokémon Generator — Prototype v7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0a0710;
+    --ink-2:#120c1d;
+    --ink-3:#181124;
+    --panel:#1d1430;
+    --line:rgba(255,255,255,.08);
+    --line-2:rgba(255,255,255,.15);
+    --text:#f3eefb;
+    --dim:#a99fc4;
+    --dim-2:#6f6593;
+    --yellow:#ffcb05;
+    --yellow-ink:#1a1305;
+    --violet:#7c4dff;
+    --scan:rgba(255,255,255,.03);
+    --radius:22px;
+    --normal:#9b977f; --fire:#e06a2c; --water:#3f7fd0; --electric:#e9b52b;
+    --grass:#5aa656; --ice:#79c4c9; --fighting:#b23b34; --poison:#8d4f9e;
+    --ground:#cdab5a; --flying:#7c83c9; --psychic:#e4568f; --bug:#92a72f;
+    --rock:#b39a4e; --ghost:#6b5d8c; --dragon:#5a4ad1; --dark:#6b5848;
+    --steel:#9aa0ac; --fairy:#dd93b3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:var(--ink);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.55}
+
+  /* ---------- GLOBAL ATMOSPHERE: dot grid + giant pokeball + scan ---------- */
+  .bg-decor{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;
+    background:
+      radial-gradient(1100px 760px at 86% -8%, rgba(124,77,255,.20), transparent 56%),
+      radial-gradient(900px 700px at 6% 4%, rgba(255,203,5,.06), transparent 52%),
+      radial-gradient(1000px 900px at 100% 104%, rgba(124,77,255,.10), transparent 58%),
+      var(--ink);
+  }
+  .bg-decor .dots{position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.5) 1px,transparent 1px);
+    background-size:26px 26px;
+    -webkit-mask:linear-gradient(180deg,#000,transparent 82%);
+    mask:linear-gradient(180deg,#000,transparent 82%);
+    opacity:.05;
+  }
+  .bg-decor .scan{position:absolute;inset:0;
+    background-image:repeating-linear-gradient(180deg, var(--scan) 0 1px, transparent 1px 4px);
+    opacity:.6;
+  }
+  .bg-decor .ball{position:absolute;right:-150px;bottom:-170px;width:480px;height:480px;opacity:.07;color:var(--violet);animation:float 11s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-22px) rotate(4deg)}}
+
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  .display{font-family:"Fredoka",sans-serif;letter-spacing:-.01em}
+  .mono{font-family:"Space Mono",ui-monospace,monospace}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- NAV ---------- */
+  .nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(10,7,16,.74);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:70px;gap:18px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:"Fredoka";font-weight:700;font-size:1.2rem}
+  .mark{width:38px;height:38px;border-radius:50%;background:var(--panel);display:grid;place-items:center;position:relative;overflow:hidden;box-shadow:0 0 0 1px var(--line-2),0 3px 0 rgba(0,0,0,.3),0 0 18px -6px rgba(255,203,5,.5)}
+  .mark svg{width:24px;height:24px}
+  .nav-links{display:none;gap:28px;font-weight:600;font-size:.94rem;color:var(--dim)}
+  .nav-links a:hover{color:var(--text)}
+  .nav-right{display:flex;align-items:center;gap:10px}
+  .pill{display:inline-flex;align-items:center;gap:7px;border-radius:999px;border:1px solid var(--line-2);background:var(--panel);color:var(--text);padding:9px 15px;font-weight:600;font-size:.9rem;cursor:pointer;transition:.18s}
+  .pill:hover{border-color:var(--yellow);transform:translateY(-1px)}
+  .pill-holo{border:none;background:var(--yellow);color:var(--yellow-ink);font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.28),0 12px 26px -12px rgba(255,203,5,.7)}
+  .pill-holo:hover{filter:brightness(1.05)}
+  .icon-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);background:var(--panel);cursor:pointer;transition:.18s;color:var(--dim)}
+  .icon-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+  @media(min-width:900px){.nav-links{display:flex}}
+
+  /* ---------- GAME-BTN (thick, 3D press) ---------- */
+  .game-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:1rem;font-weight:700;white-space:nowrap;font-family:"Hanken Grotesk",sans-serif;box-shadow:0 4px 0 rgba(0,0,0,.28),0 14px 24px -14px rgba(0,0,0,.5);transition:transform .12s,filter .12s,background .12s,color .12s,border-color .12s;cursor:pointer;overflow:hidden}
+  .game-btn::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.22),transparent 46%);pointer-events:none}
+  .game-btn:hover{transform:translateY(-1px);filter:brightness(1.04)}
+  .game-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.28)}
+  .game-btn-primary{background:var(--yellow);color:var(--yellow-ink)}
+  .game-btn-ghost{background:var(--panel);color:var(--text);border:1px solid var(--line-2);box-shadow:0 3px 0 rgba(0,0,0,.22),0 10px 18px -12px rgba(0,0,0,.4)}
+  .game-btn-ghost:hover{border-color:var(--yellow);color:var(--yellow)}
+
+  /* ---------- HERO: asymmetric device ---------- */
+  .hero{padding:74px 0 30px;position:relative}
+  .hero-grid{display:grid;gap:48px;align-items:center}
+  @media(min-width:920px){.hero-grid{grid-template-columns:1.05fr .95fr}}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);border:1px solid rgba(255,203,5,.32);background:rgba(255,203,5,.08);padding:6px 13px;border-radius:999px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--yellow);box-shadow:0 0 10px 1px rgba(255,203,5,.8);animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{font-size:clamp(3rem,6.4vw,5.4rem);line-height:.96;margin:24px 0 0;font-weight:700}
+  .hero h1 .hl{color:var(--yellow)}
+  .hero .lede{margin:22px 0 0;max-width:30rem;color:var(--dim);font-size:1.1rem}
+  .hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:30px}
+  .hero-cta .game-btn{padding:13px 24px;font-size:1.02rem;flex:0 0 auto}
+  .hero-meta{margin-top:26px;display:flex;gap:26px;color:var(--dim-2);font-size:.85rem}
+  .hero-meta b{display:block;font-family:"Fredoka";font-size:1.5rem;color:var(--text);font-weight:600}
+
+  /* the "device" — light collector-shell, same bright family as the card */
+  .device{position:relative;background:linear-gradient(180deg,#efe9dd,#ddd4c2);border:1px solid rgba(40,30,20,.18);border-radius:30px;padding:22px;box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 50px 90px -36px rgba(0,0,0,.85),0 0 0 6px rgba(124,77,255,.05)}
+  /* top seam highlight (case split line) */
+  .device::before{content:"";position:absolute;left:22px;right:22px;top:11px;height:1px;background:linear-gradient(90deg,transparent,rgba(40,30,20,.22),transparent)}
+  .device::after{content:"";position:absolute;right:-120px;bottom:-130px;width:360px;height:360px;border-radius:50%;border:2px solid rgba(40,30,20,.06);opacity:.5;pointer-events:none}
+  .device-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2}
+  .device-top .label{font-family:"Space Mono";font-size:.72rem;letter-spacing:.12em;color:#6b5d49;text-transform:uppercase}
+  .device-top .leds{display:flex;gap:6px}
+  .device-top .leds i{width:8px;height:8px;border-radius:50%;background:#3a2f22;opacity:.4}
+  .device-top .leds i:first-child{background:var(--yellow);opacity:1;box-shadow:0 0 8px rgba(255,203,5,.7)}
+
+  /* result card inside device */
+  .rc{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(170deg,var(--card-a),var(--card-b));color:#1c1400;border:2px solid rgba(255,255,255,.7);box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 24px 48px -24px rgba(0,0,0,.6);z-index:2}
+  /* one-time screen glare sweep on load */
+  .rc::before{content:"";position:absolute;top:-60%;left:-40%;width:50%;height:220%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:rotate(8deg);animation:scrn 3.4s ease-in-out .7s 1 both;pointer-events:none;z-index:6}
+  @keyframes scrn{0%{left:-50%;opacity:0}14%{opacity:1}60%,100%{left:150%;opacity:0}}
+  .rc .wm{position:absolute;right:-4px;bottom:-26px;font-family:"Fredoka";font-weight:700;font-size:6rem;color:rgba(0,0,0,.12);line-height:1;pointer-events:none}
+  .rc .band{height:7px;background:rgba(0,0,0,.32)}
+  .rc .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 2px}
+  .rc .nm{font-family:"Fredoka";font-size:1.55rem;font-weight:700}
+  .rc .id{font-family:"Space Mono";font-size:.8rem;font-weight:700;color:#3a2a00}
+  .rc .rare{font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.3);color:#fff}
+  .rc .sub{padding:0 16px;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#3a2a00;opacity:.8}
+  .rc .art{display:grid;place-items:center;padding:6px 0 12px;position:relative}
+  .rc .art::before{content:"";position:absolute;inset:0;background:radial-gradient(120px 90px at 50% 42%,rgba(255,255,255,.5),transparent 70%)}
+  .rc .art img{width:148px;height:148px;object-fit:contain;position:relative;z-index:1;filter:drop-shadow(0 12px 18px rgba(0,0,0,.4))}
+  .rc .hp{display:flex;justify-content:space-between;padding:0 16px;font-size:.8rem;font-weight:800;color:#3a2a00}
+  .rc .body{margin-top:auto;background:rgba(255,255,255,.92);padding:13px 16px;color:#1c1400}
+  .rc .type{display:flex;gap:6px;margin-bottom:10px}
+  .rc .type span{font-size:.7rem;font-weight:700;color:#fff;padding:3px 10px;border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+  .rc .mv{display:flex;justify-content:space-between;font-size:.82rem;padding:5px 0;border-top:1px solid rgba(0,0,0,.08)}
+  .rc .mv .dmg{font-family:"Space Mono";font-weight:700;color:#9a2b00}
+  .rc .statline{display:flex;justify-content:space-between;margin-top:9px;font-family:"Space Mono";font-size:.72rem;font-weight:700;color:#3a2a00}
+  .rc .foot{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:rgba(0,0,0,.24);color:#fff;font-size:.64rem}
+  .rc .foot .star{color:var(--yellow);font-size:.78rem}
+
+  /* device controls row */
+  .device-controls{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding:0 6px;position:relative;z-index:2}
+  .dpad{width:46px;height:46px;position:relative;opacity:.9}
+  .dpad::before,.dpad::after{content:"";position:absolute;background:rgba(40,30,20,.22);border-radius:3px}
+  .dpad::before{left:17px;top:0;width:12px;height:46px}
+  .dpad::after{top:17px;left:0;height:12px;width:46px}
+  .speaker{width:54px;height:14px;background-image:radial-gradient(circle, rgba(40,30,20,.28) 1.6px, transparent 1.9px);background-size:9px 9px;opacity:.6}
+  .startsel{display:flex;gap:10px}
+  .startsel i{width:22px;height:7px;border-radius:999px;background:rgba(40,30,20,.2);box-shadow:inset 0 1px 1px rgba(0,0,0,.25)}
+  .ab{display:flex;gap:12px}
+  .ab b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:"Fredoka";font-weight:700;font-size:.85rem;box-shadow:0 3px 0 rgba(0,0,0,.35)}
+  .ab .a{background:var(--yellow);color:var(--yellow-ink)}
+  .ab .b{background:var(--violet);color:#fff}
+
+  /* ---------- SECTION heading ---------- */
+  .block{padding:60px 0 6px}
+  .sec-head{margin-bottom:26px}
+  .kicker{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow)}
+  .sec-head h3{font-family:"Fredoka";font-size:2.2rem;font-weight:700;margin-top:10px;letter-spacing:-.01em}
+  .sec-head p{color:var(--dim);max-width:34rem;margin-top:8px;font-size:1rem}
+
+  /* JUMP: cartridge-style tool tiles */
+  .toolgrid{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+  @media(min-width:560px){.toolgrid{grid-template-columns:repeat(3,1fr)}}
+  @media(min-width:880px){.toolgrid{grid-template-columns:repeat(6,1fr)}}
+  .tool{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 12px 18px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,var(--ink-3),var(--ink-2));transition:.2s;text-align:center;overflow:hidden}
+  /* cartridge notch on top */
+  .tool::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:34px;height:5px;border-radius:0 0 6px 6px;background:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.12);transition:.2s}
+  .tool:hover{transform:translateY(-4px);border-color:var(--yellow);box-shadow:0 18px 40px -22px rgba(0,0,0,.8)}
+  .tool:hover::before{background:var(--yellow)}
+  .tool .ti{width:50px;height:50px;display:grid;place-items:center;color:var(--text);transition:transform .2s,color .2s}
+  .tool .ti svg{width:28px;height:28px}
+  .tool:hover .ti{color:var(--yellow);transform:translateY(-2px) scale(1.06)}
+  .tool .tt{font-family:"Fredoka";font-weight:600;font-size:1rem;color:var(--text);transition:.2s}
+  .tool:hover .tt{color:var(--yellow)}
+
+  /* BROWSE: category bars with recessed icon slot */
+  .catbars{display:grid;gap:12px}
+  .catbar{display:flex;align-items:center;gap:18px;padding:20px 22px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,var(--ink-3),var(--ink-2));transition:.2s}
+  .catbar:hover{transform:translateX(4px);border-color:var(--yellow);box-shadow:0 18px 40px -22px rgba(0,0,0,.8)}
+  .catbar .ci{width:54px;height:54px;flex:0 0 54px;display:grid;place-items:center;color:var(--text);background:rgba(0,0,0,.28);border-radius:14px;box-shadow:inset 0 2px 6px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.06);transition:.2s}
+  .catbar .ci svg{width:30px;height:30px}
+  .catbar:hover .ci{color:var(--yellow)}
+  .catbar .ct{flex:1}
+  .catbar .ct h4{font-family:"Fredoka";font-size:1.2rem;font-weight:600}
+  .catbar .ct p{color:var(--dim);font-size:.92rem;margin-top:3px}
+  .catbar .go{font-weight:700;color:var(--dim-2);font-size:.95rem;white-space:nowrap;transition:.2s}
+  .catbar:hover .go{color:var(--yellow)}
+
+  /* FEATURED: collectible grid, max 3 per row */
+  .grid-feat{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+  @media(max-width:760px){.grid-feat{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:480px){.grid-feat{grid-template-columns:1fr}}
+  .grid-feat .rc{width:100%;transition:transform .22s,box-shadow .22s}
+  .grid-feat .rc:hover{transform:translateY(-8px);box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 44px 80px -34px rgba(0,0,0,.95)}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);margin-top:54px;padding:42px 0 64px}
+  .foot-links{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.85rem;color:var(--dim)}
+  .foot-links a:hover{color:var(--yellow)}
+  .affiliate{margin-top:22px;border:1px solid var(--line);border-radius:16px;background:var(--ink-2);padding:16px 18px;font-size:.8rem;color:var(--dim)}
+  .affiliate a{color:var(--yellow);text-decoration:underline}
+  .disc{margin-top:14px;font-size:.78rem;color:var(--dim-2);max-width:46rem}
+
+  .reveal{opacity:0;animation:reveal .7s cubic-bezier(.2,.8,.2,1) forwards}
+  @keyframes reveal{to{opacity:1;transform:none}}
+  .reveal{transform:translateY(18px)}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1;transform:none}.bg-decor .ball{animation:none}}
+</style>
+</head>
+<body>
+
+  <!-- GLOBAL ATMOSPHERE -->
+  <div class="bg-decor" aria-hidden="true">
+    <div class="dots"></div>
+    <div class="scan"></div>
+    <svg class="ball" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M3 50a47 47 0 0 1 94 0" fill="currentColor"/>
+      <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="3"/>
+      <circle cx="50" cy="50" r="6" fill="currentColor"/>
+    </svg>
+  </div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#">
+        <span class="mark">
+          <svg viewBox="0 0 100 100" fill="none">
+            <path d="M50 8a42 42 0 0 0-42 42h42z" fill="var(--yellow)"/>
+            <path d="M50 50h42A42 42 0 0 0 50 8z" fill="none" stroke="var(--yellow)" stroke-width="7"/>
+            <circle cx="50" cy="50" r="13" fill="#1a1305"/>
+            <circle cx="50" cy="50" r="6" fill="var(--yellow)"/>
+          </svg>
+        </span>
+        Pokémon Generator
+      </a>
+      <nav class="nav-links">
+        <a href="#">Types</a>
+        <a href="#">Fusion</a>
+        <a href="#">Wheel</a>
+        <a href="#">Challenge</a>
+      </nav>
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+        </button>
+        <a class="pill pill-holo" href="#">Random Pokémon</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <!-- left: copy -->
+        <div class="reveal">
+          <span class="eyebrow"><span class="dot"></span>Random Pokémon Generator</span>
+          <h1 class="display">Spin up a <span class="hl">random</span> Pokémon in one tap.</h1>
+          <p class="lede">Pick a region, type, or generation — or just hit generate and see what the Poké Ball drops. Stats, abilities and shinies included.</p>
+          <div class="hero-cta">
+            <a href="#" class="game-btn game-btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+              Generate a Pokémon
+            </a>
+            <a href="#" class="game-btn game-btn-ghost">Browse types</a>
+          </div>
+          <div class="hero-meta">
+            <div><b>1,025</b>Pokémon in the dex</div>
+            <div><b>18</b>types to filter</div>
+            <div><b>50+</b>tools &amp; pages</div>
+          </div>
+        </div>
+
+        <!-- right: device holding the result card -->
+        <div class="reveal" style="animation-delay:.12s">
+          <div class="device">
+            <div class="device-top">
+              <span class="label">Pokédex · Live</span>
+              <span class="leds"><i></i><i></i><i></i></span>
+            </div>
+            <div class="rc" style="--card-a:#e9b52b;--card-b:#b9860f">
+              <div class="band"></div>
+              <div class="hd"><span class="nm">Pikachu</span><span class="rare">✨ Shiny</span></div>
+              <div class="id" style="padding:0 16px">#0025</div>
+              <div class="sub">Basic · Mouse</div>
+              <div class="art"><span class="wm">025</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu" /></div>
+              <div class="hp"><span>HP</span><span>60</span></div>
+              <div class="body">
+                <div class="type"><span style="background:var(--electric)">Electric</span></div>
+                <div class="mv"><span>⚡ Thunder Shock</span><span class="dmg">20</span></div>
+                <div class="mv"><span>⚡ Quick Attack</span><span class="dmg">15</span></div>
+                <div class="statline"><span>ATK 55</span><span>DEF 40</span><span>SPD 90</span></div>
+              </div>
+              <div class="foot"><span>illus. PokeRandom</span><span class="star">★</span></div>
+            </div>
+            <div class="device-controls">
+              <span class="dpad"></span>
+              <span class="speaker"></span>
+              <span class="startsel"><i></i><i></i></span>
+              <span class="ab"><b class="b">B</b><b class="a">A</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JUMP straight in -->
+    <section class="block">
+      <div class="sec-head reveal">
+        <div class="kicker">Quick start</div>
+        <h3>Jump straight in</h3>
+        <p>Six ways to roll — pick one or just hit generate.</p>
+      </div>
+      <div class="toolgrid reveal" style="animation-delay:.08s">
+        <a class="tool" href="#"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="12" cy="12" r="3.2"/></svg></span><span class="tt">Random</span></a>
+        <a class="tool" href="#"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg></span><span class="tt">By Type</span></a>
+        <a class="tool" href="#"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></span><span class="tt">Fusion</span></a>
+        <a class="tool" href="#"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 4"/></svg></span><span class="tt">Wheel</span></a>
+        <a class="tool" href="#"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span><span class="tt">Challenge</span></a>
+        <a class="tool" href="#"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M4 10h16"/></svg></span><span class="tt">Card</span></a>
+      </div>
+    </section>
+
+    <!-- BROWSE by category -->
+    <section class="block">
+      <div class="sec-head reveal">
+        <div class="kicker">All tools</div>
+        <h3>Browse by category</h3>
+        <p>Everything from random picks to team builders and shareable challenges.</p>
+      </div>
+      <div class="catbars reveal" style="animation-delay:.08s">
+        <a class="catbar" href="#">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></span>
+          <span class="ct"><h4>Generators</h4><p>Roll a single Pokémon or build a whole squad with filters for type, region and generation.</p></span>
+          <span class="go">Explore →</span>
+        </a>
+        <a class="catbar" href="#">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></span>
+          <span class="ct"><h4>Fun &amp; Games</h4><p>Fuse two 'mons, spin the wheel, or test your knowledge with a daily challenge.</p></span>
+          <span class="go">Explore →</span>
+        </a>
+        <a class="catbar" href="#">
+          <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M4 10h16"/></svg></span>
+          <span class="ct"><h4>Collect &amp; Share</h4><p>Save favorites to a team, render a trading card, and share a link with friends.</p></span>
+          <span class="go">Explore →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- FEATURED -->
+    <section class="block">
+      <div class="sec-head reveal">
+        <div class="kicker">Featured</div>
+        <h3>Featured play</h3>
+        <p>A few fan favorites — tap any card to view.</p>
+      </div>
+      <div class="grid-feat reveal" style="animation-delay:.08s">
+        <div class="rc" style="--card-a:var(--fire);--card-b:#9c3414">
+          <div class="band"></div><div class="hd"><span class="nm">Charmander</span></div>
+          <div class="id" style="padding:0 16px">#0004</div><div class="sub">Basic · Lizard</div>
+          <div class="art"><span class="wm">004</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt="Charmander" /></div>
+          <div class="hp"><span>HP</span><span>39</span></div>
+          <div class="body"><div class="type"><span style="background:var(--fire)">Fire</span></div><div class="statline"><span>ATK 52</span><span>DEF 43</span><span>SPD 65</span></div></div>
+          <div class="foot"><span>illus. PokeRandom</span><span class="star">★</span></div>
+        </div>
+        <div class="rc" style="--card-a:var(--water);--card-b:#274ea0">
+          <div class="band"></div><div class="hd"><span class="nm">Squirtle</span></div>
+          <div class="id" style="padding:0 16px">#0007</div><div class="sub">Basic · Tiny Turtle</div>
+          <div class="art"><span class="wm">007</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" alt="Squirtle" /></div>
+          <div class="hp"><span>HP</span><span>44</span></div>
+          <div class="body"><div class="type"><span style="background:var(--water)">Water</span></div><div class="statline"><span>ATK 48</span><span>DEF 65</span><span>SPD 43</span></div></div>
+          <div class="foot"><span>illus. PokeRandom</span><span class="star">★</span></div>
+        </div>
+        <div class="rc" style="--card-a:var(--grass);--card-b:#2f7a37">
+          <div class="band"></div><div class="hd"><span class="nm">Bulbasaur</span></div>
+          <div class="id" style="padding:0 16px">#0001</div><div class="sub">Basic · Seed</div>
+          <div class="art"><span class="wm">001</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="Bulbasaur" /></div>
+          <div class="hp"><span>HP</span><span>45</span></div>
+          <div class="body"><div class="type"><span style="background:var(--grass)">Grass</span><span style="background:var(--poison)">Poison</span></div><div class="statline"><span>ATK 49</span><span>DEF 49</span><span>SPD 45</span></div></div>
+          <div class="foot"><span>illus. PokeRandom</span><span class="star">★</span></div>
+        </div>
+        <div class="rc" style="--card-a:var(--psychic);--card-b:#a82d63">
+          <div class="band"></div><div class="hd"><span class="nm">Jigglypuff</span></div>
+          <div class="id" style="padding:0 16px">#0039</div><div class="sub">Basic · Balloon</div>
+          <div class="art"><span class="wm">039</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png" alt="Jigglypuff" /></div>
+          <div class="hp"><span>HP</span><span>115</span></div>
+          <div class="body"><div class="type"><span style="background:var(--normal)">Normal</span><span style="background:var(--fairy)">Fairy</span></div><div class="statline"><span>ATK 45</span><span>DEF 20</span><span>SPD 20</span></div></div>
+          <div class="foot"><span>illus. PokeRandom</span><span class="star">★</span></div>
+        </div>
+        <div class="rc" style="--card-a:var(--ice);--card-b:#3f8a8f">
+          <div class="band"></div><div class="hd"><span class="nm">Lapras</span></div>
+          <div class="id" style="padding:0 16px">#0131</div><div class="sub">Basic · Transport</div>
+          <div class="art"><span class="wm">131</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/131.png" alt="Lapras" /></div>
+          <div class="hp"><span>HP</span><span>130</span></div>
+          <div class="body"><div class="type"><span style="background:var(--water)">Water</span><span style="background:var(--ice)">Ice</span></div><div class="statline"><span>ATK 85</span><span>DEF 80</span><span>SPD 60</span></div></div>
+          <div class="foot"><span>illus. PokeRandom</span><span class="star">★</span></div>
+        </div>
+        <div class="rc" style="--card-a:var(--dragon);--card-b:#3a28a0">
+          <div class="band"></div><div class="hd"><span class="nm">Dratini</span></div>
+          <div class="id" style="padding:0 16px">#0147</div><div class="sub">Basic · Dragon</div>
+          <div class="art"><span class="wm">147</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/147.png" alt="Dratini" /></div>
+          <div class="hp"><span>HP</span><span>41</span></div>
+          <div class="body"><div class="type"><span style="background:var(--dragon)">Dragon</span></div><div class="statline"><span>ATK 64</span><span>DEF 45</span><span>SPD 50</span></div></div>
+          <div class="foot"><span>illus. PokeRandom</span><span class="star">★</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <nav class="foot-links">
+        <a href="#">Random</a><a href="#">By Name</a><a href="#">By Type</a><a href="#">By Generation</a>
+        <a href="#">By Region</a><a href="#">Fusion</a><a href="#">Wheel</a><a href="#">Challenge</a>
+        <a href="#">Card</a><a href="#">Team</a><a href="#">About</a><a href="#">Disclaimer</a>
+      </nav>
+      <div class="affiliate">
+        <strong>Shop Pokémon gear:</strong>
+        <a href="#">TCG storage &amp; binders</a> · <a href="#">Video games</a> · <a href="#">Plush &amp; toys</a> · <a href="#">Cards &amp; boosters</a>.
+        As an Amazon Associate we earn from qualifying purchases.
+      </div>
+      <p class="disc">This is a fan-made, unofficial site and is not affiliated with Nintendo, Game Freak or The Pokémon Company. All Pokémon names and images are © their respective owners. Sprites via PokeAPI.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

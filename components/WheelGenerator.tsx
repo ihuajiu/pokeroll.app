@@ -83,10 +83,10 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                 transform: `translate(-50%,-50%) rotate(${i * (360 / SEG)}deg) translateY(-${SIZE / 2 - 36}px)`,
               }}
             >
-              {p.sprite ? (
+              {p.artwork ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={p.sprite}
+                  src={p.artwork}
                   alt=""
                   width={48}
                   height={48}

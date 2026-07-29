@@ -286,7 +286,7 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
                   <div className="flex h-20 w-20 items-center justify-center">
                     {isOpen ? (
                       <img
-                        src={p.sprite}
+                        src={p.artwork || p.sprite}
                         alt={p.displayName}
                         className="h-20 w-20 object-contain"
                         loading="lazy"

@@ -13,6 +13,48 @@ const statRows = (s: Pokemon["stats"]): [string, number][] => [
   ["Speed", s.spe],
 ];
 
+// 2×2 HUD grid cell: text rows (Ability/Region) show a solid presence bar,
+// numeric rows (BST/Gen) show a proportional bar. Long text truncates.
+function MetaCell({
+  label,
+  value,
+  pct,
+  solid,
+}: {
+  label: string;
+  value: string;
+  pct?: number;
+  solid?: boolean;
+}) {
+  const width = solid ? 100 : Math.min(100, Math.max(6, pct ?? 0));
+  return (
+    <div className="min-w-0">
+      <div className="flex items-baseline justify-between gap-2">
+        <dt className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
+          {label}
+        </dt>
+        <dd
+          className="truncate text-right text-sm font-semibold text-poke-ink"
+          title={value}
+        >
+          {value}
+        </dd>
+      </div>
+      <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-poke-tint">
+        <div
+          className="h-full rounded-full"
+          style={{
+            width: `${width}%`,
+            background: solid
+              ? "rgb(var(--brand) / 0.55)"
+              : "linear-gradient(90deg, rgb(var(--brand)), rgb(var(--accent)))",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function PokemonCard({
   pokemon,
   loading,
@@ -26,7 +68,8 @@ export default function PokemonCard({
 }) {
   const typeHex = TYPE_HEX[pokemon.types[0]] ?? "#A8A878";
   const spriteUrl =
-    shiny && pokemon.shinySprite ? pokemon.shinySprite : pokemon.sprite;
+    shiny && pokemon.shinySprite ? pokemon.shinySprite : pokemon.artwork || pokemon.sprite;
+  const artBg = `radial-gradient(120% 120% at 50% 0%, color-mix(in srgb, ${typeHex} 30%, transparent), rgb(var(--surface-2)) 72%)`;
 
   const cardClass = `poke-card animate-popIn p-6 ${
     loading ? "opacity-50" : "opacity-100"
@@ -42,7 +85,10 @@ export default function PokemonCard({
           </span>
           <span className="section-chip">Mystery</span>
         </div>
-        <div className="mt-3 grid place-items-center rounded-2xl bg-poke-tint/60 p-4">
+        <div
+          className="mt-3 grid place-items-center rounded-2xl p-4 ring-1 ring-black/5"
+          style={{ background: artBg }}
+        >
           {spriteUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -88,17 +134,22 @@ export default function PokemonCard({
             {pokemon.displayName}
           </h2>
         </div>
-        <div className="shrink-0 rounded-2xl bg-poke-tint/70 p-3 ring-1 ring-black/5">
-          {spriteUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={spriteUrl}
-              alt={pokemon.displayName}
-              width={112}
-              height={112}
-              className="h-28 w-28 drop-shadow"
-            />
-          ) : null}
+        <div
+          className="poke-art shrink-0 rounded-2xl p-2 ring-1 ring-black/5"
+          style={{ background: artBg }}
+        >
+          <div className="grid h-24 w-24 place-items-center overflow-hidden rounded-xl bg-poke-card/70 ring-1 ring-black/5 sm:h-28 sm:w-28">
+            {spriteUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={spriteUrl}
+                alt={pokemon.displayName}
+                width={112}
+                height={112}
+                className="h-24 w-24 drop-shadow sm:h-28 sm:w-28"
+              />
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -109,34 +160,24 @@ export default function PokemonCard({
         ))}
       </div>
 
-      {/* Meta grid */}
-      <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-        <div>
-          <dt className="text-poke-dim">Ability</dt>
-          <dd className="mt-0.5 font-semibold capitalize">
-            {pokemon.abilities.join(", ") || "—"}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-poke-dim">Generation</dt>
-          <dd className="mt-0.5 font-semibold">
-            Gen {pokemon.generation} · {pokemon.region}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-poke-dim">Rarity</dt>
-          <dd className="mt-0.5 font-semibold">
-            {pokemon.isMythical
-              ? "Mythical"
-              : pokemon.isLegendary
-                ? "Legendary"
-                : "Normal"}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-poke-dim">BST</dt>
-          <dd className="mt-0.5 font-mono font-semibold">{pokemon.bst}</dd>
-        </div>
+      {/* 2×2 HUD data grid */}
+      <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3">
+        <MetaCell
+          label="Ability"
+          value={pokemon.abilities.join(", ") || "—"}
+          solid
+        />
+        <MetaCell label="Region" value={pokemon.region || "—"} solid />
+        <MetaCell
+          label="BST"
+          value={String(pokemon.bst)}
+          pct={(pokemon.bst / 600) * 100}
+        />
+        <MetaCell
+          label="Gen"
+          value={String(pokemon.generation)}
+          pct={(pokemon.generation / 9) * 100}
+        />
       </dl>
 
       {/* Base stats */}

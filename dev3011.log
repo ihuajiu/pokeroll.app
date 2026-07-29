@@ -1,0 +1,302 @@
+
+> random-pokemon-generator@0.1.0 dev
+> next dev -p 3011
+
+   ▲ Next.js 15.5.22
+   - Local:        http://localhost:3011
+   - Network:      http://28.0.0.1:3011
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling / ...
+ ✓ Compiled / in 2.9s (628 modules)
+ GET / 200 in 15979ms
+ GET / 200 in 1742ms
+ ○ Compiling /[variant] ...
+ ✓ Compiled /[variant] in 1589ms (646 modules)
+ GET / 200 in 1123ms
+ GET /favicon.ico 200 in 6520ms
+ ✓ Compiled in 426ms (635 modules)
+ GET / 200 in 1049ms
+ ✓ Compiled in 219ms (635 modules)
+ GET / 200 in 685ms
+ ✓ Compiled in 311ms (635 modules)
+ GET / 200 in 684ms
+ GET / 200 in 3371ms
+ GET / 200 in 1386ms
+ ✓ Compiled /[variant] in 289ms (394 modules)
+ GET / 200 in 1257ms
+ GET /favicon.ico 200 in 2634ms
+ ✓ Compiled in 416ms (646 modules)
+ GET / 200 in 730ms
+ GET / 200 in 803ms
+ ✓ Compiled in 568ms (635 modules)
+ GET / 200 in 778ms
+ ✓ Compiled in 188ms (635 modules)
+ GET / 200 in 1473ms
+ ✓ Compiled in 162ms (635 modules)
+ GET / 200 in 347ms
+ ✓ Compiled in 160ms (635 modules)
+ GET / 200 in 359ms
+ GET / 200 in 855ms
+ ○ Compiling /api/pokemon/random ...
+ ✓ Compiled /api/pokemon/random in 1667ms (643 modules)
+ GET /api/pokemon/random 200 in 2726ms
+ ○ Compiling /[variant] ...
+ ✓ Compiled /[variant] in 857ms (401 modules)
+ GET / 200 in 2954ms
+ GET /favicon.ico 200 in 3635ms
+ ✓ Compiled in 1473ms (636 modules)
+ GET /?p=mandibuzz 200 in 1627ms
+ GET / 200 in 1833ms
+ ✓ Compiled in 1194ms (636 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 1266ms (634 modules)
+ ⨯ ReferenceError: TYPE_HEX is not defined
+    at eval (components\HeroCard.tsx:57:38)
+    at Array.map (<anonymous>)
+    at HeroCard (components\HeroCard.tsx:53:28)
+  55 |                 key={t}
+  56 |                 className="type-chip"
+> 57 |                 style={{ background: TYPE_HEX[t] ?? TYPE_HEX.normal }}
+     |                                      ^
+  58 |               >
+  59 |                 <span className="dot" />
+  60 |                 {t} {
+  digest: '3390415517'
+}
+ GET /?p=mandibuzz 200 in 10500ms
+ GET /?p=mandibuzz 500 in 1827ms
+ ○ Compiling /[variant] ...
+ ✓ Compiled /[variant] in 994ms (394 modules)
+ ⨯ ReferenceError: TYPE_HEX is not defined
+    at eval (components\HeroCard.tsx:57:38)
+    at Array.map (<anonymous>)
+    at HeroCard (components\HeroCard.tsx:53:28)
+  55 |                 key={t}
+  56 |                 className="type-chip"
+> 57 |                 style={{ background: TYPE_HEX[t] ?? TYPE_HEX.normal }}
+     |                                      ^
+  58 |               >
+  59 |                 <span className="dot" />
+  60 |                 {t} {
+  digest: '3390415517'
+}
+ GET /favicon.ico 200 in 2493ms
+ GET /?p=mandibuzz 500 in 1373ms
+ GET /favicon.ico 200 in 823ms
+ ✓ Compiled in 640ms (647 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /?p=mandibuzz 200 in 1560ms
+ GET /favicon.ico 200 in 3503ms
+ GET / 200 in 1632ms
+ GET /?p=mandibuzz 200 in 1447ms
+ GET /favicon.ico 200 in 2228ms
+ GET / 200 in 928ms
+ GET /favicon.ico 200 in 738ms
+ ✓ Compiled in 419ms (635 modules)
+ ✓ Compiled in 255ms (253 modules)
+ GET / 200 in 1000ms
+ GET / 200 in 2067ms
+ ✓ Compiled in 316ms (635 modules)
+ GET / 200 in 355ms
+ ✓ Compiled in 275ms (635 modules)
+ GET / 200 in 320ms
+ ✓ Compiled in 305ms (635 modules)
+ GET / 200 in 317ms
+ GET / 200 in 3186ms
+ GET / 200 in 1419ms
+ ○ Compiling /[variant] ...
+ ✓ Compiled /[variant] in 1129ms (394 modules)
+ GET / 200 in 1412ms
+ GET /favicon.ico 200 in 14007ms
+ GET / 200 in 1366ms
+ GET /favicon.ico 200 in 722ms
+ ○ Compiling /api/pokemon/random ...
+ ✓ Compiled /api/pokemon/random in 627ms (389 modules)
+ GET /api/pokemon/random 200 in 2954ms
+ ✓ Compiled /[variant] in 251ms (401 modules)
+ GET /favicon.ico 200 in 1570ms
+ ✓ Compiled in 1707ms (654 modules)
+ GET /?p=mismagius 200 in 1244ms
+ ✓ Compiled in 674ms (647 modules)
+ ⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1766ms (980 modules)
+ GET /?p=mismagius 500 in 2164ms
+ GET /?p=mismagius 200 in 703ms
+ GET /?p=mismagius 200 in 1041ms
+ GET /?p=mismagius 200 in 885ms
+ GET /?p=mismagius 200 in 815ms
+ GET /favicon.ico 200 in 865ms
+ GET / 200 in 911ms
+ GET /?p=mismagius 200 in 1434ms
+ GET /favicon.ico 200 in 780ms
+ ✓ Compiled in 1197ms (898 modules)
+ GET /?p=mismagius 200 in 1512ms
+ ✓ Compiled in 732ms (898 modules)
+ GET /?p=mismagius 200 in 1708ms
+ ✓ Compiled in 1168ms (898 modules)
+ GET /?p=mismagius 200 in 1103ms
+ GET / 200 in 1827ms
+ ✓ Compiled in 1328ms (886 modules)
+ GET /?p=mismagius 200 in 1155ms
+ GET /?p=mismagius 200 in 1892ms
+ ✓ Compiled /[variant] in 265ms (493 modules)
+ GET /favicon.ico 200 in 1462ms
+ ✓ Compiled in 328ms (884 modules)
+ ✓ Compiled in 664ms (884 modules)
+ GET /?p=mismagius 200 in 1040ms
+ ⨯ ReferenceError: SeoNav is not defined
+    at Home (components\HomeTool.tsx:88:8)
+  86 |     <>
+  87 |       {/* Hero */}
+> 88 |       <section className="relative pt-10">
+     |        ^
+  89 |         <div className="grid items-center gap-10 xl:grid-cols-2">
+  90 |           <div className="hero-copy">
+  91 |             <h1 className="font-display text-4xl font-extrabold leading-tight sm:text-5xl"> {
+  digest: '3667899721'
+}
+ GET /?p=mismagius 200 in 11856ms
+ GET / 200 in 1776ms
+ ✓ Compiled in 3.5s (884 modules)
+ ✓ Compiled in 1152ms (884 modules)
+ GET /?p=mismagius 200 in 4822ms
+ GET /?p=mismagius 200 in 3364ms
+ ✓ Compiled in 4.1s (884 modules)
+ GET /?p=mismagius 200 in 831ms
+ GET / 200 in 1527ms
+ GET /?p=mismagius 200 in 1319ms
+ ○ Compiling /[variant] ...
+ ✓ Compiled /[variant] in 1292ms (491 modules)
+ GET /favicon.ico 200 in 3248ms
+ GET /?p=mismagius 200 in 4002ms
+ ✓ Compiled in 1448ms (896 modules)
+ ✓ Compiled in 3.2s (896 modules)
+ GET /?p=mismagius 200 in 3598ms
+ ✓ Compiled in 1018ms (896 modules)
+ GET /?p=mismagius 200 in 2968ms
+ ✓ Compiled in 2.7s (896 modules)
+ GET /?p=mismagius 200 in 5922ms
+ GET / 200 in 862ms
+ ✓ Compiled in 1202ms (884 modules)
+ ✓ Compiled in 1297ms (884 modules)
+ GET / 200 in 4300ms
+ GET /?p=mismagius 200 in 1437ms
+ ✓ Compiled /[variant] in 360ms (491 modules)
+ GET /?p=mismagius 200 in 1283ms
+ GET /favicon.ico 200 in 2121ms
+ GET /?p=mismagius 200 in 1489ms
+ GET /favicon.ico 200 in 457ms
+ ✓ Compiled in 419ms (896 modules)
+ GET /?p=mismagius 200 in 2871ms
+ GET / 200 in 420ms
+ ✓ Compiled in 414ms (884 modules)
+ GET /?p=mismagius 200 in 1005ms
+ GET / 200 in 1634ms
+ GET /?p=mismagius 200 in 4023ms
+ ✓ Compiled /[variant] in 326ms (491 modules)
+ GET /?p=mismagius 200 in 1177ms
+ GET /favicon.ico 200 in 2665ms
+ ✓ Compiled in 1564ms (884 modules)
+ GET /?p=mismagius 200 in 1380ms
+ GET / 200 in 1054ms
+ GET /?p=mismagius 200 in 2555ms
+ ✓ Compiled /[variant] in 304ms (491 modules)
+ GET /?p=mismagius 200 in 1264ms
+ GET /favicon.ico 200 in 2080ms
+ ✓ Compiled in 1634ms (884 modules)
+ GET /?p=mismagius 200 in 623ms
+ GET / 200 in 1679ms
+ ○ Compiling /api/pokemon/random ...
+ ✓ Compiled /api/pokemon/random in 991ms (486 modules)
+ GET /api/pokemon/random 200 in 2017ms
+ ✓ Compiled /[variant] in 342ms (498 modules)
+ GET /?p=noivern 200 in 1572ms
+ GET /favicon.ico 200 in 2306ms
+ ✓ Compiled in 1888ms (903 modules)
+ GET /?p=noivern 200 in 3552ms
+ GET / 200 in 949ms
+ GET /?p=noivern 200 in 1394ms
+ GET /favicon.ico 200 in 974ms
+ ✓ Compiled in 1457ms (896 modules)
+ GET /?p=noivern 200 in 1696ms
+ GET /?p=noivern 200 in 2888ms
+ GET /favicon.ico 200 in 922ms
+ GET /?p=noivern 200 in 1397ms
+ GET /favicon.ico 200 in 859ms
+ ✓ Compiled in 1905ms (896 modules)
+ ✓ Compiled in 1149ms (405 modules)
+ GET /?p=noivern 200 in 2013ms
+ GET /?p=noivern 200 in 1647ms
+ ✓ Compiled in 1787ms (896 modules)
+ GET /?p=noivern 200 in 1385ms
+ ✓ Compiled in 1057ms (896 modules)
+ GET /?p=noivern 200 in 2238ms
+ ✓ Compiled in 1415ms (896 modules)
+ GET /?p=noivern 200 in 986ms
+ ✓ Compiled in 259ms (896 modules)
+ GET /?p=noivern 200 in 871ms
+ ✓ Compiled in 203ms (884 modules)
+ ✓ Compiled in 197ms (884 modules)
+ ✓ Compiled in 215ms (884 modules)
+ GET /?p=noivern 200 in 12554ms
+ GET /?p=noivern 200 in 1820ms
+ GET /?p=noivern 200 in 3684ms
+ ✓ Compiled in 339ms (884 modules)
+ GET /?p=noivern 200 in 412ms
+ ✓ Compiled in 218ms (884 modules)
+ GET /?p=noivern 200 in 773ms
+ ✓ Compiled in 410ms (884 modules)
+ GET /?p=noivern 200 in 797ms
+ ✓ Compiled in 317ms (884 modules)
+ GET /?p=noivern 200 in 397ms
+ GET / 200 in 1071ms
+ ✓ Compiled in 477ms (884 modules)
+ ✓ Compiled in 161ms (405 modules)
+ ✓ Compiled in 191ms (884 modules)
+ GET / 200 in 8159ms
+ GET /?p=noivern 200 in 3987ms
+ ○ Compiling /[variant] ...
+ ✓ Compiled /[variant] in 994ms (491 modules)
+ GET /?p=noivern 200 in 2751ms
+ GET /favicon.ico 200 in 5256ms
+ ✓ Compiled in 387ms (884 modules)
+ GET /?p=noivern 200 in 2149ms
+ ✓ Compiled in 272ms (884 modules)
+ GET /?p=noivern 200 in 4031ms
+ ✓ Compiled in 497ms (884 modules)
+ GET /?p=noivern 200 in 1613ms
+ GET / 200 in 1295ms
+ ✓ Compiled in 1900ms (884 modules)
+ ✓ Compiled in 1164ms (884 modules)
+ GET /?p=noivern 200 in 13608ms
+ GET /?p=noivern 200 in 11790ms
+ ✓ Compiled in 312ms (884 modules)
+ GET /?p=noivern 200 in 2536ms
+ ✓ Compiled in 346ms (884 modules)
+ GET /?p=noivern 200 in 6043ms
+ ✓ Compiled in 175ms (884 modules)
+ GET / 200 in 4427ms
+ GET /?p=noivern 200 in 12555ms
+ ✓ Compiled in 1655ms (886 modules)
+ GET /?p=noivern 200 in 4699ms
+ GET /?p=noivern 200 in 1610ms
+ ○ Compiling /[variant] ...
+ ✓ Compiled /[variant] in 520ms (493 modules)
+ GET /favicon.ico 200 in 2024ms
+ GET /?p=noivern 200 in 11710ms
+ ✓ Compiled in 685ms (898 modules)
+ GET /?p=noivern 200 in 84ms
+ ✓ Compiled in 808ms (898 modules)
+ GET /?p=noivern 200 in 2578ms
+ GET /?p=noivern 200 in 3170ms
+ GET /favicon.ico 200 in 1730ms
+ ✓ Compiled in 535ms (898 modules)
+ GET /?p=noivern 200 in 80ms
+ GET /?p=noivern 200 in 8407ms
+ GET /favicon.ico 200 in 10232ms

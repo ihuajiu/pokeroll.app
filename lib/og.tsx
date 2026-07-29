@@ -30,6 +30,7 @@ export async function buildOgImage(p?: string): Promise<ImageResponse> {
   let name = "Pokémon";
   let dex = "";
   let types: string[] = [];
+  let artwork = "";
 
   try {
     if (p) {
@@ -37,6 +38,7 @@ export async function buildOgImage(p?: string): Promise<ImageResponse> {
       name = pk.displayName || name;
       dex = `#${String(pk.dexNumber).padStart(3, "0")}`;
       types = pk.types ?? [];
+      artwork = pk.artwork ?? "";
     }
   } catch {
     // API failure -> fall back to generic branding (no crash)
@@ -61,6 +63,16 @@ export async function buildOgImage(p?: string): Promise<ImageResponse> {
           color: "white",
         }}
       >
+        {artwork ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={artwork}
+            alt={name}
+            width={220}
+            height={220}
+            style={{ width: 220, height: 220, objectFit: "contain", marginBottom: 16 }}
+          />
+        ) : null}
         <div style={{ fontSize: 28, opacity: 0.85 }}>
           Random Pokémon Generator · Fan-made
         </div>

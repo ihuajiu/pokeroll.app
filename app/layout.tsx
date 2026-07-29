@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import SiteNav from "@/components/SiteNav";
-import Disclaimer from "@/components/Disclaimer";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
-  title: "Random Pokémon Generator — Fan-made Tool",
+  metadataBase: new URL(process.env.SITE_URL ?? "https://pockroll.app"),
+  title: "PokeField — Random Pokémon Generator",
   description:
-    "Generate a random Pokémon instantly: name, type, ability, base stats, generation and sprite. Fan-made, not affiliated with Nintendo.",
+    "Roll a random Pokémon in one tap. Every pull comes with a name, type, ability, base stats, generation and an official sprite. Fan-made, not affiliated with Nintendo.",
   keywords: [
     "random pokemon generator",
     "pokemon randomizer",
@@ -35,11 +35,11 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.cn/css2?family=Fredoka:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+          href="https://fonts.googleapis.cn/css2?family=Outfit:wght@400;500;600;700;800&family=Sora:wght@600;700;800&family=Space+Mono:wght@400;700&display=swap"
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&d)){document.documentElement.classList.add('dark');}}catch(e){}})();`,
+            __html: `(function(){try{var s=JSON.parse(localStorage.getItem('pokefield-theme')||'{}');var mode=s.mode||'dark';var skin=s.skin||'versus';var el=document.documentElement;el.setAttribute('data-mode',mode);el.setAttribute('data-skin',skin);el.classList.toggle('dark',mode==='dark');}catch(e){}})();`,
           }}
         />
       </head>
@@ -56,10 +56,10 @@ export default function RootLayout({
         </div>
         <SiteNav />
 
-        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="mx-auto max-w-[1240px] px-6 py-10">
           {children}
-          <Disclaimer />
         </div>
+        <Footer />
       </body>
     </html>
   );

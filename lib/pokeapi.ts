@@ -128,6 +128,9 @@ export async function getPokemonById(idOrName: number | string): Promise<Pokemon
     generation: gen,
     region: GEN_REGION[gen] ?? "Unknown",
     sprite: p.sprites?.front_default ?? "",
+    artwork:
+      p.sprites?.other?.["official-artwork"]?.front_default ??
+      `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png`,
     shinySprite: p.sprites?.front_shiny ?? undefined,
     isLegendary: !!species.is_legendary,
     isMythical: !!species.is_mythical,

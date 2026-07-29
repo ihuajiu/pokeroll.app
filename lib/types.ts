@@ -17,7 +17,8 @@ export type Pokemon = {
   bst: number; // base stat total
   generation: number; // 1-9
   region: string; // Kanto...Paldea
-  sprite: string; // small sprite url
+  sprite: string; // small sprite url (fallback)
+  artwork: string; // official artwork url (475x475)
   shinySprite?: string;
   isLegendary: boolean;
   isMythical: boolean;

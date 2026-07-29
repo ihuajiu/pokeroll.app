@@ -53,10 +53,10 @@ export default function CardGenerator({ initial }: { initial: Pokemon }) {
         </div>
 
         <div className="my-3 flex items-center justify-center rounded-xl bg-white/90 p-4">
-          {pokemon.sprite ? (
+          {pokemon.artwork ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={pokemon.sprite}
+              src={pokemon.artwork}
               alt={pokemon.displayName}
               width={140}
               height={140}

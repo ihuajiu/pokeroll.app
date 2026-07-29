@@ -6,8 +6,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Hanken Grotesk", "system-ui", "sans-serif"],
-        display: ["Fredoka", "Hanken Grotesk", "system-ui", "sans-serif"],
+        sans: ["Outfit", "system-ui", "sans-serif"],
+        display: ["Sora", "Outfit", "system-ui", "sans-serif"],
         mono: ["Space Mono", "ui-monospace", "monospace"],
       },
       colors: {

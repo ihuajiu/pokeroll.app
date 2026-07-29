@@ -1,0 +1,336 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "PokeTools" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e11]:
+        - link "Meta" [ref=e12] [cursor=pointer]:
+          - /url: /meta
+        - generic [ref=e15]: Cobblemon
+        - generic [ref=e22]: Pokopia
+        - generic [ref=e28]: Battle
+        - generic [ref=e37]: Search
+        - generic [ref=e44]: Playthrough
+        - generic [ref=e51]: Stats
+        - generic [ref=e58]: More
+      - generic [ref=e62]:
+        - button "Toggle light or dark mode" [ref=e63] [cursor=pointer]
+        - link "All Tools" [ref=e70] [cursor=pointer]:
+          - /url: /cobblemon
+  - main [ref=e71]:
+    - generic [ref=e72]:
+      - generic [ref=e76]:
+        - generic [ref=e77]: Built by trainers, for trainers
+        - heading "The competitive Pokémon toolkit." [level=1] [ref=e78]: The competitivePokémon toolkit.
+        - paragraph [ref=e79]: Damage calculators, team builders, coverage solvers, EV optimizers and dozens more tools -- accurate across Gen 1-9.
+        - generic [ref=e80]:
+          - link "Browse all tools" [ref=e81] [cursor=pointer]:
+            - /url: /cobblemon
+          - link "Damage Calculator" [ref=e84] [cursor=pointer]:
+            - /url: /damage-calculator
+      - generic [ref=e103]:
+        - img "Lucario" [ref=e110]
+        - generic [ref=e111]:
+          - generic [ref=e112]: New
+          - heading "Competitive Meta Hub" [level=3] [ref=e115]
+          - paragraph [ref=e116]: Live tier lists, best builds, usage trends, top teammates and counters for every format.
+          - generic [ref=e117]:
+            - link "Gen 9 OU Tier List" [ref=e118] [cursor=pointer]:
+              - /url: /meta/gen-9-ou
+            - link "VGC 2026" [ref=e119] [cursor=pointer]:
+              - /url: /meta/vgc-2026-reg-i
+            - link "Team Rater" [ref=e120] [cursor=pointer]:
+              - /url: /meta/team-rater
+        - link "All formats" [ref=e121] [cursor=pointer]:
+          - /url: /meta
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]:
+            - generic [ref=e128]: Live · Gen 9 OU ladder
+            - heading "This week’s top picks" [level=3] [ref=e130]
+          - link "Full tier list" [ref=e131] [cursor=pointer]:
+            - /url: /meta/gen-9-ou
+        - generic [ref=e134]:
+          - link "#1 Great Tusk Great Tusk 38.2%" [ref=e135] [cursor=pointer]:
+            - /url: /meta/gen-9-ou
+            - generic [ref=e136]: "#1"
+            - img "Great Tusk" [ref=e137]
+            - generic [ref=e138]:
+              - generic [ref=e139]: Great Tusk
+              - generic [ref=e140]: 38.2%
+          - link "#2 Kingambit Kingambit 31.5%" [ref=e143] [cursor=pointer]:
+            - /url: /meta/gen-9-ou
+            - generic [ref=e144]: "#2"
+            - img "Kingambit" [ref=e145]
+            - generic [ref=e146]:
+              - generic [ref=e147]: Kingambit
+              - generic [ref=e148]: 31.5%
+          - link "#3 Gholdengo Gholdengo 29.8%" [ref=e151] [cursor=pointer]:
+            - /url: /meta/gen-9-ou
+            - generic [ref=e152]: "#3"
+            - img "Gholdengo" [ref=e153]
+            - generic [ref=e154]:
+              - generic [ref=e155]: Gholdengo
+              - generic [ref=e156]: 29.8%
+          - link "#4 Landorus Landorus 24.1%" [ref=e159] [cursor=pointer]:
+            - /url: /meta/gen-9-ou
+            - generic [ref=e160]: "#4"
+            - img "Landorus" [ref=e161]
+            - generic [ref=e162]:
+              - generic [ref=e163]: Landorus
+              - generic [ref=e164]: 24.1%
+          - link "#5 Dragapult Dragapult 22.6%" [ref=e167] [cursor=pointer]:
+            - /url: /meta/gen-9-ou
+            - generic [ref=e168]: "#5"
+            - img "Dragapult" [ref=e169]
+            - generic [ref=e170]:
+              - generic [ref=e171]: Dragapult
+              - generic [ref=e172]: 22.6%
+      - generic [ref=e175]:
+        - generic [ref=e176]:
+          - generic [ref=e177]:
+            - generic [ref=e178]: Most used
+            - heading "Jump straight in" [level=2] [ref=e179]
+          - link "See all 79" [ref=e180] [cursor=pointer]:
+            - /url: /cobblemon
+        - generic [ref=e183]:
+          - link "HP -62% 2HKO Battle Tools Damage Calculator Exact damage ranges with the real battle formula. GEN 1-9 Open" [ref=e184] [cursor=pointer]:
+            - /url: /damage-calculator
+            - generic [ref=e187]:
+              - generic [ref=e188]:
+                - generic [ref=e189]: HP
+                - generic [ref=e190]: "-62%"
+              - generic [ref=e193]: 2HKO
+            - generic [ref=e194]:
+              - generic [ref=e195]: Battle Tools
+              - heading "Damage Calculator" [level=4] [ref=e197]
+              - paragraph [ref=e198]: Exact damage ranges with the real battle formula.
+              - generic [ref=e199]:
+                - generic [ref=e200]: GEN 1-9
+                - generic [ref=e201]: Open
+          - link "Search & Discovery Pokédex Search 1,025 species by name, type or stat. GEN 1-9 Open" [ref=e205] [cursor=pointer]:
+            - /url: /pokedex
+            - generic [ref=e209]:
+              - generic [ref=e210]: Search & Discovery
+              - heading "Pokédex" [level=4] [ref=e212]
+              - paragraph [ref=e213]: Search 1,025 species by name, type or stat.
+              - generic [ref=e214]:
+                - generic [ref=e215]: GEN 1-9
+                - generic [ref=e216]: Open
+          - link "Playthrough Tools Catch Rate Calculator Exact capture odds for any ball, status and HP. GEN 3-9 Open" [ref=e220] [cursor=pointer]:
+            - /url: /catch-rate
+            - img [ref=e223]:
+              - generic [ref=e226]: "78"
+            - generic [ref=e227]:
+              - generic [ref=e228]: Playthrough Tools
+              - heading "Catch Rate Calculator" [level=4] [ref=e230]
+              - paragraph [ref=e231]: Exact capture odds for any ball, status and HP.
+              - generic [ref=e232]:
+                - generic [ref=e233]: GEN 3-9
+                - generic [ref=e234]: Open
+          - link "VS Stat & Data Tools Pokémon Comparison Compare base stats and typing head-to-head. GEN 1-9 Open" [ref=e238] [cursor=pointer]:
+            - /url: /pokemon-comparison
+            - generic [ref=e239]: VS
+            - generic [ref=e251]:
+              - generic [ref=e252]: Stat & Data Tools
+              - heading "Pokémon Comparison" [level=4] [ref=e254]
+              - paragraph [ref=e255]: Compare base stats and typing head-to-head.
+              - generic [ref=e256]:
+                - generic [ref=e257]: GEN 1-9
+                - generic [ref=e258]: Open
+          - link "FIR WAT GRA ELE ICE DRA Battle Tools Type Calculator Offensive & defensive type matchups, instantly. GEN 1-9 Open" [ref=e262] [cursor=pointer]:
+            - /url: /type-calculator
+            - generic [ref=e265]:
+              - generic [ref=e266]: FIR
+              - generic [ref=e267]: WAT
+              - generic [ref=e268]: GRA
+              - generic [ref=e269]: ELE
+              - generic [ref=e270]: ICE
+              - generic [ref=e271]: DRA
+            - generic [ref=e272]:
+              - generic [ref=e273]: Battle Tools
+              - heading "Type Calculator" [level=4] [ref=e275]
+              - paragraph [ref=e276]: Offensive & defensive type matchups, instantly.
+              - generic [ref=e277]:
+                - generic [ref=e278]: GEN 1-9
+                - generic [ref=e279]: Open
+          - link "✓ ✓ ✓ ✓ ✓ ✓ Trackers Living Dex Tracker Check off every species you've caught. GEN 1-9 Open" [ref=e283] [cursor=pointer]:
+            - /url: /living-dex
+            - generic [ref=e286]:
+              - generic [ref=e287]: ✓
+              - generic [ref=e288]: ✓
+              - generic [ref=e290]: ✓
+              - generic [ref=e292]: ✓
+              - generic [ref=e293]: ✓
+              - generic [ref=e294]: ✓
+            - generic [ref=e296]:
+              - generic [ref=e297]: Trackers
+              - heading "Living Dex Tracker" [level=4] [ref=e299]
+              - paragraph [ref=e300]: Check off every species you've caught.
+              - generic [ref=e301]:
+                - generic [ref=e302]: GEN 1-9
+                - generic [ref=e303]: Open
+      - generic [ref=e307]:
+        - generic [ref=e308]:
+          - generic [ref=e309]:
+            - generic [ref=e310]: The full library
+            - heading "Browse by category" [level=2] [ref=e311]
+            - paragraph [ref=e312]: 79 tools across 14 categories -- pick a lane.
+          - link "All tools" [ref=e313] [cursor=pointer]:
+            - /url: /cobblemon
+        - generic [ref=e316]:
+          - link "Cobblemon Tools 15 tools Spawn finder, damage calculator, drops, and guides for the Cobblemon Minecraft mod Explore" [ref=e317] [cursor=pointer]:
+            - /url: /cobblemon
+            - generic [ref=e323]:
+              - heading "Cobblemon Tools" [level=4] [ref=e324]
+              - generic [ref=e325]: 15 tools
+            - paragraph [ref=e326]: Spawn finder, damage calculator, drops, and guides for the Cobblemon Minecraft mod
+            - generic [ref=e327]: Explore
+          - link "Pokopia Tools 4 tools Housing planner, roommate finder, and guides for Pokémon Pokopia Explore" [ref=e330] [cursor=pointer]:
+            - /url: /pokopia
+            - generic [ref=e335]:
+              - heading "Pokopia Tools" [level=4] [ref=e336]
+              - generic [ref=e337]: 4 tools
+            - paragraph [ref=e338]: Housing planner, roommate finder, and guides for Pokémon Pokopia
+            - generic [ref=e339]: Explore
+          - link "Battle Tools 13 tools Damage calculators, team builders, and competitive analysis Explore" [ref=e342] [cursor=pointer]:
+            - /url: /battle
+            - generic [ref=e350]:
+              - heading "Battle Tools" [level=4] [ref=e351]
+              - generic [ref=e352]: 13 tools
+            - paragraph [ref=e353]: Damage calculators, team builders, and competitive analysis
+            - generic [ref=e354]: Explore
+          - link "Search & Discovery 8 tools Find Pokémon by any combination of traits Explore" [ref=e357] [cursor=pointer]:
+            - /url: /search
+            - generic [ref=e363]:
+              - heading "Search & Discovery" [level=4] [ref=e364]
+              - generic [ref=e365]: 8 tools
+            - paragraph [ref=e366]: Find Pokémon by any combination of traits
+            - generic [ref=e367]: Explore
+          - link "Playthrough Tools 8 tools Plan your adventure and optimize your journey Explore" [ref=e370] [cursor=pointer]:
+            - /url: /playthrough
+            - generic [ref=e376]:
+              - heading "Playthrough Tools" [level=4] [ref=e377]
+              - generic [ref=e378]: 8 tools
+            - paragraph [ref=e379]: Plan your adventure and optimize your journey
+            - generic [ref=e380]: Explore
+          - link "Evolution Tools 4 tools Evolution chains, methods, and planning Explore" [ref=e383] [cursor=pointer]:
+            - /url: /evolution
+            - generic [ref=e389]:
+              - heading "Evolution Tools" [level=4] [ref=e390]
+              - generic [ref=e391]: 4 tools
+            - paragraph [ref=e392]: Evolution chains, methods, and planning
+            - generic [ref=e393]: Explore
+          - link "Breeding Tools 4 tools Egg groups, breeding chains, and shiny hunting Explore" [ref=e396] [cursor=pointer]:
+            - /url: /breeding
+            - generic [ref=e401]:
+              - heading "Breeding Tools" [level=4] [ref=e402]
+              - generic [ref=e403]: 4 tools
+            - paragraph [ref=e404]: Egg groups, breeding chains, and shiny hunting
+            - generic [ref=e405]: Explore
+          - link "Contest Tools 3 tools Contest movesets, berries, and strategy Explore" [ref=e408] [cursor=pointer]:
+            - /url: /contest
+            - generic [ref=e413]:
+              - heading "Contest Tools" [level=4] [ref=e414]
+              - generic [ref=e415]: 3 tools
+            - paragraph [ref=e416]: Contest movesets, berries, and strategy
+            - generic [ref=e417]: Explore
+          - link "Item Tools 4 tools Item database, fling damage, and recommendations Explore" [ref=e420] [cursor=pointer]:
+            - /url: /items
+            - generic [ref=e426]:
+              - heading "Item Tools" [level=4] [ref=e427]
+              - generic [ref=e428]: 4 tools
+            - paragraph [ref=e429]: Item database, fling damage, and recommendations
+            - generic [ref=e430]: Explore
+          - link "Location Tools 2 tools Maps, routes, and encounter locations Explore" [ref=e433] [cursor=pointer]:
+            - /url: /location
+            - generic [ref=e439]:
+              - heading "Location Tools" [level=4] [ref=e440]
+              - generic [ref=e441]: 2 tools
+            - paragraph [ref=e442]: Maps, routes, and encounter locations
+            - generic [ref=e443]: Explore
+          - link "Stat & Data Tools 6 tools Stat calculators, comparisons, and data analysis Explore" [ref=e446] [cursor=pointer]:
+            - /url: /stats
+            - generic [ref=e452]:
+              - heading "Stat & Data Tools" [level=4] [ref=e453]
+              - generic [ref=e454]: 6 tools
+            - paragraph [ref=e455]: Stat calculators, comparisons, and data analysis
+            - generic [ref=e456]: Explore
+          - link "Trackers 3 tools Track your progress across runs and hunts Explore" [ref=e459] [cursor=pointer]:
+            - /url: /trackers
+            - generic [ref=e467]:
+              - heading "Trackers" [level=4] [ref=e468]
+              - generic [ref=e469]: 3 tools
+            - paragraph [ref=e470]: Track your progress across runs and hunts
+            - generic [ref=e471]: Explore
+          - link "Draft & Meta 1 tools Draft league tools and competitive analysis Explore" [ref=e474] [cursor=pointer]:
+            - /url: /draft
+            - generic [ref=e480]:
+              - heading "Draft & Meta" [level=4] [ref=e481]
+              - generic [ref=e482]: 1 tools
+            - paragraph [ref=e483]: Draft league tools and competitive analysis
+            - generic [ref=e484]: Explore
+          - link "Fun & Games 4 tools Quizzes, generators, and challenge modes Explore" [ref=e487] [cursor=pointer]:
+            - /url: /fun
+            - generic [ref=e494]:
+              - heading "Fun & Games" [level=4] [ref=e495]
+              - generic [ref=e496]: 4 tools
+            - paragraph [ref=e497]: Quizzes, generators, and challenge modes
+            - generic [ref=e498]: Explore
+  - contentinfo [ref=e501]:
+    - generic [ref=e502]:
+      - generic [ref=e503]: PokeTools, a fan project. Not affiliated with Nintendo / Game Freak.
+      - generic [ref=e510]:
+        - link "About" [ref=e511] [cursor=pointer]:
+          - /url: /about
+        - link "Credits" [ref=e512] [cursor=pointer]:
+          - /url: /credits
+        - link "Privacy" [ref=e513] [cursor=pointer]:
+          - /url: /privacy
+        - link "Contact" [ref=e514] [cursor=pointer]:
+          - /url: /contact
+        - generic [ref=e515]:
+          - text: "Data:"
+          - link "PokeAPI" [ref=e516] [cursor=pointer]:
+            - /url: https://pokeapi.co
+          - text: ","
+          - link "Pokémon Showdown" [ref=e517] [cursor=pointer]:
+            - /url: https://pokemonshowdown.com
+          - text: ","
+          - link "Smogon" [ref=e518] [cursor=pointer]:
+            - /url: https://www.smogon.com
+          - text: · 2026
+    - generic [ref=e519]:
+      - generic [ref=e520]: Game databases
+      - generic [ref=e521]:
+        - link "Valheim Wiki" [ref=e522] [cursor=pointer]:
+          - /url: https://www.valheim.tools/
+        - link "Romestead Database" [ref=e523] [cursor=pointer]:
+          - /url: https://www.romestead.tools/
+        - link "Fatekeeper Tools" [ref=e524] [cursor=pointer]:
+          - /url: https://www.fatekeeper.tools/
+        - link "Gothic 1 Remake Database" [ref=e525] [cursor=pointer]:
+          - /url: https://www.gothic.tools/
+        - link "Solarpunk Database" [ref=e526] [cursor=pointer]:
+          - /url: https://www.solarpunk.tools/
+        - link "Persona Compendium" [ref=e527] [cursor=pointer]:
+          - /url: https://www.ibunroku.com/
+        - link "AFK Arena Database" [ref=e528] [cursor=pointer]:
+          - /url: https://www.afk.global/
+        - link "Game Guides" [ref=e529] [cursor=pointer]:
+          - /url: https://www.game.guide/
+        - link "Minecraft Seed Map Viewer" [ref=e530] [cursor=pointer]:
+          - /url: https://www.seeds.gg/
+        - link "Co-op Games" [ref=e531] [cursor=pointer]:
+          - /url: https://www.co-op.gg/
+        - link "Craftfood Calculator" [ref=e532] [cursor=pointer]:
+          - /url: https://www.craftfood.gg/
+        - link "Stardew Valley Database" [ref=e533] [cursor=pointer]:
+          - /url: https://www.stardewvalley.tools/
+        - link "7 Days to Die Database" [ref=e534] [cursor=pointer]:
+          - /url: https://www.7dtd.tools/
+        - link "Terraria Database" [ref=e535] [cursor=pointer]:
+          - /url: https://www.terraria.tools/
+        - link "Palworld Database" [ref=e536] [cursor=pointer]:
+          - /url: https://www.palworld.tools/
+  - alert [ref=e537]
