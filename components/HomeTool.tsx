@@ -49,39 +49,29 @@ const JUMP_TOOLS: JumpTool[] = [
     icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
   },
   {
-    href: "/no-names", label: "No Names", desc: "Hide the name, guess from its artwork & types.",
-    color: "#8a5cf6", p: 492, count: "GUESS",
-    icon: <SvgIcon><path d="M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4" /><circle cx="12" cy="18" r="1" fill="currentColor" /></SvgIcon>,
-  },
-  {
-    href: "/", label: "Mystery Egg", desc: "Crack open a surprise species you've never met.",
-    color: "#16c79a", p: 175, count: "RNG",
-    icon: <SvgIcon><path d="M12 3c4 0 7 4 7 9a7 7 0 0 1-14 0c0-5 3-9 7-9z" /></SvgIcon>,
-  },
-  {
-    href: "/wheel", label: "Spin Wheel", desc: "Let chance decide your next encounter.",
-    color: "#ff7a3c", p: 35, count: "RNG",
-    icon: <SvgIcon><circle cx="12" cy="12" r="9" /><path d="M12 3v9l6.4 4.3" /><circle cx="12" cy="12" r="1.3" fill="currentColor" /></SvgIcon>,
-  },
-  {
-    href: "/type", label: "Type Generator", desc: "Roll one of the 18 elemental types.",
-    color: "#3aa0ff", p: 37, count: "18 TYPES",
-    icon: <SvgIcon><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" /></SvgIcon>,
-  },
-  {
-    href: "/team", label: "Team Builder", desc: "Collect favourites into a themed squad.",
-    color: "#f5a524", p: 196, count: "SQUAD",
-    icon: <SvgIcon><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.2" /><path d="M3.5 19a5.5 5.5 0 0 1 11 0M15.5 14.5a4.5 4.5 0 0 1 5 4.5" /></SvgIcon>,
-  },
-  {
     href: "/", label: "AI Generator", desc: "Invent a brand-new creature & its lore.",
-    color: "#ee3b3b", p: 778, count: "NEW",
+    color: "#f43f5e", p: 778, count: "AI",
     icon: <SvgIcon><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z" /><path d="M18 13.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z" /></SvgIcon>,
   },
   {
     href: "/shiny", label: "Shiny Generator", desc: "Hunt the rare recolored form.",
-    color: "#ffd23f", p: 6, count: "1/4096",
+    color: "#fbbf24", p: 6, count: "SHINY",
     icon: <SvgIcon><path d="M12 2l2.4 5 5.6.8-4 4 1 5.6L12 20l-5 2.4 1-5.6-4-4 5.6-.8z" /></SvgIcon>,
+  },
+  {
+    href: "/fusion", label: "Fusion Generator", desc: "Fuse two Pokémon into one hybrid creature.",
+    color: "#a855f7", p: 94, count: "FUSION",
+    icon: <SvgIcon><circle cx="8.5" cy="9.5" r="4" /><circle cx="15" cy="14" r="4" /><path d="M11.5 12.5l4-4" strokeWidth="1.8" /></SvgIcon>,
+  },
+  {
+    href: "/wheel", label: "Spin Wheel", desc: "Let chance decide your next encounter.",
+    color: "#f97316", p: 35, count: "WHEEL",
+    icon: <SvgIcon><circle cx="12" cy="12" r="9" /><path d="M12 3v9l6.4 4.3" /><circle cx="12" cy="12" r="1.3" fill="currentColor" /></SvgIcon>,
+  },
+  {
+    href: "/no-names", label: "No Names", desc: "Hide the name, guess from its artwork & types.",
+    color: "#8b5cf6", p: 492, count: "GUESS",
+    icon: <SvgIcon><path d="M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4" /><circle cx="12" cy="18" r="1" fill="currentColor" /></SvgIcon>,
   },
 ];
 
@@ -95,27 +85,38 @@ type Module = {
 };
 
 const CAT_COLOR: Record<string, string> = {
-  Core: "#3aa0ff",
-  Guess: "#8a5cf6",
-  AI: "#ee3b3b",
-  Wheel: "#ff7a3c",
-  Squad: "#f5a524",
+  Core: "#ee3b3b",
+  AI: "#f43f5e",
+  Shiny: "#fbbf24",
+  Fusion: "#a855f7",
+  Wheel: "#f97316",
+  Guess: "#8b5cf6",
+  Starter: "#f59e0b",
+  Type: "#3aa0ff",
   RNG: "#16c79a",
-  Shiny: "#ffd23f",
+  Squad: "#f5a524",
   Region: "#9ca3af",
-  "18 Types": "#3aa0ff",
+  Variant: "#6366f1",
+  Create: "#ec4899",
 };
 
 const BROWSE_MODULES: Module[] = [
   { href: "/", cat: "Core", gen: "DEX 1–1010", label: "Random Generator", p: 25, desc: "Summon a random Pokémon with full stats & artwork." },
-  { href: "/no-names", cat: "Guess", gen: "DEX 1–1010", label: "No Names", p: 492, desc: "Hide the name, guess from its artwork & types." },
-  { href: "/wheel", cat: "Wheel", gen: "DEX 1–1010", label: "Spin Wheel", p: 35, desc: "Let chance decide your next encounter." },
-  { href: "/", cat: "RNG", gen: "EGG", label: "Mystery Egg", p: 175, desc: "Crack open a surprise species you never met." },
-  { href: "/type", cat: "18 Types", gen: "DEX 1–1010", label: "Type Generator", p: 37, desc: "Roll one of the 18 elemental types." },
-  { href: "/team", cat: "Squad", gen: "SQUAD", label: "Team Builder", p: 196, desc: "Collect favourites into a themed squad." },
   { href: "/", cat: "AI", gen: "V3", label: "AI Generator", p: 778, desc: "Invent a brand-new creature & its lore." },
   { href: "/shiny", cat: "Shiny", gen: "1/4096", label: "Shiny Generator", p: 6, desc: "Hunt the rare recolored form." },
-  { href: "/number", cat: "Region", gen: "GEN 1–9", label: "By Region", p: 150, desc: "Filter Kanto → Paldea." },
+  { href: "/fusion", cat: "Fusion", gen: "PLAY", label: "Fusion Generator", p: 94, desc: "Fuse two Pokémon into one hybrid." },
+  { href: "/wheel", cat: "Wheel", gen: "DEX 1–1010", label: "Spin Wheel", p: 35, desc: "Let chance decide your next encounter." },
+  { href: "/no-names", cat: "Guess", gen: "DEX 1–1010", label: "No Names", p: 492, desc: "Hide the name, guess from its artwork & types." },
+  { href: "/challenge", cat: "Starter", gen: "9 GENS", label: "Starter Generator", p: 1, desc: "A random starter from every generation." },
+  { href: "/type", cat: "Type", gen: "18 TYPES", label: "Type Generator", p: 37, desc: "Roll one of the 18 elemental types." },
+  { href: "/challenge", cat: "RNG", gen: "EGG", label: "Mystery Egg", p: 175, desc: "Crack open a surprise species you never met." },
+  { href: "/team", cat: "Squad", gen: "SQUAD", label: "Team Builder", p: 196, desc: "Collect favourites into a themed squad." },
+  { href: "/by/kanto", cat: "Region", gen: "GEN 1–9", label: "By Region", p: 150, desc: "Filter Kanto → Paldea by region." },
+  { href: "/card", cat: "Create", gen: "BUILD", label: "Card Generator", p: 6, desc: "Generate a custom Pokémon trading card." },
+  { href: "/by/national", cat: "Variant", gen: "DEX 1–1010", label: "Ability Generator", p: 25, desc: "Roll a random Ability and see who has it." },
+  { href: "/by/national", cat: "Variant", gen: "DEX 1–1010", label: "Move Generator", p: 143, desc: "Discover a random move and its user." },
+  { href: "/by/national", cat: "Variant", gen: "DEX 1–1010", label: "BST Generator", p: 149, desc: "Random base stat total, reveal the Pokémon." },
+  { href: "/by/national", cat: "Variant", gen: "DEX 1–1010", label: "Number Generator", p: 152, desc: "Roll a Pokédex number, reveal the Pokémon." },
 ];
 
 export default async function Home() {
@@ -191,7 +192,7 @@ export default async function Home() {
               <span className="eyebrow">Jump straight in</span>
               <h2>Pick a tool, start playing</h2>
             </div>
-            <p>A matrix of fan-made mini-tools — no account, no grinding. Just Pokémon and a bit of luck.</p>
+            <p>The most popular generators — one tap, instant fun.</p>
           </div>
           <div className="cat-grid">
             {JUMP_TOOLS.map((t) => (
@@ -225,7 +226,7 @@ export default async function Home() {
               <span className="eyebrow">Tool matrix</span>
               <h2>Every way to roll</h2>
             </div>
-            <p>From AI creatures to shiny hunts — the full generator family mapped to search intent.</p>
+            <p>The complete tool catalog — every way to roll a Pokémon.</p>
           </div>
           <div className="browse-grid">
             {BROWSE_MODULES.map((m) => (

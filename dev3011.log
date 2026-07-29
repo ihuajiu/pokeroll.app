@@ -300,3 +300,36 @@
  GET /?p=noivern 200 in 80ms
  GET /?p=noivern 200 in 8407ms
  GET /favicon.ico 200 in 10232ms
+ ✓ Compiled in 228ms (896 modules)
+ GET /?p=noivern 200 in 3124ms
+ ✓ Compiled in 312ms (884 modules)
+ GET /?p=noivern 200 in 7161ms
+ ✓ Compiled in 273ms (884 modules)
+ GET /?p=noivern 200 in 2041ms
+ ✓ Compiled in 330ms (884 modules)
+ GET /?p=noivern 200 in 1220ms
+ ✓ Compiled in 260ms (884 modules)
+ GET /?p=noivern 200 in 1736ms
+ GET / 200 in 2121ms
+ GET /?p=noivern 200 in 2301ms
+ ○ Compiling /[variant] ...
+ ✓ Compiled /[variant] in 957ms (491 modules)
+ GET /favicon.ico 200 in 4565ms
+ GET /?p=noivern 200 in 3565ms
+ ✓ Compiled in 473ms (884 modules)
+ GET /?p=noivern 200 in 2765ms
+ ✓ Compiled in 273ms (884 modules)
+ ✓ Compiled in 258ms (884 modules)
+ GET /?p=noivern 200 in 98ms
+ ✓ Compiled in 345ms (884 modules)
+ GET /?p=noivern 200 in 3500ms
+ ✓ Compiled in 262ms (884 modules)
+ GET /?p=noivern 200 in 131ms
+ ✓ Compiled in 353ms (884 modules)
+ ✓ Compiled in 268ms (884 modules)
+ GET /?p=noivern 200 in 101ms
+ GET /?p=noivern 200 in 5623ms
+ GET /?p=noivern 200 in 3303ms
+ ✓ Compiled in 254ms (884 modules)
+ GET /?p=noivern 200 in 98ms
+ GET / 200 in 2740ms

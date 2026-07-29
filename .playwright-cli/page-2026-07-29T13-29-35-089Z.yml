@@ -1,0 +1,332 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link [ref=e4] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e10]:
+        - link "Types" [ref=e11] [cursor=pointer]:
+          - /url: /type
+        - link "Fusion" [ref=e12] [cursor=pointer]:
+          - /url: /fusion
+        - link "Wheel" [ref=e13] [cursor=pointer]:
+          - /url: /wheel
+        - link "Challenge" [ref=e14] [cursor=pointer]:
+          - /url: /challenge
+      - generic [ref=e15]:
+        - button "Switch to light mode" [ref=e16] [cursor=pointer]
+        - button "Switch to Pokédex skin" [ref=e20] [cursor=pointer]
+        - button "Browse all tools" [ref=e26] [cursor=pointer]: All tools
+        - link "Random Pokémon" [ref=e29] [cursor=pointer]:
+          - /url: /
+  - generic [ref=e30]:
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e34]: Random Pokémon Generator
+        - heading "Your random Pokémon awaits." [level=1] [ref=e35]
+        - paragraph [ref=e36]: Spin up a random Pokémon in one tap — every roll comes with its name, type, ability, stats and an official sprite. Then send it to your team, your wallpaper or a friend.
+        - generic [ref=e37]:
+          - button "Roll a Pokémon" [ref=e38] [cursor=pointer]
+          - link "Explore Tools" [ref=e39] [cursor=pointer]:
+            - /url: "#tools"
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - generic [ref=e42]: 1000+
+            - generic [ref=e43]: Species
+          - generic [ref=e44]:
+            - generic [ref=e45]: "18"
+            - generic [ref=e46]: Types
+          - generic [ref=e47]:
+            - generic [ref=e48]: "9"
+            - generic [ref=e49]: Generations
+      - generic [ref=e52]:
+        - img "Pumpkaboo-average" [ref=e54]
+        - generic [ref=e55]:
+          - generic [ref=e56]: "#0710"
+          - heading "Pumpkaboo-average" [level=3] [ref=e57]
+          - generic [ref=e58]:
+            - generic [ref=e59]: ghost
+            - generic [ref=e61]: grass
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: Ability
+              - generic [ref=e66]: Pickup
+            - generic [ref=e67]:
+              - generic [ref=e68]: Region
+              - generic [ref=e69]: Kalos
+            - generic [ref=e70]:
+              - generic [ref=e71]: BST
+              - generic [ref=e74]: "335"
+            - generic [ref=e75]:
+              - generic [ref=e76]: Gen
+              - generic [ref=e79]: "6"
+          - generic [ref=e80]:
+            - generic [ref=e81]:
+              - generic [ref=e82]: HP
+              - generic [ref=e85]: "49"
+            - generic [ref=e86]:
+              - generic [ref=e87]: ATK
+              - generic [ref=e90]: "66"
+            - generic [ref=e91]:
+              - generic [ref=e92]: DEF
+              - generic [ref=e95]: "70"
+            - generic [ref=e96]:
+              - generic [ref=e97]: SPA
+              - generic [ref=e100]: "44"
+            - generic [ref=e101]:
+              - generic [ref=e102]: SPD
+              - generic [ref=e105]: "55"
+            - generic [ref=e106]:
+              - generic [ref=e107]: SPE
+              - generic [ref=e110]: "51"
+        - generic [ref=e111]:
+          - button "Save" [ref=e112] [cursor=pointer]
+          - button "Share" [ref=e115] [cursor=pointer]
+          - button "New roll" [ref=e122] [cursor=pointer]
+    - generic [ref=e127]:
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - generic [ref=e130]: Jump straight in
+          - heading "Pick a tool, start playing" [level=2] [ref=e131]
+        - paragraph [ref=e132]: A matrix of fan-made mini-tools — no account, no grinding. Just Pokémon and a bit of luck.
+      - generic [ref=e133]:
+        - link "Random Generator MAIN Summon a random Pokémon with full stats & artwork. Explore" [ref=e134] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e135]:
+            - generic [ref=e143]: Random Generator
+            - generic [ref=e144]: MAIN
+          - paragraph [ref=e145]: Summon a random Pokémon with full stats & artwork.
+          - generic [ref=e146]: Explore
+        - link "No Names GUESS Hide the name, guess from its artwork & types. Explore" [ref=e149] [cursor=pointer]:
+          - /url: /no-names
+          - generic [ref=e150]:
+            - generic [ref=e155]: No Names
+            - generic [ref=e156]: GUESS
+          - paragraph [ref=e157]: Hide the name, guess from its artwork & types.
+          - generic [ref=e158]: Explore
+        - link "Mystery Egg RNG Crack open a surprise species you've never met. Explore" [ref=e161] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e162]:
+            - generic [ref=e166]: Mystery Egg
+            - generic [ref=e167]: RNG
+          - paragraph [ref=e168]: Crack open a surprise species you've never met.
+          - generic [ref=e169]: Explore
+        - link "Spin Wheel RNG Let chance decide your next encounter. Explore" [ref=e172] [cursor=pointer]:
+          - /url: /wheel
+          - generic [ref=e173]:
+            - generic [ref=e179]: Spin Wheel
+            - generic [ref=e180]: RNG
+          - paragraph [ref=e181]: Let chance decide your next encounter.
+          - generic [ref=e182]: Explore
+        - link "Type Generator 18 TYPES Roll one of the 18 elemental types. Explore" [ref=e185] [cursor=pointer]:
+          - /url: /type
+          - generic [ref=e186]:
+            - generic [ref=e190]: Type Generator
+            - generic [ref=e191]: 18 TYPES
+          - paragraph [ref=e192]: Roll one of the 18 elemental types.
+          - generic [ref=e193]: Explore
+        - link "Team Builder SQUAD Collect favourites into a themed squad. Explore" [ref=e196] [cursor=pointer]:
+          - /url: /team
+          - generic [ref=e197]:
+            - generic [ref=e203]: Team Builder
+            - generic [ref=e204]: SQUAD
+          - paragraph [ref=e205]: Collect favourites into a themed squad.
+          - generic [ref=e206]: Explore
+        - link "AI Generator NEW Invent a brand-new creature & its lore. Explore" [ref=e209] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e210]:
+            - generic [ref=e215]: AI Generator
+            - generic [ref=e216]: NEW
+          - paragraph [ref=e217]: Invent a brand-new creature & its lore.
+          - generic [ref=e218]: Explore
+        - link "Shiny Generator 1/4096 Hunt the rare recolored form. Explore" [ref=e221] [cursor=pointer]:
+          - /url: /shiny
+          - generic [ref=e222]:
+            - generic [ref=e226]: Shiny Generator
+            - generic [ref=e227]: 1/4096
+          - paragraph [ref=e228]: Hunt the rare recolored form.
+          - generic [ref=e229]: Explore
+    - generic [ref=e233]:
+      - generic [ref=e234]:
+        - generic [ref=e235]:
+          - generic [ref=e236]: Tool matrix
+          - heading "Every way to roll" [level=2] [ref=e237]
+        - paragraph [ref=e238]: From AI creatures to shiny hunts — the full generator family mapped to search intent.
+      - generic [ref=e239]:
+        - link "Core Random Generator Summon a random Pokémon with full stats & artwork. DEX 1–1010 →" [ref=e240] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e242]:
+            - generic [ref=e243]: Core
+            - heading "Random Generator" [level=3] [ref=e245]
+            - paragraph [ref=e246]: Summon a random Pokémon with full stats & artwork.
+            - generic [ref=e247]:
+              - generic [ref=e248]: DEX 1–1010
+              - generic [ref=e249]: →
+        - link "Guess No Names Hide the name, guess from its artwork & types. DEX 1–1010 →" [ref=e250] [cursor=pointer]:
+          - /url: /no-names
+          - generic [ref=e252]:
+            - generic [ref=e253]: Guess
+            - heading "No Names" [level=3] [ref=e255]
+            - paragraph [ref=e256]: Hide the name, guess from its artwork & types.
+            - generic [ref=e257]:
+              - generic [ref=e258]: DEX 1–1010
+              - generic [ref=e259]: →
+        - link "Wheel Spin Wheel Let chance decide your next encounter. DEX 1–1010 →" [ref=e260] [cursor=pointer]:
+          - /url: /wheel
+          - generic [ref=e262]:
+            - generic [ref=e263]: Wheel
+            - heading "Spin Wheel" [level=3] [ref=e265]
+            - paragraph [ref=e266]: Let chance decide your next encounter.
+            - generic [ref=e267]:
+              - generic [ref=e268]: DEX 1–1010
+              - generic [ref=e269]: →
+        - link "RNG Mystery Egg Crack open a surprise species you never met. EGG →" [ref=e270] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e272]:
+            - generic [ref=e273]: RNG
+            - heading "Mystery Egg" [level=3] [ref=e275]
+            - paragraph [ref=e276]: Crack open a surprise species you never met.
+            - generic [ref=e277]:
+              - generic [ref=e278]: EGG
+              - generic [ref=e279]: →
+        - link "18 Types Type Generator Roll one of the 18 elemental types. DEX 1–1010 →" [ref=e280] [cursor=pointer]:
+          - /url: /type
+          - generic [ref=e282]:
+            - generic [ref=e283]: 18 Types
+            - heading "Type Generator" [level=3] [ref=e285]
+            - paragraph [ref=e286]: Roll one of the 18 elemental types.
+            - generic [ref=e287]:
+              - generic [ref=e288]: DEX 1–1010
+              - generic [ref=e289]: →
+        - link "Squad Team Builder Collect favourites into a themed squad. SQUAD →" [ref=e290] [cursor=pointer]:
+          - /url: /team
+          - generic [ref=e292]:
+            - generic [ref=e293]: Squad
+            - heading "Team Builder" [level=3] [ref=e295]
+            - paragraph [ref=e296]: Collect favourites into a themed squad.
+            - generic [ref=e297]:
+              - generic [ref=e298]: SQUAD
+              - generic [ref=e299]: →
+        - link "AI AI Generator Invent a brand-new creature & its lore. V3 →" [ref=e300] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e302]:
+            - generic [ref=e303]: AI
+            - heading "AI Generator" [level=3] [ref=e305]
+            - paragraph [ref=e306]: Invent a brand-new creature & its lore.
+            - generic [ref=e307]:
+              - generic [ref=e308]: V3
+              - generic [ref=e309]: →
+        - link "Shiny Shiny Generator Hunt the rare recolored form. 1/4096 →" [ref=e310] [cursor=pointer]:
+          - /url: /shiny
+          - generic [ref=e312]:
+            - generic [ref=e313]: Shiny
+            - heading "Shiny Generator" [level=3] [ref=e315]
+            - paragraph [ref=e316]: Hunt the rare recolored form.
+            - generic [ref=e317]:
+              - generic [ref=e318]: 1/4096
+              - generic [ref=e319]: →
+        - link "Region By Region Filter Kanto → Paldea. GEN 1–9 →" [ref=e320] [cursor=pointer]:
+          - /url: /number
+          - generic [ref=e322]:
+            - generic [ref=e323]: Region
+            - heading "By Region" [level=3] [ref=e325]
+            - paragraph [ref=e326]: Filter Kanto → Paldea.
+            - generic [ref=e327]:
+              - generic [ref=e328]: GEN 1–9
+              - generic [ref=e329]: →
+    - navigation "Generator tools" [ref=e330]:
+      - heading "All Tools" [level=2] [ref=e331]
+      - generic [ref=e332]:
+        - link "Random Pokémon" [ref=e333] [cursor=pointer]:
+          - /url: /
+        - link "Type Generator" [ref=e334] [cursor=pointer]:
+          - /url: /type
+        - link "Ability Generator" [ref=e335] [cursor=pointer]:
+          - /url: /ability
+        - link "Move Generator" [ref=e336] [cursor=pointer]:
+          - /url: /move
+        - link "BST Generator" [ref=e337] [cursor=pointer]:
+          - /url: /bst
+        - link "Number Generator" [ref=e338] [cursor=pointer]:
+          - /url: /number
+        - link "Starter Generator" [ref=e339] [cursor=pointer]:
+          - /url: /starter
+        - link "Shiny Generator" [ref=e340] [cursor=pointer]:
+          - /url: /shiny
+        - link "Mystery Pokémon" [ref=e341] [cursor=pointer]:
+          - /url: /no-names
+        - link "Cute Generator" [ref=e342] [cursor=pointer]:
+          - /url: /cute
+        - link "Mythical Generator" [ref=e343] [cursor=pointer]:
+          - /url: /mythical
+        - link "Mega Generator" [ref=e344] [cursor=pointer]:
+          - /url: /mega
+        - link "Nickname Generator" [ref=e345] [cursor=pointer]:
+          - /url: /nickname
+        - link "Fusion Tool" [ref=e346] [cursor=pointer]:
+          - /url: /fusion
+        - link "Spin the Wheel" [ref=e347] [cursor=pointer]:
+          - /url: /wheel
+        - link "Trading Card" [ref=e348] [cursor=pointer]:
+          - /url: /card
+        - link "Challenge Maker" [ref=e349] [cursor=pointer]:
+          - /url: /challenge
+    - generic [ref=e350]:
+      - heading "Shop Pokémon gear" [level=2] [ref=e351]
+      - list [ref=e352]:
+        - listitem [ref=e353]:
+          - link "Pokémon TCG storage & binders" [ref=e354] [cursor=pointer]:
+            - /url: https://www.amazon.com/s?k=pokemon+tcg+storage+binder
+        - listitem [ref=e355]:
+          - link "Pokémon video games" [ref=e356] [cursor=pointer]:
+            - /url: https://www.amazon.com/s?k=pokemon+video+game
+        - listitem [ref=e357]:
+          - link "Pokémon plush & toys" [ref=e358] [cursor=pointer]:
+            - /url: https://www.amazon.com/s?k=pokemon+plush+toys
+        - listitem [ref=e359]:
+          - link "Pokémon cards & boosters" [ref=e360] [cursor=pointer]:
+            - /url: https://www.amazon.com/s?k=pokemon+trading+card+booster
+      - paragraph [ref=e361]:
+        - text: As an Amazon Associate we earn from qualifying purchases. This is a fan-made, unofficial site and is not affiliated with Nintendo, Game Freak or The Pokémon Company. Learn more in our
+        - link "disclaimer" [ref=e362] [cursor=pointer]:
+          - /url: /disclaimer
+        - text: .
+  - contentinfo [ref=e363]:
+    - generic [ref=e364]:
+      - generic [ref=e365]:
+        - generic [ref=e366]: PokeField
+        - paragraph [ref=e367]: Your random Pokémon generator — roll names, types, stats and shinies in one tap.
+      - generic [ref=e368]:
+        - heading "Generators" [level=4] [ref=e369]
+        - link "Random" [ref=e370] [cursor=pointer]:
+          - /url: /
+        - link "By Type" [ref=e371] [cursor=pointer]:
+          - /url: /type
+        - link "By Ability" [ref=e372] [cursor=pointer]:
+          - /url: /ability
+        - link "By Region" [ref=e373] [cursor=pointer]:
+          - /url: /number
+      - generic [ref=e374]:
+        - heading "Play" [level=4] [ref=e375]
+        - link "Fusion" [ref=e376] [cursor=pointer]:
+          - /url: /fusion
+        - link "Wheel" [ref=e377] [cursor=pointer]:
+          - /url: /wheel
+        - link "Card" [ref=e378] [cursor=pointer]:
+          - /url: /card
+        - link "Challenge" [ref=e379] [cursor=pointer]:
+          - /url: /challenge
+      - generic [ref=e380]:
+        - heading "About" [level=4] [ref=e381]
+        - link "Home" [ref=e382] [cursor=pointer]:
+          - /url: /
+        - link "Types" [ref=e383] [cursor=pointer]:
+          - /url: /type
+        - 'link "Data: PokéAPI" [ref=e384] [cursor=pointer]':
+          - /url: https://pokeapi.co/
+    - generic [ref=e385]:
+      - text: This is a fan-made tool. Not affiliated with Nintendo, Game Freak or The Pokémon Company. Pokémon data provided by
+      - link "PokéAPI" [ref=e386] [cursor=pointer]:
+        - /url: https://pokeapi.co/
+      - text: .
+  - button "Open Next.js Dev Tools" [ref=e392] [cursor=pointer]
+  - alert [ref=e396]
