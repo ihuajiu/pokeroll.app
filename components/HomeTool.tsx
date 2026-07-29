@@ -5,7 +5,6 @@ import Link from "next/link";
 import HeroCard from "@/components/HeroCard";
 import HeroActions from "@/components/HeroActions";
 import ToolsNav from "@/components/ToolsNav";
-import AffiliateStrip from "@/components/AffiliateStrip";
 import { getRandomPokemon } from "@/lib/pokeapi";
 import type { Pokemon } from "@/lib/types";
 
@@ -260,7 +259,6 @@ export default async function Home() {
       </section>
 
       <ToolsNav />
-      <AffiliateStrip />
     </>
   );
 }

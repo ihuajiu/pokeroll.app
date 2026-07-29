@@ -983,7 +983,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-top: 6px;
-  padding: 0;
+  padding: 0 0 0 8px;
 }
 .browse-card .gen {
   font-family: var(--mono);

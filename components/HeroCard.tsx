@@ -71,28 +71,12 @@ export default function HeroCard({ initial }: { initial: Pokemon }) {
             <span className="sl">Region</span>
             <span className="sv">{pokemon.region}</span>
           </div>
-          <div className="row">
+          <div className="row row-text">
             <span className="sl">BST</span>
-            <span className="st">
-              <span
-                className="sf"
-                style={{
-                  width: `${Math.min(100, Math.max(0, (pokemon.bst / 680) * 100))}%`,
-                }}
-              />
-            </span>
             <span className="sv">{pokemon.bst}</span>
           </div>
-          <div className="row">
+          <div className="row row-text">
             <span className="sl">Gen</span>
-            <span className="st">
-              <span
-                className="sf"
-                style={{
-                  width: `${Math.min(100, Math.max(0, (pokemon.generation / 9) * 100))}%`,
-                }}
-              />
-            </span>
             <span className="sv">{pokemon.generation}</span>
           </div>
         </div>

@@ -418,3 +418,14 @@
  GET /api/variant?kind=type 200 in 3666ms
  GET /api/variant?kind=type 200 in 2490ms
  GET /favicon.ico 200 in 2572ms
+ ✓ Compiled in 1703ms (896 modules)
+ GET /?p=noivern 200 in 3706ms
+ ✓ Compiled in 725ms (896 modules)
+ GET /?p=noivern 200 in 2446ms
+ ✓ Compiled in 272ms (896 modules)
+ GET /?p=noivern 200 in 6077ms
+ ✓ Compiled in 287ms (896 modules)
+ GET /?p=noivern 200 in 4314ms
+ ✓ Compiled in 218ms (896 modules)
+ GET /?p=noivern 200 in 1270ms
+ GET / 200 in 1536ms
