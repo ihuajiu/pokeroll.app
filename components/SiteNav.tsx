@@ -39,14 +39,15 @@ export default function SiteNav() {
           className="flex items-center gap-2.5 font-display text-lg font-bold text-poke-ink"
         >
           <span className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-poke-violet to-poke-scarlet text-white shadow-[0_3px_0_rgba(0,0,0,0.18)]">
-            <svg viewBox="0 0 100 100" className="h-5 w-5" aria-hidden="true">
-              <path d="M50 8a42 42 0 0 0-42 42h84A42 42 0 0 0 50 8z" fill="#fff" />
-              <path d="M8 50h84" stroke="#fff" strokeWidth="6" />
-              <circle cx="50" cy="50" r="13" fill="#fff" />
-              <circle cx="50" cy="50" r="6" fill="rgb(var(--brand))" />
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="4" />
+              <circle cx="9" cy="9" r="1.5" fill="#fff" />
+              <circle cx="15" cy="9" r="1.5" fill="#fff" />
+              <circle cx="9" cy="15" r="1.5" fill="#fff" />
+              <circle cx="15" cy="15" r="1.5" fill="#fff" />
             </svg>
           </span>
-          PokeField
+          PockRoll
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-semibold text-poke-dim md:flex">

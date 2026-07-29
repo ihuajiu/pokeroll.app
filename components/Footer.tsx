@@ -34,10 +34,9 @@ export default function Footer() {
     <footer className="foot">
       <div className="foot-grid">
         <div className="foot-brand">
-          <div className="brand-name">PokeField</div>
+          <div className="brand-name">PockRoll</div>
           <p>
-            Your random Pokémon generator — roll names, types, stats and
-            shinies in one tap.
+            Roll a random Pokémon — names, types, stats and shinies in one tap.
           </p>
         </div>
         {COLS.map((col) => (

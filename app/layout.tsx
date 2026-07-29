@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "https://pockroll.app"),
-  title: "PokeField — Random Pokémon Generator",
+  title: "PockRoll — Random Pokémon Generator",
   description:
     "Roll a random Pokémon in one tap. Every pull comes with a name, type, ability, base stats, generation and an official sprite. Fan-made, not affiliated with Nintendo.",
   keywords: [
@@ -47,12 +47,6 @@ export default function RootLayout({
         <div className="bg-decor" aria-hidden="true">
           <div className="dots" />
           <div className="scan" />
-          <svg className="ball" viewBox="0 0 100 100" fill="none">
-            <circle cx="50" cy="50" r="48" stroke="currentColor" strokeWidth="4" />
-            <path d="M2 50h96" stroke="currentColor" strokeWidth="4" />
-            <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" strokeWidth="4" />
-            <path d="M2 50a48 48 0 0 1 96 0Z" fill="currentColor" fillOpacity="0.4" />
-          </svg>
         </div>
         <SiteNav />
 

@@ -10,7 +10,7 @@ import { getRandomPokemon } from "@/lib/pokeapi";
 import type { Pokemon } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "PokeField — Random Pokémon Generator",
+  title: "PockRoll — Random Pokémon Generator",
   description:
     "Roll a random Pokémon in one tap. Every pull comes with a name, type, ability, base stats, generation and an official sprite.",
   keywords: [
