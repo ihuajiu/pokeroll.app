@@ -78,8 +78,23 @@ PageHeader "Roll Your Pokémon Adventure"
 - `hero-meta`（1000+ / 18 / 9）保留
 
 **右栏（hero-visual）**
-- stage（rings/ball）+ `HeroCard` 保留，但改静态展示：`showActions={false}`，移除 `rollButtonId`
-- 不放单独 `???` 预告卡（右侧静态 HeroCard 已是视觉钩子，避免重复）
+- stage（rings/ball）作为视觉背板保留
+- 右栏整体重设计为**一张「冒险预告卡」**(Adventure Teaser Card)，不再放静态 HeroCard：
+  ```
+  ┌─────────────────────────────────────┐
+  │       (stage rings + ball 背板)      │
+  │      🎲  YOUR ADVENTURE AWAITS       │
+  │   Your Pokémon     ???               │
+  │   Your Region      ???               │
+  │   Your Challenge  ???               │
+  │   [ Roll Adventure → ]              │
+  │   ··· 6 unknown companions ···       │
+  └─────────────────────────────────────┘
+  ```
+- 三行问号 + 「6 unknown companions」暗示队伍，强化未知叙事
+- 主 CTA `Roll Adventure →` = `<Link href="/adventure">`
+- 卡片样式：`rounded-2xl border border-poke-border bg-poke-surface`，红色主题 `--cc: var(--poke-red)`
+- 客户端组件 `HeroAdventureTeaser`，便于 hover/聚焦动效
 
 **代价（已知）**：首页移除「原地 Roll a Pokémon」随机换卡（`HeroActions` 的 `heroRollBtn` 桥接作废）。纯随机抽卡由 `/random` 承担，冒险由 `/adventure` 承担——正是转向意图。`HeroActions` 组件保留（不删），仅 HomeTool 不再渲染它。
 
@@ -88,15 +103,16 @@ PageHeader "Roll Your Pokémon Adventure"
 ## 4. 文件清单
 
 **新建**
-- `lib/adventure.ts` — `rollAdventure(seed)` + 数据集 `TRAINER_NAMES`/`TRAINER_ROLES`/`GOALS`/`CHALLENGES`；导入 challenge 的 RNG
-- `app/adventure/page.tsx` — 服务端页
-- `components/AdventureView.tsx` — 客户端交互（Roll Again / Share Adventure）
+- `lib/adventure.ts` — `rollAdventure(seed)` + 数据集 `TRAINER_NAMES`/`TRAINER_ROLES`/`GOALS`/`CHALLENGES` + `randomSeed`/`shareText`；导入 challenge 的 RNG
+- `app/adventure/page.tsx` — 服务端页（`force-dynamic`，读 `searchParams.seed`）
+- `components/AdventureView.tsx` — 客户端交互（Roll Again / Share Adventure / Add all to Team）
+- `components/HeroAdventureTeaser.tsx` — 首页右栏冒险预告卡（🎲 + 三问号 + Roll Adventure CTA）
 
 **改动**
-- `lib/challenge.ts` — `hashSeed`/`mulberry32` 加 `export`（不改逻辑）
-- `components/HomeTool.tsx` — Hero 左栏换冒险叙事+CTA；右栏 HeroCard `showActions={false}` 去 rollButtonId；`JUMP_TOOLS` 头位改 Adventure
+- `lib/challenge.ts` — `hashSeed`/`mulberry32` 加 `export`（不改逻辑，零回归）
+- `components/HomeTool.tsx` — Hero 左栏换冒险叙事+CTA；右栏 `HeroCard` 替换为 `HeroAdventureTeaser`；移除 `HeroActions` 渲染与 `getRandomPokemon`/`getPokemonById` import；`JUMP_TOOLS` 头位改 Adventure Mode
 - `components/SiteNav.tsx` — `MAIN` 头位加 Adventure
-- `lib/tools.ts` — `TOOLS` 加 `/adventure`（core 组）
+- `lib/tools.ts` — `TOOLS` 头位加 `/adventure`（core 组）
 
 ## 5. Phase 1 Non-goals（防 scope creep）
 
@@ -113,6 +129,17 @@ PageHeader "Roll Your Pokémon Adventure"
 1. `lib/challenge.ts` 导出 RNG（1 行改动）
 2. `lib/adventure.ts` 数据集 + `rollAdventure`
 3. `app/adventure/page.tsx` + `components/AdventureView.tsx`
-4. `components/HomeTool.tsx` Hero 改造 + `JUMP_TOOLS`
-5. `components/SiteNav.tsx` + `lib/tools.ts` 导航接入
-6. 自测：`/adventure` 首屏 Roll、Roll Again、Share、seed 复现；首页 CTA 跳转；`/challenge` 回归
+4. `components/HeroAdventureTeaser.tsx`（右栏预告卡）
+5. `components/HomeTool.tsx` Hero 改造 + `JUMP_TOOLS`
+6. `components/SiteNav.tsx` + `lib/tools.ts` 导航接入
+7. 自测：`/adventure` 首屏 Roll、Roll Again、Share、seed 复现；首页 CTA 跳转；`/challenge` 回归
+
+## 7. 实现状态（2026-07-30）
+
+✅ **全部完成，`tsc --noEmit` 通过，所有文件 lint 0 错误。**
+
+- §1 七维度全部落地（Trainer/Region/Starter/Team/Challenge/Goal 展示；Type 不展示由 HeroCard 自带属性标识承担；Difficulty 缓 V2）
+- §2 `/adventure` 服务端首屏 Roll + 客户端 Roll Again（push 新 seed）+ Share Adventure（剪贴板复制分享文案+链接）+ Add all to Team
+- §3 首页 Hero 双栏保留：左栏冒险叙事 CTA，右栏 `HeroAdventureTeaser`（无静态 HeroCard），`HeroActions` 不再渲染（组件保留未删），HomeTool 不再依赖 `lib/pokeapi`
+- §4 全部文件清单按修订版落地，导航 `MAIN` 与 `TOOLS` 头位均为 Adventure
+- 代价确认：首页「原地 Roll a Pokémon」随机换卡已移除，由 `/random` 与 `/adventure` 分别承担

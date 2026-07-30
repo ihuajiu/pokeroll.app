@@ -9,6 +9,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { useTeam } from "./useTeam";
 
 const MAIN = [
+  { href: "/adventure", label: "Adventure" },
   { href: "/random", label: "Generator" },
   { href: "/team/random", label: "Random Team" },
   { href: "/no-names", label: "No Names" },

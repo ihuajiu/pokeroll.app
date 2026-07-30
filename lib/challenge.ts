@@ -27,7 +27,7 @@ export interface Challenge {
   encounters?: number;
 }
 
-function hashSeed(str: string): number {
+export function hashSeed(str: string): number {
   let h = 1779033703 ^ str.length;
   for (let i = 0; i < str.length; i++) {
     h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
@@ -36,7 +36,7 @@ function hashSeed(str: string): number {
   return (h ^= h >>> 16) >>> 0;
 }
 
-function mulberry32(a: number): () => number {
+export function mulberry32(a: number): () => number {
   return function () {
     a |= 0;
     a = (a + 0x6d2b79f5) | 0;
