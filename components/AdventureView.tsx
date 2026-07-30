@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeroCard from "@/components/HeroCard";
 import { useTeam } from "@/components/useTeam";
 import { titleCase, REGION_GAME } from "@/lib/seo";
@@ -25,6 +25,20 @@ export default function AdventureView({
   const [notice, setNotice] = useState<string | null>(null);
 
   const a = adventure;
+
+  // First visit without a seed: the server rolled with a fresh seed but the
+  // URL has none, so a shared link would roll a different adventure. Sync the
+  // seed (and difficulty) into the URL once on mount — same mechanism as
+  // rollAgain, idempotent under Strict Mode.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("seed") !== initial.seed) {
+      url.searchParams.set("seed", initial.seed);
+      url.searchParams.set("difficulty", initial.difficulty);
+      window.history.replaceState(null, "", url.toString());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function flash(msg: string) {
     setNotice(msg);
