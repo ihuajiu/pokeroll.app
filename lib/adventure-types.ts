@@ -28,6 +28,13 @@ export const TRAINER_STYLES = [
   "Adaptive",
 ] as const;
 
+export const DIFFICULTIES = [
+  "Easy",
+  "Normal",
+  "Hard",
+  "Extreme",
+] as const;
+
 export const GOALS = [
   "Become Champion",
   "Complete Pokédex",
@@ -56,6 +63,7 @@ export interface Adventure {
   region: string;
   goal: string;
   challenge: string;
+  difficulty: string;
   starter: Pokemon;
   team: Pokemon[];
 }
@@ -70,6 +78,7 @@ export function shareText(a: Adventure): string {
     "",
     `Trainer: ${a.trainer.name} — ${a.trainer.role} (${a.trainer.style})`,
     `Region: ${a.region.charAt(0).toUpperCase() + a.region.slice(1)}`,
+    `Difficulty: ${a.difficulty}`,
     `Starter: ${a.starter.displayName}`,
     `Challenge: ${a.challenge}`,
     `Team: ${a.team.length} Pokémon`,

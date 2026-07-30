@@ -5,7 +5,12 @@ import HeroCard from "@/components/HeroCard";
 import { useTeam } from "@/components/useTeam";
 import { titleCase, REGION_GAME } from "@/lib/seo";
 import { TYPE_HEX } from "@/lib/typeColors";
-import { randomSeed, shareText, type Adventure } from "@/lib/adventure-types";
+import {
+  DIFFICULTIES,
+  randomSeed,
+  shareText,
+  type Adventure,
+} from "@/lib/adventure-types";
 
 export default function AdventureView({
   initial,
@@ -14,6 +19,7 @@ export default function AdventureView({
 }) {
   const { add, team, max } = useTeam();
   const [adventure, setAdventure] = useState<Adventure>(initial);
+  const [difficulty, setDifficulty] = useState<string>(initial.difficulty);
   const [rolling, setRolling] = useState(false);
   const [copied, setCopied] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -25,19 +31,22 @@ export default function AdventureView({
     setTimeout(() => setNotice(null), 2600);
   }
 
-  async function rollAgain() {
+  async function rollAgain(nextDifficulty: string = difficulty) {
     if (rolling) return;
     setRolling(true);
     const seed = randomSeed();
     try {
-      const res = await fetch(`/api/adventure?seed=${seed}`);
+      const params = new URLSearchParams({ seed, difficulty: nextDifficulty });
+      const res = await fetch(`/api/adventure?${params.toString()}`);
       if (!res.ok) throw new Error("roll failed");
       const next = (await res.json()) as Adventure;
       setAdventure(next);
+      setDifficulty(next.difficulty);
       // Update URL without a full RSC navigation so [Share] stays correct.
       if (typeof window !== "undefined") {
         const url = new URL(window.location.href);
         url.searchParams.set("seed", seed);
+        url.searchParams.set("difficulty", next.difficulty);
         window.history.replaceState(null, "", url.toString());
       }
     } catch {
@@ -108,7 +117,27 @@ export default function AdventureView({
           Seed <span className="font-mono">{a.seed}</span> — share this link to
           replay the exact same adventure.
         </p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <label className="flex items-center gap-2 text-sm text-poke-dim">
+            Difficulty
+            <select
+              value={difficulty}
+              onChange={(e) => {
+                const next = e.target.value;
+                setDifficulty(next);
+                // Roll immediately when difficulty changes to keep UI reactive.
+                rollAgain(next);
+              }}
+              disabled={rolling}
+              className="rounded-lg border border-poke-border bg-poke-surface px-2 py-1 text-sm font-medium text-poke-ink focus:border-poke-red focus:outline-none"
+            >
+              {DIFFICULTIES.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             type="button"
             onClick={addAll}
@@ -128,7 +157,7 @@ export default function AdventureView({
           </button>
           <button
             type="button"
-            onClick={rollAgain}
+            onClick={() => rollAgain()}
             disabled={rolling}
             className="rounded-xl bg-poke-red px-4 py-2 font-semibold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
@@ -160,6 +189,7 @@ export default function AdventureView({
             <span className="am-dot" />
             Adventure Manifest
           </span>
+          <span>Difficulty · {a.difficulty}</span>
           <span>Seed · {a.seed}</span>
         </div>
 
@@ -181,6 +211,10 @@ export default function AdventureView({
               {titleCase(a.region)}
               <small>{REGION_GAME[a.region] ?? "—"}</small>
             </div>
+          </div>
+          <div className="am-cell">
+            <div className="am-k">Difficulty</div>
+            <div className="am-v">{a.difficulty}</div>
           </div>
           <div className="am-cell">
             <div className="am-k">Challenge</div>
@@ -235,6 +269,7 @@ export default function AdventureView({
           </div>
         </div>
       )}
+
     </div>
   );
 }

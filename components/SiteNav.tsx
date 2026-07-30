@@ -8,14 +8,12 @@ import { GroupIcon } from "./ToolIcons";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useTeam } from "./useTeam";
 
+// 五分组主导航：每组指向该组的第一个工具页。
 const MAIN = [
   { href: "/adventure", label: "Adventure" },
-  { href: "/random", label: "Generator" },
-  { href: "/team/random", label: "Random Team" },
-  { href: "/no-names", label: "No Names" },
-  { href: "/wheel", label: "Wheel" },
-  { href: "/challenge", label: "Starter" },
-  { href: "/type", label: "Types" },
+  { href: "/random", label: "Generators" },
+  { href: "/challenge", label: "Challenges" },
+  { href: "/fusion", label: "Tools" },
   { href: "/team", label: "Team" },
 ];
 
@@ -103,7 +101,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
             </button>
             {open && (
               <div className="absolute right-0 mt-3 w-[28rem] rounded-2.5xl border border-poke-border bg-poke-surface p-4 shadow-panel ring-1 ring-[#ee3b3b]/15">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-5">
                   {TOOL_GROUPS.map((g) => (
                     <div key={g.id}>
                       <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#ee3b3b]">
@@ -131,10 +129,10 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
           </div>
 
           <Link
-            href="/random"
+            href="/adventure"
             className="hidden game-btn game-btn-primary px-4 py-2 text-sm sm:inline-flex"
           >
-            Random Pokémon
+            Roll Adventure
           </Link>
 
           <button
@@ -159,53 +157,53 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
 
       {mobile && (
         <div className="border-t border-poke-border bg-poke-surface px-4 py-4 md:hidden">
-          <nav className="flex flex-col gap-1">
-            {MAIN.map((m) => (
-              <Link
-                key={m.href}
-                href={m.href}
-                onClick={() => setMobile(false)}
-                className={`flex items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-semibold transition hover:bg-[#ee3b3b]/10 hover:text-[#ee3b3b] ${
-                  isActive(m.href) ? "text-[#ee3b3b]" : "text-poke-ink"
-                }`}
-              >
-                {m.label}
-                {m.href === "/team" && teamCount > 0 && (
-                  <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
-                    {teamCount}
-                  </span>
-                )}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-3 space-y-3">
-            {TOOL_GROUPS.map((g) => (
-              <div key={g.id}>
-                <div className="mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#ee3b3b]">
-                  <GroupIcon group={g.id} className="h-4 w-4" />
-                  {g.title}
+          <div className="space-y-3">
+            {TOOL_GROUPS.map((g) => {
+              const first = TOOLS.find((t) => t.group === g.id);
+              const active = first ? isActive(first.href) : false;
+              return (
+                <div key={g.id}>
+                  <Link
+                    href={first?.href ?? "/"}
+                    onClick={() => setMobile(false)}
+                    className={`mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-wide transition hover:text-[#ee3b3b] ${
+                      active ? "text-[#ee3b3b]" : "text-poke-dim"
+                    }`}
+                  >
+                    <GroupIcon group={g.id} className="h-4 w-4" />
+                    {g.title}
+                    {g.id === "team" && teamCount > 0 && (
+                      <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
+                        {teamCount}
+                      </span>
+                    )}
+                  </Link>
+                  <div className="flex flex-wrap gap-2">
+                    {TOOLS.filter((t) => t.group === g.id).map((t) => (
+                      <Link
+                        key={t.href}
+                        href={t.href}
+                        onClick={() => setMobile(false)}
+                        className={`rounded-full border px-3 py-1 text-xs font-medium transition hover:border-[#ee3b3b] hover:text-[#ee3b3b] ${
+                          isActive(t.href)
+                            ? "border-[#ee3b3b] bg-[#ee3b3b]/10 text-[#ee3b3b]"
+                            : "border-poke-border bg-poke-surface text-poke-ink"
+                        }`}
+                      >
+                        {t.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {TOOLS.filter((t) => t.group === g.id).map((t) => (
-                    <Link
-                      key={t.href}
-                      href={t.href}
-                      onClick={() => setMobile(false)}
-                      className="rounded-full border border-poke-border bg-poke-surface px-3 py-1 text-xs font-medium text-poke-ink transition hover:border-[#ee3b3b] hover:text-[#ee3b3b]"
-                    >
-                      {t.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <Link
-            href="/random"
+            href="/adventure"
             onClick={() => setMobile(false)}
             className="game-btn game-btn-primary mt-4 block px-4 py-2 text-center text-sm"
           >
-            Random Pokémon
+            Roll Adventure
           </Link>
         </div>
       )}

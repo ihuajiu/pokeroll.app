@@ -5,10 +5,12 @@ import {
   getPoolByGeneration,
   getPoolByRegion,
 } from "@/lib/pokeapi";
+import { DIFFICULTIES } from "@/lib/adventure-types";
 import type { Pokemon } from "@/lib/types";
 import { titleCase } from "@/lib/seo";
 
 export type ChallengeMode = "guess" | "collect" | "team" | "shiny";
+export type ChallengeDifficulty = (typeof DIFFICULTIES)[number];
 
 export interface ChallengeConfig {
   mode: ChallengeMode;
@@ -17,6 +19,7 @@ export interface ChallengeConfig {
   gen?: number;
   region?: string;
   seed: string;
+  difficulty?: ChallengeDifficulty;
 }
 
 export interface Challenge {
@@ -69,11 +72,26 @@ async function pickDistinct(
   return list.filter((p): p is Pokemon => p !== null);
 }
 
+function maxCountForDifficulty(difficulty: string | undefined): number {
+  switch (difficulty) {
+    case "Easy":
+      return 12;
+    case "Hard":
+      return 8;
+    case "Extreme":
+      return 6;
+    case "Normal":
+    default:
+      return 10;
+  }
+}
+
 export async function getChallenge(config: ChallengeConfig): Promise<Challenge> {
-  const { mode, count, type, gen, region, seed } = config;
-  const clamped = Math.max(1, Math.min(count, 12));
+  const { mode, count, type, gen, region, seed, difficulty } = config;
+  const maxCount = maxCountForDifficulty(difficulty);
+  const clamped = Math.max(1, Math.min(count, maxCount));
   const rng = mulberry32(
-    hashSeed([seed, mode, clamped, type ?? "", gen ?? "", region ?? ""].join("|")),
+    hashSeed([seed, mode, clamped, type ?? "", gen ?? "", region ?? "", difficulty ?? ""].join("|")),
   );
 
   if (mode === "shiny") {

@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import ToolsNav from "@/components/ToolsNav";
 import PageHeader from "@/components/PageHeader";
-import { getChallenge, type ChallengeConfig, type ChallengeMode } from "@/lib/challenge";
+import {
+  getChallenge,
+  type ChallengeConfig,
+  type ChallengeMode,
+  type ChallengeDifficulty,
+} from "@/lib/challenge";
+import { DIFFICULTIES } from "@/lib/adventure-types";
 
 export const dynamic = "force-dynamic";
 
@@ -33,8 +39,11 @@ export default async function ChallengePage({
   const genRaw = get(sp, "gen");
   const gen = genRaw ? Number(genRaw) : undefined;
   const seed = get(sp, "seed") || Math.random().toString(36).slice(2, 10);
+  const difficultyRaw = get(sp, "difficulty") as ChallengeDifficulty | undefined;
+  const difficulty =
+    difficultyRaw && DIFFICULTIES.includes(difficultyRaw) ? difficultyRaw : "Normal";
 
-  const config: ChallengeConfig = { mode, count, type, region, gen, seed };
+  const config: ChallengeConfig = { mode, count, type, region, gen, seed, difficulty };
   const challenge = await getChallenge(config);
 
   return (

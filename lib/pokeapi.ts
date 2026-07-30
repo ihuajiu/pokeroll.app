@@ -11,6 +11,8 @@ import {
   getMoveListLocal,
 } from "./pokedex";
 
+export { getAllPokemon } from "./pokedex";
+
 const GEN_REGION: Record<number, string> = {
   1: "Kanto",
   2: "Johto",
@@ -24,7 +26,7 @@ const GEN_REGION: Record<number, string> = {
 };
 export { GEN_REGION };
 
-const ALL_TYPES = [
+export const ALL_TYPES = [
   "normal", "fire", "water", "electric", "grass", "ice", "fighting",
   "poison", "ground", "flying", "psychic", "bug", "rock", "ghost",
   "dragon", "dark", "steel", "fairy",

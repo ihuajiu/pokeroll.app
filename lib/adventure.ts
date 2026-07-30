@@ -1,9 +1,15 @@
-import { getPokemonById, getPoolByRegion, getStarters } from "@/lib/pokeapi";
+import {
+  getAllPokemon,
+  getPokemonById,
+  getPoolByRegion,
+  getStarters,
+} from "@/lib/pokeapi";
 import { REGIONS } from "@/lib/seo";
 import { hashSeed, mulberry32 } from "@/lib/challenge";
 import type { Pokemon } from "@/lib/types";
 import {
   CHALLENGES,
+  DIFFICULTIES,
   GOALS,
   TRAINER_NAMES,
   TRAINER_ROLES,
@@ -14,6 +20,7 @@ import {
 export type { Adventure } from "./adventure-types";
 export {
   CHALLENGES,
+  DIFFICULTIES,
   GOALS,
   TRAINER_NAMES,
   TRAINER_ROLES,
@@ -51,6 +58,58 @@ async function pickDistinct(
   return list.filter((p): p is Pokemon => p !== null);
 }
 
+function byDexMap(all: Pokemon[]): Map<number, Pokemon> {
+  return new Map(all.map((p) => [p.dexNumber, p]));
+}
+
+function getDifficultyPool(
+  pool: number[],
+  difficulty: string,
+  rng: () => number,
+  all: Pokemon[],
+): number[] {
+  if (difficulty === "Normal" || pool.length === 0) return pool;
+
+  const byId = byDexMap(all);
+  const bsts = pool
+    .map((id) => byId.get(id)?.bst ?? 0)
+    .filter((b) => b > 0);
+
+  if (difficulty === "Easy" || difficulty === "Hard") {
+    if (bsts.length === 0) return pool;
+    const sorted = [...bsts].sort((a, b) => a - b);
+    const median = sorted[Math.floor(sorted.length / 2)];
+    const filtered = pool.filter((id) => {
+      const bst = byId.get(id)?.bst ?? 0;
+      return difficulty === "Easy" ? bst >= median : bst < median;
+    });
+    return filtered.length >= 6 ? filtered : pool;
+  }
+
+  if (difficulty === "Extreme") {
+    const typeCounts = new Map<string, number>();
+    const typeIds = new Map<string, number[]>();
+    for (const id of pool) {
+      const p = byId.get(id);
+      if (!p) continue;
+      for (const t of p.types) {
+        typeCounts.set(t, (typeCounts.get(t) ?? 0) + 1);
+        const arr = typeIds.get(t) ?? [];
+        arr.push(id);
+        typeIds.set(t, arr);
+      }
+    }
+    const viable = Array.from(typeCounts.entries())
+      .filter(([, count]) => count >= 6)
+      .map(([t]) => t);
+    if (viable.length === 0) return pool;
+    const type = pick(viable, rng);
+    return typeIds.get(type) ?? pool;
+  }
+
+  return pool;
+}
+
 /**
  * Roll a full Pokémon adventure from a seed. Same seed → same adventure
  * (deterministic via mulberry32). Region drives the team pool so the squad
@@ -60,7 +119,10 @@ async function pickDistinct(
  * this function from a "use client" module — import Adventure type and
  * shareText/randomSeed from lib/adventure-types instead.
  */
-export async function rollAdventure(seed: string): Promise<Adventure> {
+export async function rollAdventure(
+  seed: string,
+  difficulty?: string,
+): Promise<Adventure> {
   const rng = mulberry32(hashSeed(seed));
 
   const trainer = {
@@ -69,6 +131,10 @@ export async function rollAdventure(seed: string): Promise<Adventure> {
     style: pick(TRAINER_STYLES, rng),
   };
   const region = pick(REGIONS, rng);
+  const diff =
+    difficulty && DIFFICULTIES.includes(difficulty as (typeof DIFFICULTIES)[number])
+      ? difficulty
+      : pick(DIFFICULTIES, rng);
   const goal = pick(GOALS, rng);
   const challenge = pick(CHALLENGES, rng);
 
@@ -78,8 +144,19 @@ export async function rollAdventure(seed: string): Promise<Adventure> {
     getPokemonById(1),
   );
 
-  const pool = await getPoolByRegion(region);
-  const team = await pickDistinct(pool, 6, rng);
+  const regionPool = await getPoolByRegion(region);
+  const all = getAllPokemon();
+  const difficultyPool = getDifficultyPool(regionPool, diff, rng, all);
+  const team = await pickDistinct(difficultyPool, 6, rng);
 
-  return { seed, trainer, region, goal, challenge, starter, team };
+  return {
+    seed,
+    trainer,
+    region,
+    difficulty: diff,
+    goal,
+    challenge,
+    starter,
+    team,
+  };
 }

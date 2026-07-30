@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Challenge, ChallengeMode } from "@/lib/challenge";
+import { DIFFICULTIES } from "@/lib/adventure-types";
 import { TYPES, REGIONS, GENS, titleCase } from "@/lib/seo";
 import { useTeam } from "./useTeam";
 import HeroCard from "./HeroCard";
@@ -27,6 +28,7 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
   const [type, setType] = useState(config.type ?? "");
   const [region, setRegion] = useState(config.region ?? "");
   const [gen, setGen] = useState(config.gen ?? 0);
+  const [difficulty, setDifficulty] = useState<string>(config.difficulty ?? "Normal");
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
   const [copied, setCopied] = useState(false);
 
@@ -47,9 +49,11 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
     const t = (next.type as string) ?? type;
     const r = (next.region as string) ?? region;
     const g = (next.gen as number) ?? gen;
+    const d = (next.difficulty as string) ?? difficulty;
     if (t) p.set("type", t);
     if (r) p.set("region", r);
     if (g) p.set("gen", String(g));
+    if (d && d !== "Normal") p.set("difficulty", d);
     p.set("seed", Math.random().toString(36).slice(2, 10));
     return `/challenge?${p.toString()}`;
   }
@@ -99,6 +103,21 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
               {MODES.map((m) => (
                 <option key={m.value} value={m.value}>
                   {m.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="flex flex-col gap-1">
+            <span className="text-xs font-semibold text-poke-dim">Difficulty</span>
+            <select
+              className={selectClass}
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value)}
+            >
+              {DIFFICULTIES.map((d) => (
+                <option key={d} value={d}>
+                  {d}
                 </option>
               ))}
             </select>

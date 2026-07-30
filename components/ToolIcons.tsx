@@ -26,25 +26,45 @@ export function GroupIcon({
   className?: string;
 }) {
   switch (group) {
-    case "core":
+    case "adventure":
       return (
         <Svg className={className}>
-          <path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4L12 3z" />
-          <path d="M18 14l.8 2.1L21 17l-2.2.9L18 20l-.8-2.1L15 17l2.2-.9L18 14z" />
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+          <path d="M12 8l4 4-4 4-4-4z" />
         </Svg>
       );
-    case "variant":
+    case "generator":
       return (
         <Svg className={className}>
-          <path d="M12 3 21 8 12 13 3 8 12 3z" />
-          <path d="M3 13 12 18 21 13" />
+          <rect x="3" y="3" width="18" height="18" rx="4" />
+          <circle cx="8" cy="8" r="1.2" fill="currentColor" />
+          <circle cx="16" cy="8" r="1.2" fill="currentColor" />
+          <circle cx="8" cy="16" r="1.2" fill="currentColor" />
+          <circle cx="16" cy="16" r="1.2" fill="currentColor" />
+          <circle cx="12" cy="12" r="1.2" fill="currentColor" />
         </Svg>
       );
-    case "play":
+    case "challenge":
       return (
         <Svg className={className}>
-          <rect x="3" y="8" width="18" height="9" rx="4" />
-          <path d="M8 12.5h-2M7 11.5v2M16 11.5h.01M18.5 13.5h.01" />
+          <path d="M12 15l-3.4 2.2 1-3.8-2.6-2.2 3.5-.3L12 7l1.5 3.9 3.5.3-2.6 2.2 1 3.8z" />
+          <circle cx="12" cy="12" r="9" />
+        </Svg>
+      );
+    case "tool":
+      return (
+        <Svg className={className}>
+          <path d="M14.7 6.3a1 1 0 0 0-1.4 0L8 11.6 6 9.6l-2 2 4 4L4 19.6l2 2 4.4-4.4 4 4 2-2-2-2 5.3-5.3a1 1 0 0 0 0-1.4l-4.6-4.6z" />
+        </Svg>
+      );
+    case "team":
+      return (
+        <Svg className={className}>
+          <circle cx="9" cy="7" r="3" />
+          <circle cx="17" cy="8" r="2.5" />
+          <circle cx="6" cy="16" r="3" />
+          <circle cx="15" cy="16" r="3" />
         </Svg>
       );
   }
