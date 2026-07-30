@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { Challenge, ChallengeMode } from "@/lib/challenge";
 import { TYPES, REGIONS, GENS, titleCase } from "@/lib/seo";
 import { useTeam } from "./useTeam";
-import PokemonCard from "./PokemonCard";
+import HeroCard from "./HeroCard";
 
 const MODES: { value: ChallengeMode; label: string; hint: string }[] = [
   { value: "guess", label: "Guess the Pokémon", hint: "Names hidden — reveal to check" },
@@ -248,11 +248,11 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
 
       {/* Shiny */}
       {mode === "shiny" && challenge.pokemon[0] && (
-        <div className="mx-auto max-w-sm">
+        <div className="mx-auto max-w-[640px]">
           <div className="mb-3 rounded-xl bg-yellow-100 px-4 py-3 text-center text-sm font-semibold text-yellow-800">
             ⭐ Next shiny in {challenge.encounters?.toLocaleString()} encounters
           </div>
-          <PokemonCard pokemon={challenge.pokemon[0]} />
+          <HeroCard pokemon={challenge.pokemon[0]} showActions={false} />
         </div>
       )}
 
@@ -274,7 +274,7 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
               Reveal all
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3">
             {challenge.pokemon.map((p) => {
               const isOpen = revealed.has(p.dexNumber ?? 0);
               return (
@@ -324,9 +324,9 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
               </button>
             </div>
           )}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {challenge.pokemon.map((p) => (
-              <PokemonCard key={p.dexNumber ?? p.name} pokemon={p} />
+              <HeroCard key={p.dexNumber ?? p.name} pokemon={p} showActions={false} />
             ))}
           </div>
         </>

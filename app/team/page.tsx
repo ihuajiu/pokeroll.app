@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import TeamClient from "@/components/TeamClient";
+import PageHeader from "@/components/PageHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -14,5 +15,13 @@ export default async function TeamPage({
   searchParams: Promise<{ team?: string }>;
 }) {
   const sp = await searchParams;
-  return <TeamClient sharedNames={sp.team ?? null} />;
+  return (
+    <main className="pt-6 pb-10">
+      <PageHeader
+        title="Your Pokémon Team"
+        description="Build and share your team of randomly generated Pokémon."
+      />
+      <TeamClient sharedNames={sp.team ?? null} />
+    </main>
+  );
 }

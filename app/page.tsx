@@ -21,5 +21,5 @@ export default async function Page({
   searchParams: Promise<{ p?: string }>;
 }) {
   const sp = await searchParams;
-  return <HomeTool p={sp.p} />;
+  return <main className="py-10"><HomeTool p={sp.p} /></main>;
 }

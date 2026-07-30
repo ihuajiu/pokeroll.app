@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import ToolsNav from "@/components/ToolsNav";
-import AffiliateStrip from "@/components/AffiliateStrip";
+import PageHeader from "@/components/PageHeader";
 import { getChallenge, type ChallengeConfig, type ChallengeMode } from "@/lib/challenge";
 
 export const dynamic = "force-dynamic";
@@ -38,17 +38,13 @@ export default async function ChallengePage({
   const challenge = await getChallenge(config);
 
   return (
-    <main>
-      <h1 className="mb-2 text-center text-2xl font-bold text-poke-ink">
-        Pokémon Challenge Generator
-      </h1>
-      <p className="mb-6 text-center text-sm text-poke-dim">
-        Build a custom, shareable challenge from our random generator. Tweak the
-        mode and filters, then copy the link to challenge a friend.
-      </p>
+    <main className="pt-6 pb-10">
+      <PageHeader
+        title="Pokémon Challenge Generator"
+        description="Build a custom, shareable challenge from our random generator. Tweak the mode and filters, then copy the link to challenge a friend."
+      />
       <ChallengeGenerator challenge={challenge} />
       <ToolsNav current="/challenge" />
-      <AffiliateStrip />
     </main>
   );
 }

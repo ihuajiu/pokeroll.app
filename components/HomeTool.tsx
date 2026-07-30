@@ -5,7 +5,7 @@ import Link from "next/link";
 import HeroCard from "@/components/HeroCard";
 import HeroActions from "@/components/HeroActions";
 import ToolsNav from "@/components/ToolsNav";
-import { getRandomPokemon } from "@/lib/pokeapi";
+import { getRandomPokemon, getPokemonById } from "@/lib/pokeapi";
 import type { Pokemon } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -22,8 +22,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const SPRITE = (id: number) =>
-  `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/other/official-artwork/${id}.png`;
+const SPRITE = (id: number) => `/pokemon/artwork/${id}.png`;
 
 type JumpTool = {
   href: string;
@@ -43,14 +42,9 @@ const SvgIcon = ({ children }: { children: React.ReactNode }) => (
 
 const JUMP_TOOLS: JumpTool[] = [
   {
-    href: "/", label: "Random Generator", desc: "Summon a random Pokémon with full stats & artwork.",
+    href: "/random", label: "Random Generator", desc: "Summon a random Pokémon with full stats & artwork.",
     color: "#ee3b3b", p: 25, count: "MAIN",
     icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
-  },
-  {
-    href: "/", label: "AI Generator", desc: "Invent a brand-new creature & its lore.",
-    color: "#f43f5e", p: 778, count: "AI",
-    icon: <SvgIcon><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z" /><path d="M18 13.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z" /></SvgIcon>,
   },
   {
     href: "/shiny", label: "Shiny Generator", desc: "Hunt the rare recolored form.",
@@ -100,8 +94,7 @@ const CAT_COLOR: Record<string, string> = {
 };
 
 const BROWSE_MODULES: Module[] = [
-  { href: "/", cat: "Core", gen: "DEX 1–1010", label: "Random Generator", p: 25, desc: "Summon a random Pokémon with full stats & artwork." },
-  { href: "/", cat: "AI", gen: "V3", label: "AI Generator", p: 778, desc: "Invent a brand-new creature & its lore." },
+  { href: "/random", cat: "Core", gen: "DEX 1–1010", label: "Random Generator", p: 25, desc: "Summon a random Pokémon with full stats & artwork." },
   { href: "/shiny", cat: "Shiny", gen: "1/4096", label: "Shiny Generator", p: 6, desc: "Hunt the rare recolored form." },
   { href: "/fusion", cat: "Fusion", gen: "PLAY", label: "Fusion Generator", p: 94, desc: "Fuse two Pokémon into one hybrid." },
   { href: "/wheel", cat: "Wheel", gen: "DEX 1–1010", label: "Spin Wheel", p: 35, desc: "Let chance decide your next encounter." },
@@ -112,14 +105,16 @@ const BROWSE_MODULES: Module[] = [
   { href: "/team", cat: "Squad", gen: "SQUAD", label: "Team Builder", p: 196, desc: "Collect favourites into a themed squad." },
   { href: "/by/kanto", cat: "Region", gen: "GEN 1–9", label: "By Region", p: 150, desc: "Filter Kanto → Paldea by region." },
   { href: "/card", cat: "Create", gen: "BUILD", label: "Card Generator", p: 6, desc: "Generate a custom Pokémon trading card." },
-  { href: "/by/national", cat: "Variant", gen: "DEX 1–1010", label: "Ability Generator", p: 25, desc: "Roll a random Ability and see who has it." },
-  { href: "/by/national", cat: "Variant", gen: "DEX 1–1010", label: "Move Generator", p: 143, desc: "Discover a random move and its user." },
-  { href: "/by/national", cat: "Variant", gen: "DEX 1–1010", label: "BST Generator", p: 149, desc: "Random base stat total, reveal the Pokémon." },
-  { href: "/by/national", cat: "Variant", gen: "DEX 1–1010", label: "Number Generator", p: 152, desc: "Roll a Pokédex number, reveal the Pokémon." },
+  { href: "/ability", cat: "Variant", gen: "DEX 1–1010", label: "Ability Generator", p: 25, desc: "Roll a random Ability and see who has it." },
+  { href: "/move", cat: "Variant", gen: "DEX 1–1010", label: "Move Generator", p: 143, desc: "Discover a random move and its user." },
+  { href: "/bst", cat: "Variant", gen: "DEX 1–1010", label: "BST Generator", p: 149, desc: "Random base stat total, reveal the Pokémon." },
+  { href: "/number", cat: "Variant", gen: "DEX 1–1010", label: "Number Generator", p: 152, desc: "Roll a Pokédex number, reveal the Pokémon." },
 ];
 
-export default async function Home() {
-  const initial: Pokemon = await getRandomPokemon(true);
+export default async function Home({ p }: { p?: string }) {
+  const initial: Pokemon = p
+    ? await getPokemonById(p).catch(() => getRandomPokemon())
+    : await getRandomPokemon();
 
   return (
     <>
@@ -128,33 +123,27 @@ export default async function Home() {
         <div className="grid items-center gap-10 xl:grid-cols-2">
           <div className="hero-copy">
             <span className="eyebrow">Random Pokémon Generator</span>
-            <h1 className="font-display text-4xl font-extrabold leading-tight sm:text-5xl">
+            <h1 className="font-display font-extrabold">
               Your random <span className="accent">Pokémon</span> awaits.
             </h1>
-            <p className="mt-4 max-w-xl text-poke-dim">
+            <p className="lead">
               Spin up a random Pokémon in one tap — every roll comes with its
               name, type, ability, stats and an official sprite. Then send it to
               your team, your wallpaper or a friend.
             </p>
             <HeroActions />
-            <div className="mt-8 flex flex-wrap gap-8">
+            <div className="hero-meta">
               <div>
-                <div className="font-display text-2xl font-bold">1000+</div>
-                <div className="text-xs uppercase tracking-wide text-poke-faint">
-                  Species
-                </div>
+                <div className="num">1000+</div>
+                <div className="lbl">Species</div>
               </div>
               <div>
-                <div className="font-display text-2xl font-bold">18</div>
-                <div className="text-xs uppercase tracking-wide text-poke-faint">
-                  Types
-                </div>
+                <div className="num">18</div>
+                <div className="lbl">Types</div>
               </div>
               <div>
-                <div className="font-display text-2xl font-bold">9</div>
-                <div className="text-xs uppercase tracking-wide text-poke-faint">
-                  Generations
-                </div>
+                <div className="num">9</div>
+                <div className="lbl">Generations</div>
               </div>
             </div>
           </div>
@@ -177,7 +166,7 @@ export default async function Home() {
                   <circle cx="50" cy="50" r="6" fill="currentColor" />
                 </svg>
               </div>
-              <HeroCard initial={initial} />
+              <HeroCard pokemon={initial} />
             </div>
           </div>
         </div>

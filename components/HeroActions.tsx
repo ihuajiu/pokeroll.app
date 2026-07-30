@@ -6,13 +6,13 @@ export default function HeroActions() {
       <button
         type="button"
         onClick={() => document.getElementById("heroRollBtn")?.click()}
-        className="game-btn game-btn-primary px-6 py-3 text-base"
+        className="btn-primary"
       >
         Roll a Pokémon
       </button>
       <a
         href="#tools"
-        className="game-btn game-btn-ghost px-6 py-3 text-base"
+        className="btn-ghost"
       >
         Explore Tools
       </a>

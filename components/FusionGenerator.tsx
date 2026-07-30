@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
-import PokemonCard from "./PokemonCard";
-import GenerateButton from "./GenerateButton";
+import HeroCard from "./HeroCard";
 import AddToTeamButton from "./AddToTeamButton";
 
 export type FusionPayload = { a: Pokemon; b: Pokemon };
@@ -60,34 +59,38 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
   }
 
   return (
-    <div>
-      <div className="mb-6 text-center">
+    <div className="mx-auto max-w-[1040px]">
+      <div className="mb-4 text-center">
         <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
         <p className="text-sm text-poke-dim">Fuse two random Pokémon into one!</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-[1fr_auto_1fr]">
         <div>
           <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-poke-dim">
             {data.a.displayName}
           </p>
-          <PokemonCard pokemon={data.a} loading={loading} />
+          <HeroCard pokemon={data.a} loading={loading} showActions={false} />
         </div>
+
+        <div className="text-center text-3xl font-bold text-poke-red">+</div>
+
         <div>
           <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-poke-dim">
             {data.b.displayName}
           </p>
-          <PokemonCard pokemon={data.b} loading={loading} />
+          <HeroCard pokemon={data.b} loading={loading} showActions={false} />
         </div>
       </div>
 
-      <div className="my-5 text-center text-3xl font-bold text-poke-red">+</div>
+      <div className="my-5 text-center text-3xl font-bold text-poke-red">=</div>
 
       <p className="mb-2 text-center text-sm text-poke-dim">Your fusion is…</p>
-      <PokemonCard pokemon={fused} loading={loading} />
+      <div className="mx-auto max-w-[640px]">
+        <HeroCard pokemon={fused} loading={loading} onRoll={regenerate} />
+      </div>
 
-      <div className="mt-5 flex flex-wrap gap-3">
-        <GenerateButton onClick={regenerate} loading={loading} />
+      <div className="mt-4 flex flex-wrap justify-center gap-3">
         <AddToTeamButton pokemon={fused} />
         <Link
           href="/team"

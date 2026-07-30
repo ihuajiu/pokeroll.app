@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
-import PokemonCard from "./PokemonCard";
-import GenerateButton from "./GenerateButton";
+import HeroCard from "./HeroCard";
 import AddToTeamButton from "./AddToTeamButton";
 
 export type VariantPayload = {
@@ -59,8 +58,8 @@ export default function VariantGenerator({
   }
 
   return (
-    <div>
-      <div className="mb-6 text-center">
+    <div className="mx-auto max-w-[640px]">
+      <div className="mb-4 text-center">
         <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
         <p className="text-sm text-poke-dim">
           Your random {KIND_LABEL[data.kind] ?? data.kind} is…
@@ -71,14 +70,14 @@ export default function VariantGenerator({
           </p>
         )}
       </div>
-      <PokemonCard
+      <HeroCard
         pokemon={data.pokemon}
         loading={loading}
         shiny={mode === "shiny"}
         hideName={mode === "no-names"}
+        onRoll={regenerate}
       />
-      <div className="mt-5 flex flex-wrap gap-3">
-        <GenerateButton onClick={regenerate} loading={loading} />
+      <div className="mt-4 flex flex-wrap justify-center gap-3">
         <AddToTeamButton pokemon={data.pokemon} />
         <Link
           href="/team"

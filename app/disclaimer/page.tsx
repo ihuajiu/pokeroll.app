@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PageHeader from "@/components/PageHeader";
 
 export const metadata: Metadata = {
   title: "Disclaimer & Affiliate Notice — Fan-made Pokémon Tool",
@@ -9,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function DisclaimerPage() {
   return (
-    <main className="mx-auto max-w-2xl">
-      <h1 className="mb-4 text-2xl font-bold text-poke-ink">Disclaimer</h1>
+    <main className="mx-auto max-w-2xl py-10">
+      <PageHeader title="Disclaimer" />
       <div className="space-y-4 text-sm leading-relaxed text-poke-dim">
         <p>
           This site is a fan-made, unofficial tool. It is not affiliated with,

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTeam } from "./useTeam";
-import PokemonCard from "./PokemonCard";
+import HeroCard from "./HeroCard";
 import type { Pokemon } from "@/lib/types";
 
 export default function TeamClient({ sharedNames }: { sharedNames: string | null }) {
@@ -43,8 +43,8 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
   }
 
   return (
-    <main>
-      <div className="mb-6 text-center">
+    <main className="mx-auto max-w-[680px]">
+      <div className="mb-4 text-center">
         <p className="text-lg font-semibold text-poke-ink">
           {isShared ? "Shared Team" : "Your Team"}
         </p>
@@ -63,7 +63,7 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {list.map((p) => (
             <div key={p.dexNumber}>
-              <PokemonCard pokemon={p} />
+              <HeroCard pokemon={p} showActions={false} />
               {!isShared && (
                 <button
                   type="button"

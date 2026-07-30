@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import VariantGenerator from "@/components/VariantGenerator";
 import ToolsNav from "@/components/ToolsNav";
-import AffiliateStrip from "@/components/AffiliateStrip";
+import PageHeader from "@/components/PageHeader";
 import { getVariant, getRandomPokemon, getStarters } from "@/lib/pokeapi";
 
 export const dynamic = "force-dynamic";
@@ -96,16 +97,21 @@ export default async function VariantPage({
 }) {
   const { variant } = await params;
 
+  if (!(variant in META)) notFound();
+
+  const m = META[variant as VariantKey];
+  const headerTitle = m.title.replace(/ — Fan-made Tool$/, "");
+
   if (variant === "starter") {
     const pokemon = await getRandomPokemon(getStarters());
     return (
-      <main>
+      <main className="pt-6 pb-10">
+        <PageHeader title={headerTitle} description={m.description} />
         <VariantGenerator
           kind="starter"
           initial={{ kind: "starter", pokemon }}
         />
         <ToolsNav current={`/${variant}`} />
-        <AffiliateStrip />
       </main>
     );
   }
@@ -113,24 +119,24 @@ export default async function VariantPage({
   if (variant === "shiny" || variant === "no-names") {
     const pokemon = await getRandomPokemon();
     return (
-      <main>
+      <main className="pt-6 pb-10">
+        <PageHeader title={headerTitle} description={m.description} />
         <VariantGenerator
           kind={variant}
           initial={{ kind: variant, pokemon }}
           mode={variant === "shiny" ? "shiny" : "no-names"}
         />
         <ToolsNav current={`/${variant}`} />
-        <AffiliateStrip />
       </main>
     );
   }
 
   const initial = await getVariant(variant);
   return (
-    <main>
+    <main className="pt-6 pb-10">
+      <PageHeader title={headerTitle} description={m.description} />
       <VariantGenerator kind={variant} initial={initial} />
       <ToolsNav current={`/${variant}`} />
-      <AffiliateStrip />
     </main>
   );
 }

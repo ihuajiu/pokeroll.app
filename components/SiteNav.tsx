@@ -2,21 +2,26 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 import { GroupIcon } from "./ToolIcons";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const MAIN = [
-  { href: "/type", label: "Types" },
-  { href: "/fusion", label: "Fusion" },
+  { href: "/random", label: "Generator" },
+  { href: "/no-names", label: "No Names" },
   { href: "/wheel", label: "Wheel" },
-  { href: "/challenge", label: "Challenge" },
+  { href: "/challenge", label: "Starter" },
+  { href: "/type", label: "Types" },
 ];
 
-export default function SiteNav() {
+export default function SiteNav({ currentPath = "" }: { currentPath?: string }) {
   const [open, setOpen] = useState(false);
   const [mobile, setMobile] = useState(false);
   const dropRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const activePath = pathname || currentPath;
+  const isActive = (href: string) => activePath === href || activePath === href + "/";
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -36,18 +41,15 @@ export default function SiteNav() {
       <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-6 py-3">
         <Link
           href="/"
-          className="flex items-center gap-2.5 font-display text-lg font-bold text-poke-ink"
+          className="brand"
         >
-          <span className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-poke-violet to-poke-scarlet text-white shadow-[0_3px_0_rgba(0,0,0,0.18)]">
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="4" />
-              <circle cx="9" cy="9" r="1.5" fill="#fff" />
-              <circle cx="15" cy="9" r="1.5" fill="#fff" />
-              <circle cx="9" cy="15" r="1.5" fill="#fff" />
-              <circle cx="15" cy="15" r="1.5" fill="#fff" />
-            </svg>
-          </span>
-          PockRoll
+          <svg className="ball" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="46" fill="currentColor" />
+            <path d="M4 50a46 46 0 0 1 92 0Z" fill="#fff" />
+            <rect x="2" y="45" width="96" height="10" fill="#1f2430" />
+            <circle cx="50" cy="50" r="15" fill="#fff" stroke="#1f2430" strokeWidth="7" />
+          </svg>
+          <span>Pock<span className="red">Roll</span></span>
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-semibold text-poke-dim md:flex">
@@ -55,7 +57,11 @@ export default function SiteNav() {
             <Link
               key={m.href}
               href={m.href}
-              className="transition hover:text-poke-violet"
+              className={`transition ${
+                isActive(m.href)
+                  ? "text-[#ee3b3b]"
+                  : "text-poke-dim hover:text-[#ee3b3b]"
+              }`}
             >
               {m.label}
             </Link>
@@ -85,11 +91,11 @@ export default function SiteNav() {
               </svg>
             </button>
             {open && (
-              <div className="absolute right-0 mt-3 w-[28rem] rounded-2.5xl border border-poke-border bg-poke-surface p-4 shadow-panel ring-1 ring-poke-violet/15">
+              <div className="absolute right-0 mt-3 w-[28rem] rounded-2.5xl border border-poke-border bg-poke-surface p-4 shadow-panel ring-1 ring-[#ee3b3b]/15">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {TOOL_GROUPS.map((g) => (
                     <div key={g.id}>
-                      <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-poke-violet">
+                      <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#ee3b3b]">
                         <GroupIcon group={g.id} className="h-4 w-4" />
                         {g.title}
                       </div>
@@ -99,7 +105,7 @@ export default function SiteNav() {
                             <Link
                               href={t.href}
                               onClick={() => setOpen(false)}
-                              className="block rounded-lg px-2 py-1 text-sm font-medium text-poke-ink transition hover:bg-poke-violet/10 hover:text-poke-violet"
+                              className="block rounded-lg px-2 py-1 text-sm font-medium text-poke-ink transition hover:bg-[#ee3b3b]/10 hover:text-[#ee3b3b]"
                             >
                               {t.label}
                             </Link>
@@ -114,7 +120,7 @@ export default function SiteNav() {
           </div>
 
           <Link
-            href="/"
+            href="/random"
             className="hidden game-btn game-btn-primary px-4 py-2 text-sm sm:inline-flex"
           >
             Random Pokémon
@@ -148,7 +154,9 @@ export default function SiteNav() {
                 key={m.href}
                 href={m.href}
                 onClick={() => setMobile(false)}
-                className="rounded-lg px-2 py-2 text-sm font-semibold text-poke-ink transition hover:bg-poke-violet/10 hover:text-poke-violet"
+                className={`rounded-lg px-2 py-2 text-sm font-semibold transition hover:bg-[#ee3b3b]/10 hover:text-[#ee3b3b] ${
+                  isActive(m.href) ? "text-[#ee3b3b]" : "text-poke-ink"
+                }`}
               >
                 {m.label}
               </Link>
@@ -157,7 +165,7 @@ export default function SiteNav() {
           <div className="mt-3 space-y-3">
             {TOOL_GROUPS.map((g) => (
               <div key={g.id}>
-                <div className="mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-poke-violet">
+                <div className="mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#ee3b3b]">
                   <GroupIcon group={g.id} className="h-4 w-4" />
                   {g.title}
                 </div>
@@ -167,7 +175,7 @@ export default function SiteNav() {
                       key={t.href}
                       href={t.href}
                       onClick={() => setMobile(false)}
-                      className="rounded-full border border-poke-border bg-poke-surface px-3 py-1 text-xs font-medium text-poke-ink transition hover:border-poke-violet hover:text-poke-violet"
+                      className="rounded-full border border-poke-border bg-poke-surface px-3 py-1 text-xs font-medium text-poke-ink transition hover:border-[#ee3b3b] hover:text-[#ee3b3b]"
                     >
                       {t.label}
                     </Link>
@@ -177,7 +185,7 @@ export default function SiteNav() {
             ))}
           </div>
           <Link
-            href="/"
+            href="/random"
             onClick={() => setMobile(false)}
             className="game-btn game-btn-primary mt-4 block px-4 py-2 text-center text-sm"
           >

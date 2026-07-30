@@ -22,4 +22,7 @@ export type Pokemon = {
   shinySprite?: string;
   isLegendary: boolean;
   isMythical: boolean;
+  // raw lowercase names used for reverse indexing (ability/move -> pokemon)
+  abilityNames?: string[];
+  moveNames?: string[];
 };

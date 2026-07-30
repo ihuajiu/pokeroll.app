@@ -9,3 +9,4 @@ dev.err
 .playwright-cli/
 browse-cards*.png
 *.orig.*
+data/pokedex.json

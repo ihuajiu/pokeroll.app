@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
-import PokemonCard from "./PokemonCard";
+import HeroCard from "./HeroCard";
 import GenerateButton from "./GenerateButton";
 import AddToTeamButton from "./AddToTeamButton";
 
@@ -46,8 +46,8 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
   const winPokemon = winner !== null ? items[winner] : null;
 
   return (
-    <div>
-      <div className="mb-6 text-center">
+    <div className="mx-auto max-w-[440px]">
+      <div className="mb-4 text-center">
         <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
         <p className="text-sm text-poke-dim">Spin the wheel for a random Pokémon!</p>
       </div>
@@ -98,7 +98,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
         </div>
       </div>
 
-      <div className="mt-6 flex flex-wrap justify-center gap-3">
+      <div className="mt-4 flex flex-wrap justify-center gap-3">
         <button
           type="button"
           onClick={spin}
@@ -111,9 +111,9 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
       </div>
 
       {winPokemon ? (
-        <div className="mt-6">
+        <div className="mx-auto mt-4 w-full max-w-[640px]">
           <p className="mb-2 text-center text-sm text-poke-dim">You landed on…</p>
-          <PokemonCard pokemon={winPokemon} />
+          <HeroCard pokemon={winPokemon} showActions={false} />
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <AddToTeamButton pokemon={winPokemon} />
             <Link

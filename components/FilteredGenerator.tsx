@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import type { Pokemon } from "@/lib/types";
-import PokemonCard from "./PokemonCard";
-import GenerateButton from "./GenerateButton";
+import HeroCard from "./HeroCard";
 import AddToTeamButton from "./AddToTeamButton";
 
 export default function FilteredGenerator({
@@ -30,10 +29,9 @@ export default function FilteredGenerator({
   }
 
   return (
-    <div>
-      <PokemonCard pokemon={pokemon} loading={loading} />
+    <div className="mx-auto w-full max-w-[640px]">
+      <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} />
       <div className="mt-5 flex flex-wrap gap-3">
-        <GenerateButton onClick={regenerate} loading={loading} />
         <AddToTeamButton pokemon={pokemon} />
       </div>
     </div>

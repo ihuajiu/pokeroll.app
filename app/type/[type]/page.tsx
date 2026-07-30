@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import SeoNav from "@/components/SeoNav";
-import AffiliateStrip from "@/components/AffiliateStrip";
+import PageHeader from "@/components/PageHeader";
 import { getPoolByType, getRandomPokemon } from "@/lib/pokeapi";
 import { titleCase } from "@/lib/seo";
 
@@ -31,17 +31,13 @@ export default async function TypePage({
   const initial = pool.length ? await getRandomPokemon(pool) : await getRandomPokemon();
 
   return (
-    <main>
-      <h1 className="mb-2 text-center text-2xl font-bold text-poke-ink">
-        Random {t}-type Pokémon Generator
-      </h1>
-      <p className="mb-6 text-center text-sm text-poke-dim">
-        Looking for a random {t}-type Pokémon? Here&apos;s one — tap Generate
-        Again for another.
-      </p>
+    <main className="pt-6 pb-10">
+      <PageHeader
+        title={`Random ${t}-type Pokémon Generator`}
+        description={`Looking for a random ${t}-type Pokémon? Here's one — tap Generate Again for another.`}
+      />
       <FilteredGenerator query={`type=${type}`} initial={initial} />
       <SeoNav current={{ type: "type", value: type }} />
-      <AffiliateStrip />
     </main>
   );
 }

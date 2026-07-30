@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
-import PokemonCard from "./PokemonCard";
-import GenerateButton from "./GenerateButton";
+import HeroCard from "./HeroCard";
 import ShareButton from "./ShareButton";
 import AddToTeamButton from "./AddToTeamButton";
 
@@ -28,10 +27,13 @@ export default function PokemonGenerator({ initial }: { initial: Pokemon }) {
   }
 
   return (
-    <div>
-      <PokemonCard pokemon={pokemon} loading={loading} />
+    <div className="mx-auto w-full max-w-[640px]">
+      <div className="mb-4 text-center">
+        <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
+        <p className="text-sm text-poke-dim">Your random Pokémon is…</p>
+      </div>
+      <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} />
       <div className="mt-5 flex flex-wrap gap-3">
-        <GenerateButton onClick={regenerate} loading={loading} />
         <ShareButton name={pokemon.name} />
         <AddToTeamButton pokemon={pokemon} />
         <Link

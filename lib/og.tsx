@@ -26,7 +26,7 @@ function cap(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-export async function buildOgImage(p?: string): Promise<ImageResponse> {
+export async function buildOgImage(p?: string, origin?: string): Promise<ImageResponse> {
   let name = "Pokémon";
   let dex = "";
   let types: string[] = [];
@@ -39,6 +39,8 @@ export async function buildOgImage(p?: string): Promise<ImageResponse> {
       dex = `#${String(pk.dexNumber).padStart(3, "0")}`;
       types = pk.types ?? [];
       artwork = pk.artwork ?? "";
+      // Images are now self-hosted at a local path; OG rendering needs an absolute URL.
+      if (artwork && artwork.startsWith("/") && origin) artwork = origin + artwork;
     }
   } catch {
     // API failure -> fall back to generic branding (no crash)

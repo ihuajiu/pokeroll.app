@@ -7,7 +7,7 @@ export interface ToolMeta {
 
 export const TOOLS: ToolMeta[] = [
   {
-    href: "/",
+    href: "/random",
     label: "Random Pokémon",
     desc: "A fully random Pokémon with stats, type and sprite.",
     group: "core",

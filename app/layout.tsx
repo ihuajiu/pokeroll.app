@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
+import { headers } from "next/headers";
 import SiteNav from "@/components/SiteNav";
 import Footer from "@/components/Footer";
 
@@ -24,6 +25,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = headers();
+  const currentPath = headersList.get("x-invoke-path") || "";
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -39,7 +43,7 @@ export default function RootLayout({
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=JSON.parse(localStorage.getItem('pokefield-theme')||'{}');var mode=s.mode||'dark';var skin=s.skin||'versus';var el=document.documentElement;el.setAttribute('data-mode',mode);el.setAttribute('data-skin',skin);el.classList.toggle('dark',mode==='dark');}catch(e){}})();`,
+            __html: `(function(){try{var s=JSON.parse(localStorage.getItem('pokefield-theme')||'{}');var mode=s.mode||'light';var skin=s.skin||'versus';var el=document.documentElement;el.setAttribute('data-mode',mode);el.setAttribute('data-skin',skin);el.classList.toggle('dark',mode==='dark');}catch(e){}})();`,
           }}
         />
       </head>
@@ -48,9 +52,9 @@ export default function RootLayout({
           <div className="dots" />
           <div className="scan" />
         </div>
-        <SiteNav />
+        <SiteNav currentPath={currentPath} />
 
-        <div className="mx-auto max-w-[1240px] px-6 py-10">
+        <div className="mx-auto max-w-[1240px] px-6 pb-10">
           {children}
         </div>
         <Footer />

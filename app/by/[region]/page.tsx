@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import SeoNav from "@/components/SeoNav";
-import AffiliateStrip from "@/components/AffiliateStrip";
+import PageHeader from "@/components/PageHeader";
 import { getPoolByRegion, getRandomPokemon } from "@/lib/pokeapi";
 import { REGION_GAME, titleCase } from "@/lib/seo";
 
@@ -35,18 +35,13 @@ export default async function RegionPage({
   const initial = pool.length ? await getRandomPokemon(pool) : await getRandomPokemon();
 
   return (
-    <main>
-      <h1 className="mb-2 text-center text-2xl font-bold text-poke-ink">
-        Random {r} Pokémon Generator
-      </h1>
-      <p className="mb-6 text-center text-sm text-poke-dim">
-        Explore the Pokémon of {r}
-        {game ? `, featured in Pokémon ${game}` : ""}. Here&apos;s one for you —
-        tap Generate Again for another.
-      </p>
+    <main className="pt-6 pb-10">
+      <PageHeader
+        title={`Random ${r} Pokémon Generator`}
+        description={`Explore the Pokémon of ${r}${game ? `, featured in Pokémon ${game}` : ""}. Here's one for you — tap Generate Again for another.`}
+      />
       <FilteredGenerator query={`region=${region}`} initial={initial} />
       <SeoNav current={{ type: "region", value: region }} />
-      <AffiliateStrip />
     </main>
   );
 }
