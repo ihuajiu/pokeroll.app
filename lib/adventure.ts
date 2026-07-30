@@ -7,6 +7,7 @@ import {
   GOALS,
   TRAINER_NAMES,
   TRAINER_ROLES,
+  TRAINER_STYLES,
   type Adventure,
 } from "./adventure-types";
 
@@ -16,6 +17,7 @@ export {
   GOALS,
   TRAINER_NAMES,
   TRAINER_ROLES,
+  TRAINER_STYLES,
   randomSeed,
   shareText,
 } from "./adventure-types";
@@ -64,6 +66,7 @@ export async function rollAdventure(seed: string): Promise<Adventure> {
   const trainer = {
     name: pick(TRAINER_NAMES, rng),
     role: pick(TRAINER_ROLES, rng),
+    style: pick(TRAINER_STYLES, rng),
   };
   const region = pick(REGIONS, rng);
   const goal = pick(GOALS, rng);

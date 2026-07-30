@@ -3,7 +3,8 @@
 import { useState } from "react";
 import HeroCard from "@/components/HeroCard";
 import { useTeam } from "@/components/useTeam";
-import { titleCase } from "@/lib/seo";
+import { titleCase, REGION_GAME } from "@/lib/seo";
+import { TYPE_HEX } from "@/lib/typeColors";
 import { randomSeed, shareText, type Adventure } from "@/lib/adventure-types";
 
 export default function AdventureView({
@@ -92,33 +93,60 @@ export default function AdventureView({
         </div>
       </div>
 
-      {/* Adventure narrative banner */}
-      <div className="mb-6 rounded-2.5xl border border-poke-border bg-poke-surface p-6 shadow-sm">
-        <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#ee3b3b]">
-          <span aria-hidden="true">🎲</span> Your Pokémon Adventure
+      {/* Adventure Manifest banner */}
+      <div
+        className="adventure-manifest mb-6"
+        style={{ ["--cc" as string]: TYPE_HEX[a.starter.types[0]] ?? "#ee3b3b" }}
+      >
+        <span className="am-ghost" aria-hidden="true">
+          {a.region.charAt(0).toUpperCase()}
+        </span>
+
+        <div className="am-meta">
+          <span>
+            <span className="am-dot" />
+            Adventure Manifest
+          </span>
+          <span>Seed · {a.seed}</span>
         </div>
-        <dl className="grid gap-3 sm:grid-cols-2">
-          <div className="flex items-center justify-between gap-4 rounded-xl bg-poke-chip px-4 py-2.5">
-            <dt className="text-xs font-semibold text-poke-dim">Trainer</dt>
-            <dd className="text-sm font-bold text-poke-ink">
-              {a.trainer.name} — {a.trainer.role}
-            </dd>
-          </div>
-          <div className="flex items-center justify-between gap-4 rounded-xl bg-poke-chip px-4 py-2.5">
-            <dt className="text-xs font-semibold text-poke-dim">Region</dt>
-            <dd className="text-sm font-bold text-poke-ink">
+
+        <div className="am-hero">
+          <div className="am-kicker">Trainer Profile</div>
+          <h2 className="am-name">{a.trainer.name}</h2>
+          <p className="am-role">
+            <b>{a.trainer.role}</b>
+            <span className="am-sep">/</span>
+            <i>{a.trainer.style}</i>
+          </p>
+          <span className="am-style">Style · {a.trainer.style}</span>
+        </div>
+
+        <div className="am-grid">
+          <div className="am-cell region">
+            <div className="am-k">Region</div>
+            <div className="am-v">
               {titleCase(a.region)}
-            </dd>
+              <small>{REGION_GAME[a.region] ?? "—"}</small>
+            </div>
           </div>
-          <div className="flex items-center justify-between gap-4 rounded-xl bg-poke-chip px-4 py-2.5">
-            <dt className="text-xs font-semibold text-poke-dim">Challenge</dt>
-            <dd className="text-sm font-bold text-poke-ink">{a.challenge}</dd>
+          <div className="am-cell">
+            <div className="am-k">Challenge</div>
+            <div className="am-v">{a.challenge}</div>
           </div>
-          <div className="flex items-center justify-between gap-4 rounded-xl bg-poke-chip px-4 py-2.5">
-            <dt className="text-xs font-semibold text-poke-dim">Goal</dt>
-            <dd className="text-sm font-bold text-poke-ink">{a.goal}</dd>
+          <div className="am-cell">
+            <div className="am-k">Goal</div>
+            <div className="am-v">{a.goal}</div>
           </div>
-        </dl>
+        </div>
+
+        <div className="am-foot">
+          <span>Team · {a.team.length} unknown companions</span>
+          <span className="am-team-dots" aria-hidden="true">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <i key={i} className={i < a.team.length ? "on" : ""} />
+            ))}
+          </span>
+        </div>
       </div>
 
       {/* Starter */}

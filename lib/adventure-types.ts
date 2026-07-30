@@ -17,6 +17,17 @@ export const TRAINER_ROLES = [
   "Collector",
 ] as const;
 
+export const TRAINER_STYLES = [
+  "Aggressive",
+  "Defensive",
+  "Tactical",
+  "Balanced",
+  "Reckless",
+  "Patient",
+  "Cunning",
+  "Adaptive",
+] as const;
+
 export const GOALS = [
   "Become Champion",
   "Complete Pokédex",
@@ -41,7 +52,7 @@ export const CHALLENGES = [
 
 export interface Adventure {
   seed: string;
-  trainer: { name: string; role: string };
+  trainer: { name: string; role: string; style: string };
   region: string;
   goal: string;
   challenge: string;
@@ -57,7 +68,7 @@ export function shareText(a: Adventure): string {
   const lines = [
     "My Pokémon Adventure",
     "",
-    `Trainer: ${a.trainer.name} — ${a.trainer.role}`,
+    `Trainer: ${a.trainer.name} — ${a.trainer.role} (${a.trainer.style})`,
     `Region: ${a.region.charAt(0).toUpperCase() + a.region.slice(1)}`,
     `Starter: ${a.starter.displayName}`,
     `Challenge: ${a.challenge}`,

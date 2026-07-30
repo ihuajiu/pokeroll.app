@@ -807,6 +807,188 @@ body {
 .team-card.hero-card .bar .bv {
   font-size: 12.5px;
 }
+
+/* ============================================================
+   Adventure Manifest — the rolled-adventure narrative banner.
+   Uses the same design tokens as the team cards (surface / border /
+   --cc accent / --r-lg / display+mono fonts) so it belongs to the page
+   across all four theme states.
+   ============================================================ */
+.adventure-manifest {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--cc, rgb(var(--accent))) 28%, rgb(var(--border)));
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(120% 140% at 88% -10%, color-mix(in srgb, var(--cc, rgb(var(--accent))) 12%, transparent) 0%, transparent 55%),
+    linear-gradient(168deg, rgb(var(--surface)) 0%, rgb(var(--surface-2)) 100%);
+  padding: 22px 26px 18px;
+  box-shadow: 0 1px 0 rgb(var(--border-soft)) inset,
+    0 8px 22px -18px var(--cc, rgb(var(--accent)));
+}
+/* faint giant region initial behind the name */
+.adventure-manifest .am-ghost {
+  position: absolute;
+  right: -10px;
+  top: -42px;
+  font: 900 200px/1 var(--display);
+  color: var(--cc, rgb(var(--accent)));
+  opacity: 0.06;
+  letter-spacing: -6px;
+  pointer-events: none;
+  user-select: none;
+  text-transform: uppercase;
+  z-index: 0;
+}
+.adventure-manifest > * { position: relative; z-index: 1; }
+
+/* meta bar */
+.adventure-manifest .am-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgb(var(--border-soft));
+  font: 600 10.5px/1 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(var(--text-faint));
+}
+.adventure-manifest .am-meta .am-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cc, rgb(var(--accent)));
+  display: inline-block; margin-right: 8px; vertical-align: middle;
+}
+
+/* hero trainer block */
+.adventure-manifest .am-kicker {
+  font: 600 11px/1 var(--mono);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--cc, rgb(var(--accent)));
+  margin-bottom: 8px;
+}
+.adventure-manifest .am-name {
+  margin: 0;
+  font: 800 clamp(34px, 8cqi, 58px) / 0.96 var(--display);
+  letter-spacing: -1.5px;
+  text-transform: capitalize;
+  color: rgb(var(--text));
+}
+.adventure-manifest .am-role {
+  margin: 6px 0 0;
+  font: italic 600 18px/1.3 var(--display);
+  color: rgb(var(--text-dim));
+}
+.adventure-manifest .am-role b {
+  color: rgb(var(--text));
+  font-style: normal;
+  font-weight: 700;
+}
+.adventure-manifest .am-role .am-sep {
+  margin: 0 9px;
+  color: rgb(var(--text-faint));
+}
+.adventure-manifest .am-style {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font: 600 11px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cc, rgb(var(--accent)));
+  background: color-mix(in srgb, var(--cc, rgb(var(--accent))) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cc, rgb(var(--accent))) 34%, transparent);
+  padding: 6px 11px;
+  border-radius: 999px;
+}
+
+/* hairline 3-up */
+.adventure-manifest .am-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 1fr;
+  border-top: 1px solid rgb(var(--border-soft));
+  border-bottom: 1px solid rgb(var(--border-soft));
+}
+.adventure-manifest .am-cell {
+  padding: 14px 16px 14px 0;
+  border-right: 1px solid rgb(var(--border-soft));
+}
+.adventure-manifest .am-cell:nth-child(2) { padding-left: 18px; }
+.adventure-manifest .am-cell:last-child {
+  border-right: 0;
+  padding-left: 18px;
+  padding-right: 0;
+}
+.adventure-manifest .am-cell .am-k {
+  font: 600 10px/1 var(--mono);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--text-faint));
+  margin-bottom: 7px;
+}
+.adventure-manifest .am-cell .am-v {
+  font: 700 20px/1.1 var(--display);
+  letter-spacing: -0.3px;
+  color: rgb(var(--text));
+}
+.adventure-manifest .am-cell.region .am-v {
+  color: var(--cc, rgb(var(--accent)));
+}
+.adventure-manifest .am-cell .am-v small {
+  display: block;
+  margin-top: 5px;
+  font: 600 10.5px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--text-faint));
+  font-style: normal;
+}
+
+/* footer */
+.adventure-manifest .am-foot {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 600 10.5px/1 var(--mono);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--text-faint));
+}
+.adventure-manifest .am-team-dots {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+.adventure-manifest .am-team-dots i {
+  width: 9px; height: 9px; border-radius: 50%;
+  border: 1px solid rgb(var(--border));
+  background: rgb(var(--surface-2));
+  display: inline-block;
+}
+.adventure-manifest .am-team-dots i.on {
+  background: var(--cc, rgb(var(--accent)));
+  border-color: var(--cc, rgb(var(--accent)));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cc, rgb(var(--accent))) 18%, transparent);
+}
+
+@media (max-width: 560px) {
+  .adventure-manifest { padding: 18px 18px 14px; }
+  .adventure-manifest .am-grid { grid-template-columns: 1fr; }
+  .adventure-manifest .am-cell {
+    border-right: 0;
+    border-bottom: 1px solid rgb(var(--border-soft));
+    padding: 12px 0;
+  }
+  .adventure-manifest .am-cell:nth-child(2),
+  .adventure-manifest .am-cell:last-child { padding-left: 0; }
+  .adventure-manifest .am-cell:last-child { border-bottom: 0; }
+}
+
 /* ── Wide team-card variant (Team / roster page) ─────────────────────────
    The roster page is a 2-column grid at max-w 680px, so each card is far
    wider than the compact challenge cards. Use a horizontal layout: large
