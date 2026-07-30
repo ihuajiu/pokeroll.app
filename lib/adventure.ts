@@ -3,6 +3,7 @@ import {
   getPokemonById,
   getPoolByRegion,
   getStarters,
+  GEN_REGION,
 } from "@/lib/pokeapi";
 import { REGIONS } from "@/lib/seo";
 import { hashSeed, mulberry32 } from "@/lib/challenge";
@@ -11,6 +12,9 @@ import {
   CHALLENGES,
   DIFFICULTIES,
   GOALS,
+  LEGENDARY_ROLES,
+  RIVAL_NAMES,
+  RIVAL_TITLES,
   TRAINER_NAMES,
   TRAINER_ROLES,
   TRAINER_STYLES,
@@ -22,6 +26,9 @@ export {
   CHALLENGES,
   DIFFICULTIES,
   GOALS,
+  LEGENDARY_ROLES,
+  RIVAL_NAMES,
+  RIVAL_TITLES,
   TRAINER_NAMES,
   TRAINER_ROLES,
   TRAINER_STYLES,
@@ -57,6 +64,12 @@ async function pickDistinct(
   );
   return list.filter((p): p is Pokemon => p !== null);
 }
+
+const COUNTER_TYPE: Record<string, string> = {
+  fire: "water",
+  water: "grass",
+  grass: "fire",
+};
 
 function byDexMap(all: Pokemon[]): Map<number, Pokemon> {
   return new Map(all.map((p) => [p.dexNumber, p]));
@@ -110,6 +123,55 @@ function getDifficultyPool(
   return pool;
 }
 
+async function getRivalStarter(
+  starter: Pokemon,
+  regionPool: number[],
+  rng: () => number,
+  all: Pokemon[],
+): Promise<Pokemon> {
+  const byId = byDexMap(all);
+  const starterType = starter.types[0]?.toLowerCase();
+  const counterType = starterType ? COUNTER_TYPE[starterType] : undefined;
+
+  let candidatePool = regionPool;
+  if (counterType) {
+    const counterPool = regionPool.filter((id) => {
+      const p = byId.get(id);
+      return p?.types.includes(counterType);
+    });
+    if (counterPool.length > 0) {
+      candidatePool = counterPool;
+    }
+  }
+
+  const excludingStarter = candidatePool.filter((id) => id !== starter.dexNumber);
+  if (excludingStarter.length > 0) candidatePool = excludingStarter;
+
+  const pickId =
+    candidatePool[Math.floor(rng() * candidatePool.length)] ??
+    regionPool[0] ??
+    1;
+  return getPokemonById(pickId).catch(() => getPokemonById(1));
+}
+
+function getLegendaryPool(region: string, all: Pokemon[]): number[] {
+  const entry = Object.entries(GEN_REGION).find(
+    ([, r]) => r.toLowerCase() === region.toLowerCase(),
+  );
+  const gen = entry ? Number(entry[0]) : undefined;
+  const pool = all
+    .filter(
+      (p) =>
+        (gen === undefined || p.generation === gen) &&
+        (p.isLegendary || p.isMythical),
+    )
+    .map((p) => p.dexNumber);
+  if (pool.length > 0) return pool;
+  return all
+    .filter((p) => p.isLegendary || p.isMythical)
+    .map((p) => p.dexNumber);
+}
+
 /**
  * Roll a full Pokémon adventure from a seed. Same seed → same adventure
  * (deterministic via mulberry32). Region drives the team pool so the squad
@@ -146,8 +208,26 @@ export async function rollAdventure(
 
   const regionPool = await getPoolByRegion(region);
   const all = getAllPokemon();
+
+  const rival = {
+    name: pick(RIVAL_NAMES, rng),
+    title: pick(RIVAL_TITLES, rng),
+    starter: await getRivalStarter(starter, regionPool, rng, all),
+  };
+
   const difficultyPool = getDifficultyPool(regionPool, diff, rng, all);
   const team = await pickDistinct(difficultyPool, 6, rng);
+
+  const legendaryPool = getLegendaryPool(region, all);
+  const legendaryId =
+    legendaryPool[Math.floor(rng() * legendaryPool.length)] ?? 1;
+  const legendaryPokemon = await getPokemonById(legendaryId).catch(() =>
+    getPokemonById(1),
+  );
+  const legendary = {
+    pokemon: legendaryPokemon,
+    role: pick(LEGENDARY_ROLES, rng),
+  };
 
   return {
     seed,
@@ -158,5 +238,7 @@ export async function rollAdventure(
     challenge,
     starter,
     team,
+    rival,
+    legendary,
   };
 }

@@ -213,10 +213,6 @@ export default function AdventureView({
             </div>
           </div>
           <div className="am-cell">
-            <div className="am-k">Difficulty</div>
-            <div className="am-v">{a.difficulty}</div>
-          </div>
-          <div className="am-cell">
             <div className="am-k">Challenge</div>
             <div className="am-v">{a.challenge}</div>
           </div>
@@ -248,6 +244,31 @@ export default function AdventureView({
         </div>
       )}
 
+      {/* Rival */}
+      {a.rival && (
+        <div className="mb-8">
+          <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
+            Your Rival
+          </h2>
+          <div className="mx-auto mb-4 max-w-[640px] rounded-2xl border border-poke-border bg-poke-surface p-4 text-center shadow-sm">
+            <p className="text-lg font-bold text-poke-ink">
+              {a.rival.name} — {a.rival.title}
+            </p>
+            <p className="text-sm text-poke-dim">
+              {a.rival.name} chose a {titleCase(a.rival.starter.types[0])}-type
+              starter to counter yours.
+            </p>
+          </div>
+          <div className="mx-auto max-w-[640px]">
+            <HeroCard
+              pokemon={a.rival.starter}
+              variant="team"
+              showActions={false}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Team */}
       {a.team.length > 0 && (
         <div>
@@ -270,6 +291,26 @@ export default function AdventureView({
         </div>
       )}
 
+      {/* Legendary Encounter */}
+      {a.legendary && (
+        <div className="mt-8">
+          <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
+            Legendary Encounter
+          </h2>
+          <div className="mx-auto mb-4 max-w-[640px] rounded-2xl border border-poke-border bg-poke-surface p-4 text-center shadow-sm">
+            <p className="text-sm font-semibold uppercase tracking-wide text-poke-dim">
+              {a.legendary.role}
+            </p>
+          </div>
+          <div className="mx-auto max-w-[640px]">
+            <HeroCard
+              pokemon={a.legendary.pokemon}
+              variant="team"
+              showActions={false}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

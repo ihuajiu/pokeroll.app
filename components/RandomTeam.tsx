@@ -3,7 +3,7 @@
 import { useState } from "react";
 import HeroCard from "@/components/HeroCard";
 import { useTeam } from "@/components/useTeam";
-import { ALL_TYPES } from "@/lib/pokeapi";
+import { TYPES } from "@/lib/seo";
 import { DIFFICULTIES } from "@/lib/adventure-types";
 import type { Pokemon } from "@/lib/types";
 import type { TeamRandomParams } from "@/lib/team";
@@ -157,7 +157,7 @@ export default function RandomTeam({
             className="rounded-lg border border-poke-border bg-white px-2 py-1.5 text-sm text-poke-ink focus:border-poke-red focus:outline-none"
           >
             <option value="">Any</option>
-            {ALL_TYPES.map((t) => (
+            {TYPES.map((t) => (
               <option key={t} value={t}>
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </option>

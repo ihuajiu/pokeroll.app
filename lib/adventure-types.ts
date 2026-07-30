@@ -35,6 +35,29 @@ export const DIFFICULTIES = [
   "Extreme",
 ] as const;
 
+export const RIVAL_NAMES = [
+  "Leo", "Zoe", "Max", "Rin", "Tess", "Noah", "Elio", "Mina",
+] as const;
+
+export const RIVAL_TITLES = [
+  "Childhood Rival",
+  "Mysterious Prodigy",
+  "Gym Leader's Kid",
+  "Roaming Challenger",
+  "Team Rocket hopeful",
+  "Professor's Assistant",
+  "Rival from Another Region",
+] as const;
+
+export const LEGENDARY_ROLES = [
+  "Final Trial",
+  "Roaming Legend",
+  "Mythic Clue",
+  "Ancient Guardian",
+  "Prophecy Encounter",
+  "Hidden Sanctuary",
+] as const;
+
 export const GOALS = [
   "Become Champion",
   "Complete Pokédex",
@@ -66,6 +89,8 @@ export interface Adventure {
   difficulty: string;
   starter: Pokemon;
   team: Pokemon[];
+  rival: { name: string; title: string; starter: Pokemon };
+  legendary: { pokemon: Pokemon; role: string };
 }
 
 export function randomSeed(): string {
