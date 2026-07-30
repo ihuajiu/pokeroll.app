@@ -12,12 +12,18 @@ export default function AdventureView({
 }: {
   initial: Adventure;
 }) {
-  const { add } = useTeam();
+  const { add, team, max } = useTeam();
   const [adventure, setAdventure] = useState<Adventure>(initial);
   const [rolling, setRolling] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const a = adventure;
+
+  function flash(msg: string) {
+    setNotice(msg);
+    setTimeout(() => setNotice(null), 2600);
+  }
 
   async function rollAgain() {
     if (rolling) return;
@@ -45,6 +51,20 @@ export default function AdventureView({
     const url =
       typeof window !== "undefined" ? window.location.href : "/adventure";
     const text = `${shareText(a)}\n${url}`;
+    // Prefer the native social share sheet (mobile + supported desktops).
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({
+          title: "My Pokémon Adventure",
+          text: shareText(a),
+          url,
+        });
+        return;
+      } catch {
+        /* user dismissed the share sheet — fall through to clipboard */
+      }
+    }
+    // Fallback: copy the full text + link to the clipboard.
     try {
       await navigator.clipboard?.writeText(text);
       setCopied(true);
@@ -55,8 +75,29 @@ export default function AdventureView({
   }
 
   function addAll() {
-    a.team.forEach((p) => add(p));
-    if (a.starter) add(a.starter);
+    const candidates = [a.starter, ...a.team].filter(Boolean);
+    const inTeam = new Set(team.map((p) => p.dexNumber));
+    const fresh = candidates.filter((p) => !inTeam.has(p.dexNumber));
+    const slots = max - team.length;
+
+    if (slots <= 0) {
+      flash(`Team is full (${team.length}/${max}). Remove some to add new Pokémon.`);
+      return;
+    }
+    if (fresh.length === 0) {
+      flash("All these Pokémon are already in your team.");
+      return;
+    }
+    // Only add up to the available slots — never overflow, which would
+    // silently evict earlier team members via useTeam's slice(-max).
+    const toAdd = fresh.slice(0, slots);
+    toAdd.forEach((p) => add(p));
+    const added = toAdd.length;
+    if (added < fresh.length) {
+      flash(`Added ${added} — team is now full (${max}/${max}).`);
+    } else {
+      flash(`Added ${added} to your team (${team.length + added}/${max}).`);
+    }
   }
 
   return (
@@ -74,6 +115,9 @@ export default function AdventureView({
             className="rounded-xl bg-poke-btn px-4 py-2 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
           >
             Add all to Team
+            <span className="ml-1.5 rounded-full bg-white/20 px-1.5 text-xs leading-5">
+              {team.length}/{max}
+            </span>
           </button>
           <button
             type="button"
@@ -92,6 +136,15 @@ export default function AdventureView({
           </button>
         </div>
       </div>
+
+      {notice && (
+        <div
+          role="status"
+          className="mb-4 rounded-xl border border-poke-border bg-poke-surface px-4 py-2.5 text-sm font-medium text-poke-ink shadow-sm"
+        >
+          {notice}
+        </div>
+      )}
 
       {/* Adventure Manifest banner */}
       <div
