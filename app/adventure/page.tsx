@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import AdventureView from "@/components/AdventureView";
 import ToolsNav from "@/components/ToolsNav";
 import PageHeader from "@/components/PageHeader";
-import { rollAdventure, randomSeed } from "@/lib/adventure";
+import { rollAdventure } from "@/lib/adventure";
+import { randomSeed } from "@/lib/adventure-types";
 
 export const dynamic = "force-dynamic";
 

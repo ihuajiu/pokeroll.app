@@ -5,11 +5,7 @@ import { useRouter } from "next/navigation";
 import HeroCard from "@/components/HeroCard";
 import { useTeam } from "@/components/useTeam";
 import { titleCase } from "@/lib/seo";
-import {
-  randomSeed,
-  shareText,
-  type Adventure,
-} from "@/lib/adventure";
+import { randomSeed, shareText, type Adventure } from "@/lib/adventure-types";
 
 export default function AdventureView({
   initial,

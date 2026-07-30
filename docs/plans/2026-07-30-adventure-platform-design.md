@@ -35,6 +35,10 @@ PokeRoll 现状是「Pokémon 工具箱」（17+ 工具平铺），用户心智�
 - 路由 `app/adventure/page.tsx`，服务端组件，`dynamic = "force-dynamic"`。
 - **可分享**：复用 challenge 的 seed 机制。`/adventure?seed=xxx` 复现同一冒险；首次访问无 seed 时服务端生成并 `router.replace` 写入 URL。
 - **RNG 复用**：`lib/challenge.ts` 的 `hashSeed` + `mulberry32` 改为 `export`（仅加 export，不改逻辑，`/challenge` 零回归），`lib/adventure.ts` 导入复用。
+- **客户端/服务端隔离（关键）**：`lib/adventure.ts` 的 `rollAdventure` 依赖 `lib/pokeapi` → `lib/pokedex.ts`（`fs` 读 `data/pokedex.json`），属服务端模块，**禁止被 `"use client"` 组件 import**，否则 Webpack 把 `fs` 拖进客户端 bundle 报 `Module not found: Can't resolve 'fs'`。故拆分：
+  - `lib/adventure-types.ts`（客户端安全）：`Adventure` 类型 + `TRAINER_NAMES`/`TRAINER_ROLES`/`GOALS`/`CHALLENGES` 数据集 + `randomSeed`/`shareText` 纯函数，无任何 fs/pokeapi 依赖。
+  - `lib/adventure.ts`（服务端）：仅 `rollAdventure`，从 `adventure-types` re-export 类型与纯函数供服务端使用。
+  - `components/AdventureView.tsx`（use client）与 `app/adventure/page.tsx` 的 `randomSeed` 均从 `lib/adventure-types` 导入；`rollAdventure` 仅 `page.tsx` 服务端调用。
 
 **`rollAdventure(seed)` 逻辑**（新建 `lib/adventure.ts`）：
 ```
@@ -103,9 +107,10 @@ PageHeader "Roll Your Pokémon Adventure"
 ## 4. 文件清单
 
 **新建**
-- `lib/adventure.ts` — `rollAdventure(seed)` + 数据集 `TRAINER_NAMES`/`TRAINER_ROLES`/`GOALS`/`CHALLENGES` + `randomSeed`/`shareText`；导入 challenge 的 RNG
+- `lib/adventure-types.ts` — 客户端安全：`Adventure` 类型 + 数据集 + `randomSeed`/`shareText`（无 fs/pokeapi 依赖）
+- `lib/adventure.ts` — 服务端：`rollAdventure(seed)`（导入 pokeapi 与 RNG），re-export adventure-types
 - `app/adventure/page.tsx` — 服务端页（`force-dynamic`，读 `searchParams.seed`）
-- `components/AdventureView.tsx` — 客户端交互（Roll Again / Share Adventure / Add all to Team）
+- `components/AdventureView.tsx` — 客户端交互（Roll Again / Share Adventure / Add all to Team），从 `lib/adventure-types` 导入
 - `components/HeroAdventureTeaser.tsx` — 首页右栏冒险预告卡（🎲 + 三问号 + Roll Adventure CTA）
 
 **改动**
