@@ -3,9 +3,8 @@ node_modules/
 .codebuddy/
 .workbuddy/
 *.tsbuildinfo
-dev.log
-dev*.log
-dev.err
+*.log
+*.err
 .playwright-cli/
 browse-cards*.png
 *.orig.*
