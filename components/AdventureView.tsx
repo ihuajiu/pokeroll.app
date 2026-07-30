@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import HeroCard from "@/components/HeroCard";
 import { useTeam } from "@/components/useTeam";
 import { titleCase } from "@/lib/seo";
@@ -12,17 +11,33 @@ export default function AdventureView({
 }: {
   initial: Adventure;
 }) {
-  const router = useRouter();
   const { add } = useTeam();
+  const [adventure, setAdventure] = useState<Adventure>(initial);
   const [rolling, setRolling] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const a = initial;
+  const a = adventure;
 
-  function rollAgain() {
+  async function rollAgain() {
     if (rolling) return;
     setRolling(true);
-    router.push(`/adventure?seed=${randomSeed()}`);
+    const seed = randomSeed();
+    try {
+      const res = await fetch(`/api/adventure?seed=${seed}`);
+      if (!res.ok) throw new Error("roll failed");
+      const next = (await res.json()) as Adventure;
+      setAdventure(next);
+      // Update URL without a full RSC navigation so [Share] stays correct.
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        url.searchParams.set("seed", seed);
+        window.history.replaceState(null, "", url.toString());
+      }
+    } catch {
+      /* keep current adventure on failure */
+    } finally {
+      setRolling(false);
+    }
   }
 
   async function share() {
@@ -124,7 +139,10 @@ export default function AdventureView({
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
             Your Team ({a.team.length})
           </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-3"
+            style={{ gap: "4px" }}
+          >
             {a.team.map((p) => (
               <HeroCard
                 key={p.dexNumber}

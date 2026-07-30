@@ -663,8 +663,8 @@ body {
   overflow: hidden;
   display: block;
   height: 100%;
-  min-height: 264px;
-  padding: 24px 24px 22px 28px;
+  min-height: 0;
+  padding: 26px 20px 18px 24px;
   border: 1px solid
     color-mix(in srgb, var(--cc, rgb(var(--accent))) 32%, rgb(var(--border)));
   border-radius: var(--r-lg);
@@ -674,7 +674,7 @@ body {
     rgb(var(--surface)) 58%
   );
   box-shadow: 0 1px 0 rgb(var(--border-soft)) inset,
-    0 10px 26px -20px var(--cc, rgb(var(--accent)));
+    0 6px 16px -16px var(--cc, rgb(var(--accent)));
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
     border-color 0.25s, box-shadow 0.25s;
 }
@@ -699,7 +699,7 @@ body {
   transform: translateY(-5px);
   border-color: var(--cc, rgb(var(--accent)));
   box-shadow: 0 1px 0 rgb(var(--border-soft)) inset,
-    0 18px 36px -22px var(--cc, rgb(var(--accent)));
+    0 10px 24px -18px var(--cc, rgb(var(--accent)));
 }
 /* Large sprite floating top-right, directly on the card, with a soft
    type-tinted drop-shadow — no container, no rectangle. */
@@ -734,9 +734,10 @@ body {
   min-width: 0;
   z-index: 1;
 }
-/* Top text clears the top-right sprite; the meta grid below spans full width. */
+/* Top text clears the top-right sprite; the meta grid below spans full width.
+   The name (h3) is exempt: it may use the full width and wrap, floating under
+   the sprite — overlap is intentional so long names stay fully visible. */
 .team-card.hero-card .dex,
-.team-card.hero-card h3,
 .team-card.hero-card .try-types {
   max-width: calc(100% - 198px);
 }
@@ -754,6 +755,10 @@ body {
   letter-spacing: -1px;
   text-transform: capitalize;
   color: rgb(var(--text));
+  /* Float under the sprite: full width + wrap so long names are never clipped. */
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 .team-card.hero-card .try-types {
   margin-bottom: 2px;
@@ -784,7 +789,7 @@ body {
 /* Type-colored stat bars span the full width at the bottom. */
 .team-card.hero-card .bars {
   margin-top: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 0;
 }
 .team-card.hero-card .bar {
   font-size: 12px;

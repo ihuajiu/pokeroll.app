@@ -29,7 +29,7 @@ export default async function AdventurePage({
         title="Roll Your Pokémon Adventure"
         description="One tap rolls your trainer, region, starter, team, challenge and goal — a full Pokémon adventure every time."
       />
-      <div className="mx-auto max-w-5xl px-6">
+      <div className="mx-auto max-w-5xl px-3">
         <AdventureView initial={adventure} />
       </div>
       <ToolsNav current="/adventure" />
