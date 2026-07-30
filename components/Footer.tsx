@@ -56,8 +56,15 @@ export default function Footer() {
               <path d="M4 50a46 46 0 0 1 92 0Z" fill="#fff" />
               <rect x="2" y="45" width="96" height="10" fill="#1f2430" />
               <circle cx="50" cy="50" r="15" fill="#fff" stroke="#1f2430" strokeWidth="7" />
+              <g fill="#1f2430">
+                <circle cx="44" cy="44" r="3.2" />
+                <circle cx="56" cy="44" r="3.2" />
+                <circle cx="50" cy="50" r="3.2" />
+                <circle cx="44" cy="56" r="3.2" />
+                <circle cx="56" cy="56" r="3.2" />
+              </g>
             </svg>
-            <span>Pock<span className="red">Roll</span></span>
+            <span>Poke<span className="red">Roll</span></span>
           </div>
           <p>
             Roll a random Pokémon — names, types, stats and shinies in one tap.

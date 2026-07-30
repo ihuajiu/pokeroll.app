@@ -6,8 +6,8 @@ import SiteNav from "@/components/SiteNav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL ?? "https://pockroll.app"),
-  title: "PockRoll — Random Pokémon Generator",
+  metadataBase: new URL(process.env.SITE_URL ?? "https://pokeroll.app"),
+  title: "PokeRoll — Random Pokémon Generator",
   description:
     "Roll a random Pokémon in one tap. Every pull comes with a name, type, ability, base stats, generation and an official sprite. Fan-made, not affiliated with Nintendo.",
   keywords: [

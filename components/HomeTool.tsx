@@ -6,7 +6,7 @@ import HeroAdventureTeaser from "@/components/HeroAdventureTeaser";
 import ToolsNav from "@/components/ToolsNav";
 
 export const metadata: Metadata = {
-  title: "PockRoll — Random Pokémon Generator",
+  title: "PokeRoll — Random Pokémon Generator",
   description:
     "Roll a random Pokémon in one tap. Every pull comes with a name, type, ability, base stats, generation and an official sprite.",
   keywords: [

@@ -216,7 +216,7 @@ export function shareText(a: Adventure): string {
       : `Gym Journey: ${a.gymJourney.length} gyms in ${a.region.charAt(0).toUpperCase() + a.region.slice(1)}`,
     `Goal: ${a.goal}`,
     "",
-    "Roll yours at PockRoll",
+    "Roll yours at PokeRoll",
   ];
   return lines.join("\n");
 }

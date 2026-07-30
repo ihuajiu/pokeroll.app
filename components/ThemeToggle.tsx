@@ -100,8 +100,15 @@ export default function ThemeToggle() {
             aria-hidden="true"
           >
             <circle cx="12" cy="12" r="9" />
-            <path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor" fillOpacity="0.28" />
+            <path d="M3.2 12h17.6" />
             <circle cx="12" cy="12" r="3" />
+            <g fill="currentColor" stroke="none">
+              <circle cx="10.6" cy="10.6" r="0.7" />
+              <circle cx="13.4" cy="10.6" r="0.7" />
+              <circle cx="12" cy="12" r="0.7" />
+              <circle cx="10.6" cy="13.4" r="0.7" />
+              <circle cx="13.4" cy="13.4" r="0.7" />
+            </g>
           </svg>
         ) : (
           <svg
