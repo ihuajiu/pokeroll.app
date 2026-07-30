@@ -47,6 +47,11 @@ const JUMP_TOOLS: JumpTool[] = [
     icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
   },
   {
+    href: "/team/random", label: "Random Team", desc: "Roll a ready-made squad of six random Pokémon.",
+    color: "#f5a524", p: 196, count: "SQUAD",
+    icon: <SvgIcon><circle cx="8" cy="8" r="2.4" /><circle cx="16" cy="8" r="2.4" /><circle cx="8" cy="16" r="2.4" /><circle cx="16" cy="16" r="2.4" /></SvgIcon>,
+  },
+  {
     href: "/shiny", label: "Shiny Generator", desc: "Hunt the rare recolored form.",
     color: "#fbbf24", p: 6, count: "SHINY",
     icon: <SvgIcon><path d="M12 2l2.4 5 5.6.8-4 4 1 5.6L12 20l-5 2.4 1-5.6-4-4 5.6-.8z" /></SvgIcon>,
@@ -103,6 +108,7 @@ const BROWSE_MODULES: Module[] = [
   { href: "/type", cat: "Type", gen: "18 TYPES", label: "Type Generator", p: 37, desc: "Roll one of the 18 elemental types." },
   { href: "/challenge", cat: "RNG", gen: "EGG", label: "Mystery Egg", p: 175, desc: "Crack open a surprise species you never met." },
   { href: "/team", cat: "Squad", gen: "SQUAD", label: "Team Builder", p: 196, desc: "Collect favourites into a themed squad." },
+  { href: "/team/random", cat: "Squad", gen: "6×DEX", label: "Random Team", p: 196, desc: "Roll a ready-made squad of six random Pokémon." },
   { href: "/by/kanto", cat: "Region", gen: "GEN 1–9", label: "By Region", p: 150, desc: "Filter Kanto → Paldea by region." },
   { href: "/card", cat: "Create", gen: "BUILD", label: "Card Generator", p: 6, desc: "Generate a custom Pokémon trading card." },
   { href: "/ability", cat: "Variant", gen: "DEX 1–1010", label: "Ability Generator", p: 25, desc: "Roll a random Ability and see who has it." },
@@ -166,7 +172,7 @@ export default async function Home({ p }: { p?: string }) {
                   <circle cx="50" cy="50" r="6" fill="currentColor" />
                 </svg>
               </div>
-              <HeroCard pokemon={initial} />
+              <HeroCard pokemon={initial} rollButtonId="heroRollBtn" />
             </div>
           </div>
         </div>

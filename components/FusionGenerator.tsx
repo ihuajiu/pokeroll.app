@@ -70,7 +70,7 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
           <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-poke-dim">
             {data.a.displayName}
           </p>
-          <HeroCard pokemon={data.a} loading={loading} showActions={false} />
+          <HeroCard pokemon={data.a} loading={loading} showActions={false} variant="team" />
         </div>
 
         <div className="text-center text-3xl font-bold text-poke-red">+</div>
@@ -79,7 +79,7 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
           <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-poke-dim">
             {data.b.displayName}
           </p>
-          <HeroCard pokemon={data.b} loading={loading} showActions={false} />
+          <HeroCard pokemon={data.b} loading={loading} showActions={false} variant="team" />
         </div>
       </div>
 

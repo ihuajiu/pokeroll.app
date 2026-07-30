@@ -274,31 +274,31 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
               Reveal all
             </button>
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {challenge.pokemon.map((p) => {
               const isOpen = revealed.has(p.dexNumber ?? 0);
               return (
                 <button
                   key={p.dexNumber ?? p.name}
                   onClick={() => toggleReveal(p.dexNumber)}
-                  className="flex flex-col items-center rounded-2xl border border-poke-border bg-poke-surface p-3 text-center shadow-sm transition hover:border-poke-red"
+                  className="group flex flex-col items-center rounded-2xl border border-poke-border bg-poke-surface p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-poke-red hover:shadow-lg"
                 >
-                  <div className="flex h-20 w-20 items-center justify-center">
+                  <div className="flex h-40 w-40 items-center justify-center">
                     {isOpen ? (
                       <img
                         src={p.artwork || p.sprite}
                         alt={p.displayName}
-                        className="h-20 w-20 object-contain"
+                        className="h-40 w-40 object-contain drop-shadow"
                         loading="lazy"
                       />
                     ) : (
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-poke-chip text-2xl font-bold text-poke-dim">
+                      <div className="flex h-32 w-32 items-center justify-center rounded-full bg-poke-chip text-5xl font-bold text-poke-dim">
                         ?
                       </div>
                     )}
                   </div>
                   <span
-                    className={`mt-2 text-sm font-semibold ${
+                    className={`mt-3 text-base font-semibold ${
                       isOpen ? "text-poke-red" : "text-poke-dim"
                     }`}
                   >
@@ -327,17 +327,17 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
           <div
             className={
               mode === "team"
-                ? "grid grid-cols-3 gap-2"
-                : "grid grid-cols-1 gap-4 sm:grid-cols-2"
+                ? "grid grid-cols-2 auto-rows-fr gap-4 sm:grid-cols-3"
+                : "grid grid-cols-1 gap-4 sm:grid-cols-3"
             }
           >
             {challenge.pokemon.map((p) => (
-              <div
+              <HeroCard
                 key={p.dexNumber ?? p.name}
-                className={mode === "team" ? "team-card" : ""}
-              >
-                <HeroCard pokemon={p} showActions={false} />
-              </div>
+                pokemon={p}
+                showActions={false}
+                variant="team"
+              />
             ))}
           </div>
         </>

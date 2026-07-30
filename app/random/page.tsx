@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import HeroCard from "@/components/HeroCard";
-import HeroActions from "@/components/HeroActions";
 import PageHeader from "@/components/PageHeader";
 import ToolsNav from "@/components/ToolsNav";
 import { getRandomPokemon } from "@/lib/pokeapi";
@@ -36,8 +35,9 @@ export default async function RandomGeneratorPage() {
           <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
           <p className="text-sm text-poke-dim">Your random Pokémon is…</p>
         </div>
-        <HeroCard pokemon={initial} basePath="/random" />
-        <HeroActions />
+        <div style={{ transform: "scale(0.95)", transformOrigin: "top center" }}>
+          <HeroCard pokemon={initial} basePath="/random" />
+        </div>
       </div>
       <ToolsNav current="/random" />
     </main>

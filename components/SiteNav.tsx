@@ -6,13 +6,16 @@ import { usePathname } from "next/navigation";
 import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 import { GroupIcon } from "./ToolIcons";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useTeam } from "./useTeam";
 
 const MAIN = [
   { href: "/random", label: "Generator" },
+  { href: "/team/random", label: "Random Team" },
   { href: "/no-names", label: "No Names" },
   { href: "/wheel", label: "Wheel" },
   { href: "/challenge", label: "Starter" },
   { href: "/type", label: "Types" },
+  { href: "/team", label: "Team" },
 ];
 
 export default function SiteNav({ currentPath = "" }: { currentPath?: string }) {
@@ -22,6 +25,8 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
   const pathname = usePathname();
   const activePath = pathname || currentPath;
   const isActive = (href: string) => activePath === href || activePath === href + "/";
+  const { team } = useTeam();
+  const teamCount = team.length;
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -57,13 +62,18 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
             <Link
               key={m.href}
               href={m.href}
-              className={`transition ${
+              className={`flex items-center gap-1.5 transition ${
                 isActive(m.href)
                   ? "text-[#ee3b3b]"
                   : "text-poke-dim hover:text-[#ee3b3b]"
               }`}
             >
               {m.label}
+              {m.href === "/team" && teamCount > 0 && (
+                <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
+                  {teamCount}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -154,11 +164,16 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                 key={m.href}
                 href={m.href}
                 onClick={() => setMobile(false)}
-                className={`rounded-lg px-2 py-2 text-sm font-semibold transition hover:bg-[#ee3b3b]/10 hover:text-[#ee3b3b] ${
+                className={`flex items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-semibold transition hover:bg-[#ee3b3b]/10 hover:text-[#ee3b3b] ${
                   isActive(m.href) ? "text-[#ee3b3b]" : "text-poke-ink"
                 }`}
               >
                 {m.label}
+                {m.href === "/team" && teamCount > 0 && (
+                  <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
+                    {teamCount}
+                  </span>
+                )}
               </Link>
             ))}
           </nav>

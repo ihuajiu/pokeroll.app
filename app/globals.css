@@ -658,12 +658,13 @@ body {
    large corner sprite, a big ID badge, confident type-colored stat bars,
    and a generous, full-bleed layout. Specificity beats the @container rules
    above so these always win inside team mode. */
-.team-card .hero-card {
+.team-card.hero-card {
   position: relative;
   overflow: hidden;
   display: block;
-  min-height: 224px;
-  padding: 22px 22px 20px 26px;
+  height: 100%;
+  min-height: 264px;
+  padding: 24px 24px 22px 28px;
   border: 1px solid
     color-mix(in srgb, var(--cc, rgb(var(--accent))) 32%, rgb(var(--border)));
   border-radius: var(--r-lg);
@@ -673,11 +674,11 @@ body {
     rgb(var(--surface)) 58%
   );
   box-shadow: 0 1px 0 rgb(var(--border-soft)) inset,
-    0 18px 40px -34px var(--cc, rgb(var(--accent)));
+    0 10px 26px -20px var(--cc, rgb(var(--accent)));
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
     border-color 0.25s, box-shadow 0.25s;
 }
-.team-card .hero-card::after {
+.team-card.hero-card::after {
   /* sweeping type-colored glow in the upper-right, behind the sprite */
   content: "";
   position: absolute;
@@ -694,18 +695,18 @@ body {
   pointer-events: none;
   z-index: 0;
 }
-.team-card .hero-card:hover {
+.team-card.hero-card:hover {
   transform: translateY(-5px);
   border-color: var(--cc, rgb(var(--accent)));
   box-shadow: 0 1px 0 rgb(var(--border-soft)) inset,
-    0 30px 56px -30px var(--cc, rgb(var(--accent)));
+    0 18px 36px -22px var(--cc, rgb(var(--accent)));
 }
 /* Large sprite floating top-right, directly on the card, with a soft
    type-tinted drop-shadow — no container, no rectangle. */
 .team-card .hero-card-art {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 14px;
+  right: 14px;
   width: auto;
   height: auto;
   min-height: 0;
@@ -734,74 +735,122 @@ body {
   z-index: 1;
 }
 /* Top text clears the top-right sprite; the meta grid below spans full width. */
-.team-card .hero-card .dex,
-.team-card .hero-card h3,
-.team-card .hero-card .try-types {
-  max-width: calc(100% - 166px);
+.team-card.hero-card .dex,
+.team-card.hero-card h3,
+.team-card.hero-card .try-types {
+  max-width: calc(100% - 198px);
 }
 /* Big ID badge as the small label */
-.team-card .hero-card .dex {
+.team-card.hero-card .dex {
   display: inline-block;
   font: 800 12px/1 var(--mono);
   letter-spacing: 0.16em;
   color: color-mix(in srgb, var(--cc, rgb(var(--accent))) 80%, rgb(var(--text)));
   text-transform: uppercase;
 }
-.team-card .hero-card h3 {
+.team-card.hero-card h3 {
   margin: 0;
-  font: 800 clamp(20px, 6.5cqi, 30px) / 1.05 var(--display);
+  font: 800 clamp(22px, 7cqi, 34px) / 1.05 var(--display);
   letter-spacing: -1px;
   text-transform: capitalize;
   color: rgb(var(--text));
 }
-.team-card .hero-card .try-types {
+.team-card.hero-card .try-types {
   margin-bottom: 2px;
 }
-.team-card .hero-card .type-chip {
+.team-card.hero-card .type-chip {
   transform: scale(1.04);
   transform-origin: left center;
 }
 /* Meta rows (Ability / Region / BST / Gen) as a full-width 2×2 grid that
    starts below the top-right sprite, so the right column (Region / Gen)
    fills the right side and values never wrap. */
-.team-card .hero-card .statgrid {
-  margin-top: 34px;
-  gap: 8px 18px;
+.team-card.hero-card .statgrid {
+  margin-top: 42px;
+  gap: 10px 20px;
   grid-template-columns: 1fr 1fr;
 }
-.team-card .hero-card .statgrid .row {
-  font-size: 11.5px;
+.team-card.hero-card .statgrid .row {
+  font-size: 12.5px;
 }
-.team-card .hero-card .statgrid .row .sl {
-  font-size: 10.5px;
+.team-card.hero-card .statgrid .row .sl {
+  font-size: 11px;
   color: rgb(var(--text-faint));
 }
-.team-card .hero-card .statgrid .row .sv {
+.team-card.hero-card .statgrid .row .sv {
   color: rgb(var(--text));
   font-weight: 700;
 }
 /* Type-colored stat bars span the full width at the bottom. */
-.team-card .hero-card .bars {
-  margin-top: 14px;
+.team-card.hero-card .bars {
+  margin-top: 16px;
+  margin-bottom: 18px;
 }
-.team-card .hero-card .bar {
+.team-card.hero-card .bar {
   font-size: 12px;
 }
-.team-card .hero-card .bar .bt {
+.team-card.hero-card .bar .bt {
   flex: 1 1 auto;
   height: 11px;
   background: rgb(var(--surface-2));
 }
-.team-card .hero-card .bar .bf {
-  background: linear-gradient(
-    90deg,
-    color-mix(in srgb, var(--cc, rgb(var(--accent))) 70%, #fff 0%),
-    var(--cc, rgb(var(--accent)))
-  );
-  box-shadow: 0 0 10px -2px var(--cc, rgb(var(--accent)));
+.team-card.hero-card .bar .bf {
+  /* Fill color + glow are set per-bar inline by HeroCard (heat by stat level). */
+  background: rgb(var(--accent));
+  box-shadow: 0 0 10px -2px rgb(var(--accent));
 }
-.team-card .hero-card .bar .bv {
+.team-card.hero-card .bar .bv {
   font-size: 12.5px;
+}
+/* ── Wide team-card variant (Team / roster page) ─────────────────────────
+   The roster page is a 2-column grid at max-w 680px, so each card is far
+   wider than the compact challenge cards. Use a horizontal layout: large
+   sprite on the right, generous left text block, meta in a single row. */
+.team-card--wide.hero-card {
+  min-height: 300px;
+  padding: 26px 30px 24px 34px;
+}
+.team-card--wide .hero-card-art {
+  top: 26px;
+  right: 26px;
+}
+.team-card--wide .hero-card-art img {
+  width: 224px;
+  height: 224px;
+}
+.team-card--wide.hero-card .dex,
+.team-card--wide.hero-card h3,
+.team-card--wide.hero-card .try-types {
+  max-width: calc(100% - 260px);
+}
+.team-card--wide.hero-card h3 {
+  font: 800 clamp(30px, 8cqi, 46px) / 1.02 var(--display);
+}
+.team-card--wide.hero-card .try-types {
+  margin-bottom: 6px;
+}
+.team-card--wide.hero-card .statgrid {
+  margin-top: 44px;
+  gap: 8px 22px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.team-card--wide.hero-card .statgrid .row {
+  font-size: 13px;
+}
+.team-card--wide.hero-card .statgrid .row .sl {
+  font-size: 11.5px;
+}
+.team-card--wide.hero-card .bars {
+  margin-top: 18px;
+}
+.team-card--wide.hero-card .bar {
+  font-size: 13px;
+}
+.team-card--wide.hero-card .bar .bt {
+  height: 12px;
+}
+.team-card--wide.hero-card .bar .bv {
+  font-size: 13.5px;
 }
 .hero-card-art {
   grid-row: 1;
@@ -924,6 +973,7 @@ body {
 }
 .hero-card .bars {
   margin-top: 16px;
+  margin-bottom: 20px;
   display: grid;
   gap: 9px;
 }

@@ -13,6 +13,16 @@ const STAT_ROWS: { key: keyof Pokemon["stats"]; label: string }[] = [
   { key: "spe", label: "SPE" },
 ];
 
+// Pokémon-style per-stat colors (the canonical stat-bar palette).
+const STAT_COLORS: Record<keyof Pokemon["stats"], string> = {
+  hp: "#78C850",   // 绿 green
+  atk: "#F08030",  // 红 red
+  def: "#6890F0",  // 蓝 blue
+  spa: "#A040A0",  // 紫 purple
+  spd: "#98D8D8",  // 青 cyan
+  spe: "#F8D030",  // 黄 yellow
+};
+
 export default function HeroCard({
   pokemon,
   loading,
@@ -21,6 +31,13 @@ export default function HeroCard({
   shiny,
   hideName,
   showActions = true,
+  variant = "team",
+  selectable = false,
+  selected = false,
+  onToggleSelect,
+  /** Optional DOM id for the "New roll" button, so an external control can
+   *  trigger this card's internal re-roll. */
+  rollButtonId,
 }: {
   /** The Pokémon to display. When `onRoll` is omitted this card also manages
    *  its own state (the /random page), otherwise the parent owns the data. */
@@ -38,10 +55,33 @@ export default function HeroCard({
   hideName?: boolean;
   /** Render the Save / Share / Roll action bar. */
   showActions?: boolean;
+  /** Card layout. "team" is the bold, type-tinted layout used for any card
+   *  with stat bars; "wide" is the larger horizontal variant for roster pages;
+   *  "default" is the original compact hero layout. Mystery cards always fall
+   *  back to "default" regardless of this prop. */
+  variant?: "default" | "team" | "wide";
+  /** Show an in-image selection checkbox (team roster multi-select). */
+  selectable?: boolean;
+  /** Whether this card is currently selected. */
+  selected?: boolean;
+  /** Toggle handler for the selection checkbox. */
+  onToggleSelect?: () => void;
+  /** Optional DOM id for the "New roll" button, so an external control can
+   *  trigger this card's internal re-roll. */
+  rollButtonId?: string;
 }) {
   const [internal, setInternal] = useState<Pokemon>(pokemon);
   const [internalLoading, setInternalLoading] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  // The bold "team" layout applies to any card showing stat bars. Mystery
+  // cards (hideName) never show bars, so they keep the compact default look.
+  const variantClass =
+    hideName || variant === "default"
+      ? ""
+      : variant === "wide"
+        ? " team-card team-card--wide"
+        : " team-card";
 
   // Parent-owned data when a custom roll handler is supplied.
   const data = onRoll ? pokemon : internal;
@@ -76,7 +116,7 @@ export default function HeroCard({
 
   return (
     <div
-      className={`hero-card${hideName ? " hero-card--mystery" : ""}${
+      className={`hero-card${hideName ? " hero-card--mystery" : ""}${variantClass}${
         isLoading ? " is-loading" : ""
       }`}
       style={{ ["--cc" as string]: cc }}
@@ -86,6 +126,32 @@ export default function HeroCard({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={spriteUrl} alt={name} />
         ) : null}
+        {selectable && (
+          <label
+            onClick={(e) => e.stopPropagation()}
+            className="absolute right-2 top-2 z-20 cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={onToggleSelect}
+              className="peer sr-only"
+            />
+            <span className="flex h-6 w-6 items-center justify-center rounded-md border-2 border-poke-border bg-poke-surface/95 text-poke-red shadow-sm transition peer-checked:border-poke-red">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`h-4 w-4 transition ${selected ? "opacity-100" : "opacity-0"}`}
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+          </label>
+        )}
       </div>
 
       <div className="hero-card-info">
@@ -130,11 +196,19 @@ export default function HeroCard({
             {STAT_ROWS.map(({ key, label }) => {
               const v = data.stats[key];
               const pct = Math.min(100, Math.max(0, (v / 200) * 100));
+              const c = STAT_COLORS[key];
               return (
                 <div className="bar" key={key}>
-                  <span className="bl">{label}</span>
+                  <span className="bl" style={{ color: c }}>{label}</span>
                   <span className="bt">
-                    <span className="bf" style={{ width: `${pct}%` }} />
+                    <span
+                      className="bf"
+                      style={{
+                        width: `${pct}%`,
+                        background: c,
+                        boxShadow: `0 0 10px -2px ${c}`,
+                      }}
+                    />
                   </span>
                   <span className="bv">{v}</span>
                 </div>
@@ -195,6 +269,7 @@ export default function HeroCard({
 
           <button
             type="button"
+            id={rollButtonId}
             className="act act-roll"
             onClick={handleRoll}
             disabled={isLoading}

@@ -73,7 +73,6 @@ export default function VariantGenerator({
       <HeroCard
         pokemon={data.pokemon}
         loading={loading}
-        shiny={mode === "shiny"}
         hideName={mode === "no-names"}
         onRoll={regenerate}
       />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import type { Pokemon } from "@/lib/types";
 
 const KEY = "rpg-team";
@@ -16,48 +16,58 @@ function load(): Pokemon[] {
   }
 }
 
+// Module-level shared store so every useTeam() consumer stays in sync
+// (e.g. a nav badge updates the moment a card is added from any page).
+let store: Pokemon[] | null = null;
+const EMPTY: Pokemon[] = [];
+const listeners = new Set<() => void>();
+
+function ensure(): Pokemon[] {
+  if (store === null) store = load();
+  return store;
+}
+
+function emit() {
+  listeners.forEach((l) => l());
+}
+
+function setStore(next: Pokemon[]) {
+  store = next;
+  try {
+    if (next.length === 0) localStorage.removeItem(KEY);
+    else localStorage.setItem(KEY, JSON.stringify(next));
+  } catch {
+    // storage may be unavailable; keep in-memory state
+  }
+  emit();
+}
+
+function subscribe(cb: () => void) {
+  listeners.add(cb);
+  return () => {
+    listeners.delete(cb);
+  };
+}
+
+function getSnapshot(): Pokemon[] {
+  return ensure();
+}
+
+function getServerSnapshot(): Pokemon[] {
+  return EMPTY;
+}
+
 export function useTeam() {
-  const [team, setTeam] = useState<Pokemon[]>([]);
+  const team = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  useEffect(() => {
-    setTeam(load());
+  const add = useCallback((p: Pokemon) => {
+    const cur = ensure();
+    if (cur.some((x) => x.dexNumber === p.dexNumber)) return;
+    setStore([...cur, p].slice(-TEAM_MAX));
   }, []);
-
-  const persist = useCallback((next: Pokemon[]) => {
-    setTeam(next);
-    try {
-      localStorage.setItem(KEY, JSON.stringify(next));
-    } catch {
-      // storage may be unavailable; keep in-memory state
-    }
-  }, []);
-
-  const add = useCallback(
-    (p: Pokemon) => {
-      setTeam((prev) => {
-        if (prev.some((x) => x.dexNumber === p.dexNumber)) return prev;
-        const next = [...prev, p].slice(-TEAM_MAX);
-        try {
-          localStorage.setItem(KEY, JSON.stringify(next));
-        } catch {
-          // ignore
-        }
-        return next;
-      });
-    },
-    [],
-  );
 
   const remove = useCallback((dexNumber: number) => {
-    setTeam((prev) => {
-      const next = prev.filter((x) => x.dexNumber !== dexNumber);
-      try {
-        localStorage.setItem(KEY, JSON.stringify(next));
-      } catch {
-        // ignore
-      }
-      return next;
-    });
+    setStore(ensure().filter((x) => x.dexNumber !== dexNumber));
   }, []);
 
   const has = useCallback(
@@ -66,12 +76,7 @@ export function useTeam() {
   );
 
   const clear = useCallback(() => {
-    setTeam([]);
-    try {
-      localStorage.removeItem(KEY);
-    } catch {
-      // ignore
-    }
+    setStore([]);
   }, []);
 
   return { team, add, remove, has, clear, max: TEAM_MAX };
