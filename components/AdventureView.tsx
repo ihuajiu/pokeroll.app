@@ -291,6 +291,55 @@ export default function AdventureView({
         </div>
       )}
 
+      {/* Gym Journey */}
+      {a.gymJourney && a.gymJourney.length > 0 && (
+        <div className="mt-8">
+          <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
+            Gym Journey
+          </h2>
+          <div className="rounded-2xl border border-poke-border bg-poke-surface p-4 shadow-sm">
+            <ol className="grid grid-cols-4 gap-x-1 gap-y-6 sm:grid-cols-8 sm:gap-x-0">
+              {a.gymJourney.map((g, i) => (
+                <li
+                  key={`${g.leader}-${i}`}
+                  className="relative flex flex-col items-center text-center"
+                  title={`${g.leader} — ${titleCase(g.type)} — ${g.badge}`}
+                >
+                  {/* connector from previous dot (breaks at each mobile row) */}
+                  {i > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className={`absolute -left-1/2 right-1/2 top-[7px] h-px bg-poke-border ${
+                        i % 4 === 0 ? "hidden sm:block" : ""
+                      }`}
+                    />
+                  )}
+                  <span
+                    aria-hidden="true"
+                    className="relative z-10 h-3.5 w-3.5 rounded-full ring-2 ring-poke-surface"
+                    style={{
+                      backgroundColor: TYPE_HEX[g.type] ?? "#a8a29e",
+                    }}
+                  />
+                  <p className="mt-2 text-xs font-semibold leading-tight text-poke-ink">
+                    {g.leader}
+                  </p>
+                  <p
+                    className="text-[10px] font-medium uppercase tracking-wide"
+                    style={{ color: TYPE_HEX[g.type] ?? "#a8a29e" }}
+                  >
+                    {g.type}
+                  </p>
+                  <p className="mt-0.5 text-[10px] leading-tight text-poke-dim line-clamp-2">
+                    {g.badge}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      )}
+
       {/* Legendary Encounter */}
       {a.legendary && (
         <div className="mt-8">

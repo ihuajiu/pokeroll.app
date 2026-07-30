@@ -12,6 +12,7 @@ import {
   CHALLENGES,
   DIFFICULTIES,
   GOALS,
+  GYM_JOURNEYS,
   LEGENDARY_ROLES,
   RIVAL_NAMES,
   RIVAL_TITLES,
@@ -21,11 +22,12 @@ import {
   type Adventure,
 } from "./adventure-types";
 
-export type { Adventure } from "./adventure-types";
+export type { Adventure, GymStop } from "./adventure-types";
 export {
   CHALLENGES,
   DIFFICULTIES,
   GOALS,
+  GYM_JOURNEYS,
   LEGENDARY_ROLES,
   RIVAL_NAMES,
   RIVAL_TITLES,
@@ -229,6 +231,10 @@ export async function rollAdventure(
     role: pick(LEGENDARY_ROLES, rng),
   };
 
+  // Static lookup — gyms are fixed game knowledge, no RNG involved, so
+  // seed-replay semantics are unaffected.
+  const gymJourney = GYM_JOURNEYS[region] ?? GYM_JOURNEYS.kanto;
+
   return {
     seed,
     trainer,
@@ -240,5 +246,6 @@ export async function rollAdventure(
     team,
     rival,
     legendary,
+    gymJourney,
   };
 }
