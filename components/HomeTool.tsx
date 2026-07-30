@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import HeroAdventureTeaser from "@/components/HeroAdventureTeaser";
 import ToolsNav from "@/components/ToolsNav";
+import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 
 export const metadata: Metadata = {
   title: "PokeRoll — Random Pokémon Generator",
@@ -40,13 +41,18 @@ const SvgIcon = ({ children }: { children: React.ReactNode }) => (
 const JUMP_TOOLS: JumpTool[] = [
   {
     href: "/adventure", label: "Adventure Mode", desc: "Roll a full Pokémon adventure — trainer, starter, team, challenge & goal.",
-    color: "#ee3b3b", p: 25, count: "MAIN",
+    color: "#ee3b3b", p: 4, count: "MAIN",
     icon: <SvgIcon><path d="M5 8h14M5 12h14M5 16h8" /></SvgIcon>,
   },
   {
     href: "/random", label: "Random Generator", desc: "Summon a random Pokémon with full stats & artwork.",
     color: "#16c79a", p: 25, count: "DEX",
     icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
+  },
+  {
+    href: "/fusion", label: "Fusion Generator", desc: "Fuse two Pokémon into one hybrid creature.",
+    color: "#a855f7", p: 94, count: "FUSION",
+    icon: <SvgIcon><circle cx="8.5" cy="9.5" r="4" /><circle cx="15" cy="14" r="4" /><path d="M11.5 12.5l4-4" strokeWidth="1.8" /></SvgIcon>,
   },
   {
     href: "/team/random", label: "Random Team", desc: "Roll a ready-made squad of six random Pokémon.",
@@ -59,65 +65,48 @@ const JUMP_TOOLS: JumpTool[] = [
     icon: <SvgIcon><path d="M12 2l2.4 5 5.6.8-4 4 1 5.6L12 20l-5 2.4 1-5.6-4-4 5.6-.8z" /></SvgIcon>,
   },
   {
-    href: "/fusion", label: "Fusion Generator", desc: "Fuse two Pokémon into one hybrid creature.",
-    color: "#a855f7", p: 94, count: "FUSION",
-    icon: <SvgIcon><circle cx="8.5" cy="9.5" r="4" /><circle cx="15" cy="14" r="4" /><path d="M11.5 12.5l4-4" strokeWidth="1.8" /></SvgIcon>,
-  },
-  {
-    href: "/wheel", label: "Spin Wheel", desc: "Let chance decide your next encounter.",
-    color: "#f97316", p: 35, count: "WHEEL",
-    icon: <SvgIcon><circle cx="12" cy="12" r="9" /><path d="M12 3v9l6.4 4.3" /><circle cx="12" cy="12" r="1.3" fill="currentColor" /></SvgIcon>,
-  },
-  {
     href: "/no-names", label: "No Names", desc: "Hide the name, guess from its artwork & types.",
     color: "#8b5cf6", p: 492, count: "GUESS",
     icon: <SvgIcon><path d="M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4" /><circle cx="12" cy="18" r="1" fill="currentColor" /></SvgIcon>,
   },
+  {
+    href: "/challenge", label: "Challenge Maker", desc: "Build a shareable guess, collect or team challenge.",
+    color: "#3aa0ff", p: 68, count: "SHARE",
+    icon: <SvgIcon><path d="M6 21V4" /><path d="M6 4h11l-2.5 4L17 12H6" /></SvgIcon>,
+  },
 ];
 
-type Module = {
-  href: string;
-  cat: string;
-  gen: string;
-  label: string;
-  p: number;
-  desc: string;
+// Group accent colors mirror the featured cards above.
+const GROUP_COLOR: Record<string, string> = {
+  generator: "#16c79a",
+  challenge: "#3aa0ff",
+  tool: "#a855f7",
+  team: "#f5a524",
 };
 
-const CAT_COLOR: Record<string, string> = {
-  Core: "#ee3b3b",
-  AI: "#f43f5e",
-  Shiny: "#fbbf24",
-  Fusion: "#a855f7",
-  Wheel: "#f97316",
-  Guess: "#8b5cf6",
-  Starter: "#f59e0b",
-  Type: "#3aa0ff",
-  RNG: "#16c79a",
-  Squad: "#f5a524",
-  Region: "#9ca3af",
-  Variant: "#6366f1",
-  Create: "#ec4899",
+// Decorative sprite per tool (dex number) — display-layer data, kept out of
+// lib/tools.ts so the catalog stays purely navigational.
+const TOOL_SPRITE: Record<string, number> = {
+  "/random": 25,
+  "/type": 37,
+  "/ability": 132,
+  "/move": 143,
+  "/bst": 149,
+  "/number": 152,
+  "/starter": 1,
+  "/shiny": 6,
+  "/cute": 175,
+  "/mythical": 151,
+  "/mega": 448,
+  "/nickname": 133,
+  "/challenge": 68,
+  "/no-names": 492,
+  "/wheel": 35,
+  "/fusion": 94,
+  "/card": 658,
+  "/team": 445,
+  "/team/random": 196,
 };
-
-const BROWSE_MODULES: Module[] = [
-  { href: "/random", cat: "Core", gen: "DEX 1–1010", label: "Random Generator", p: 25, desc: "Summon a random Pokémon with full stats & artwork." },
-  { href: "/shiny", cat: "Shiny", gen: "1/4096", label: "Shiny Generator", p: 6, desc: "Hunt the rare recolored form." },
-  { href: "/fusion", cat: "Fusion", gen: "PLAY", label: "Fusion Generator", p: 94, desc: "Fuse two Pokémon into one hybrid." },
-  { href: "/wheel", cat: "Wheel", gen: "DEX 1–1010", label: "Spin Wheel", p: 35, desc: "Let chance decide your next encounter." },
-  { href: "/no-names", cat: "Guess", gen: "DEX 1–1010", label: "No Names", p: 492, desc: "Hide the name, guess from its artwork & types." },
-  { href: "/challenge", cat: "Starter", gen: "9 GENS", label: "Starter Generator", p: 1, desc: "A random starter from every generation." },
-  { href: "/type", cat: "Type", gen: "18 TYPES", label: "Type Generator", p: 37, desc: "Roll one of the 18 elemental types." },
-  { href: "/challenge", cat: "RNG", gen: "EGG", label: "Mystery Egg", p: 175, desc: "Crack open a surprise species you never met." },
-  { href: "/team", cat: "Squad", gen: "SQUAD", label: "Team Builder", p: 196, desc: "Collect favourites into a themed squad." },
-  { href: "/team/random", cat: "Squad", gen: "6×DEX", label: "Random Team", p: 196, desc: "Roll a ready-made squad of six random Pokémon." },
-  { href: "/by/kanto", cat: "Region", gen: "GEN 1–9", label: "By Region", p: 150, desc: "Filter Kanto → Paldea by region." },
-  { href: "/card", cat: "Create", gen: "BUILD", label: "Card Generator", p: 6, desc: "Generate a custom Pokémon trading card." },
-  { href: "/ability", cat: "Variant", gen: "DEX 1–1010", label: "Ability Generator", p: 25, desc: "Roll a random Ability and see who has it." },
-  { href: "/move", cat: "Variant", gen: "DEX 1–1010", label: "Move Generator", p: 143, desc: "Discover a random move and its user." },
-  { href: "/bst", cat: "Variant", gen: "DEX 1–1010", label: "BST Generator", p: 149, desc: "Random base stat total, reveal the Pokémon." },
-  { href: "/number", cat: "Variant", gen: "DEX 1–1010", label: "Number Generator", p: 152, desc: "Roll a Pokédex number, reveal the Pokémon." },
-];
 
 export default async function Home() {
   return (
@@ -215,7 +204,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Tool matrix */}
+      {/* Tool matrix — grouped catalog, single source of truth: lib/tools.ts */}
       <section className="block" id="browse">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="sec-head">
@@ -225,34 +214,44 @@ export default async function Home() {
             </div>
             <p>The complete tool catalog — every way to roll a Pokémon.</p>
           </div>
-          <div className="browse-grid">
-            {BROWSE_MODULES.map((m) => (
-              <Link
-                key={m.label}
-                href={m.href}
-                className="browse-card"
-                style={{ "--cc": CAT_COLOR[m.cat] } as CSSProperties}
-              >
-                <div className="art">
-                  <img src={SPRITE(m.p)} alt="" loading="lazy" />
-                </div>
-                <div className="body">
-                  <span className="cat">
-                    <span className="dot" />
-                    {m.cat}
-                  </span>
-                  <h3>{m.label}</h3>
-                  <p>{m.desc}</p>
-                  <div className="foot">
-                    <span className="gen">{m.gen}</span>
-                    <span className="open">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {TOOL_GROUPS.filter((g) => g.id !== "adventure").map((g) => (
+            <div key={g.id} className="mb-10 last:mb-0">
+              <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h3 className="font-display text-lg font-bold text-poke-ink">
+                  {g.title}
+                </h3>
+                <p className="text-sm text-poke-dim">{g.desc}</p>
+              </div>
+              <div className="browse-grid">
+                {TOOLS.filter((t) => t.group === g.id).map((t) => (
+                  <Link
+                    key={t.href}
+                    href={t.href}
+                    className="browse-card"
+                    style={{ "--cc": GROUP_COLOR[g.id] } as CSSProperties}
+                  >
+                    <div className="art">
+                      <img src={SPRITE(TOOL_SPRITE[t.href] ?? 25)} alt="" loading="lazy" />
+                    </div>
+                    <div className="body">
+                      <span className="cat">
+                        <span className="dot" />
+                        {g.title}
+                      </span>
+                      <h3>{t.label}</h3>
+                      <p>{t.desc}</p>
+                      <div className="foot">
+                        <span className="gen">{t.href}</span>
+                        <span className="open">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
