@@ -10,3 +10,4 @@ dev.err
 browse-cards*.png
 *.orig.*
 data/pokedex.json
+public/pokemon/

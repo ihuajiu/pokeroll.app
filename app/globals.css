@@ -653,6 +653,156 @@ body {
     height: 150px;
   }
 }
+/* ── Team challenge cards ──────────────────────────────────────────────
+   Redesigned as bold "roster" cards: a real per-type color aura behind a
+   large corner sprite, a big ID badge, confident type-colored stat bars,
+   and a generous, full-bleed layout. Specificity beats the @container rules
+   above so these always win inside team mode. */
+.team-card .hero-card {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  min-height: 224px;
+  padding: 22px 22px 20px 26px;
+  border: 1px solid
+    color-mix(in srgb, var(--cc, rgb(var(--accent))) 32%, rgb(var(--border)));
+  border-radius: var(--r-lg);
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--cc, rgb(var(--accent))) 14%, rgb(var(--surface))) 0%,
+    rgb(var(--surface)) 58%
+  );
+  box-shadow: 0 1px 0 rgb(var(--border-soft)) inset,
+    0 18px 40px -34px var(--cc, rgb(var(--accent)));
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.25s, box-shadow 0.25s;
+}
+.team-card .hero-card::after {
+  /* sweeping type-colored glow in the upper-right, behind the sprite */
+  content: "";
+  position: absolute;
+  top: -70px;
+  right: -70px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--cc, rgb(var(--accent))) 38%, transparent) 0%,
+    transparent 68%
+  );
+  filter: blur(6px);
+  pointer-events: none;
+  z-index: 0;
+}
+.team-card .hero-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--cc, rgb(var(--accent)));
+  box-shadow: 0 1px 0 rgb(var(--border-soft)) inset,
+    0 30px 56px -30px var(--cc, rgb(var(--accent)));
+}
+/* Large sprite floating top-right, directly on the card, with a soft
+   type-tinted drop-shadow — no container, no rectangle. */
+.team-card .hero-card-art {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  display: block;
+  background: none;
+  border-radius: 0;
+  overflow: visible;
+  z-index: 1;
+}
+.team-card .hero-card-art img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 22px color-mix(in srgb, var(--cc, rgb(var(--accent))) 45%, rgba(0, 0, 0, 0.35)));
+  animation: none;
+}
+/* Text block — left-aligned, clears the corner sprite via max-width only
+   for the top items; lower content fills the full width. */
+.team-card .hero-card-info {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding-right: 0;
+  min-width: 0;
+  z-index: 1;
+}
+/* Top text clears the top-right sprite; the meta grid below spans full width. */
+.team-card .hero-card .dex,
+.team-card .hero-card h3,
+.team-card .hero-card .try-types {
+  max-width: calc(100% - 166px);
+}
+/* Big ID badge as the small label */
+.team-card .hero-card .dex {
+  display: inline-block;
+  font: 800 12px/1 var(--mono);
+  letter-spacing: 0.16em;
+  color: color-mix(in srgb, var(--cc, rgb(var(--accent))) 80%, rgb(var(--text)));
+  text-transform: uppercase;
+}
+.team-card .hero-card h3 {
+  margin: 0;
+  font: 800 clamp(20px, 6.5cqi, 30px) / 1.05 var(--display);
+  letter-spacing: -1px;
+  text-transform: capitalize;
+  color: rgb(var(--text));
+}
+.team-card .hero-card .try-types {
+  margin-bottom: 2px;
+}
+.team-card .hero-card .type-chip {
+  transform: scale(1.04);
+  transform-origin: left center;
+}
+/* Meta rows (Ability / Region / BST / Gen) as a full-width 2×2 grid that
+   starts below the top-right sprite, so the right column (Region / Gen)
+   fills the right side and values never wrap. */
+.team-card .hero-card .statgrid {
+  margin-top: 34px;
+  gap: 8px 18px;
+  grid-template-columns: 1fr 1fr;
+}
+.team-card .hero-card .statgrid .row {
+  font-size: 11.5px;
+}
+.team-card .hero-card .statgrid .row .sl {
+  font-size: 10.5px;
+  color: rgb(var(--text-faint));
+}
+.team-card .hero-card .statgrid .row .sv {
+  color: rgb(var(--text));
+  font-weight: 700;
+}
+/* Type-colored stat bars span the full width at the bottom. */
+.team-card .hero-card .bars {
+  margin-top: 14px;
+}
+.team-card .hero-card .bar {
+  font-size: 12px;
+}
+.team-card .hero-card .bar .bt {
+  flex: 1 1 auto;
+  height: 11px;
+  background: rgb(var(--surface-2));
+}
+.team-card .hero-card .bar .bf {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--cc, rgb(var(--accent))) 70%, #fff 0%),
+    var(--cc, rgb(var(--accent)))
+  );
+  box-shadow: 0 0 10px -2px var(--cc, rgb(var(--accent)));
+}
+.team-card .hero-card .bar .bv {
+  font-size: 12.5px;
+}
 .hero-card-art {
   grid-row: 1;
   grid-column: 1;

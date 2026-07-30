@@ -52,6 +52,7 @@ export default function HeroCard({
   const dex = `#${String(data.dexNumber).padStart(4, "0")}`;
   const ability = data.abilities?.[0] ?? "—";
   const name = hideName ? "Mystery" : data.displayName;
+  const cc = TYPE_HEX[data.types[0]] ?? TYPE_HEX.normal;
 
   async function handleRoll() {
     if (onRoll) {
@@ -78,6 +79,7 @@ export default function HeroCard({
       className={`hero-card${hideName ? " hero-card--mystery" : ""}${
         isLoading ? " is-loading" : ""
       }`}
+      style={{ ["--cc" as string]: cc }}
     >
       <div className="hero-card-art">
         {spriteUrl ? (

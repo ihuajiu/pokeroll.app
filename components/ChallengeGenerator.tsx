@@ -274,7 +274,7 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
               Reveal all
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             {challenge.pokemon.map((p) => {
               const isOpen = revealed.has(p.dexNumber ?? 0);
               return (
@@ -324,9 +324,20 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
               </button>
             </div>
           )}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div
+            className={
+              mode === "team"
+                ? "grid grid-cols-3 gap-2"
+                : "grid grid-cols-1 gap-4 sm:grid-cols-2"
+            }
+          >
             {challenge.pokemon.map((p) => (
-              <HeroCard key={p.dexNumber ?? p.name} pokemon={p} showActions={false} />
+              <div
+                key={p.dexNumber ?? p.name}
+                className={mode === "team" ? "team-card" : ""}
+              >
+                <HeroCard pokemon={p} showActions={false} />
+              </div>
             ))}
           </div>
         </>
