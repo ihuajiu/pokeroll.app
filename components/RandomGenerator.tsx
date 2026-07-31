@@ -209,7 +209,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
                 aria-expanded={open}
                 aria-label="Collapse advanced filters"
                 title="Collapse filters"
-                className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center"
+                className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center self-end"
               >
                 {gearIcon}
               </button>
