@@ -34,10 +34,13 @@ const MAX_BY_DIFFICULTY: Record<string, number> = {
 export default function ChallengeGenerator({
   challenge,
   wildPool,
+  startFound,
 }: {
   challenge: Challenge;
   /** Slim local-dex pool for the shiny click simulator (shiny page only). */
   wildPool?: WildMon[];
+  /** Shiny result link: open directly on the found card (shiny page only). */
+  startFound?: boolean;
 }) {
   const router = useRouter();
   const { config } = challenge;
@@ -87,26 +90,32 @@ export default function ChallengeGenerator({
     router.push(buildHref());
   }
 
-  async function share() {
-    const url = window.location.href;
+  async function share(): Promise<"shared" | "copied" | null> {
+    const url = new URL(window.location.href);
+    // Sharing a won hunt: mark it as a result link so the friend lands
+    // straight on the found shiny card instead of an unplayed hunt.
+    if (shinyResult) url.searchParams.set("reveal", "1");
+    const href = url.toString();
     const text =
       shinyResult ?? `${challenge.title} — Pokémon Challenge Generator`;
     // Prefer the native share sheet (mobile + supported desktops).
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
-        await navigator.share({ title: challenge.title, text, url });
-        return;
+        await navigator.share({ title: challenge.title, text, url: href });
+        return "shared";
       } catch {
         /* user dismissed the share sheet — fall through to clipboard */
       }
     }
     // Fallback: copy the result text + link to the clipboard.
     try {
-      await navigator.clipboard?.writeText(`${text}\n${url}`);
+      await navigator.clipboard?.writeText(`${text}\n${href}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
+      return "copied";
     } catch {
       /* clipboard unavailable */
+      return null;
     }
   }
 
@@ -201,7 +210,7 @@ export default function ChallengeGenerator({
                 aria-expanded={filterOpen}
                 aria-label="Collapse filters"
                 title="Collapse filters"
-                className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center"
+                className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center self-end"
               >
                 {gearIcon}
               </button>
@@ -297,12 +306,15 @@ export default function ChallengeGenerator({
       {/* Shiny — click-to-encounter simulator */}
       {mode === "shiny" && challenge.pokemon[0] && wildPool && (
         <ShinyHunt
-          key={config.seed}
+          key={`${config.seed}:${startFound ? "found" : "hunt"}`}
           target={challenge.pokemon[0]}
           encounters={challenge.encounters ?? 1}
           pool={wildPool}
           odds={challenge.odds}
           pity={challenge.pity}
+          difficulty={challenge.config.difficulty}
+          startFound={startFound}
+          onNewHunt={generate}
           onFound={() =>
             setShinyResult(
               `✨ I found a shiny ${challenge.pokemon[0].displayName} after ${(challenge.encounters ?? 1).toLocaleString()} encounters! Can you beat that?`,

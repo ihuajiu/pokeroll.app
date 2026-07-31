@@ -5,6 +5,7 @@ import {
   getPoolByGeneration,
   getPoolByRegion,
 } from "@/lib/pokeapi";
+import { getAllPokemon } from "@/lib/pokedex";
 import { DIFFICULTIES } from "@/lib/adventure-types";
 import type { Pokemon } from "@/lib/types";
 
@@ -120,7 +121,10 @@ export async function getChallenge(config: ChallengeConfig): Promise<Challenge> 
             1,
             Math.floor(Math.log(1 - r) / Math.log(1 - p)),
           );
-    const pokemon = [await getRandomPokemon()];
+    // Seeded target pick: the shared link must reproduce the exact shiny,
+    // not just the encounter count. Second rng() call keeps existing N intact.
+    const dex = getAllPokemon();
+    const pokemon = [dex[Math.floor(rng() * dex.length)]];
     return {
       config,
       title: "Shiny Hunt Challenge",

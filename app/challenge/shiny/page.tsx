@@ -28,9 +28,14 @@ export default async function ShinyChallengePage({
 }) {
   const sp = await searchParams;
   const seed = get(sp, "seed") || Math.random().toString(36).slice(2, 10);
+  // reveal=1: a shared result link — open straight on the found shiny card
+  // (the friend sees the reveal first, then can start their own hunt).
+  const reveal = get(sp, "reveal") === "1";
   const difficultyRaw = get(sp, "difficulty") as ChallengeDifficulty | undefined;
-  const difficulty =
-    difficultyRaw && DIFFICULTIES.includes(difficultyRaw) ? difficultyRaw : undefined;
+  // Shiny defaults to Easy (guaranteed pity draw) so a first visit always
+  // lands on the friendly hunt; other difficulties come from the URL.
+  const difficulty: ChallengeDifficulty =
+    difficultyRaw && DIFFICULTIES.includes(difficultyRaw) ? difficultyRaw : "Easy";
 
   // Shiny is always a single encounter prediction.
   const config: ChallengeConfig = { mode: "shiny", count: 1, seed, difficulty };
@@ -54,7 +59,11 @@ export default async function ShinyChallengePage({
             : "Click Encounter and see how long it takes to find your shiny — same 1/4096 odds as the games. Share the link and compare with a friend."
         }
       />
-      <ChallengeGenerator challenge={challenge} wildPool={wildPool} />
+      <ChallengeGenerator
+        challenge={challenge}
+        wildPool={wildPool}
+        startFound={reveal}
+      />
     </main>
   );
 }

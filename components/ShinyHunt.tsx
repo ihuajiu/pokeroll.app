@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { Pokemon } from "@/lib/types";
+import { downloadShinyCard, shareShinyCard } from "@/lib/shareCard";
 
 export interface WildMon {
   dexNumber: number;
@@ -28,12 +29,16 @@ const SPARKLES = [
   { left: "50%", top: "8%", delay: "1.6s", size: "text-xs" },
 ] as const;
 
+/** Found-burst stars: fly outward from the center once, staggered. */
+const BURST = [0, 45, 90, 135, 180, 225, 270, 315] as const;
+
 /**
  * Click-to-encounter shiny hunt. The seeded `encounters` fixes which click
  * reveals the shiny (same 1/4096 odds math as the games, resolved
  * server-side so the link is reproducible); every click before that shows a
  * random wild from the local dex. Share the seeded link and a friend runs
- * the identical hunt.
+ * the identical hunt. Found state renders as a dark TCG foil card (see
+ * docs/superpowers/specs/2026-07-31-shiny-found-tcg-design.md).
  */
 export default function ShinyHunt({
   target,
@@ -41,6 +46,9 @@ export default function ShinyHunt({
   pool,
   odds,
   pity,
+  difficulty,
+  startFound,
+  onNewHunt,
   onFound,
 }: {
   target: Pokemon;
@@ -50,16 +58,60 @@ export default function ShinyHunt({
   odds?: number;
   /** Easy mode: uniform pity draw, guaranteed within `odds` clicks. */
   pity?: boolean;
+  /** Shown as a chip in the HUD. */
+  difficulty?: string;
+  /** Result link: mount straight in the found state, no click-through. */
+  startFound?: boolean;
+  /** Starts a fresh hunt (new seed) — the friend's "my turn" entry. */
+  onNewHunt?: () => void;
   /** Fired once, on the click that reveals the shiny. */
   onFound?: () => void;
 }) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(startFound ? encounters : 0);
   const [current, setCurrent] = useState<WildMon | null>(null);
+  const [imgBusy, setImgBusy] = useState(false);
+  const [shareDone, setShareDone] = useState<
+    "shared" | "copied" | "downloaded" | null
+  >(null);
+  const [dlDone, setDlDone] = useState(false);
   // Synchronous lock: state lags a render behind rapid clicks, so the
   // "found" flag alone can let same-tick clicks slip through and fire
   // onFound repeatedly. The ref flips the instant the shiny lands.
-  const foundRef = useRef(false);
+  const foundRef = useRef(!!startFound);
   const found = count >= encounters;
+
+  // Pointer parallax for the TCG foil card: writes CSS vars directly (no
+  // React state), skipped under reduced motion.
+  const cardRef = useRef<HTMLDivElement>(null);
+  const reduceMotionRef = useRef<boolean | null>(null);
+
+  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!found) return;
+    if (reduceMotionRef.current === null) {
+      reduceMotionRef.current = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+    }
+    if (reduceMotionRef.current) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width;
+    const y = (e.clientY - r.top) / r.height;
+    el.style.setProperty("--ry", `${((x - 0.5) * 7).toFixed(2)}deg`);
+    el.style.setProperty("--rx", `${((0.5 - y) * 7).toFixed(2)}deg`);
+    el.style.setProperty("--gx", `${(x * 100).toFixed(1)}%`);
+    el.style.setProperty("--gy", `${(y * 100).toFixed(1)}%`);
+  }
+
+  function onPointerLeave() {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.setProperty("--rx", "0deg");
+    el.style.setProperty("--ry", "0deg");
+    el.style.setProperty("--gx", "50%");
+    el.style.setProperty("--gy", "50%");
+  }
 
   function encounter() {
     if (foundRef.current || pool.length === 0) return;
@@ -78,17 +130,199 @@ export default function ShinyHunt({
   const actualOdds = odds ?? FALLBACK_ODDS;
   const progress = found ? 1 : Math.min(1, count / actualOdds);
 
+  /** Card payload shared by the image-share and download entries. */
+  function buildCardData() {
+    const url = new URL(window.location.href);
+    url.searchParams.set("reveal", "1");
+    return {
+      name: target.displayName,
+      img: shinyImg,
+      encounters,
+      verdict: verdict(encounters, actualOdds),
+      url: url.toString(),
+      difficulty,
+      odds: actualOdds,
+      pity,
+    };
+  }
+
+  /* ---------------- Found: dark TCG foil card ---------------- */
+  if (found) {
+    return (
+      <div className="mx-auto max-w-[680px]">
+        <div
+          ref={cardRef}
+          onPointerMove={onPointerMove}
+          onPointerLeave={onPointerLeave}
+          className="tcg-card overflow-hidden rounded-[26px]"
+        >
+          {/* Card head: SHINY tag + difficulty/odds chips */}
+          <div className="relative flex items-center justify-between gap-3 px-7 pt-6">
+            <span className="tcg-gold-text inline-flex items-center gap-2 text-sm font-extrabold tracking-[0.28em]">
+              ✦ SHINY
+            </span>
+            <div className="flex items-center gap-2">
+              {difficulty && (
+                <span className="tcg-chip uppercase">{difficulty}</span>
+              )}
+              <span className="tcg-chip-odds inline-flex items-center gap-1.5">
+                ✦{" "}
+                {pity
+                  ? `1 / ${actualOdds.toLocaleString()} · GUARANTEED`
+                  : `ODDS 1 / ${actualOdds.toLocaleString()}`}
+              </span>
+            </div>
+          </div>
+
+          {/* HUD: counter + full gold bar */}
+          <div className="relative px-7 pt-4">
+            <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/45">
+              Encounters
+            </div>
+            <div className="mt-0.5 font-display text-4xl font-extrabold tabular-nums leading-none text-white">
+              {count.toLocaleString()}
+            </div>
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: "100%",
+                  background: "linear-gradient(90deg, #f59e0b, #fde047)",
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Stage */}
+          <div className="relative grid min-h-[380px] place-items-center px-6 pb-2 pt-4">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 animate-[tcg-breathe-gold_3.2s_ease-in-out_infinite] rounded-full"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(250, 204, 21, 0.30), transparent 65%)",
+              }}
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/20"
+            />
+            <img
+              src={shinyImg}
+              alt={`Shiny ${target.displayName}`}
+              className="relative h-[300px] w-[300px] animate-[tcg-float_3.6s_ease-in-out_infinite] object-contain drop-shadow-[0_0_34px_rgba(250,204,21,0.55)]"
+            />
+            {/* Ambient twinkles */}
+            {SPARKLES.map((s, i) => (
+              <span
+                key={i}
+                aria-hidden="true"
+                className={`pointer-events-none absolute animate-[twinkle_2.6s_ease-in-out_infinite] ${s.size} text-amber-300/90`}
+                style={{ left: s.left, top: s.top, animationDelay: s.delay }}
+              >
+                ✦
+              </span>
+            ))}
+            {/* Found burst (plays once on mount) */}
+            {BURST.map((a, i) => (
+              <span
+                key={a}
+                aria-hidden="true"
+                className="pointer-events-none absolute left-1/2 top-[46%] animate-[tcg-burst_0.9s_cubic-bezier(.16,.8,.3,1)_both] text-[22px] text-amber-200"
+                style={
+                  {
+                    "--a": `${a}deg`,
+                    animationDelay: `${0.15 + i * 0.02}s`,
+                  } as React.CSSProperties
+                }
+              >
+                ✦
+              </span>
+            ))}
+          </div>
+
+          {/* Info */}
+          <div className="relative px-8 pb-2 text-center">
+            <div className="tcg-gold-text font-display text-[42px] font-extrabold leading-tight">
+              Shiny {target.displayName}
+            </div>
+            <p className="mt-2 text-[15px] text-white/60">
+              Found after{" "}
+              <strong className="font-bold text-amber-200">
+                {encounters.toLocaleString()} encounters
+              </strong>{" "}
+              — {verdict(encounters, actualOdds)}
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="relative flex flex-wrap items-center justify-center gap-3 px-7 pb-8 pt-5">
+            <button
+              onClick={async () => {
+                setImgBusy(true);
+                const how = await shareShinyCard(buildCardData());
+                setImgBusy(false);
+                if (how) {
+                  setShareDone(how);
+                  setTimeout(() => setShareDone(null), 1800);
+                }
+              }}
+              disabled={imgBusy}
+              className="inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-3.5 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95 disabled:opacity-60"
+            >
+              <span aria-hidden="true">✨</span>
+              {imgBusy
+                ? "Rendering…"
+                : shareDone === "shared"
+                  ? "Shared!"
+                  : shareDone === "copied"
+                    ? "Link copied!"
+                    : shareDone === "downloaded"
+                      ? "Image saved!"
+                      : "Share your shiny"}
+            </button>
+            <button
+              onClick={async () => {
+                setImgBusy(true);
+                const ok = await downloadShinyCard(buildCardData());
+                setImgBusy(false);
+                if (ok) {
+                  setDlDone(true);
+                  setTimeout(() => setDlDone(false), 1800);
+                }
+              }}
+              disabled={imgBusy}
+              className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-6 py-3.5 text-base font-bold text-white/85 transition hover:border-amber-300 hover:text-amber-300 active:scale-95 disabled:opacity-60"
+            >
+              <span aria-hidden="true">⬇</span>
+              {dlDone ? "Saved!" : "Download card"}
+            </button>
+            {onNewHunt && (
+              <button
+                onClick={onNewHunt}
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-6 py-3.5 text-base font-bold text-white/85 transition hover:border-amber-300 hover:text-amber-300 active:scale-95"
+              >
+                <span aria-hidden="true">🎲</span>
+                Start your own hunt
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---------------- Hunting: light theme card ---------------- */
   return (
     <div className="mx-auto max-w-[680px]">
       <div className="relative overflow-hidden rounded-3xl border border-poke-border bg-poke-surface shadow-panel">
-        {/* Ambient wash: brand spotlight while hunting, gold when found */}
+        {/* Ambient wash: brand spotlight while hunting */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+          className="pointer-events-none absolute inset-0"
           style={{
-            background: found
-              ? "radial-gradient(70% 60% at 50% 40%, rgba(250, 204, 21, 0.20), transparent 72%)"
-              : "radial-gradient(70% 60% at 50% 40%, rgb(var(--brand) / 0.10), transparent 72%)",
+            background:
+              "radial-gradient(70% 60% at 50% 40%, rgb(var(--brand) / 0.10), transparent 72%)",
           }}
         />
 
@@ -102,20 +336,19 @@ export default function ShinyHunt({
               {count.toLocaleString()}
             </div>
           </div>
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold ${
-              found
-                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-400/15 dark:text-yellow-300"
-                : "bg-poke-chip text-poke-ink"
-            }`}
-          >
-            <span aria-hidden="true">✦</span>
-            {found
-              ? `Shiny ${target.displayName} found!`
-              : pity
+          <div className="flex items-center gap-2">
+            {difficulty && (
+              <span className="inline-flex items-center rounded-full border border-poke-border px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-poke-dim">
+                {difficulty}
+              </span>
+            )}
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-poke-chip px-3.5 py-1.5 text-xs font-bold text-poke-ink">
+              <span aria-hidden="true">✦</span>
+              {pity
                 ? `1 / ${actualOdds.toLocaleString()} · guaranteed`
                 : `odds 1 / ${actualOdds.toLocaleString()}`}
-          </span>
+            </span>
+          </div>
         </div>
 
         {/* Hunt progress toward odds */}
@@ -124,9 +357,8 @@ export default function ShinyHunt({
             className="h-full rounded-full transition-all duration-300 ease-out"
             style={{
               width: `${Math.max(progress * 100, count > 0 ? 2 : 0)}%`,
-              background: found
-                ? "linear-gradient(90deg, #f59e0b, #fde047)"
-                : "linear-gradient(90deg, rgb(var(--brand)), rgb(var(--accent)))",
+              background:
+                "linear-gradient(90deg, rgb(var(--brand)), rgb(var(--accent)))",
             }}
           />
         </div>
@@ -142,9 +374,8 @@ export default function ShinyHunt({
             aria-hidden="true"
             className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
-              background: found
-                ? "radial-gradient(circle, rgba(250, 204, 21, 0.28), transparent 65%)"
-                : "radial-gradient(circle, rgb(var(--brand) / 0.12), transparent 65%)",
+              background:
+                "radial-gradient(circle, rgb(var(--brand) / 0.12), transparent 65%)",
             }}
           />
           {/* Twinkling stars */}
@@ -152,34 +383,14 @@ export default function ShinyHunt({
             <span
               key={i}
               aria-hidden="true"
-              className={`pointer-events-none absolute animate-[twinkle_2.6s_ease-in-out_infinite] ${s.size} ${
-                found ? "text-amber-400" : "text-poke-violet/50"
-              }`}
+              className={`pointer-events-none absolute animate-[twinkle_2.6s_ease-in-out_infinite] ${s.size} text-poke-violet/50`}
               style={{ left: s.left, top: s.top, animationDelay: s.delay }}
             >
               ✦
             </span>
           ))}
 
-          {found ? (
-            <div className="relative animate-[pop_0.4s_ease_both]">
-              <img
-                src={shinyImg}
-                alt={`Shiny ${target.displayName}`}
-                className="mx-auto h-64 w-64 object-contain drop-shadow-[0_0_30px_rgba(250,204,21,0.55)]"
-              />
-              <div className="mt-3 font-display text-2xl font-extrabold text-poke-ink">
-                ✨ Shiny {target.displayName}
-              </div>
-              <p className="mt-1 text-sm text-poke-dim">
-                After {encounters.toLocaleString()} encounters —{" "}
-                {verdict(encounters, actualOdds)}
-              </p>
-              <p className="mt-4 text-xs text-poke-dim">
-                Roll a new hunt with Create Challenge above, or share this one.
-              </p>
-            </div>
-          ) : current ? (
+          {current ? (
             <div key={count} className="relative animate-[pop_0.25s_ease_both]">
               <img
                 src={current.img}
@@ -202,17 +413,15 @@ export default function ShinyHunt({
             </div>
           )}
 
-          {!found && (
-            <button
-              onClick={encounter}
-              className="relative mt-8 inline-flex items-center gap-2.5 rounded-2xl bg-poke-btn px-14 py-4 text-lg font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
-            >
-              <span aria-hidden="true" className="text-xl leading-none">
-                ✦
-              </span>
-              Encounter!
-            </button>
-          )}
+          <button
+            onClick={encounter}
+            className="relative mt-8 inline-flex items-center gap-2.5 rounded-2xl bg-poke-btn px-14 py-4 text-lg font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
+          >
+            <span aria-hidden="true" className="text-xl leading-none">
+              ✦
+            </span>
+            Encounter!
+          </button>
         </div>
       </div>
     </div>
