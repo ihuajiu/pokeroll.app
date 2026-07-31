@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import FusionGenerator from "@/components/FusionGenerator";
-import ToolsNav from "@/components/ToolsNav";
 import PageHeader from "@/components/PageHeader";
 import { getRandomPokemon } from "@/lib/pokeapi";
 
@@ -21,7 +20,6 @@ export default async function FusionPage() {
         description="Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats."
       />
       <FusionGenerator initial={{ a, b }} />
-      <ToolsNav current="/fusion" />
     </main>
   );
 }

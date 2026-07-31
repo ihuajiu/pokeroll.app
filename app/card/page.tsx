@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import CardGenerator from "@/components/CardGenerator";
-import ToolsNav from "@/components/ToolsNav";
 import PageHeader from "@/components/PageHeader";
 import { getRandomPokemon } from "@/lib/pokeapi";
 
@@ -21,7 +20,6 @@ export default async function CardPage() {
         description="Draw a random Pokémon as a stylized trading card with type energy, HP and CP."
       />
       <CardGenerator initial={pokemon} />
-      <ToolsNav current="/card" />
     </main>
   );
 }

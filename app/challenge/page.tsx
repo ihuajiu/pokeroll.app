@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
-import ToolsNav from "@/components/ToolsNav";
 import PageHeader from "@/components/PageHeader";
 import {
   getChallenge,
@@ -53,7 +52,6 @@ export default async function ChallengePage({
         description="Build a custom, shareable challenge from our random generator. Tweak the mode and filters, then copy the link to challenge a friend."
       />
       <ChallengeGenerator challenge={challenge} />
-      <ToolsNav current="/challenge" />
     </main>
   );
 }

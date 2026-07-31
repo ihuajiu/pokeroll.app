@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import WheelGenerator from "@/components/WheelGenerator";
-import ToolsNav from "@/components/ToolsNav";
 import PageHeader from "@/components/PageHeader";
 import { getRandomPokemon } from "@/lib/pokeapi";
 
@@ -23,7 +22,6 @@ export default async function WheelPage() {
         description="Spin the wheel for a random Pokémon — a fun game-of-chance picker across the Pokédex."
       />
       <WheelGenerator initial={{ items }} />
-      <ToolsNav current="/wheel" />
     </main>
   );
 }

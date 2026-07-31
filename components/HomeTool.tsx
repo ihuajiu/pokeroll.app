@@ -3,7 +3,6 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import HeroAdventureTeaser from "@/components/HeroAdventureTeaser";
-import ToolsNav from "@/components/ToolsNav";
 import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 
 export const metadata: Metadata = {
@@ -254,8 +253,6 @@ export default async function Home() {
           ))}
         </div>
       </section>
-
-      <ToolsNav />
     </>
   );
 }

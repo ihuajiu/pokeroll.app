@@ -1,49 +1,6 @@
 import Link from "next/link";
 import { REGIONS, TYPES, GENS, titleCase } from "@/lib/seo";
-
-const COLS: { title: string; links: { label: string; href: string; external?: boolean }[] }[] = [
-  {
-    title: "Generators",
-    links: [
-      { label: "Random", href: "/" },
-      { label: "By Type", href: "/type" },
-      { label: "By Ability", href: "/ability" },
-      { label: "By Move", href: "/move" },
-      { label: "By Number", href: "/number" },
-      { label: "By BST", href: "/bst" },
-    ],
-  },
-  {
-    title: "Play",
-    links: [
-      { label: "Fusion", href: "/fusion" },
-      { label: "Wheel", href: "/wheel" },
-      { label: "Card", href: "/card" },
-      { label: "Challenge", href: "/challenge" },
-      { label: "Shiny", href: "/shiny" },
-      { label: "No Names", href: "/no-names" },
-    ],
-  },
-  {
-    title: "More Tools",
-    links: [
-      { label: "Starter", href: "/starter" },
-      { label: "Team Builder", href: "/team" },
-      { label: "Cute", href: "/cute" },
-      { label: "Mythical", href: "/mythical" },
-      { label: "Mega", href: "/mega" },
-      { label: "Nickname", href: "/nickname" },
-    ],
-  },
-  {
-    title: "About",
-    links: [
-      { label: "Home", href: "/" },
-      { label: "Disclaimer", href: "/disclaimer" },
-      { label: "Data: PokéAPI", href: "https://pokeapi.co/", external: true },
-    ],
-  },
-];
+import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 
 export default function Footer() {
   return (
@@ -70,25 +27,14 @@ export default function Footer() {
             Roll a random Pokémon — names, types, stats and shinies in one tap.
           </p>
         </div>
-        {COLS.map((col) => (
-          <div key={col.title} className="foot-col">
-            <h4>{col.title}</h4>
-            {col.links.map((l) =>
-              l.external ? (
-                <a
-                  key={l.label}
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {l.label}
-                </a>
-              ) : (
-                <Link key={l.label} href={l.href}>
-                  {l.label}
-                </Link>
-              ),
-            )}
+        {TOOL_GROUPS.map((g) => (
+          <div key={g.id} className="foot-col">
+            <h4>{g.title}</h4>
+            {TOOLS.filter((t) => t.group === g.id).map((t) => (
+              <Link key={t.href} href={t.href}>
+                {t.label}
+              </Link>
+            ))}
           </div>
         ))}
       </div>
@@ -137,7 +83,7 @@ export default function Footer() {
         >
           PokéAPI
         </a>
-        .
+        . <Link href="/disclaimer" className="underline">Disclaimer</Link>.
       </div>
     </footer>
   );
