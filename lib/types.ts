@@ -20,6 +20,7 @@ export type Pokemon = {
   sprite: string; // small sprite url (fallback)
   artwork: string; // official artwork url (475x475)
   shinySprite?: string;
+  shinyArtwork?: string; // official shiny artwork url (475x475)
   isLegendary: boolean;
   isMythical: boolean;
   // raw lowercase names used for reverse indexing (ability/move -> pokemon)

@@ -113,6 +113,7 @@ async function getPokemon(idOrName) {
     sprite: `/pokemon/sprite/${p.id}.png`,
     artwork: `/pokemon/artwork/${p.id}.png`,
     shinySprite: hasShiny ? `/pokemon/shiny/${p.id}.png` : undefined,
+    shinyArtwork: hasShiny ? `/pokemon/shiny-artwork/${p.id}.png` : undefined,
     isLegendary: !!species?.is_legendary,
     isMythical: !!species?.is_mythical,
     moveNames: (p.moves ?? []).map((m) => m.move.name),
@@ -183,6 +184,7 @@ async function main() {
   fs.mkdirSync(path.join(PUBLIC_DIR, "artwork"), { recursive: true });
   fs.mkdirSync(path.join(PUBLIC_DIR, "sprite"), { recursive: true });
   fs.mkdirSync(path.join(PUBLIC_DIR, "shiny"), { recursive: true });
+  fs.mkdirSync(path.join(PUBLIC_DIR, "shiny-artwork"), { recursive: true });
 
   const imgTasks = [];
   for (const p of pokemon) {
@@ -199,6 +201,10 @@ async function main() {
       imgTasks.push({
         url: `${IMG_BASE}/shiny/${id}.png`,
         dest: path.join(PUBLIC_DIR, "shiny", `${id}.png`),
+      });
+      imgTasks.push({
+        url: `${IMG_BASE}/other/official-artwork/shiny/${id}.png`,
+        dest: path.join(PUBLIC_DIR, "shiny-artwork", `${id}.png`),
       });
     }
   }
