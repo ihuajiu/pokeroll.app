@@ -1,41 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 import { GroupIcon } from "./ToolIcons";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useTeam } from "./useTeam";
+import TeamTray from "@/components/TeamTray";
 
 // 五分组主导航：每组指向该组的第一个工具页。
 const MAIN = [
   { href: "/adventure", label: "Adventure" },
   { href: "/random", label: "Generators" },
+  { href: "/team/random", label: "Team" },
   { href: "/challenge", label: "Challenges" },
   { href: "/fusion", label: "Tools" },
-  { href: "/team", label: "Team" },
 ];
 
 export default function SiteNav({ currentPath = "" }: { currentPath?: string }) {
-  const [open, setOpen] = useState(false);
   const [mobile, setMobile] = useState(false);
-  const dropRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const activePath = pathname || currentPath;
   const isActive = (href: string) => activePath === href || activePath === href + "/";
-  const { team } = useTeam();
-  const teamCount = team.length;
-
-  useEffect(() => {
-    function onDoc(e: MouseEvent) {
-      if (dropRef.current && !dropRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
-  }, []);
 
   return (
     <header
@@ -75,65 +61,13 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
               }`}
             >
               {m.label}
-              {m.href === "/team" && teamCount > 0 && (
-                <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
-                  {teamCount}
-                </span>
-              )}
             </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-2">
+          <TeamTray />
           <ThemeToggle />
-
-          <div className="relative hidden md:block" ref={dropRef}>
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              aria-label="Browse all tools"
-              className="game-btn game-btn-ghost px-3.5 py-2 text-sm"
-            >
-              All tools
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className={`h-4 w-4 transition ${open ? "rotate-180" : ""}`}
-              >
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </button>
-            {open && (
-              <div className="absolute right-0 mt-3 w-[28rem] rounded-2.5xl border border-poke-border bg-poke-surface p-4 shadow-panel ring-1 ring-[#ee3b3b]/15">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-5">
-                  {TOOL_GROUPS.map((g) => (
-                    <div key={g.id}>
-                      <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#ee3b3b]">
-                        <GroupIcon group={g.id} className="h-4 w-4" />
-                        {g.title}
-                      </div>
-                      <ul className="space-y-1">
-                        {TOOLS.filter((t) => t.group === g.id).map((t) => (
-                          <li key={t.href}>
-                            <Link
-                              href={t.href}
-                              onClick={() => setOpen(false)}
-                              className="block rounded-lg px-2 py-1 text-sm font-medium text-poke-ink transition hover:bg-[#ee3b3b]/10 hover:text-[#ee3b3b]"
-                            >
-                              {t.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
 
           <Link
             href="/adventure"
@@ -179,11 +113,6 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                   >
                     <GroupIcon group={g.id} className="h-4 w-4" />
                     {g.title}
-                    {g.id === "team" && teamCount > 0 && (
-                      <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
-                        {teamCount}
-                      </span>
-                    )}
                   </Link>
                   <div className="flex flex-wrap gap-2">
                     {TOOLS.filter((t) => t.group === g.id).map((t) => (
@@ -208,7 +137,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
           <Link
             href="/adventure"
             onClick={() => setMobile(false)}
-            className="game-btn game-btn-primary mt-4 block px-4 py-2 text-center text-sm"
+            className="game-btn game-btn-primary mt-4 w-full px-4 py-2 text-center text-sm"
           >
             Roll Adventure
           </Link>
