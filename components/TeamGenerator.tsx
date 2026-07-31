@@ -40,19 +40,22 @@ const REGION_TO_GEN: Record<string, string> = Object.fromEntries(
 
 const selectCls =
   "rounded-lg border border-poke-border bg-white px-2 py-1.5 text-sm text-poke-ink focus:border-poke-red focus:outline-none";
-const labelCls = "flex flex-col gap-1 text-xs font-semibold text-poke-dim";
+const labelCls =
+  "flex w-full flex-col gap-1 text-xs font-semibold text-poke-dim lg:w-32";
 
 /**
  * Filtered team roller for the Random Team page (/team/random). Filters
  * intersect server-side (gen ∩ region ∩ type, see lib/team.ts); rolled
  * Pokémon can be added straight into the saved team via the shared
- * useTeam store.
+ * useTeam store. The filter control mirrors /random: a breathing gear
+ * icon that expands into a horizontal bar.
  */
 export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
   const [gen, setGen] = useState("1");
   const [region, setRegion] = useState("kanto");
   const [type, setType] = useState(""); // "" = Random
   const [size, setSize] = useState("6");
+  const [open, setOpen] = useState(false);
   const [rolled, setRolled] = useState<Pokemon[] | null>(initial ?? null);
   const [rolling, setRolling] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -109,127 +112,190 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
     flash(`Added ${Math.min(fresh.length, slots)} to your team.`);
   }
 
+  const gearIcon = (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </svg>
+  );
+
   return (
     <div className="mx-auto w-full max-w-[1100px] px-4">
-      <div className="mb-8 rounded-2xl border border-poke-border bg-poke-surface p-4 shadow-sm">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-sm font-bold uppercase tracking-wide text-poke-dim">
-            Roll a Team
-          </h2>
-          <button
-            type="button"
-            onClick={roll}
-            disabled={rolling}
-            className="rounded-xl bg-poke-red px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {rolling ? "Rolling…" : "Roll"}
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <label className={labelCls}>
-            Generation
-            <select
-              value={gen}
-              onChange={(e) => {
-                const v = e.target.value;
-                setGen(v);
-                setRegion(v ? GEN_TO_REGION[v] : "");
-              }}
-              className={selectCls}
-            >
-              <option value="">Random</option>
-              {GENERATIONS.map((g) => (
-                <option key={g} value={String(g)}>
-                  Gen {g}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={labelCls}>
-            Region
-            <select
-              value={region}
-              onChange={(e) => {
-                const v = e.target.value;
-                setRegion(v);
-                setGen(v ? REGION_TO_GEN[v] : "");
-              }}
-              className={selectCls}
-            >
-              <option value="">Random</option>
-              {REGIONS.map((r) => (
-                <option key={r} value={r}>
-                  {r.charAt(0).toUpperCase() + r.slice(1)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={labelCls}>
-            Type
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className={selectCls}
-            >
-              <option value="">Random</option>
-              {TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {t.charAt(0).toUpperCase() + t.slice(1)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className={labelCls}>
-            Team Size
-            <select
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-              className={selectCls}
-            >
-              <option value="">Random</option>
-              {TEAM_SIZES.map((c) => (
-                <option key={c} value={String(c)}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        {notice && (
-          <p role="status" className="mt-3 text-sm font-medium text-poke-ink">
-            {notice}
-          </p>
-        )}
-
-        {rolled && rolled.length > 0 && (
-          <>
-            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {rolled.map((p) => (
-                <HeroCard
-                  key={p.dexNumber}
-                  pokemon={p}
-                  variant="team"
-                  showActions={false}
-                />
-              ))}
-            </div>
-            <div className="mt-4 flex justify-end">
+      <div className="relative mb-5 flex items-center justify-center">
+        <div
+          className={`overflow-hidden transition-[width] duration-300 ${
+            open
+              ? "w-[640px] max-w-full rounded-xl border border-poke-border bg-poke-surface shadow-sm"
+              : "breathe w-11"
+          }`}
+        >
+          {open ? (
+            <div className="flex items-start gap-3 p-3">
               <button
                 type="button"
-                onClick={addAll}
-                className="rounded-xl bg-poke-btn px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
+                onClick={() => setOpen(false)}
+                aria-expanded={open}
+                aria-label="Collapse filters"
+                title="Collapse filters"
+                className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center"
               >
-                Add all to Team
-                <span className="ml-1.5 rounded-full bg-white/20 px-1.5 text-xs leading-5">
-                  {team.length}/{max}
-                </span>
+                {gearIcon}
               </button>
+              <div className="grid flex-1 grid-cols-2 gap-2.5 sm:grid-cols-4 lg:flex lg:flex-initial">
+                <label className={labelCls}>
+                  Generation
+                  <select
+                    value={gen}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setGen(v);
+                      setRegion(v ? GEN_TO_REGION[v] : "");
+                    }}
+                    className={selectCls}
+                  >
+                    <option value="">Random</option>
+                    {GENERATIONS.map((g) => (
+                      <option key={g} value={String(g)}>
+                        Gen {g}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className={labelCls}>
+                  Region
+                  <select
+                    value={region}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setRegion(v);
+                      setGen(v ? REGION_TO_GEN[v] : "");
+                    }}
+                    className={selectCls}
+                  >
+                    <option value="">Random</option>
+                    {REGIONS.map((r) => (
+                      <option key={r} value={r}>
+                        {r.charAt(0).toUpperCase() + r.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className={labelCls}>
+                  Type
+                  <select
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                    className={selectCls}
+                  >
+                    <option value="">Random</option>
+                    {TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t.charAt(0).toUpperCase() + t.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className={labelCls}>
+                  Team Size
+                  <select
+                    value={size}
+                    onChange={(e) => setSize(e.target.value)}
+                    className={selectCls}
+                  >
+                    <option value="">Random</option>
+                    {TEAM_SIZES.map((c) => (
+                      <option key={c} value={String(c)}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
             </div>
-          </>
-        )}
+          ) : (
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-expanded={open}
+              aria-label="Filters"
+              title="Filters"
+              className="flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red"
+            >
+              {gearIcon}
+            </button>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={roll}
+          disabled={rolling}
+          className="absolute right-6 inline-flex items-center gap-2 rounded-xl bg-poke-red px-7 py-3 text-base font-bold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="h-5 w-5"
+            aria-hidden="true"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="4" />
+            <g fill="currentColor" stroke="none">
+              <circle cx="8.5" cy="8.5" r="1.3" />
+              <circle cx="15.5" cy="8.5" r="1.3" />
+              <circle cx="12" cy="12" r="1.3" />
+              <circle cx="8.5" cy="15.5" r="1.3" />
+              <circle cx="15.5" cy="15.5" r="1.3" />
+            </g>
+          </svg>
+          {rolling ? "Rolling…" : "Roll"}
+        </button>
       </div>
+
+      {notice && (
+        <p
+          role="status"
+          className="mb-3 text-center text-sm font-medium text-poke-ink"
+        >
+          {notice}
+        </p>
+      )}
+
+      {rolled && rolled.length > 0 && (
+        <>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {rolled.map((p) => (
+              <HeroCard
+                key={p.dexNumber}
+                pokemon={p}
+                variant="team"
+                showActions={false}
+              />
+            ))}
+          </div>
+          <div className="mt-4 flex justify-end">
+            <button
+              type="button"
+              onClick={addAll}
+              className="rounded-xl bg-poke-btn px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
+            >
+              Add all to Team
+              <span className="ml-1.5 rounded-full bg-white/20 px-1.5 text-xs leading-5">
+                {team.length}/{max}
+              </span>
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

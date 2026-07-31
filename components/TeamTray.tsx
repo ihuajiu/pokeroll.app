@@ -31,7 +31,7 @@ export default function TeamTray() {
         aria-label={`Your team (${team.length}/${max})`}
         aria-expanded={open}
         title="Your team"
-        className="game-btn game-btn-ghost inline-flex h-9 items-center gap-1.5 px-3 text-sm font-semibold"
+        className="game-btn game-btn-ghost inline-flex h-9 items-center gap-1.5 whitespace-nowrap px-3 text-sm font-semibold"
       >
         Your Team
         <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">

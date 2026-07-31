@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import RandomGenerator from "@/components/RandomGenerator";
 import PageHeader from "@/components/PageHeader";
-import { getRandomPokemon } from "@/lib/pokeapi";
+import { getPokemonById, getRandomPokemon } from "@/lib/pokeapi";
 
 export const dynamic = "force-dynamic";
 
@@ -19,11 +19,27 @@ export const metadata: Metadata = {
   alternates: { canonical: "/random" },
 };
 
-export default async function RandomGeneratorPage() {
-  const initial = await getRandomPokemon();
+export default async function RandomGeneratorPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ p?: string }>;
+}) {
+  const { p } = await searchParams;
+  // ?p=<name> makes a shared link reproduce the exact same Pokémon; anything
+  // unknown falls back to a fresh random roll.
+  let initial;
+  if (p) {
+    try {
+      initial = await getPokemonById(p);
+    } catch {
+      initial = await getRandomPokemon();
+    }
+  } else {
+    initial = await getRandomPokemon();
+  }
 
   return (
-    <main className="pt-6 pb-10">
+    <main className="pt-4 pb-10">
       <div className="mx-auto max-w-[640px] px-6">
         <PageHeader
           title="Random Pokémon Generator"
