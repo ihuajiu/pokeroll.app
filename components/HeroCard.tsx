@@ -1,8 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Pokemon } from "@/lib/types";
 import { TYPE_HEX } from "@/lib/typeColors";
+import {
+  downloadPokemonCard,
+  sharePokemonLink,
+  type PokemonCardStyle,
+} from "@/lib/shareCard";
 
 const STAT_ROWS: { key: keyof Pokemon["stats"]; label: string }[] = [
   { key: "hp", label: "HP" },
@@ -72,7 +77,37 @@ export default function HeroCard({
 }) {
   const [internal, setInternal] = useState<Pokemon>(pokemon);
   const [internalLoading, setInternalLoading] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [shareDone, setShareDone] = useState<"shared" | "copied" | null>(null);
+  const [dlDone, setDlDone] = useState(false);
+  const [popOpen, setPopOpen] = useState(false);
+  const [cardStyle, setCardStyle] = useState<PokemonCardStyle>("classic");
+  /** Root card element — captured as the classic-style download image. */
+  const cardRef = useRef<HTMLDivElement>(null);
+  const popRef = useRef<HTMLDivElement>(null);
+  const shareBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Close the share popover on outside click / Escape.
+  useEffect(() => {
+    if (!popOpen) return;
+    function onDoc(e: MouseEvent) {
+      const t = e.target as Node;
+      if (
+        popRef.current && !popRef.current.contains(t) &&
+        shareBtnRef.current && !shareBtnRef.current.contains(t)
+      ) {
+        setPopOpen(false);
+      }
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setPopOpen(false);
+    }
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [popOpen]);
 
   // The bold "team" layout applies to any card showing stat bars. Mystery
   // cards (hideName) never show bars, so they keep the compact default look.
@@ -105,7 +140,6 @@ export default function HeroCard({
       if (!res.ok) throw new Error("failed");
       const next: Pokemon = await res.json();
       setInternal(next);
-      setSaved(false);
       window.history.replaceState(null, "", `${basePath}?p=${next.name}`);
     } catch {
       // keep previous pokemon on error
@@ -114,8 +148,43 @@ export default function HeroCard({
     }
   }
 
+  function cardData() {
+    return {
+      name: data.displayName,
+      dex: data.dexNumber,
+      types: data.types,
+      img: spriteUrl,
+      stats: data.stats,
+      bst: data.bst,
+      region: data.region,
+      generation: data.generation,
+      // Page title carries the module name ("Random Pokémon Generator — …").
+      module: document.title.split("—")[0].trim(),
+      // Always carry the ?p= param so the shared link re-rolls this exact
+      // Pokémon for whoever opens it. Use the live pathname — callers never
+      // pass basePath, and parent-controlled cards may live anywhere.
+      url: `${window.location.origin}${window.location.pathname}?p=${data.name}`,
+    };
+  }
+
+  async function handleShareLink() {
+    const how = await sharePokemonLink(cardData());
+    setShareDone(how);
+    setTimeout(() => setShareDone(null), 1800);
+  }
+
+  async function handleDownload() {
+    if (!cardRef.current) return;
+    const ok = await downloadPokemonCard(cardStyle, cardRef.current, cardData());
+    if (ok) {
+      setDlDone(true);
+      setTimeout(() => setDlDone(false), 1800);
+    }
+  }
+
   return (
     <div
+      ref={cardRef}
       className={`hero-card${hideName ? " hero-card--mystery" : ""}${variantClass}${
         isLoading ? " is-loading" : ""
       }`}
@@ -220,52 +289,91 @@ export default function HeroCard({
 
       {showActions ? (
         <div className="hero-actions">
-          <button
-            type="button"
-            className={`act act-save${saved ? " is-on" : ""}`}
-            onClick={() => setSaved((s) => !s)}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill={saved ? "currentColor" : "none"}
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-            </svg>
-            {saved ? "Saved" : "Save"}
-          </button>
+          {hideName ? (
+            // Mystery cards must not leak the answer through a rendered
+            // image — plain link share only, no popover.
+            <button type="button" className="act" onClick={handleShareLink}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              {shareDone === "shared"
+                ? "Shared!"
+                : shareDone === "copied"
+                  ? "Copied!"
+                  : "Share"}
+            </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                ref={shareBtnRef}
+                className={`act${popOpen ? " is-open" : ""}`}
+                aria-expanded={popOpen}
+                onClick={() => setPopOpen((o) => !o)}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                Share
+              </button>
 
-          <button
-            type="button"
-            className="act"
-            onClick={() => {
-              const url = window.location.href;
-              if (navigator.share) {
-                navigator.share({ title: name, url }).catch(() => {});
-              } else if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).catch(() => {});
-              }
-            }}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="18" cy="5" r="3" />
-              <circle cx="6" cy="12" r="3" />
-              <circle cx="18" cy="19" r="3" />
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-            </svg>
-            Share
-          </button>
+              {popOpen ? (
+                <div className="share-pop" ref={popRef}>
+                  <div className="share-pop-label">Card style</div>
+                  <div className="share-pop-styles">
+                    <button
+                      type="button"
+                      className={`style-chip${cardStyle === "classic" ? " is-on" : ""}`}
+                      onClick={() => setCardStyle("classic")}
+                    >
+                      Classic
+                    </button>
+                    <button
+                      type="button"
+                      className={`style-chip${cardStyle === "tcg" ? " is-on" : ""}`}
+                      onClick={() => setCardStyle("tcg")}
+                    >
+                      TCG
+                    </button>
+                  </div>
+                  <div className="share-pop-actions">
+                    <button type="button" className="act" onClick={handleShareLink}>
+                      {shareDone === "shared"
+                        ? "Shared!"
+                        : shareDone === "copied"
+                          ? "Copied!"
+                          : "Share link"}
+                    </button>
+                    <button type="button" className="act" onClick={handleDownload}>
+                      {dlDone ? "Saved!" : "Download"}
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </>
+          )}
 
           <button
             type="button"

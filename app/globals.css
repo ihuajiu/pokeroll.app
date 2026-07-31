@@ -1407,11 +1407,50 @@ body {
   box-shadow: 0 1px 0 color-mix(in srgb, rgb(var(--accent)) 70%, #000);
 }
 .act-roll:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-.act-save.is-on {
-  color: rgb(var(--ptool));
-  border-color: color-mix(in srgb, rgb(var(--ptool)) 50%, rgb(var(--border)));
-  background: color-mix(in srgb, rgb(var(--ptool)) 12%, rgb(var(--surface)));
+
+/* Share popover — card-style picker + share-link / download actions. */
+.hero-actions { position: relative; }
+.share-pop {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 40;
+  width: 250px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgb(var(--border));
+  background: rgb(var(--surface));
+  box-shadow: 0 16px 36px -14px rgba(0, 0, 0, 0.35);
 }
+.share-pop-label {
+  font: 700 11px var(--font);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--muted));
+  margin-bottom: 8px;
+}
+.share-pop-styles { display: flex; gap: 8px; margin-bottom: 12px; }
+.style-chip {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 10px;
+  border: 1px solid rgb(var(--border));
+  background: transparent;
+  color: rgb(var(--text));
+  font: 700 13px var(--font);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.style-chip:hover {
+  border-color: color-mix(in srgb, rgb(var(--accent)) 60%, rgb(var(--border)));
+}
+.style-chip.is-on {
+  border-color: rgb(var(--accent));
+  background: color-mix(in srgb, rgb(var(--accent)) 12%, transparent);
+  color: rgb(var(--accent));
+}
+.share-pop-actions { display: flex; gap: 8px; }
+.share-pop-actions .act { flex: 1; justify-content: center; }
 
 /* ============================================================
    Section block + header — prototype .block + .sec-head

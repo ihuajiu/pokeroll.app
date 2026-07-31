@@ -1,8 +1,9 @@
-// Client-side share-card renderer for a found shiny (canvas → PNG).
-// The QR in the bottom-right encodes the reveal link, so anyone scanning
-// it lands on this exact result card. Same-origin local artwork keeps the
-// canvas untainted.
+// Client-side share-card renderer (canvas → PNG). Two flavors: the found
+// shiny card and the regular Pokémon card from HeroCard. The QR in the
+// bottom-right encodes the reproducible link, so anyone scanning it lands
+// on this exact result. Same-origin local artwork keeps the canvas untainted.
 import QRCode from "qrcode";
+import { TYPE_HEX } from "@/lib/typeColors";
 
 export interface ShinyCardData {
   name: string;
@@ -321,24 +322,504 @@ export async function shareShinyCard(
     ) {
       // Attach the reveal link both ways: some targets ignore `url` when
       // files are present, so it also rides inside the text.
-      await navigator.share({
-        files: [file],
-        text: `${text}\n${data.url}`,
-        url: data.url,
-      });
-      return "shared";
+      try {
+        await navigator.share({
+          files: [file],
+          text: `${text}\n${data.url}`,
+          url: data.url,
+        });
+        return "shared";
+      } catch {
+        // Cancelled or no share targets — fall through to the next option.
+      }
     }
     if (typeof navigator !== "undefined" && navigator.share) {
-      await navigator.share({ title: "Shiny Hunt Challenge", text, url: data.url });
-      return "shared";
+      try {
+        await navigator.share({ title: "Shiny Hunt Challenge", text, url: data.url });
+        return "shared";
+      } catch {
+        // Desktop Chromium exposes navigator.share but rejects with
+        // AbortError("Share failed") — fall through to clipboard/download.
+      }
     }
     if (typeof navigator !== "undefined" && navigator.clipboard) {
-      await navigator.clipboard.writeText(`${text}\n${data.url}`);
-      return "copied";
+      try {
+        await navigator.clipboard.writeText(`${text}\n${data.url}`);
+        return "copied";
+      } catch {
+        // Permission denied — fall through to download.
+      }
     }
     downloadBlob(blob, file.name);
     return "downloaded";
   } catch {
     return null;
   }
+}
+
+/* ── Regular Pokémon card (HeroCard share / download) ───────────────────── */
+
+export interface PokemonCardMeta {
+  name: string;
+  /** Reproducible link encoded into the QR code. */
+  url: string;
+  /** Module label for the footer, e.g. "Random Pokémon Generator". */
+  module?: string;
+}
+
+/** Full payload for the canvas-drawn TCG style. */
+export interface PokemonCardData extends PokemonCardMeta {
+  dex: number;
+  types: string[];
+  /** Local artwork url, e.g. /pokemon/artwork/81.png */
+  img: string;
+  stats: {
+    hp: number;
+    atk: number;
+    def: number;
+    spa: number;
+    spd: number;
+    spe: number;
+  };
+  bst: number;
+  region: string;
+  generation: number | string;
+}
+
+/** "classic" snapshots the on-page card; "tcg" draws the dark TCG card. */
+export type PokemonCardStyle = "classic" | "tcg";
+
+/** Bounds of the solid content in a canvas (0-based, inclusive).
+ *  Semi-transparent pixels (drop shadows, glows) are ignored. */
+function findOpaqueBounds(c: HTMLCanvasElement): {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+} {
+  const ctx = c.getContext("2d")!;
+  const { data, width, height } = ctx.getImageData(0, 0, c.width, c.height);
+  const solid = (i: number) => data[i * 4 + 3] > 200;
+  let bottom = -1;
+  outerB: for (let y = height - 1; y >= 0; y--) {
+    const row = y * width;
+    for (let x = 0; x < width; x++) {
+      if (solid(row + x)) { bottom = y; break outerB; }
+    }
+  }
+  if (bottom < 0) return { left: 0, top: 0, right: width - 1, bottom: height - 1 };
+  let top = 0;
+  outerT: for (let y = 0; y <= bottom; y++) {
+    const row = y * width;
+    for (let x = 0; x < width; x++) {
+      if (solid(row + x)) { top = y; break outerT; }
+    }
+  }
+  let right = 0;
+  outerR: for (let x = width - 1; x >= 0; x--) {
+    for (let y = top; y <= bottom; y++) {
+      if (solid(y * width + x)) { right = x; break outerR; }
+    }
+  }
+  let left = 0;
+  outerL: for (let x = 0; x <= right; x++) {
+    for (let y = top; y <= bottom; y++) {
+      if (solid(y * width + x)) { left = x; break outerL; }
+    }
+  }
+  return { left, top, right, bottom };
+}
+
+/** Lowest row holding real content (dark or saturated pixels) — locates the
+ *  empty band at the bottom of the captured card. Side/bottom insets skip
+ *  the card border and the rounded-corner curve. */
+function findContentBottom(
+  c: HTMLCanvasElement,
+  bounds: { left: number; right: number; bottom: number },
+): number {
+  const ctx = c.getContext("2d")!;
+  const sideInset = Math.min(120, Math.floor((bounds.right - bounds.left) * 0.1));
+  const bottomInset = 18;
+  const x0 = bounds.left + sideInset;
+  const w = bounds.right - bounds.left - sideInset * 2;
+  const h = bounds.bottom - bottomInset;
+  if (w <= 0 || h <= 0) return bounds.bottom;
+  const { data } = ctx.getImageData(x0, 0, w, h);
+  for (let y = h - 1; y >= 0; y--) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      if (data[i + 3] > 200) {
+        const r = data[i], g = data[i + 1], b = data[i + 2];
+        const mx = Math.max(r, g, b);
+        const mn = Math.min(r, g, b);
+        if (mx - mn > 40 || mx < 170) return y;
+      }
+    }
+  }
+  return 0;
+}
+
+/**
+ * Webfont CSS for the capture, fetched ourselves. html-to-image's own font
+ * pass reads document.styleSheets' cssRules, which throws a SecurityError
+ * for the cross-origin Google Fonts <link> (noisy in the Next dev overlay).
+ * Google Fonts serves CORS headers, so a plain fetch works and the fonts
+ * still embed correctly.
+ */
+let fontCssPromise: Promise<string> | null = null;
+function getFontEmbedCSS(): Promise<string> {
+  if (!fontCssPromise) {
+    fontCssPromise = (async () => {
+      try {
+        const link = document.querySelector<HTMLLinkElement>(
+          'link[rel="stylesheet"][href*="fonts.googleapis"]',
+        );
+        if (!link) return "";
+        const res = await fetch(link.href);
+        return res.ok ? await res.text() : "";
+      } catch {
+        return "";
+      }
+    })();
+  }
+  return fontCssPromise;
+}
+
+/**
+ * Classic style: renders a HeroCard DOM node to a PNG blob. The card keeps
+ * its own on-page style (captured via html-to-image); a QR sticker is pasted
+ * onto the bottom-right corner, encoding the reproducible link.
+ */
+async function renderPokemonCardDom(
+  el: HTMLElement,
+  meta: PokemonCardMeta,
+): Promise<Blob> {
+  await document.fonts?.ready.catch(() => undefined);
+  const { toCanvas } = await import("html-to-image");
+  const scale = 3;
+  // The /random stage scales the card with CSS `zoom`, which breaks
+  // html-to-image's size math (blank gutter inside the capture). Neutralize
+  // it for the duration of the snapshot, then restore.
+  const inlineZoom = el.style.zoom;
+  const computedZoom = getComputedStyle(el).zoom;
+  const hadZoom = computedZoom !== "1" && computedZoom !== "normal";
+  if (hadZoom) el.style.zoom = "1";
+  let shot: HTMLCanvasElement;
+  try {
+    shot = await toCanvas(el, {
+      pixelRatio: scale,
+      fontEmbedCSS: await getFontEmbedCSS(),
+      // The action bar (Share / Download / New roll) is UI chrome, not card
+      // content — exclude it from the picture.
+      filter: (node) =>
+        !(node instanceof HTMLElement && node.classList.contains("hero-actions")),
+    });
+  } finally {
+    if (hadZoom) el.style.zoom = inlineZoom;
+  }
+
+  const canvas = document.createElement("canvas");
+  // Compose inside the card: QR bottom-right + brand bottom-left, laid out in
+  // the empty band below the last content row (the filtered action bar's
+  // zone). The canvas is cropped to the card's real painted bounds — zoom /
+  // grid / aspect-ratio quirks can leave transparent gutters on any side.
+  const u = scale; // 1 css px in canvas px
+  const b = findOpaqueBounds(shot);
+  const cardW = b.right - b.left + 1;
+  const cardH = b.bottom - b.top + 1;
+  const contentBottom = findContentBottom(shot, b) - b.top;
+  canvas.width = cardW;
+  canvas.height = cardH;
+  const ctx = canvas.getContext("2d")!;
+  ctx.drawImage(shot, -b.left, -b.top);
+
+  const bandTop = contentBottom + 6 * u;
+  const bandBottom = cardH - 14 * u;
+  const bandH = bandBottom - bandTop;
+  if (bandH >= 40 * u) {
+    const padX = 26 * u; // matches the card's own content padding
+    // QR box (right), vertically centered in the band
+    const q = Math.min(64 * u, bandH - 8 * u);
+    const qx = cardW - padX - q;
+    const qy = bandTop + (bandH - q) / 2;
+    const qr = await QRCode.toDataURL(meta.url, {
+      margin: 0,
+      width: Math.round(q - 10 * u),
+      color: { dark: "#1f2430", light: "#ffffff" },
+    });
+    const qrImg = await loadImage(qr);
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.18)";
+    ctx.shadowBlur = 8 * u;
+    ctx.shadowOffsetY = 2 * u;
+    roundRect(ctx, qx, qy, q, q, 12 * u);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.restore();
+    ctx.drawImage(qrImg, qx + 5 * u, qy + 5 * u, q - 10 * u, q - 10 * u);
+
+    // Brand block (left): domain + module, same info as the shiny card
+    const lines: { text: string; font: string; color: string }[] = [
+      {
+        text: "PokeRoll.app",
+        font: `800 ${15 * u}px Sora, Outfit, system-ui, sans-serif`,
+        color: "rgba(31, 36, 48, 0.92)",
+      },
+      {
+        text: meta.module || "Random Pokémon Generator",
+        font: `400 ${11.5 * u}px Outfit, system-ui, sans-serif`,
+        color: "rgba(31, 36, 48, 0.55)",
+      },
+    ];
+    if (bandH >= 56 * u) {
+      lines.push({
+        text: "Scan to roll your own",
+        font: `600 ${10 * u}px Outfit, system-ui, sans-serif`,
+        color: "rgba(31, 36, 48, 0.4)",
+      });
+    }
+    const lineH = 15 * u;
+    const blockH = (lines.length - 1) * lineH;
+    const baseY = bandTop + (bandH - blockH) / 2 + 5 * u;
+    ctx.textAlign = "left";
+    lines.forEach((l, i) => {
+      ctx.font = l.font;
+      ctx.fillStyle = l.color;
+      ctx.fillText(l.text, padX + 2 * u, baseY + i * lineH);
+    });
+  }
+
+  return new Promise((resolve, reject) =>
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
+      "image/png",
+    ),
+  );
+}
+
+// Pokémon-style per-stat colors (same palette as HeroCard's stat bars).
+const STAT_META: { key: keyof PokemonCardData["stats"]; label: string; color: string }[] = [
+  { key: "hp", label: "HP", color: "#78C850" },
+  { key: "atk", label: "ATK", color: "#F08030" },
+  { key: "def", label: "DEF", color: "#6890F0" },
+  { key: "spa", label: "SPA", color: "#A040A0" },
+  { key: "spd", label: "SPD", color: "#98D8D8" },
+  { key: "spe", label: "SPE", color: "#F8D030" },
+];
+
+/** TCG style: draws the dark foil card to a PNG blob. The canvas is the card
+ *  itself — 3:4 (1080×1440), transparent outside the rounded corners. */
+async function renderPokemonCardTcg(data: PokemonCardData): Promise<Blob> {
+  await document.fonts?.ready.catch(() => undefined);
+  const TW = 1080;
+  const TH = 1440; // 3:4
+  const R = 48; // corner radius — outside this path stays transparent
+  const canvas = document.createElement("canvas");
+  canvas.width = TW;
+  canvas.height = TH;
+  const ctx = canvas.getContext("2d")!;
+  const tc = TYPE_HEX[data.types[0]] ?? TYPE_HEX.normal;
+
+  // Clip everything to the card's rounded silhouette
+  ctx.save();
+  roundRect(ctx, 0, 0, TW, TH, R);
+  ctx.clip();
+
+  // Dark card backdrop
+  ctx.fillStyle = "#14161f";
+  ctx.fillRect(0, 0, TW, TH);
+  const top = ctx.createRadialGradient(TW / 2, 0, 80, TW / 2, TH * 0.35, TH * 0.95);
+  top.addColorStop(0, "#1b1e2b");
+  top.addColorStop(1, "rgba(27, 30, 43, 0)");
+  ctx.fillStyle = top;
+  ctx.fillRect(0, 0, TW, TH);
+
+  // Foil sheen band
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  const sheen = ctx.createLinearGradient(0, 0, TW, TH);
+  sheen.addColorStop(0.15, "rgba(0, 0, 0, 0)");
+  sheen.addColorStop(0.35, "rgba(94, 234, 212, 0.10)");
+  sheen.addColorStop(0.48, "rgba(129, 140, 248, 0.12)");
+  sheen.addColorStop(0.58, "rgba(240, 171, 252, 0.12)");
+  sheen.addColorStop(0.7, "rgba(253, 230, 138, 0.10)");
+  sheen.addColorStop(0.85, "rgba(0, 0, 0, 0)");
+  ctx.fillStyle = sheen;
+  ctx.fillRect(0, 0, TW, TH);
+  ctx.restore();
+
+  // Card head: dex number (left) + type pills (right, type-colored)
+  const tag = `#${String(data.dex).padStart(4, "0")}`;
+  ctx.textAlign = "left";
+  ctx.font = fitFont(ctx, tag, 800, 30, 260);
+  if ("letterSpacing" in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = "8px";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+  ctx.fillText(tag, 84, 110);
+  if ("letterSpacing" in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = "0px";
+
+  const pillTexts = data.types.map(
+    (t) => t.charAt(0).toUpperCase() + t.slice(1),
+  );
+  ctx.textAlign = "center";
+  let right = TW - 84;
+  for (let i = pillTexts.length - 1; i >= 0; i--) {
+    const t = pillTexts[i];
+    const font = fitFont(ctx, t, 700, 24, 200, 14);
+    ctx.font = font;
+    const w = ctx.measureText(t).width + 48;
+    const x = right - w;
+    roundRect(ctx, x, 76, w, 52, 26);
+    ctx.fillStyle = TYPE_HEX[data.types[i]] ?? TYPE_HEX.normal;
+    ctx.fill();
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(t, x + w / 2, 110);
+    right = x - 14;
+  }
+
+  // Type-colored halo behind the artwork
+  const halo = ctx.createRadialGradient(TW / 2, 580, 30, TW / 2, 580, 420);
+  halo.addColorStop(0, `${tc}59`); // ~35% alpha
+  halo.addColorStop(1, "rgba(0, 0, 0, 0)");
+  ctx.fillStyle = halo;
+  ctx.fillRect(80, 60, TW - 160, 980);
+
+  // Artwork with a type-colored drop shadow
+  const img = await loadImage(data.img);
+  const s = 470;
+  ctx.save();
+  ctx.shadowColor = `${tc}8c`; // ~55% alpha
+  ctx.shadowBlur = 42;
+  ctx.drawImage(img, TW / 2 - s / 2, 580 - s / 2, s, s);
+  ctx.restore();
+
+  // Title
+  ctx.font = fitFont(ctx, data.name, 800, 78, TW - 200);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillText(data.name, TW / 2, 930);
+
+  // Subtitle: BST · Region · Gen
+  const region =
+    data.region.charAt(0).toUpperCase() + data.region.slice(1);
+  const sub = `BST ${data.bst} · ${region} · Gen ${data.generation}`;
+  ctx.font = fitFont(ctx, sub, 400, 32, TW - 200);
+  ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+  ctx.fillText(sub, TW / 2, 990);
+
+  // Mini stat row (kept clear of the QR box on the right)
+  const statLeft = 92;
+  const statRight = TW - 92 - 216 - 40;
+  const colW = (statRight - statLeft) / STAT_META.length;
+  STAT_META.forEach(({ key, label, color }, i) => {
+    const cx = statLeft + colW * i + colW / 2;
+    ctx.textAlign = "center";
+    ctx.font = "700 20px Outfit, system-ui, sans-serif";
+    ctx.fillStyle = color;
+    ctx.fillText(label, cx, 1076);
+    ctx.font = "800 34px Sora, Outfit, system-ui, sans-serif";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+    ctx.fillText(String(data.stats[key]), cx, 1122);
+  });
+
+  // Footer brand (left)
+  ctx.textAlign = "left";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+  ctx.font = "800 40px Sora, Outfit, system-ui, sans-serif";
+  ctx.fillText("PokeRoll.app", 92, TH - 108);
+  ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+  ctx.font = "400 30px Outfit, system-ui, sans-serif";
+  ctx.fillText(data.module || "Random Pokémon Generator", 92, TH - 66);
+
+  // QR (bottom-right) with caption
+  const qr = await QRCode.toDataURL(data.url, {
+    margin: 1,
+    width: 180,
+    color: { dark: "#1f2430", light: "#ffffff" },
+  });
+  const qrImg = await loadImage(qr);
+  const bx = TW - 92 - 216;
+  const by = TH - 92 - 256;
+  roundRect(ctx, bx, by, 216, 256, 24);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+  ctx.strokeStyle = "rgba(31, 36, 48, 0.14)";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.drawImage(qrImg, bx + 18, by + 18, 180, 180);
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#6b7280";
+  ctx.font = "600 17px Outfit, system-ui, sans-serif";
+  ctx.fillText("Scan to roll your own", bx + 108, by + 228);
+
+  ctx.restore(); // un-clip
+
+  // Holo foil border along the card edge (drawn last, on top)
+  roundRect(ctx, 3, 3, TW - 6, TH - 6, R - 3);
+  ctx.strokeStyle = holoGradient(ctx, 0, 0, TW, TH);
+  ctx.lineWidth = 6;
+  ctx.stroke();
+
+  return new Promise((resolve, reject) =>
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
+      "image/png",
+    ),
+  );
+}
+
+/** Renders the chosen style to a PNG blob. */
+export async function renderPokemonCard(
+  style: PokemonCardStyle,
+  el: HTMLElement,
+  data: PokemonCardData,
+): Promise<Blob> {
+  return style === "tcg"
+    ? renderPokemonCardTcg(data)
+    : renderPokemonCardDom(el, data);
+}
+
+function pokemonFileName(name: string): string {
+  return `pokemon-${name.toLowerCase().replace(/\s+/g, "-")}.png`;
+}
+
+/** Renders the card in the chosen style and downloads the PNG straight away. */
+export async function downloadPokemonCard(
+  style: PokemonCardStyle,
+  el: HTMLElement,
+  data: PokemonCardData,
+): Promise<boolean> {
+  try {
+    const blob = await renderPokemonCard(style, el, data);
+    downloadBlob(blob, pokemonFileName(data.name));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Link-only share: native share sheet (text + reproducible link) → clipboard
+ * copy. Returns how the link was delivered, or null if nothing worked.
+ */
+export async function sharePokemonLink(
+  meta: PokemonCardMeta,
+): Promise<"shared" | "copied" | null> {
+  const text = `I rolled ${meta.name} on PokeRoll.app — what will you get?`;
+  if (typeof navigator !== "undefined" && navigator.share) {
+    try {
+      await navigator.share({ title: "Random Pokémon Generator", text, url: meta.url });
+      return "shared";
+    } catch {
+      // Desktop Chromium exposes navigator.share but rejects with
+      // AbortError("Share failed") — fall through to clipboard.
+    }
+  }
+  if (typeof navigator !== "undefined" && navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(`${text}\n${meta.url}`);
+      return "copied";
+    } catch {
+      // Permission denied.
+    }
+  }
+  return null;
 }

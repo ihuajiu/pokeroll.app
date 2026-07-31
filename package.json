@@ -10,6 +10,7 @@
     "fetch:pokedex": "node scripts/fetch-pokedex.mjs"
   },
   "dependencies": {
+    "html-to-image": "^1.11.13",
     "next": "^15.1.6",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
