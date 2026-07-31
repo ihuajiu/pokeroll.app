@@ -131,7 +131,7 @@ export default function AdventureView({
           Seed <span className="font-mono">{a.seed}</span> — share this link to
           replay the exact same adventure.
         </p>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
           <label className="flex items-center gap-2 text-sm text-poke-dim">
             Difficulty
             <select
