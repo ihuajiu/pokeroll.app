@@ -106,13 +106,13 @@ export const TOOLS: ToolMeta[] = [
     href: "/no-names",
     label: "Mystery Pokémon",
     desc: "Guess the Pokémon from its hidden name.",
-    group: "challenge",
+    group: "generator",
   },
   {
     href: "/wheel",
     label: "Spin the Wheel",
     desc: "Let the wheel decide your next Pokémon.",
-    group: "challenge",
+    group: "generator",
   },
   {
     href: "/fusion",

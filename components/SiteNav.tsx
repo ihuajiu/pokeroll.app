@@ -13,8 +13,6 @@ import TeamTray from "@/components/TeamTray";
 const CHALLENGE_LINKS = [
   { href: "/challenge/guess", label: "Guess the Pokémon", desc: "Silhouette reveal game", icon: "🎯" },
   { href: "/challenge/shiny", label: "Shiny Hunt", desc: "Encounters to next shiny", icon: "✨" },
-  { href: "/no-names", label: "Mystery Pokémon", desc: "Guess from artwork & types", icon: "❓" },
-  { href: "/wheel", label: "Spin the Wheel", desc: "Let the wheel decide", icon: "🎡" },
 ];
 
 const MAIN: {
