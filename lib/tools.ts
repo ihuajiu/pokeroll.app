@@ -73,6 +73,12 @@ export const TOOLS: ToolMeta[] = [
     group: "generator",
   },
   {
+    href: "/legendary",
+    label: "Legendary Generator",
+    desc: "Roll only Legendary Pokémon.",
+    group: "generator",
+  },
+  {
     href: "/mega",
     label: "Mega Generator",
     desc: "Mega Evolutions and Primal Reversions.",

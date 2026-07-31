@@ -14,6 +14,7 @@ const VARIANTS = [
   "no-names",
   "cute",
   "mythical",
+  "legendary",
   "mega",
   "nickname",
   "fusion",
