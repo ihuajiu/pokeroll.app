@@ -40,7 +40,7 @@ export default async function RandomGeneratorPage({
 
   return (
     <main className="pt-4 pb-10">
-      <div className="mx-auto max-w-[640px] px-6">
+      <div className="mx-auto max-w-[1080px] px-6">
         <PageHeader
           title="Random Pokémon Generator"
           description="Roll a random Pokémon in one tap — every pull comes with its name, type, ability, stats and an official sprite."

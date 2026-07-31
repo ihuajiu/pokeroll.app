@@ -1070,7 +1070,10 @@ body {
   margin-bottom: 6px;
 }
 .team-card--wide.hero-card .statgrid {
-  margin-top: 44px;
+  /* Clear the 224px corner sprite: header block (~135px incl. padding) +
+     sprite height means the meta row must start ~250px below the card top,
+     otherwise wide sprites (e.g. Carbink) cover the right-most column. */
+  margin-top: 100px;
   gap: 8px 22px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
@@ -1091,6 +1094,87 @@ body {
 }
 .team-card--wide.hero-card .bar .bv {
   font-size: 13.5px;
+}
+/* Narrow screens: the wide layout's 224px corner sprite and 260px reserved
+   text track don't fit — fall back to the compact team-card metrics so the
+   name can float under the sprite instead of being squeezed behind it. */
+@media (max-width: 560px) {
+  .team-card--wide.hero-card {
+    min-height: 0;
+    padding: 22px 20px 18px 22px;
+  }
+  .team-card--wide .hero-card-art {
+    top: 14px;
+    right: 14px;
+  }
+  .team-card--wide .hero-card-art img {
+    width: 150px;
+    height: 150px;
+  }
+  .team-card--wide.hero-card .dex,
+  .team-card--wide.hero-card .try-types {
+    max-width: calc(100% - 164px);
+  }
+  .team-card--wide.hero-card h3 {
+    max-width: 100%;
+    font-size: clamp(22px, 7cqi, 34px);
+  }
+  .team-card--wide.hero-card .statgrid {
+    margin-top: 42px;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+/* /random stage: the card sits next to a sidebar whose height varies with
+   the roll history. Undo the roster-page height:100% so the card keeps its
+   natural height instead of stretching to the row and pooling blank space
+   at the bottom of the card. min-height keeps every roll the same shape. */
+.random-stage .team-card.hero-card {
+  height: auto;
+  align-self: start;
+  min-height: 500px;
+}
+/* Desktop: instead of reflowing the interior per size, the card is laid out
+   once at the 400px baseline (where its interior is balanced) and scaled up
+   with `zoom` — every detail (padding, gaps, fonts, chips, bars, sprite)
+   grows exactly proportionally, so the enlarged card looks identical to the
+   small one. The zoom factor comes from the viewport height, so the card
+   bottom lands near the bottom of the first screen (3:4 box, 400–560px).
+   Mobile skips this — a fixed ratio would clip content at narrow widths. */
+@media (min-width: 1024px) {
+  .random-stage {
+    grid-template-columns: clamp(400px, calc((100vh - 180px) * 3 / 4), 560px);
+    justify-content: center;
+  }
+  .random-stage .team-card.hero-card {
+    width: 400px;
+    aspect-ratio: 3 / 4;
+    min-height: 0;
+    zoom: clamp(1, calc((100vh - 180px) * 3 / 1600px), 1.4);
+  }
+  /* Compact team-card metrics for the 400px baseline. */
+  .random-stage .team-card--wide.hero-card {
+    padding: 22px 20px 18px 22px;
+  }
+  .random-stage .team-card--wide .hero-card-art {
+    top: 14px;
+    right: 14px;
+  }
+  .random-stage .team-card--wide .hero-card-art img {
+    width: 150px;
+    height: 150px;
+  }
+  .random-stage .team-card--wide.hero-card .dex,
+  .random-stage .team-card--wide.hero-card .try-types {
+    max-width: calc(100% - 164px);
+  }
+  .random-stage .team-card--wide.hero-card h3 {
+    max-width: 100%;
+    font-size: clamp(22px, 7cqi, 34px);
+  }
+  .random-stage .team-card--wide.hero-card .statgrid {
+    margin-top: 42px;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 .hero-card-art {
   grid-row: 1;

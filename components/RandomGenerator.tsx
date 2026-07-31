@@ -192,7 +192,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
   // gear icon; clicking expands the bar outward into a single row of five
   // selects, so the card never moves more than one row down.
   return (
-    <div className="mx-auto max-w-[1000px] px-6">
+    <div className="mx-auto max-w-[1080px] px-6">
       <div className="mb-4 flex justify-center">
         <div
           className={`overflow-hidden transition-[width] duration-300 ${
@@ -241,10 +241,9 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
         </p>
       )}
 
-      <div className="mx-auto max-w-[640px]">
-        <div style={{ transform: "scale(0.95)", transformOrigin: "top center" }}>
-          <HeroCard pokemon={pokemon} loading={loading} onRoll={roll} />
-        </div>
+      {/* Single centered card; desktop width is viewport-driven (3:4). */}
+      <div className="random-stage grid items-start gap-6">
+        <HeroCard pokemon={pokemon} loading={loading} onRoll={roll} variant="wide" />
       </div>
     </div>
   );
