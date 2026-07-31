@@ -7,14 +7,13 @@ import {
 } from "@/lib/pokeapi";
 import { DIFFICULTIES } from "@/lib/adventure-types";
 import type { Pokemon } from "@/lib/types";
-import { titleCase } from "@/lib/seo";
 
-export type ChallengeMode = "guess" | "collect" | "team" | "shiny";
+export type ChallengeMode = "guess" | "shiny";
 export type ChallengeDifficulty = (typeof DIFFICULTIES)[number];
 
 export interface ChallengeConfig {
   mode: ChallengeMode;
-  count: number;
+  count?: number;
   type?: string;
   gen?: number;
   region?: string;
@@ -28,7 +27,20 @@ export interface Challenge {
   description: string;
   pokemon: Pokemon[];
   encounters?: number;
+  /** Shiny mode: the denominator of the 1-in-N odds for this difficulty. */
+  odds?: number;
+  /** Shiny mode: true on Easy — uniform pity draw, guaranteed within `odds`. */
+  pity?: boolean;
 }
+
+// Shiny odds per difficulty — Normal matches the modern games' base rate.
+// Easy is 2048/10 truncated (204) and uses a pity draw (see below).
+const SHINY_ODDS: Record<string, number> = {
+  Easy: 204,
+  Normal: 4096,
+  Hard: 8192,
+  Extreme: 16384,
+};
 
 export function hashSeed(str: string): number {
   let h = 1779033703 ^ str.length;
@@ -87,7 +99,7 @@ function maxCountForDifficulty(difficulty: string | undefined): number {
 }
 
 export async function getChallenge(config: ChallengeConfig): Promise<Challenge> {
-  const { mode, count, type, gen, region, seed, difficulty } = config;
+  const { mode, count = 5, type, gen, region, seed, difficulty } = config;
   const maxCount = maxCountForDifficulty(difficulty);
   const clamped = Math.max(1, Math.min(count, maxCount));
   const rng = mulberry32(
@@ -95,33 +107,41 @@ export async function getChallenge(config: ChallengeConfig): Promise<Challenge> 
   );
 
   if (mode === "shiny") {
-    const p = 1 / 4096;
+    const odds = SHINY_ODDS[difficulty ?? "Normal"] ?? SHINY_ODDS.Normal;
+    const p = 1 / odds;
     const r = rng();
-    const encounters = Math.max(
-      1,
-      Math.floor(Math.log(1 - r) / Math.log(1 - p)),
-    );
+    // Easy uses a pity draw — uniform in 1..odds, so the hunt is guaranteed
+    // to end within `odds` clicks (avg ~odds/2). Other difficulties keep
+    // the games' true geometric distribution, which can run long.
+    const encounters =
+      difficulty === "Easy"
+        ? Math.max(1, Math.ceil(r * odds))
+        : Math.max(
+            1,
+            Math.floor(Math.log(1 - r) / Math.log(1 - p)),
+          );
     const pokemon = [await getRandomPokemon()];
     return {
       config,
       title: "Shiny Hunt Challenge",
-      description: `Your next shiny appears after ${encounters.toLocaleString()} random encounters. How long will you grind?`,
+      description:
+        difficulty === "Easy"
+          ? `Your next shiny appears after ${encounters.toLocaleString()} encounters — guaranteed within ${odds.toLocaleString()}.`
+          : `Your next shiny appears after ${encounters.toLocaleString()} random encounters. How long will you grind?`,
       pokemon,
       encounters,
+      odds,
+      pity: difficulty === "Easy",
     };
   }
 
   let pool: number[] = [];
-  let label = "";
   if (region) {
     pool = await getPoolByRegion(region);
-    label = titleCase(region);
   } else if (type) {
     pool = await getPoolByType(type);
-    label = titleCase(type);
   } else if (gen) {
     pool = await getPoolByGeneration(gen);
-    label = `Gen ${gen}`;
   }
 
   let pokemon: Pokemon[];
@@ -141,22 +161,9 @@ export async function getChallenge(config: ChallengeConfig): Promise<Challenge> 
     }
   }
 
-  let title = "Pokémon Challenge";
-  let description = "";
-  if (mode === "guess") {
-    title = "Guess the Pokémon";
-    description = `We hid the names of ${clamped} random Pokémon. Reveal them one by one and test your Poké-knowledge!`;
-  } else if (mode === "collect") {
-    title = `Collect ${clamped} ${label ? label + " " : ""}Pokémon`;
-    description = `Your mission: round up ${clamped} ${
-      label ? label + "-type " : ""
-    }Pokémon.`;
-  } else if (mode === "team") {
-    title = `Build a ${clamped}-Pokémon Team`;
-    description = `Assemble a squad of ${clamped} Pokémon${
-      label ? ` from ${label}` : ""
-    }. Add them all to your team when ready!`;
-  }
+  // Only "guess" reaches here — "shiny" returns early above.
+  const title = "Guess the Pokémon";
+  const description = `We hid the names of ${clamped} random Pokémon. Reveal them one by one and test your Poké-knowledge!`;
 
   return { config, title, description, pokemon };
 }

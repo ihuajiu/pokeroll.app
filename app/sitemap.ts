@@ -30,7 +30,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     `${BASE}/`,
     `${BASE}/random-pokemon-generator`,
     `${BASE}/team`,
-    `${BASE}/challenge`,
+    `${BASE}/challenge/guess`,
+    `${BASE}/challenge/shiny`,
     `${BASE}/disclaimer`,
   ].map((url) => ({ url, lastModified: today }));
 

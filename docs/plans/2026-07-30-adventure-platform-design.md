@@ -68,7 +68,7 @@ PageHeader "Roll Your Pokémon Adventure"
 ```
 全部复用现有 `HeroCard`，不造新卡片组件。
 
-**解耦原则**：Adventure 的 Challenge 维度是叙事标签（`CHALLENGES`），与现有 `/challenge` 页的 `getChallenge`（guess/collect/team/shiny 工具型）完全解耦；Team 改由 Region 池直接取，不走 `getChallenge`。`lib/challenge.ts` 与 `/challenge` 页零改动。
+**解耦原则**：Adventure 的 Challenge 维度是叙事标签（`CHALLENGES`），与现有 `/challenge` 页的 `getChallenge`（guess/shiny 工具型）完全解耦；Team 改由 Region 池直接取，不走 `getChallenge`。
 
 ## 3. 首页 Hero 改造
 

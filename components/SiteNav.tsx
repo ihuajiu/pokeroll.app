@@ -9,11 +9,23 @@ import ThemeToggle from "@/components/ThemeToggle";
 import TeamTray from "@/components/TeamTray";
 
 // 五分组主导航：每组指向该组的第一个工具页。
-const MAIN = [
+// Challenges 组带下拉，列出组内所有独立挑战页。
+const CHALLENGE_LINKS = [
+  { href: "/challenge/guess", label: "Guess the Pokémon", desc: "Silhouette reveal game", icon: "🎯" },
+  { href: "/challenge/shiny", label: "Shiny Hunt", desc: "Encounters to next shiny", icon: "✨" },
+  { href: "/no-names", label: "Mystery Pokémon", desc: "Guess from artwork & types", icon: "❓" },
+  { href: "/wheel", label: "Spin the Wheel", desc: "Let the wheel decide", icon: "🎡" },
+];
+
+const MAIN: {
+  href: string;
+  label: string;
+  dropdown?: { href: string; label: string; desc: string; icon: string }[];
+}[] = [
   { href: "/adventure", label: "Adventure" },
   { href: "/random", label: "Generators" },
   { href: "/team/random", label: "Team" },
-  { href: "/challenge", label: "Challenges" },
+  { href: "/challenge/guess", label: "Challenges", dropdown: CHALLENGE_LINKS },
   { href: "/fusion", label: "Tools" },
 ];
 
@@ -50,19 +62,81 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-semibold text-poke-dim md:flex">
-          {MAIN.map((m) => (
-            <Link
-              key={m.href}
-              href={m.href}
-              className={`flex items-center gap-1.5 transition ${
-                isActive(m.href)
-                  ? "text-[#ee3b3b]"
-                  : "text-poke-dim hover:text-[#ee3b3b]"
-              }`}
-            >
-              {m.label}
-            </Link>
-          ))}
+          {MAIN.map((m) =>
+            m.dropdown ? (
+              <div key={m.href} className="group relative">
+                <Link
+                  href={m.href}
+                  className={`flex items-center gap-1 transition ${
+                    m.dropdown.some((l) => isActive(l.href))
+                      ? "text-[#ee3b3b]"
+                      : "text-poke-dim hover:text-[#ee3b3b]"
+                  }`}
+                >
+                  {m.label}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    className="h-3 w-3 transition group-hover:rotate-180"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </Link>
+                <div className="invisible absolute left-0 top-full z-40 pt-2 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                  <div className="w-64 rounded-2xl border border-poke-border bg-poke-surface p-1.5 shadow-xl">
+                    {m.dropdown.map((l) => {
+                      const active = isActive(l.href);
+                      return (
+                        <Link
+                          key={l.href}
+                          href={l.href}
+                          className={`flex items-center gap-3 rounded-xl px-3 py-2 transition ${
+                            active
+                              ? "bg-[#ee3b3b]/10"
+                              : "hover:bg-poke-chip"
+                          }`}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-poke-chip text-base"
+                          >
+                            {l.icon}
+                          </span>
+                          <span className="flex min-w-0 flex-col">
+                            <span
+                              className={`text-sm font-bold ${
+                                active ? "text-[#ee3b3b]" : "text-poke-ink"
+                              }`}
+                            >
+                              {l.label}
+                            </span>
+                            <span className="truncate text-xs font-normal text-poke-dim">
+                              {l.desc}
+                            </span>
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={m.href}
+                href={m.href}
+                className={`flex items-center gap-1.5 transition ${
+                  isActive(m.href)
+                    ? "text-[#ee3b3b]"
+                    : "text-poke-dim hover:text-[#ee3b3b]"
+                }`}
+              >
+                {m.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center gap-2">

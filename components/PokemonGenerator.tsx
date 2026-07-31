@@ -43,7 +43,7 @@ export default function PokemonGenerator({ initial }: { initial: Pokemon }) {
           Build Team
         </Link>
         <Link
-          href="/challenge"
+          href="/challenge/guess"
           className="game-btn game-btn-ghost px-5 py-2.5"
         >
           Create Challenge

@@ -91,9 +91,15 @@ export const TOOLS: ToolMeta[] = [
     group: "generator",
   },
   {
-    href: "/challenge",
-    label: "Challenge Maker",
-    desc: "Build a shareable guess, collect or team challenge.",
+    href: "/challenge/guess",
+    label: "Guess the Pokémon",
+    desc: "Names hidden — guess from the silhouette, reveal to check.",
+    group: "challenge",
+  },
+  {
+    href: "/challenge/shiny",
+    label: "Shiny Hunt",
+    desc: "How many encounters until your next shiny?",
     group: "challenge",
   },
   {
@@ -152,7 +158,7 @@ export const TOOL_GROUPS: {
   {
     id: "challenge",
     title: "Challenges",
-    desc: "Guess, collect, spin or build a shareable challenge for you and your friends.",
+    desc: "Guess, hunt or spin — shareable challenges for you and your friends.",
   },
   {
     id: "tool",

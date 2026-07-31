@@ -49,14 +49,14 @@ const JUMP_TOOLS: JumpTool[] = [
     icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
   },
   {
-    href: "/fusion", label: "Fusion Generator", desc: "Fuse two Pokémon into one hybrid creature.",
-    color: "#a855f7", p: 94, count: "FUSION",
-    icon: <SvgIcon><circle cx="8.5" cy="9.5" r="4" /><circle cx="15" cy="14" r="4" /><path d="M11.5 12.5l4-4" strokeWidth="1.8" /></SvgIcon>,
-  },
-  {
     href: "/team/random", label: "Random Team", desc: "Roll a ready-made squad of six random Pokémon.",
     color: "#f5a524", p: 196, count: "SQUAD",
     icon: <SvgIcon><circle cx="8" cy="8" r="2.4" /><circle cx="16" cy="8" r="2.4" /><circle cx="8" cy="16" r="2.4" /><circle cx="16" cy="16" r="2.4" /></SvgIcon>,
+  },
+  {
+    href: "/fusion", label: "Fusion Generator", desc: "Fuse two Pokémon into one hybrid creature.",
+    color: "#a855f7", p: 94, count: "FUSION",
+    icon: <SvgIcon><circle cx="8.5" cy="9.5" r="4" /><circle cx="15" cy="14" r="4" /><path d="M11.5 12.5l4-4" strokeWidth="1.8" /></SvgIcon>,
   },
   {
     href: "/shiny", label: "Shiny Generator", desc: "Hunt the rare recolored form.",
@@ -69,7 +69,7 @@ const JUMP_TOOLS: JumpTool[] = [
     icon: <SvgIcon><path d="M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4" /><circle cx="12" cy="18" r="1" fill="currentColor" /></SvgIcon>,
   },
   {
-    href: "/challenge", label: "Challenge Maker", desc: "Build a shareable guess, collect or team challenge.",
+    href: "/challenge/guess", label: "Guess the Pokémon", desc: "Names hidden — guess from the silhouette.",
     color: "#3aa0ff", p: 68, count: "SHARE",
     icon: <SvgIcon><path d="M6 21V4" /><path d="M6 4h11l-2.5 4L17 12H6" /></SvgIcon>,
   },
@@ -98,7 +98,8 @@ const TOOL_SPRITE: Record<string, number> = {
   "/mythical": 151,
   "/mega": 448,
   "/nickname": 133,
-  "/challenge": 68,
+  "/challenge/guess": 68,
+  "/challenge/shiny": 6,
   "/no-names": 492,
   "/wheel": 35,
   "/fusion": 94,

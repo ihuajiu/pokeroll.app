@@ -4,33 +4,54 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Challenge, ChallengeMode } from "@/lib/challenge";
 import { DIFFICULTIES } from "@/lib/adventure-types";
-import { TYPES, REGIONS, GENS, titleCase } from "@/lib/seo";
-import { useTeam } from "./useTeam";
-import HeroCard from "./HeroCard";
+import { TYPES, REGIONS, titleCase } from "@/lib/seo";
+import ShinyHunt, { type WildMon } from "./ShinyHunt";
 
-const MODES: { value: ChallengeMode; label: string; hint: string }[] = [
-  { value: "guess", label: "Guess the Pokémon", hint: "Names hidden — reveal to check" },
-  { value: "collect", label: "Collect a Type", hint: "Round up N of one type" },
-  { value: "team", label: "Build a Team", hint: "Assemble a random squad" },
-  { value: "shiny", label: "Shiny Hunt", hint: "How many encounters to a shiny?" },
-];
+const HINTS: Record<ChallengeMode, string> = {
+  guess: "Names hidden — reveal to check",
+  shiny: "How many encounters to a shiny?",
+};
 
 const selectClass =
-  "rounded-lg border border-poke-border bg-poke-surface px-3 py-2 text-sm text-poke-ink focus:border-poke-red focus:outline-none";
+  "rounded-lg border border-poke-border bg-poke-surface px-3.5 py-2.5 text-sm text-poke-ink focus:border-poke-red focus:outline-none";
 
-export default function ChallengeGenerator({ challenge }: { challenge: Challenge }) {
+const COUNTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+// Mirrors maxCountForDifficulty in lib/challenge.ts so a "Random" count is
+// picked within the cap of the difficulty being rolled.
+const MAX_BY_DIFFICULTY: Record<string, number> = {
+  Easy: 12,
+  Normal: 10,
+  Hard: 8,
+  Extreme: 6,
+};
+
+/**
+ * Single-mode challenge roller. The mode is fixed by the route
+ * (/challenge/guess or /challenge/shiny); switching modes happens via the
+ * header Challenges dropdown, not inside this component.
+ */
+export default function ChallengeGenerator({
+  challenge,
+  wildPool,
+}: {
+  challenge: Challenge;
+  /** Slim local-dex pool for the shiny click simulator (shiny page only). */
+  wildPool?: WildMon[];
+}) {
   const router = useRouter();
   const { config } = challenge;
-  const { add } = useTeam();
+  const mode = config.mode;
 
-  const [mode, setMode] = useState<ChallengeMode>(config.mode);
-  const [count, setCount] = useState(config.count);
+  const [count, setCount] = useState(config.count ? String(config.count) : "");
   const [type, setType] = useState(config.type ?? "");
   const [region, setRegion] = useState(config.region ?? "");
-  const [gen, setGen] = useState(config.gen ?? 0);
-  const [difficulty, setDifficulty] = useState<string>(config.difficulty ?? "Normal");
+  const [difficulty, setDifficulty] = useState<string>(config.difficulty ?? "");
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
   const [copied, setCopied] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  // Shiny mode: set once the hunt is won, so Share can brag about the result.
+  const [shinyResult, setShinyResult] = useState<string | null>(null);
 
   // Sync the seed into the URL so the current challenge is shareable/reproducible.
   useEffect(() => {
@@ -40,36 +61,53 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
       window.history.replaceState(null, "", url.toString());
     }
     setRevealed(new Set());
+    setShinyResult(null);
   }, [config.seed]);
 
-  function buildHref(next: Record<string, string | number | undefined>): string {
+  function buildHref(): string {
     const p = new URLSearchParams();
-    p.set("mode", String(next.mode ?? mode));
-    p.set("count", String(next.count ?? count));
-    const t = (next.type as string) ?? type;
-    const r = (next.region as string) ?? region;
-    const g = (next.gen as number) ?? gen;
-    const d = (next.difficulty as string) ?? difficulty;
-    if (t) p.set("type", t);
-    if (r) p.set("region", r);
-    if (g) p.set("gen", String(g));
-    if (d && d !== "Normal") p.set("difficulty", d);
+    const dRaw = difficulty;
+    // "Random" difficulty/count resolve to concrete picks so shared links
+    // reproduce them. The count pick stays within the difficulty's cap.
+    const d = dRaw || DIFFICULTIES[Math.floor(Math.random() * DIFFICULTIES.length)];
+    const cap = MAX_BY_DIFFICULTY[d] ?? 10;
+    // Shiny ignores count (always one prediction) — keep it out of the URL.
+    // Floor of 3: a 1–2 card "challenge" is no challenge (caps are all ≥ 6).
+    if (mode !== "shiny") {
+      p.set("count", count || String(3 + Math.floor(Math.random() * (cap - 2))));
+    }
+    if (type) p.set("type", type);
+    if (region) p.set("region", region);
+    p.set("difficulty", d);
     p.set("seed", Math.random().toString(36).slice(2, 10));
-    return `/challenge?${p.toString()}`;
+    return `/challenge/${mode}?${p.toString()}`;
   }
 
   function generate() {
-    router.push(buildHref({}));
+    router.push(buildHref());
   }
 
-  function copyLink() {
-    navigator.clipboard
-      ?.writeText(window.location.href)
-      .then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
-      })
-      .catch(() => {});
+  async function share() {
+    const url = window.location.href;
+    const text =
+      shinyResult ?? `${challenge.title} — Pokémon Challenge Generator`;
+    // Prefer the native share sheet (mobile + supported desktops).
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title: challenge.title, text, url });
+        return;
+      } catch {
+        /* user dismissed the share sheet — fall through to clipboard */
+      }
+    }
+    // Fallback: copy the result text + link to the clipboard.
+    try {
+      await navigator.clipboard?.writeText(`${text}\n${url}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* clipboard unavailable */
+    }
   }
 
   function toggleReveal(id?: number) {
@@ -82,282 +120,275 @@ export default function ChallengeGenerator({ challenge }: { challenge: Challenge
     });
   }
 
-  function addAll() {
-    challenge.pokemon.forEach((p) => add(p));
-  }
+  const allRevealed =
+    challenge.pokemon.length > 0 && revealed.size === challenge.pokemon.length;
 
-  const showFilters = mode !== "shiny";
+  // Guess mode: difficulty = how much information the hidden card gives up.
+  // Easy shows a type hint; Hard/Extreme zoom the silhouette so less of the
+  // shape is visible.
+  const guessDifficulty = config.difficulty ?? "Normal";
+  const silhouetteZoom =
+    guessDifficulty === "Extreme"
+      ? "scale-[2.2]"
+      : guessDifficulty === "Hard"
+        ? "scale-150"
+        : "";
+  const showTypeHint = mode === "guess" && guessDifficulty === "Easy";
+
+  const gearIcon = (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </svg>
+  );
 
   return (
     <div>
       {/* Controls */}
-      <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface p-4">
-        <div className="flex flex-wrap gap-3">
-          <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-poke-dim">Mode</span>
-            <select
-              className={selectClass}
-              value={mode}
-              onChange={(e) => setMode(e.target.value as ChallengeMode)}
+      <div className="mb-8 rounded-2xl border border-poke-border bg-poke-surface px-5 py-6 sm:px-8">
+        {/* Row 1: mode hint (left) + actions (right) */}
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+          <span className="text-sm text-poke-dim">{HINTS[mode]}</span>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={generate}
+              className="inline-flex items-center gap-2 rounded-xl bg-poke-btn px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-poke-btnHover"
             >
-              {MODES.map((m) => (
-                <option key={m.value} value={m.value}>
-                  {m.label}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-poke-dim">Difficulty</span>
-            <select
-              className={selectClass}
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value)}
-            >
-              {DIFFICULTIES.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          {showFilters && (
-            <label className="flex flex-col gap-1">
-              <span className="text-xs font-semibold text-poke-dim">
-                {mode === "collect" ? "Count" : "Count (max 12)"}
-              </span>
-              <input
-                type="number"
-                min={1}
-                max={12}
-                className={`${selectClass} w-24`}
-                value={count}
-                onChange={(e) =>
-                  setCount(Math.max(1, Math.min(12, Number(e.target.value) || 1)))
-                }
-              />
-            </label>
-          )}
-
-          {mode === "collect" && (
-            <label className="flex flex-col gap-1">
-              <span className="text-xs font-semibold text-poke-dim">Type</span>
-              <select
-                className={selectClass}
-                value={type}
-                onChange={(e) => setType(e.target.value)}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="h-4 w-4"
+                aria-hidden="true"
               >
-                <option value="">Any</option>
-                {TYPES.map((t) => (
-                  <option key={t} value={t}>
-                    {titleCase(t)}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-
-          {mode === "team" && (
-            <>
-              <label className="flex flex-col gap-1">
-                <span className="text-xs font-semibold text-poke-dim">Region</span>
-                <select
-                  className={selectClass}
-                  value={region}
-                  onChange={(e) => {
-                    setRegion(e.target.value);
-                    setGen(0);
-                  }}
-                >
-                  <option value="">Any</option>
-                  {REGIONS.map((r) => (
-                    <option key={r} value={r}>
-                      {titleCase(r)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex flex-col gap-1">
-                <span className="text-xs font-semibold text-poke-dim">Generation</span>
-                <select
-                  className={selectClass}
-                  value={gen}
-                  onChange={(e) => {
-                    setGen(Number(e.target.value));
-                    setRegion("");
-                  }}
-                >
-                  <option value={0}>Any</option>
-                  {GENS.map((g) => (
-                    <option key={g} value={g}>
-                      Gen {g}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </>
-          )}
-
-          {mode === "guess" && (
-            <>
-              <label className="flex flex-col gap-1">
-                <span className="text-xs font-semibold text-poke-dim">
-                  Type filter
-                </span>
-                <select
-                  className={selectClass}
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                >
-                  <option value="">Any</option>
-                  {TYPES.map((t) => (
-                    <option key={t} value={t}>
-                      {titleCase(t)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex flex-col gap-1">
-                <span className="text-xs font-semibold text-poke-dim">
-                  Region filter
-                </span>
-                <select
-                  className={selectClass}
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                >
-                  <option value="">Any</option>
-                  {REGIONS.map((r) => (
-                    <option key={r} value={r}>
-                      {titleCase(r)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </>
-          )}
-        </div>
-
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <button
-            onClick={generate}
-            className="rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
-          >
-            Create Challenge
-          </button>
-          <button
-            onClick={copyLink}
-            className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
-          >
-            {copied ? "Link copied!" : "Copy challenge link"}
-          </button>
-          <span className="text-xs text-poke-dim">
-            {MODES.find((m) => m.value === mode)?.hint}
-          </span>
-        </div>
-      </div>
-
-      {/* Challenge header */}
-      <div className="mb-4 text-center">
-        <h2 className="text-xl font-bold text-poke-ink">{challenge.title}</h2>
-        <p className="mt-1 text-sm text-poke-dim">{challenge.description}</p>
-      </div>
-
-      {/* Shiny */}
-      {mode === "shiny" && challenge.pokemon[0] && (
-        <div className="mx-auto max-w-[640px]">
-          <div className="mb-3 rounded-xl bg-yellow-100 px-4 py-3 text-center text-sm font-semibold text-yellow-800">
-            ⭐ Next shiny in {challenge.encounters?.toLocaleString()} encounters
+                <rect x="3" y="3" width="18" height="18" rx="4" />
+                <g fill="currentColor" stroke="none">
+                  <circle cx="8.5" cy="8.5" r="1.3" />
+                  <circle cx="15.5" cy="8.5" r="1.3" />
+                  <circle cx="12" cy="12" r="1.3" />
+                  <circle cx="8.5" cy="15.5" r="1.3" />
+                  <circle cx="15.5" cy="15.5" r="1.3" />
+                </g>
+              </svg>
+              Create Challenge
+            </button>
+            <button
+              onClick={share}
+              className="rounded-xl border border-poke-border bg-poke-surface px-4 py-2.5 text-sm font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+            >
+              {copied ? "Link copied!" : "Share challenge"}
+            </button>
           </div>
-          <HeroCard pokemon={challenge.pokemon[0]} showActions={false} />
         </div>
+
+        {/* Row 2: breathing gear expands into the filter bar */}
+        <div className="mt-4 flex justify-center">
+          {filterOpen ? (
+            <div className="flex items-start gap-3 rounded-xl border border-poke-border p-3">
+              <button
+                type="button"
+                onClick={() => setFilterOpen(false)}
+                aria-expanded={filterOpen}
+                aria-label="Collapse filters"
+                title="Collapse filters"
+                className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center"
+              >
+                {gearIcon}
+              </button>
+              <div className="flex flex-wrap items-start gap-x-6 gap-y-3">
+                <label className="flex w-36 flex-col gap-1">
+                  <span className="text-xs font-semibold text-poke-dim">Difficulty</span>
+                  <select
+                    className={selectClass}
+                    value={difficulty}
+                    onChange={(e) => setDifficulty(e.target.value)}
+                  >
+                    <option value="">Random</option>
+                    {DIFFICULTIES.map((d) => (
+                      <option key={d} value={d}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                {mode === "guess" && (
+                  <>
+                    <label className="flex w-36 flex-col gap-1">
+                      <span className="text-xs font-semibold text-poke-dim">
+                        Count (max 12)
+                      </span>
+                      <select
+                        className={selectClass}
+                        value={count}
+                        onChange={(e) => setCount(e.target.value)}
+                      >
+                        <option value="">Random</option>
+                        {COUNTS.map((c) => (
+                          <option key={c} value={String(c)}>
+                            {c}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="flex w-36 flex-col gap-1">
+                      <span className="text-xs font-semibold text-poke-dim">
+                        Type filter
+                      </span>
+                      <select
+                        className={selectClass}
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                      >
+                        <option value="">Random</option>
+                        {TYPES.map((t) => (
+                          <option key={t} value={t}>
+                            {titleCase(t)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="flex w-36 flex-col gap-1">
+                      <span className="text-xs font-semibold text-poke-dim">
+                        Region filter
+                      </span>
+                      <select
+                        className={selectClass}
+                        value={region}
+                        onChange={(e) => setRegion(e.target.value)}
+                      >
+                        <option value="">Random</option>
+                        {REGIONS.map((r) => (
+                          <option key={r} value={r}>
+                            {titleCase(r)}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </>
+                )}
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setFilterOpen(true)}
+              aria-expanded={filterOpen}
+              aria-label="Filters"
+              title="Filters"
+              className="breathe flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red"
+            >
+              {gearIcon}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Shiny — click-to-encounter simulator */}
+      {mode === "shiny" && challenge.pokemon[0] && wildPool && (
+        <ShinyHunt
+          key={config.seed}
+          target={challenge.pokemon[0]}
+          encounters={challenge.encounters ?? 1}
+          pool={wildPool}
+          odds={challenge.odds}
+          pity={challenge.pity}
+          onFound={() =>
+            setShinyResult(
+              `✨ I found a shiny ${challenge.pokemon[0].displayName} after ${(challenge.encounters ?? 1).toLocaleString()} encounters! Can you beat that?`,
+            )
+          }
+        />
       )}
 
       {/* Guess */}
       {mode === "guess" && (
         <>
-          <div className="mb-3 flex items-center justify-center gap-3 text-sm text-poke-dim">
-            <span>
-              Revealed {revealed.size} / {challenge.pokemon.length}
-            </span>
-            <button
-              onClick={() =>
-                setRevealed(
-                  new Set(challenge.pokemon.map((p) => p.dexNumber ?? 0)),
-                )
-              }
-              className="underline hover:text-poke-red"
-            >
-              Reveal all
-            </button>
+          <div className="mb-4 flex flex-col items-center gap-2">
+            <div className="flex items-center gap-3 text-sm text-poke-dim">
+              <span>
+                Revealed {revealed.size} / {challenge.pokemon.length}
+              </span>
+              <button
+                onClick={() =>
+                  setRevealed(
+                    allRevealed
+                      ? new Set()
+                      : new Set(challenge.pokemon.map((p) => p.dexNumber ?? 0)),
+                  )
+                }
+                className="underline hover:text-poke-red"
+              >
+                {allRevealed ? "Hide all" : "Reveal all"}
+              </button>
+            </div>
+            <div className="h-1.5 w-48 overflow-hidden rounded-full bg-poke-chip">
+              <div
+                className="h-full rounded-full bg-poke-btn transition-all duration-300"
+                style={{
+                  width: `${(revealed.size / challenge.pokemon.length) * 100}%`,
+                }}
+              />
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div className="flex flex-wrap justify-center gap-4">
             {challenge.pokemon.map((p) => {
               const isOpen = revealed.has(p.dexNumber ?? 0);
               return (
                 <button
                   key={p.dexNumber ?? p.name}
                   onClick={() => toggleReveal(p.dexNumber)}
-                  className="group flex flex-col items-center rounded-2xl border border-poke-border bg-poke-surface p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-poke-red hover:shadow-lg"
+                  aria-pressed={isOpen}
+                  className="flip group w-[calc(50%-0.5rem)] max-w-60 sm:w-60"
                 >
-                  <div className="flex h-40 w-40 items-center justify-center">
-                    {isOpen ? (
-                      <img
-                        src={p.artwork || p.sprite}
-                        alt={p.displayName}
-                        className="h-40 w-40 object-contain drop-shadow"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="flex h-32 w-32 items-center justify-center rounded-full bg-poke-chip text-5xl font-bold text-poke-dim">
-                        ?
+                  <div className={`flip-inner ${isOpen ? "open" : ""}`}>
+                    {/* Front — silhouette (Hard/Extreme zoom in to hide the shape) */}
+                    <div className="flip-face flex flex-col items-center rounded-2xl border border-poke-border bg-poke-surface p-5 text-center shadow-sm transition group-hover:border-poke-red group-hover:shadow-lg">
+                      <div className="flex h-40 w-full items-center justify-center overflow-hidden">
+                        <img
+                          src={p.artwork || p.sprite}
+                          alt="Hidden Pokémon silhouette"
+                          className={`silhouette h-36 w-36 object-contain ${silhouetteZoom}`}
+                          loading="lazy"
+                        />
                       </div>
-                    )}
+                      {showTypeHint && (
+                        <span className="mt-2 text-xs font-semibold text-poke-dim">
+                          Hint: {p.types.map((t) => titleCase(t)).join(" · ")}
+                        </span>
+                      )}
+                      <span className="mt-3 text-base font-semibold text-poke-dim">
+                        Who&apos;s that Pokémon?
+                      </span>
+                    </div>
+                    {/* Back — revealed */}
+                    <div className="flip-back flip-face flex flex-col items-center rounded-2xl border border-poke-red bg-poke-surface p-5 text-center shadow-sm transition group-hover:shadow-lg">
+                      <div className="flex h-40 w-full items-center justify-center">
+                        <img
+                          src={p.artwork || p.sprite}
+                          alt={p.displayName}
+                          className="h-36 w-36 object-contain drop-shadow"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span className="mt-3 text-base font-semibold text-poke-red">
+                        {p.displayName}
+                      </span>
+                    </div>
                   </div>
-                  <span
-                    className={`mt-3 text-base font-semibold ${
-                      isOpen ? "text-poke-red" : "text-poke-dim"
-                    }`}
-                  >
-                    {isOpen ? p.displayName : "Hidden"}
-                  </span>
                 </button>
               );
             })}
-          </div>
-        </>
-      )}
-
-      {/* Collect / Team */}
-      {(mode === "collect" || mode === "team") && (
-        <>
-          {mode === "team" && (
-            <div className="mb-3 text-center">
-              <button
-                onClick={addAll}
-                className="rounded-xl border border-poke-red bg-poke-surface px-5 py-2.5 font-semibold text-poke-red shadow-sm transition hover:bg-poke-btn hover:text-white"
-              >
-                Add all to team
-              </button>
-            </div>
-          )}
-          <div
-            className={
-              mode === "team"
-                ? "grid grid-cols-2 auto-rows-fr gap-4 sm:grid-cols-3"
-                : "grid grid-cols-1 gap-4 sm:grid-cols-3"
-            }
-          >
-            {challenge.pokemon.map((p) => (
-              <HeroCard
-                key={p.dexNumber ?? p.name}
-                pokemon={p}
-                showActions={false}
-                variant="team"
-              />
-            ))}
           </div>
         </>
       )}
