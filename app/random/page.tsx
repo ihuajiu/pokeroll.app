@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import HeroCard from "@/components/HeroCard";
+import RandomGenerator from "@/components/RandomGenerator";
 import PageHeader from "@/components/PageHeader";
-import ToolsNav from "@/components/ToolsNav";
 import { getRandomPokemon } from "@/lib/pokeapi";
 
 export const dynamic = "force-dynamic";
@@ -31,15 +30,8 @@ export default async function RandomGeneratorPage() {
           description="Roll a random Pokémon in one tap — every pull comes with its name, type, ability, stats and an official sprite."
           compact
         />
-        <div className="mb-4 text-center">
-          <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
-          <p className="text-sm text-poke-dim">Your random Pokémon is…</p>
-        </div>
-        <div style={{ transform: "scale(0.95)", transformOrigin: "top center" }}>
-          <HeroCard pokemon={initial} basePath="/random" />
-        </div>
       </div>
-      <ToolsNav current="/random" />
+      <RandomGenerator initial={initial} />
     </main>
   );
 }
