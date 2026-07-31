@@ -1,4 +1,5 @@
 import {
+  getAllPokemon,
   getPokemonById,
   getPoolByGeneration,
   getPoolByRegion,
@@ -63,21 +64,28 @@ export async function getRandomTeam(
   const difficulty = diffRaw || "Normal";
   const seed = seedRaw || Math.random().toString(36).slice(2, 10);
 
-  let pool: number[] = [];
-  if (gen) {
-    pool = await getPoolByGeneration(Number(gen));
-  } else if (region) {
-    pool = await getPoolByRegion(region);
-  } else if (type) {
-    pool = await getPoolByType(type);
+  // Pools intersect: gen ∩ region ∩ type. A single filter behaves exactly
+  // as before; combining filters narrows the pool instead of silently
+  // ignoring the later ones. With no filters at all, fall back to the
+  // full dex — an empty pool here previously rolled an empty team.
+  let pool: number[] | null = null;
+  if (gen) pool = await getPoolByGeneration(Number(gen));
+  if (region) {
+    const r = await getPoolByRegion(region);
+    pool = pool ? pool.filter((id) => r.includes(id)) : r;
   }
+  if (type) {
+    const t = await getPoolByType(type);
+    pool = pool ? pool.filter((id) => t.includes(id)) : t;
+  }
+  const effectivePool = pool ?? getAllPokemon().map((p) => p.dexNumber);
 
   const rng = mulberry32(hashSeed(seed));
   const result: Pokemon[] = [];
   const usedDex = new Set<number>();
   const usedTypes = new Set<string>();
 
-  const shuffled = shuffle(pool, rng);
+  const shuffled = shuffle(effectivePool, rng);
   let poolIndex = 0;
   let guard = 0;
 
@@ -85,7 +93,7 @@ export async function getRandomTeam(
     guard++;
 
     let pokemon: Pokemon | null = null;
-    if (pool.length > 0 && poolIndex < shuffled.length) {
+    if (effectivePool.length > 0 && poolIndex < shuffled.length) {
       pokemon = await fetchById(shuffled[poolIndex]);
       poolIndex++;
     }

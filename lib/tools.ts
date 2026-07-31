@@ -115,15 +115,15 @@ export const TOOLS: ToolMeta[] = [
     group: "tool",
   },
   {
-    href: "/team",
-    label: "Team Builder",
-    desc: "Collect favourites into a themed squad.",
-    group: "team",
-  },
-  {
     href: "/team/random",
     label: "Random Team",
     desc: "Roll a ready-made squad of six random Pokémon.",
+    group: "team",
+  },
+  {
+    href: "/team",
+    label: "Team Builder",
+    desc: "Collect favourites into a themed squad.",
     group: "team",
   },
 ];

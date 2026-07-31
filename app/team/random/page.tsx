@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import type { Pokemon } from "@/lib/types";
-import RandomTeam from "@/components/RandomTeam";
-import ToolsNav from "@/components/ToolsNav";
+import TeamGenerator from "@/components/TeamGenerator";
 import PageHeader from "@/components/PageHeader";
 import { getRandomTeam, type TeamRandomParams } from "@/lib/team";
 
@@ -25,12 +23,9 @@ export default async function RandomTeamPage({
     <main className="pt-6 pb-10">
       <PageHeader
         title="Random Pokémon Team"
-        description="Roll a ready-made squad of six random Pokémon — then send your favourites to your Team."
+        description="Roll a filtered squad of random Pokémon — then add your favourites to Your Team."
       />
-      <div className="mx-auto max-w-5xl px-6">
-        <RandomTeam initial={pokemon} params={sp} />
-      </div>
-      <ToolsNav current="/team/random" />
+      <TeamGenerator initial={pokemon} />
     </main>
   );
 }

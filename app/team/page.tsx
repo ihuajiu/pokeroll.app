@@ -19,7 +19,7 @@ export default async function TeamPage({
     <main className="pt-6 pb-10">
       <PageHeader
         title="Your Pokémon Team"
-        description="Build and share your team of randomly generated Pokémon."
+        description="Your saved squad — add Pokémon from any generator, then build and share."
       />
       <TeamClient sharedNames={sp.team ?? null} />
     </main>
