@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 const ALLOWED = new Set([
   "type", "ability", "move", "bst", "number",
   "starter", "shiny", "no-names",
-  "cute", "mythical", "mega", "nickname", "card",
+  "cute", "mythical", "mega", "nickname",
 ]);
 
 export async function GET(req: NextRequest) {

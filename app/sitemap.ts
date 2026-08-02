@@ -19,7 +19,6 @@ const VARIANTS = [
   "nickname",
   "fusion",
   "wheel",
-  "card",
   "challenge",
 ];
 

@@ -103,7 +103,6 @@ const TOOL_SPRITE: Record<string, number> = {
   "/no-names": 492,
   "/wheel": 35,
   "/fusion": 94,
-  "/card": 658,
   "/team": 445,
   "/team/random": 196,
 };

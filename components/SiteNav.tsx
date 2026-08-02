@@ -3,28 +3,24 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
+import { TOOLS, TOOL_GROUPS, type ToolMeta } from "@/lib/tools";
 import { GroupIcon } from "./ToolIcons";
 import ThemeToggle from "@/components/ThemeToggle";
 import TeamTray from "@/components/TeamTray";
 
 // 五分组主导航：每组指向该组的第一个工具页。
-// Challenges 组带下拉，列出组内所有独立挑战页。
-const CHALLENGE_LINKS = [
-  { href: "/challenge/guess", label: "Guess the Pokémon", desc: "Silhouette reveal game", icon: "🎯" },
-  { href: "/challenge/shiny", label: "Shiny Hunt", desc: "Encounters to next shiny", icon: "✨" },
-];
-
+// 下拉是数据驱动的——dropdownGroup 指向 lib/tools.ts 里的分组，组内 ≥2 个
+// 页面时自动渲染为下拉（加新工具页只需登记 TOOLS），否则退化为直链。
 const MAIN: {
   href: string;
   label: string;
-  dropdown?: { href: string; label: string; desc: string; icon: string }[];
+  dropdownGroup?: ToolMeta["group"];
 }[] = [
   { href: "/adventure", label: "Adventure" },
   { href: "/random", label: "Generators" },
   { href: "/team/random", label: "Team" },
-  { href: "/challenge/guess", label: "Challenges", dropdown: CHALLENGE_LINKS },
-  { href: "/fusion", label: "Tools" },
+  { href: "/challenge/guess", label: "Challenges", dropdownGroup: "challenge" },
+  { href: "/fusion", label: "Tools", dropdownGroup: "tool" },
 ];
 
 export default function SiteNav({ currentPath = "" }: { currentPath?: string }) {
@@ -60,13 +56,16 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-semibold text-poke-dim md:flex">
-          {MAIN.map((m) =>
-            m.dropdown ? (
+          {MAIN.map((m) => {
+            const items = m.dropdownGroup
+              ? TOOLS.filter((t) => t.group === m.dropdownGroup)
+              : [];
+            return items.length >= 2 ? (
               <div key={m.href} className="group relative">
                 <Link
                   href={m.href}
                   className={`flex items-center gap-1 transition ${
-                    m.dropdown.some((l) => isActive(l.href))
+                    items.some((l) => isActive(l.href))
                       ? "text-[#ee3b3b]"
                       : "text-poke-dim hover:text-[#ee3b3b]"
                   }`}
@@ -85,7 +84,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                 </Link>
                 <div className="invisible absolute left-0 top-full z-40 pt-2 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                   <div className="w-64 rounded-2xl border border-poke-border bg-poke-surface p-1.5 shadow-xl">
-                    {m.dropdown.map((l) => {
+                    {items.map((l) => {
                       const active = isActive(l.href);
                       return (
                         <Link
@@ -133,8 +132,8 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
               >
                 {m.label}
               </Link>
-            ),
-          )}
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2">
