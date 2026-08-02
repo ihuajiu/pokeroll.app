@@ -1,23 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import type { CSSProperties } from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
 import HeroAdventureTeaser from "@/components/HeroAdventureTeaser";
 import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
-
-export const metadata: Metadata = {
-  title: "PokeRoll — Random Pokémon Generator",
-  description:
-    "Roll a random Pokémon in one tap. Every pull comes with a name, type, ability, base stats, generation and an official sprite.",
-  keywords: [
-    "random pokemon generator",
-    "pokemon generator",
-    "random pokemon",
-    "pokeball",
-    "pokedex",
-  ],
-  alternates: { canonical: "/" },
-};
 
 const SPRITE = (id: number) => `/pokemon/artwork/${id}.png`;
 
