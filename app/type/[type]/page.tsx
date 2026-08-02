@@ -20,6 +20,12 @@ export async function generateMetadata({
   return {
     title: `${t} Pokémon Generator — Random ${t}-type Pokémon`,
     description: `Generate a random ${t}-type Pokémon instantly: name, abilities, base stats, generation and sprite. Fan-made tool.`,
+    keywords: [
+      `random ${type} pokemon generator`,
+      `${type} pokemon generator`,
+      `random ${type} pokemon`,
+    ],
+    alternates: { canonical: `/type/${type}` },
   };
 }
 

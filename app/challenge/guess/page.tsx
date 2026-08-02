@@ -17,6 +17,12 @@ export const metadata: Metadata = {
   title: "Guess the Pokémon — Silhouette Challenge",
   description:
     "Guess hidden Pokémon from their silhouettes, reveal them one by one to check, then share the seeded link to challenge a friend. Free fan-made tool.",
+  keywords: [
+    "guess the pokemon",
+    "pokemon guessing game",
+    "pokemon quiz",
+    "who's that pokemon",
+  ],
   alternates: { canonical: "/challenge/guess" },
 };
 

@@ -24,58 +24,96 @@ type VariantKey =
   | "mega"
   | "nickname";
 
-const META: Record<VariantKey, { title: string; description: string }> = {
+const META: Record<
+  VariantKey,
+  { title: string; description: string; keywords: string[] }
+> = {
   type: {
     title: "Random Pokémon Type Generator — Fan-made Tool",
     description:
       "Get a random Pokémon type and a matching Pokémon instantly. Fire, Water, Electric and all 18 types.",
+    keywords: [
+      "random pokemon type generator",
+      "pokemon type generator",
+      "random pokemon generator by type",
+    ],
   },
   ability: {
     title: "Random Pokémon Ability Generator — Fan-made Tool",
     description:
       "Roll a random Pokémon ability (like Static or Blaze) and see a Pokémon that has it.",
+    keywords: [
+      "pokemon ability generator",
+      "random pokemon ability generator",
+    ],
   },
   move: {
     title: "Random Pokémon Move Generator — Fan-made Tool",
     description:
       "Discover a random Pokémon move and a Pokémon that can learn it.",
+    keywords: ["random pokemon move generator", "pokemon move generator"],
   },
   bst: {
     title: "Random Pokémon BST Generator — Fan-made Tool",
     description:
       "Generate a random Base Stat Total and the Pokémon it belongs to.",
+    keywords: ["pokemon bst generator", "random pokemon stats generator"],
   },
   number: {
     title: "Random Pokémon Number Generator — Fan-made Tool",
     description: "Roll a random Pokédex number and reveal which Pokémon it is.",
+    keywords: [
+      "pokemon number generator",
+      "random pokemon number generator",
+    ],
   },
   starter: {
     title: "Random Starter Pokémon Generator — Fan-made Tool",
     description:
       "Pick a random starter Pokémon from the first partners of every generation.",
+    keywords: [
+      "random starter pokemon generator",
+      "pokemon starter generator",
+      "random starter pokemon picker",
+    ],
   },
   "no-names": {
     title: "Pokémon Without Names — Guess the Pokémon",
     description:
       "A mystery Pokémon with its name hidden. Can you guess which one it is?",
+    keywords: [
+      "pokemon without names",
+      "guess the pokemon",
+      "pokemon mystery quiz",
+    ],
   },
   cute: {
     title: "Random Cute Pokémon Generator — Fan-made Tool",
     description:
       "Get a random cute Pokémon — soft, fluffy and adorable picks from across the Pokédex.",
+    keywords: ["cute pokemon generator", "random cute pokemon generator"],
   },
   mythical: {
     title: "Random Mythical Pokémon Generator — Fan-made Tool",
     description:
       "Reveal a random Mythical Pokémon like Mew, Celebi, Jirachi and more.",
+    keywords: [
+      "random mythical pokemon generator",
+      "mythical pokemon generator",
+    ],
   },
   mega: {
     title: "Random Mega Pokémon Generator — Fan-made Tool",
     description: "Spin a random Mega Evolution or Primal Reversion Pokémon.",
+    keywords: ["random mega pokemon generator", "mega pokemon generator"],
   },
   nickname: {
     title: "Pokémon Nickname Generator — Fan-made Tool",
     description: "Generate a random Pokémon paired with a fun, cute nickname.",
+    keywords: [
+      "pokemon nickname generator",
+      "random pokemon nickname generator",
+    ],
   },
 };
 
@@ -86,7 +124,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { variant } = await params;
   const m = META[variant as VariantKey] ?? META.type;
-  return { title: m.title, description: m.description };
+  return {
+    title: m.title,
+    description: m.description,
+    keywords: m.keywords,
+    alternates: { canonical: `/${variant}` },
+  };
 }
 
 export default async function VariantPage({

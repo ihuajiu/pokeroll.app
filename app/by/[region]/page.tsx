@@ -23,6 +23,12 @@ export async function generateMetadata({
     description: `Generate a random ${r} Pokémon${
       game ? ` from Pokémon ${game}` : ""
     } instantly: name, type, ability, base stats, generation and sprite. Fan-made tool.`,
+    keywords: [
+      `random ${region} pokemon generator`,
+      `random pokemon generator ${region}`,
+      `${region} pokemon`,
+    ],
+    alternates: { canonical: `/by/${region}` },
   };
 }
 

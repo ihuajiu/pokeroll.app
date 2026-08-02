@@ -12,6 +12,14 @@ export const metadata: Metadata = {
   title: "Pokémon Fusion Generator — Fan-made Tool",
   description:
     "Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats.",
+  keywords: [
+    "pokemon fusion generator",
+    "random pokemon fusion generator",
+    "pokemon fusion maker",
+    "pokemon fusion creator",
+    "pokemon fusion randomizer",
+  ],
+  alternates: { canonical: "/fusion" },
 };
 
 export default async function FusionPage() {

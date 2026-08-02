@@ -10,6 +10,14 @@ export const metadata: Metadata = {
   title: "Random Pokémon Team — Fan-made Tool",
   description:
     "Generate a random team of 6 Pokémon in one tap — roll again for a brand-new squad.",
+  keywords: [
+    "random pokemon team generator",
+    "pokemon team generator",
+    "random pokemon team picker",
+    "pokemon team randomizer",
+    "random pokemon team builder",
+  ],
+  alternates: { canonical: "/team/random" },
 };
 
 export default async function RandomTeamPage({

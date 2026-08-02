@@ -12,6 +12,14 @@ export const metadata: Metadata = {
   title: "Pokémon Wheel Generator — Fan-made Tool",
   description:
     "Spin the wheel for a random Pokémon — a fun game-of-chance picker across the Pokédex.",
+  keywords: [
+    "pokemon wheel generator",
+    "random pokemon wheel",
+    "pokemon spinner",
+    "pokemon picker wheel",
+    "pokemon random wheel",
+  ],
+  alternates: { canonical: "/wheel" },
 };
 
 export default async function WheelPage() {

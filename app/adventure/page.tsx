@@ -21,6 +21,13 @@ export async function generateMetadata({
     title: `Pokémon Adventure Generator${diffLabel}`,
     description:
       "Roll a full Pokémon adventure in one tap — trainer, rival, region, starter, team of six, difficulty, challenge, gym journey, legendary encounter and goal. Share your adventure or roll again.",
+    keywords: [
+      "pokemon adventure generator",
+      "random pokemon adventure generator",
+      "pokemon journey generator",
+      "pokemon story generator",
+      "create pokemon adventure",
+    ],
     alternates: { canonical: "/adventure" },
   };
 }

@@ -8,6 +8,12 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Your Pokémon Team — Fan-made Tool",
   description: "Build and share your team of randomly generated Pokémon.",
+  keywords: [
+    "pokemon team builder",
+    "random pokemon team builder",
+    "pokemon team planner",
+  ],
+  alternates: { canonical: "/team" },
 };
 
 export default async function TeamPage({
