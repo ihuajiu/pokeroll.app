@@ -87,7 +87,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={p.artwork}
-                  alt=""
+                  alt={p.displayName}
                   width={48}
                   height={48}
                   style={{ width: 48, height: 48 }}
