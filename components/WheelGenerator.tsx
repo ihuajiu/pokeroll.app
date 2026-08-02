@@ -113,7 +113,9 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
       {winPokemon ? (
         <div className="mx-auto mt-4 w-full max-w-[640px]">
           <p className="mb-2 text-center text-sm text-poke-dim">You landed on…</p>
-          <HeroCard pokemon={winPokemon} showActions={false} />
+          <div className="card-stage flex justify-center">
+            <HeroCard pokemon={winPokemon} showActions={false} variant="wide" />
+          </div>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <AddToTeamButton pokemon={winPokemon} />
             <Link

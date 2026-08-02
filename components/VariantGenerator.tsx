@@ -70,12 +70,15 @@ export default function VariantGenerator({
           </p>
         )}
       </div>
-      <HeroCard
-        pokemon={data.pokemon}
-        loading={loading}
-        hideName={mode === "no-names"}
-        onRoll={regenerate}
-      />
+      <div className="card-stage flex justify-center">
+        <HeroCard
+          pokemon={data.pokemon}
+          loading={loading}
+          hideName={mode === "no-names"}
+          onRoll={regenerate}
+          variant="wide"
+        />
+      </div>
       <div className="mt-4 flex flex-wrap justify-center gap-3">
         <AddToTeamButton pokemon={data.pokemon} />
         <Link
