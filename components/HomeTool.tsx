@@ -44,7 +44,7 @@ const JUMP_TOOLS: JumpTool[] = [
     icon: <SvgIcon><circle cx="8.5" cy="9.5" r="4" /><circle cx="15" cy="14" r="4" /><path d="M11.5 12.5l4-4" strokeWidth="1.8" /></SvgIcon>,
   },
   {
-    href: "/shiny", label: "Shiny Generator", desc: "Hunt the rare recolored form.",
+    href: "/challenge/shiny", label: "Shiny Hunt", desc: "Hunt the rare recolored form.",
     color: "#fbbf24", p: 6, count: "SHINY",
     icon: <SvgIcon><path d="M12 2l2.4 5 5.6.8-4 4 1 5.6L12 20l-5 2.4 1-5.6-4-4 5.6-.8z" /></SvgIcon>,
   },
@@ -73,7 +73,6 @@ const TOOL_SPRITE: Record<string, number> = {
   "/bst": 149,
   "/number": 152,
   "/starter": 1,
-  "/shiny": 6,
   "/cute": 175,
   "/mythical": 151,
   "/mega": 448,

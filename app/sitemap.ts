@@ -10,7 +10,6 @@ const VARIANTS = [
   "bst",
   "number",
   "starter",
-  "shiny",
   "no-names",
   "cute",
   "mythical",

@@ -97,7 +97,7 @@
 ```
 /                              → 首页/主工具 (FR-01~03)
 /random-pokemon-generator      → 主工具（规范 URL）
-/[variant]                     → 变体工具页（fusion/type/starter/shiny/no-names/wheel…）
+/[variant]                     → 变体工具页（fusion/type/starter/no-names/wheel…；shiny 已并入 /challenge/shiny，/shiny 301 跳转）
 /by/[region]                   → 地区筛选页（程序化）
 /type/[type]                   → 类型页（程序化）
 /gen/[n]                       → 世代页（程序化）

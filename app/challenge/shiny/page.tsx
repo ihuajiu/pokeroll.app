@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import PageHeader from "@/components/PageHeader";
 import {
@@ -13,9 +12,15 @@ import { getAllPokemon } from "@/lib/pokedex";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Shiny Hunt Challenge — Predict Your Next Shiny",
+  title: "Shiny Pokémon Generator — Shiny Hunt Challenge",
   description:
-    "How many random encounters until your next shiny Pokémon? Roll a seeded prediction and share it with a friend. Fan-made tool.",
+    "The shiny Pokémon generator with real hunt odds: click Encounter, find your shiny and share the card. Easy mode guarantees a shiny within 204 draws. Fan-made tool.",
+  keywords: [
+    "shiny pokemon generator",
+    "random shiny pokemon",
+    "shiny hunt",
+    "shiny odds",
+  ],
 };
 
 type SP = Record<string, string | string[] | undefined>;
@@ -60,15 +65,6 @@ export default async function ShinyChallengePage({
             : "Click Encounter and see how long it takes to find your shiny — same 1/4096 odds as the games. Share the link and compare with a friend."
         }
       />
-      <p className="mb-6 text-sm text-poke-dim">
-        Just want an instant shiny reveal?{" "}
-        <Link
-          href="/shiny"
-          className="font-semibold text-[#ee3b3b] underline underline-offset-2"
-        >
-          Random Shiny Generator →
-        </Link>
-      </p>
       <ChallengeGenerator
         challenge={challenge}
         wildPool={wildPool}

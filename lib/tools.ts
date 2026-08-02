@@ -65,13 +65,6 @@ export const TOOLS: ToolMeta[] = [
     icon: "🌱",
   },
   {
-    href: "/shiny",
-    label: "Shiny Generator",
-    desc: "One tap — reveal a shiny-colored Pokémon instantly.",
-    group: "generator",
-    icon: "💫",
-  },
-  {
     href: "/cute",
     label: "Cute Generator",
     desc: "Soft, fluffy and adorable picks.",
