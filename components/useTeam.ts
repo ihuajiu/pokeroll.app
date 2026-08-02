@@ -42,10 +42,23 @@ function setStore(next: Pokemon[]) {
   emit();
 }
 
+// Another tab wrote the team — reload it so this tab's badge/tray matches.
+function onStorage(e: StorageEvent) {
+  if (e.key !== null && e.key !== KEY) return;
+  store = load();
+  emit();
+}
+
 function subscribe(cb: () => void) {
+  if (listeners.size === 0 && typeof window !== "undefined") {
+    window.addEventListener("storage", onStorage);
+  }
   listeners.add(cb);
   return () => {
     listeners.delete(cb);
+    if (listeners.size === 0 && typeof window !== "undefined") {
+      window.removeEventListener("storage", onStorage);
+    }
   };
 }
 

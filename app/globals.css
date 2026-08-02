@@ -2038,3 +2038,15 @@ body {
 @media (min-width: 768px) {
   .hdr-burger { display: none; }
 }
+
+/* Honor reduced-motion: collapse all animation/transition to near-instant. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
