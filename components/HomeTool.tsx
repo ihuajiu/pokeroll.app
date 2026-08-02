@@ -68,11 +68,6 @@ const JUMP_TOOLS: JumpTool[] = [
     color: "#8b5cf6", p: 492, count: "GUESS",
     icon: <SvgIcon><path d="M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4" /><circle cx="12" cy="18" r="1" fill="currentColor" /></SvgIcon>,
   },
-  {
-    href: "/challenge/guess", label: "Guess the Pokémon", desc: "Names hidden — guess from the silhouette.",
-    color: "#3aa0ff", p: 68, count: "SHARE",
-    icon: <SvgIcon><path d="M6 21V4" /><path d="M6 4h11l-2.5 4L17 12H6" /></SvgIcon>,
-  },
 ];
 
 // Group accent colors mirror the featured cards above.
