@@ -158,6 +158,8 @@ export default function HeroCard({
       bst: data.bst,
       region: data.region,
       generation: data.generation,
+      height: data.height,
+      weight: data.weight,
       // Page title carries the module name ("Random Pokémon Generator — …").
       module: document.title.split("—")[0].trim(),
       // Always carry the ?p= param so the shared link re-rolls this exact

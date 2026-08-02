@@ -37,6 +37,15 @@ function buildFusion(a: Pokemon, b: Pokemon): Pokemon {
     abilities: Array.from(new Set([...a.abilities, ...b.abilities])),
     isLegendary: a.isLegendary || b.isLegendary,
     isMythical: a.isMythical || b.isMythical,
+    // Average the parents' size like the stats; keep 1-decimal precision.
+    height:
+      a.height != null && b.height != null
+        ? Math.round(((a.height + b.height) / 2) * 10) / 10
+        : (a.height ?? b.height),
+    weight:
+      a.weight != null && b.weight != null
+        ? Math.round(((a.weight + b.weight) / 2) * 10) / 10
+        : (a.weight ?? b.weight),
   };
 }
 

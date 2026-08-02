@@ -384,6 +384,8 @@ export interface PokemonCardData extends PokemonCardMeta {
   bst: number;
   region: string;
   generation: number | string;
+  height?: number; // metres
+  weight?: number; // kilograms
 }
 
 /** "classic" snapshots the on-page card; "tcg" draws the dark TCG card. */
@@ -734,10 +736,13 @@ async function renderPokemonCardTcg(data: PokemonCardData): Promise<Blob> {
   ctx.fillStyle = "#ffffff";
   ctx.fillText(data.name, TW / 2, 930);
 
-  // Subtitle: BST · Region · Gen
+  // Subtitle: BST · Region · Gen · Height · Weight
   const region =
     data.region.charAt(0).toUpperCase() + data.region.slice(1);
-  const sub = `BST ${data.bst} · ${region} · Gen ${data.generation}`;
+  const subParts = [`BST ${data.bst}`, region, `Gen ${data.generation}`];
+  if (data.height != null) subParts.push(`${data.height} m`);
+  if (data.weight != null) subParts.push(`${data.weight} kg`);
+  const sub = subParts.join(" · ");
   ctx.font = fitFont(ctx, sub, 400, 32, TW - 200);
   ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
   ctx.fillText(sub, TW / 2, 990);
