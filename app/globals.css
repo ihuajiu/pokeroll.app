@@ -1149,8 +1149,9 @@ body {
   .random-stage .team-card.hero-card,
   .card-stage .team-card.hero-card {
     width: 400px;
-    aspect-ratio: 3 / 4;
-    min-height: 0;
+    /* 3:4 as a floor, not a lock: fusion cards can carry 3–4 type chips,
+       and a hard aspect-ratio would clip the action bar off the card. */
+    min-height: 533px;
     zoom: clamp(1, calc((100vh - 180px) * 3 / 1600px), 1.4);
   }
   /* Compact team-card metrics for the 400px baseline. */
