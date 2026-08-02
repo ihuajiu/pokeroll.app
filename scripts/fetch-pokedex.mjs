@@ -116,6 +116,9 @@ async function getPokemon(idOrName) {
     shinyArtwork: hasShiny ? `/pokemon/shiny-artwork/${p.id}.png` : undefined,
     isLegendary: !!species?.is_legendary,
     isMythical: !!species?.is_mythical,
+    // PokeAPI: height in decimetres, weight in hectograms -> store m / kg
+    height: Math.round((p.height / 10) * 10) / 10,
+    weight: Math.round((p.weight / 10) * 10) / 10,
     moveNames: (p.moves ?? []).map((m) => m.move.name),
   };
 }

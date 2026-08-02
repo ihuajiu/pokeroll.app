@@ -65,7 +65,7 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
         <p className="text-sm text-poke-dim">Fuse two random Pokémon into one!</p>
       </div>
 
-      <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-[1fr_auto_1fr]">
+      <div className="fusion-stage grid grid-cols-1 items-center gap-4 sm:grid-cols-[1fr_auto_1fr]">
         <div>
           <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-poke-dim">
             {data.a.displayName}
@@ -86,8 +86,8 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
       <div className="my-5 text-center text-3xl font-bold text-poke-red">=</div>
 
       <p className="mb-2 text-center text-sm text-poke-dim">Your fusion is…</p>
-      <div className="mx-auto max-w-[640px]">
-        <HeroCard pokemon={fused} loading={loading} onRoll={regenerate} />
+      <div className="card-stage mx-auto flex max-w-[640px] justify-center">
+        <HeroCard pokemon={fused} loading={loading} onRoll={regenerate} variant="wide" />
       </div>
 
       <div className="mt-4 flex flex-wrap justify-center gap-3">

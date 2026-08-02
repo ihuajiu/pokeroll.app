@@ -258,6 +258,18 @@ export default function HeroCard({
             <span className="sl">Gen</span>
             <span className="sv">{data.generation}</span>
           </div>
+          {data.height != null ? (
+            <div className="row row-text">
+              <span className="sl">Height</span>
+              <span className="sv">{data.height} m</span>
+            </div>
+          ) : null}
+          {data.weight != null ? (
+            <div className="row row-text">
+              <span className="sl">Weight</span>
+              <span className="sv">{data.weight} kg</span>
+            </div>
+          ) : null}
         </div>
 
         {!hideName ? (

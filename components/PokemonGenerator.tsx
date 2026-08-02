@@ -32,7 +32,9 @@ export default function PokemonGenerator({ initial }: { initial: Pokemon }) {
         <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
         <p className="text-sm text-poke-dim">Your random Pokémon is…</p>
       </div>
-      <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} />
+      <div className="card-stage flex justify-center">
+        <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} variant="wide" />
+      </div>
       <div className="mt-5 flex flex-wrap gap-3">
         <ShareButton name={pokemon.name} />
         <AddToTeamButton pokemon={pokemon} />

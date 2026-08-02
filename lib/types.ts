@@ -23,6 +23,8 @@ export type Pokemon = {
   shinyArtwork?: string; // official shiny artwork url (475x475)
   isLegendary: boolean;
   isMythical: boolean;
+  height?: number; // metres
+  weight?: number; // kilograms
   // raw lowercase names used for reverse indexing (ability/move -> pokemon)
   abilityNames?: string[];
   moveNames?: string[];

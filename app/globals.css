@@ -1124,11 +1124,12 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 }
-/* /random stage: the card sits next to a sidebar whose height varies with
-   the roll history. Undo the roster-page height:100% so the card keeps its
-   natural height instead of stretching to the row and pooling blank space
+/* Single-card generator stage (.random-stage on /random, .card-stage on the
+   other generator pages): undo the roster-page height:100% so the card keeps
+   its natural height instead of stretching to the row and pooling blank space
    at the bottom of the card. min-height keeps every roll the same shape. */
-.random-stage .team-card.hero-card {
+.random-stage .team-card.hero-card,
+.card-stage .team-card.hero-card {
   height: auto;
   align-self: start;
   min-height: 500px;
@@ -1145,36 +1146,81 @@ body {
     grid-template-columns: clamp(400px, calc((100vh - 180px) * 3 / 4), 560px);
     justify-content: center;
   }
-  .random-stage .team-card.hero-card {
+  .random-stage .team-card.hero-card,
+  .card-stage .team-card.hero-card {
     width: 400px;
     aspect-ratio: 3 / 4;
     min-height: 0;
     zoom: clamp(1, calc((100vh - 180px) * 3 / 1600px), 1.4);
   }
   /* Compact team-card metrics for the 400px baseline. */
-  .random-stage .team-card--wide.hero-card {
+  .random-stage .team-card--wide.hero-card,
+  .card-stage .team-card--wide.hero-card {
     padding: 22px 20px 18px 22px;
   }
-  .random-stage .team-card--wide .hero-card-art {
+  .random-stage .team-card--wide .hero-card-art,
+  .card-stage .team-card--wide .hero-card-art {
     top: 14px;
     right: 14px;
   }
-  .random-stage .team-card--wide .hero-card-art img {
+  .random-stage .team-card--wide .hero-card-art img,
+  .card-stage .team-card--wide .hero-card-art img {
     width: 150px;
     height: 150px;
   }
   .random-stage .team-card--wide.hero-card .dex,
-  .random-stage .team-card--wide.hero-card .try-types {
+  .random-stage .team-card--wide.hero-card .try-types,
+  .card-stage .team-card--wide.hero-card .dex,
+  .card-stage .team-card--wide.hero-card .try-types {
     max-width: calc(100% - 164px);
   }
-  .random-stage .team-card--wide.hero-card h3 {
+  .random-stage .team-card--wide.hero-card h3,
+  .card-stage .team-card--wide.hero-card h3 {
     max-width: 100%;
     font-size: clamp(22px, 7cqi, 34px);
   }
-  .random-stage .team-card--wide.hero-card .statgrid {
-    margin-top: 42px;
+  .random-stage .team-card--wide.hero-card .statgrid,
+  .card-stage .team-card--wide.hero-card .statgrid {
+    /* Third meta row (Height/Weight) — reclaim vertical space so the action
+       bar still fits inside the locked 3:4 box. */
+    margin-top: 20px;
+    gap: 6px 20px;
     grid-template-columns: 1fr 1fr;
   }
+  .random-stage .team-card--wide.hero-card .bars,
+  .card-stage .team-card--wide.hero-card .bars {
+    gap: 5px;
+    padding-top: 10px;
+  }
+}
+/* Fusion ingredient cards: match the generator cards' 3:4 shape. Width is
+   capped at the 400px baseline (and centered in its grid track) so the
+   interior stays balanced instead of pooling blank space at the bottom —
+   the same box the generator-stage cards use. Mobile keeps natural height. */
+@media (min-width: 640px) {
+  .fusion-stage .team-card.hero-card {
+    height: auto;
+    aspect-ratio: 3 / 4;
+    align-self: start;
+    width: 100%;
+    max-width: 400px;
+    margin-inline: auto;
+  }
+}
+/* All stat cards self-adapt when their height is stretched beyond the
+   content (locked 3:4 stages, roster rows at height:100%, …): the info
+   column grows and the stat bars + action bar pin to the bottom instead of
+   pooling blank space. At natural height this is a no-op. */
+.team-card.hero-card {
+  display: flex;
+  flex-direction: column;
+}
+.team-card.hero-card .hero-card-info {
+  flex: 1;
+}
+.team-card.hero-card .bars {
+  margin-top: auto;
+  padding-top: 16px;
 }
 .hero-card-art {
   grid-row: 1;
