@@ -391,6 +391,14 @@ export type PokemonCardStyle = "classic" | "tcg";
 
 /** Bounds of the solid content in a canvas (0-based, inclusive).
  *  Semi-transparent pixels (drop shadows, glows) are ignored. */
+/** True when the canvas has at least one solid pixel (alpha > 200). */
+function hasOpaquePixels(c: HTMLCanvasElement): boolean {
+  const ctx = c.getContext("2d", { willReadFrequently: true })!;
+  const { data } = ctx.getImageData(0, 0, c.width, c.height);
+  for (let i = 3; i < data.length; i += 4) if (data[i] > 200) return true;
+  return false;
+}
+
 function findOpaqueBounds(c: HTMLCanvasElement): {
   left: number;
   top: number;
@@ -497,25 +505,54 @@ async function renderPokemonCardDom(
   await document.fonts?.ready.catch(() => undefined);
   const { toCanvas } = await import("html-to-image");
   const scale = 3;
+  const fontEmbedCSS = await getFontEmbedCSS();
+  // The action bar (Share / Download / New roll) is UI chrome, not card
+  // content — exclude it from the picture.
+  const filter = (node: Node) =>
+    !(node instanceof HTMLElement && node.classList.contains("hero-actions"));
+
   // The /random stage scales the card with CSS `zoom`, which breaks
-  // html-to-image's size math (blank gutter inside the capture). Neutralize
-  // it for the duration of the snapshot, then restore.
-  const inlineZoom = el.style.zoom;
-  const computedZoom = getComputedStyle(el).zoom;
-  const hadZoom = computedZoom !== "1" && computedZoom !== "normal";
-  if (hadZoom) el.style.zoom = "1";
+  // html-to-image's size math (blank gutter inside the capture). Snapshot an
+  // off-screen clone instead of mutating the live card — flipping zoom on the
+  // original made it visibly shrink and pop back during capture. The clone
+  // sits in a fixed holder inserted next to the original, so every
+  // ancestor-scoped rule (stage metrics, grid overrides) still applies while
+  // the clone itself keeps plain static styles: html-to-image inlines the
+  // captured node's computed position, so the off-screen offset must live on
+  // the holder, never on the captured node.
+  const holder = document.createElement("div");
+  holder.style.cssText =
+    "position:fixed;left:-10000px;top:0;pointer-events:none;";
+  const clone = el.cloneNode(true) as HTMLElement;
+  clone.style.zoom = "1";
+  // Pin the clone to the original's layout box so the capture matches the
+  // on-page card exactly, zoomed stage or stretched roster alike. Use
+  // offsetWidth/offsetHeight — getBoundingClientRect is unreliable in the
+  // presence of CSS zoom (returns neither layout nor visual size here).
+  clone.style.width = `${el.offsetWidth}px`;
+  clone.style.height = `${el.offsetHeight}px`;
+  clone.style.margin = "0";
+  holder.appendChild(clone);
+  el.parentElement?.appendChild(holder);
   let shot: HTMLCanvasElement;
   try {
-    shot = await toCanvas(el, {
-      pixelRatio: scale,
-      fontEmbedCSS: await getFontEmbedCSS(),
-      // The action bar (Share / Download / New roll) is UI chrome, not card
-      // content — exclude it from the picture.
-      filter: (node) =>
-        !(node instanceof HTMLElement && node.classList.contains("hero-actions")),
-    });
+    shot = await toCanvas(clone, { pixelRatio: scale, fontEmbedCSS, filter });
   } finally {
-    if (hadZoom) el.style.zoom = inlineZoom;
+    holder.remove();
+  }
+
+  // Some browser/version combinations render the off-screen clone as a fully
+  // transparent canvas. Detect that and fall back to the legacy in-place
+  // capture (brief zoom flicker, but always correct) instead of shipping a
+  // blank image.
+  if (!hasOpaquePixels(shot)) {
+    const inlineZoom = el.style.zoom;
+    el.style.zoom = "1";
+    try {
+      shot = await toCanvas(el, { pixelRatio: scale, fontEmbedCSS, filter });
+    } finally {
+      el.style.zoom = inlineZoom;
+    }
   }
 
   const canvas = document.createElement("canvas");
