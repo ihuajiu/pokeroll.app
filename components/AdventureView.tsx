@@ -252,8 +252,8 @@ export default function AdventureView({
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
             Your Starter
           </h2>
-          <div className="mx-auto max-w-[640px]">
-            <HeroCard pokemon={a.starter} showActions />
+          <div className="card-stage mx-auto flex max-w-[640px] justify-center">
+            <HeroCard pokemon={a.starter} showActions variant="wide" />
           </div>
         </div>
       )}
@@ -273,10 +273,10 @@ export default function AdventureView({
               starter to counter yours.
             </p>
           </div>
-          <div className="mx-auto max-w-[640px]">
+          <div className="card-stage mx-auto flex max-w-[640px] justify-center">
             <HeroCard
               pokemon={a.rival.starter}
-              variant="team"
+              variant="wide"
               showActions={false}
             />
           </div>
@@ -365,10 +365,10 @@ export default function AdventureView({
               {a.legendary.role}
             </p>
           </div>
-          <div className="mx-auto max-w-[640px]">
+          <div className="card-stage mx-auto flex max-w-[640px] justify-center">
             <HeroCard
               pokemon={a.legendary.pokemon}
-              variant="team"
+              variant="wide"
               showActions={false}
             />
           </div>
