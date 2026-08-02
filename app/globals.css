@@ -312,6 +312,9 @@ body {
 .stage {
   position: relative;
   isolation: isolate;
+  /* Decorative rings/ball bleed past the stage on purpose — clip them so
+     they never create horizontal page scroll on narrow screens. */
+  overflow: clip;
 }
 .stage .stage-rings {
   position: absolute;
@@ -1764,13 +1767,29 @@ body {
   padding: 0 1.25rem;
   display: grid;
   gap: 2rem;
-  grid-template-columns: 1.4fr repeat(5, minmax(0, 1fr));
+  grid-template-columns: 1.4fr repeat(6, minmax(0, 1fr));
+}
+/* Large groups (Generators has 13+ links) flow into two sub-columns and
+   span two grid tracks, so one long column can't stretch the whole footer. */
+.foot-col--wide {
+  grid-column: span 2;
+  columns: 2;
+  column-gap: 2rem;
+}
+.foot-col--wide h4 {
+  column-span: all;
+}
+.foot-col--wide a {
+  break-inside: avoid;
+  white-space: nowrap;
 }
 @media (max-width: 980px) {
   .foot-grid { grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
   .foot-grid { grid-template-columns: 1fr; }
+  /* span 2 would force an implicit second track in the single-column grid */
+  .foot-col--wide { grid-column: auto; }
 }
 /* Brand / LOGO — 1:1 with prototype .brand */
 .brand {

@@ -27,16 +27,22 @@ export default function Footer() {
             Roll a random Pokémon — names, types, stats and shinies in one tap.
           </p>
         </div>
-        {TOOL_GROUPS.map((g) => (
-          <div key={g.id} className="foot-col">
-            <h4>{g.title}</h4>
-            {TOOLS.filter((t) => t.group === g.id).map((t) => (
-              <Link key={t.href} href={t.href}>
-                {t.label}
-              </Link>
-            ))}
-          </div>
-        ))}
+        {TOOL_GROUPS.map((g) => {
+          const links = TOOLS.filter((t) => t.group === g.id);
+          return (
+            <div
+              key={g.id}
+              className={`foot-col${links.length > 6 ? " foot-col--wide" : ""}`}
+            >
+              <h4>{g.title}</h4>
+              {links.map((t) => (
+                <Link key={t.href} href={t.href}>
+                  {t.label}
+                </Link>
+              ))}
+            </div>
+          );
+        })}
       </div>
 
       <div className="foot-browse">
