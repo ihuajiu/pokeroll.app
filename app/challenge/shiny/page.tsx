@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import PageHeader from "@/components/PageHeader";
 import {
@@ -59,6 +60,15 @@ export default async function ShinyChallengePage({
             : "Click Encounter and see how long it takes to find your shiny — same 1/4096 odds as the games. Share the link and compare with a friend."
         }
       />
+      <p className="mb-6 text-sm text-poke-dim">
+        Just want an instant shiny reveal?{" "}
+        <Link
+          href="/shiny"
+          className="font-semibold text-[#ee3b3b] underline underline-offset-2"
+        >
+          Random Shiny Generator →
+        </Link>
+      </p>
       <ChallengeGenerator
         challenge={challenge}
         wildPool={wildPool}

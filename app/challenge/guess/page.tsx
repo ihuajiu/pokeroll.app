@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import PageHeader from "@/components/PageHeader";
 import {
@@ -59,6 +60,15 @@ export default async function GuessChallengePage({
         title={challenge.title}
         description={challenge.description}
       />
+      <p className="mb-6 text-sm text-poke-dim">
+        Prefer one quick mystery card instead?{" "}
+        <Link
+          href="/no-names"
+          className="font-semibold text-[#ee3b3b] underline underline-offset-2"
+        >
+          Mystery Pokémon →
+        </Link>
+      </p>
       <ChallengeGenerator challenge={challenge} />
     </main>
   );

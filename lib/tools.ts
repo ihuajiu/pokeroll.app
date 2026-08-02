@@ -67,7 +67,7 @@ export const TOOLS: ToolMeta[] = [
   {
     href: "/shiny",
     label: "Shiny Generator",
-    desc: "Reveal a shiny Pokémon's alternate colors.",
+    desc: "One tap — reveal a shiny-colored Pokémon instantly.",
     group: "generator",
     icon: "💫",
   },
@@ -123,7 +123,7 @@ export const TOOLS: ToolMeta[] = [
   {
     href: "/no-names",
     label: "Mystery Pokémon",
-    desc: "Guess the Pokémon from its hidden name.",
+    desc: "One mystery card — artwork shown, name hidden.",
     group: "generator",
     icon: "❓",
   },

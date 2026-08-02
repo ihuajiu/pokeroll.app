@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import VariantGenerator from "@/components/VariantGenerator";
 import PageHeader from "@/components/PageHeader";
@@ -116,9 +117,33 @@ export default async function VariantPage({
 
   if (variant === "shiny" || variant === "no-names") {
     const pokemon = await getRandomPokemon();
+    // Cross-link the challenge counterpart so the pair stops competing for
+    // the same visit: this page is the one-tap generator, the challenge is
+    // the seeded, shareable game.
+    const cross =
+      variant === "shiny"
+        ? {
+            href: "/challenge/shiny",
+            label: "Try the Shiny Hunt Challenge",
+            lead: "Want real 1/4096 odds and a shareable hunt?",
+          }
+        : {
+            href: "/challenge/guess",
+            label: "Try the Silhouette Challenge",
+            lead: "Want a seeded multi-card quiz to share?",
+          };
     return (
       <main className="pt-6 pb-10">
         <PageHeader title={headerTitle} description={m.description} />
+        <p className="mb-6 text-sm text-poke-dim">
+          {cross.lead}{" "}
+          <Link
+            href={cross.href}
+            className="font-semibold text-[#ee3b3b] underline underline-offset-2"
+          >
+            {cross.label} →
+          </Link>
+        </p>
         <VariantGenerator
           kind={variant}
           initial={{ kind: variant, pokemon }}
