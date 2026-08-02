@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import TeamClient from "@/components/TeamClient";
+import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,7 @@ export default async function TeamPage({
         description="Your saved squad — add Pokémon from any generator, then build and share."
       />
       <TeamClient sharedNames={sp.team ?? null} />
+      <RelatedTools current="/team" />
     </main>
   );
 }

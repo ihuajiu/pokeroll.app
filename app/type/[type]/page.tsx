@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
+import RelatedTools from "@/components/RelatedTools";
 import SeoNav from "@/components/SeoNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -69,6 +70,7 @@ export default async function TypePage({
         .
       </p>
       <FilteredGenerator query={`type=${type}`} initial={initial} />
+      <RelatedTools hrefs={["/type", "/random", "/starter", "/legendary"]} />
       <SeoNav current={{ type: "type", value: type }} />
     </main>
   );

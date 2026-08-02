@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
+import RelatedTools from "@/components/RelatedTools";
 import SeoNav from "@/components/SeoNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -65,6 +66,7 @@ export default async function RegionPage({
         instead.
       </p>
       <FilteredGenerator query={`region=${region}`} initial={initial} />
+      <RelatedTools hrefs={["/random", "/type", "/team/random", "/adventure"]} />
       <SeoNav current={{ type: "region", value: region }} />
     </main>
   );

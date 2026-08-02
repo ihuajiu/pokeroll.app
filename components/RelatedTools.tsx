@@ -5,11 +5,21 @@ import { TOOLS, RELATED_TOOLS } from "@/lib/tools";
 // RELATED_TOOLS (lib/tools.ts) as compact cards. Placed after the main
 // content on every tool page so each page passes contextual links to its
 // closest siblings instead of relying on header/footer alone.
-export default function RelatedTools({ current }: { current: string }) {
-  const hrefs = RELATED_TOOLS[current];
-  if (!hrefs?.length) return null;
+// Card titles are h3s under the "Related tools" h2, giving every page a
+// proper h2 → h3 outline.
+export default function RelatedTools({
+  current,
+  hrefs,
+}: {
+  /** Key into RELATED_TOOLS (tool page href). Ignored when hrefs is given. */
+  current?: string;
+  /** Explicit tool hrefs — for pages without a RELATED_TOOLS entry. */
+  hrefs?: string[];
+}) {
+  const list = hrefs ?? (current ? RELATED_TOOLS[current] : undefined);
+  if (!list?.length) return null;
 
-  const tools = hrefs
+  const tools = list
     .map((h) => TOOLS.find((t) => t.href === h))
     .filter((t): t is (typeof TOOLS)[number] => Boolean(t));
 
@@ -28,9 +38,9 @@ export default function RelatedTools({ current }: { current: string }) {
             <span className="text-lg" aria-hidden="true">
               {t.icon}
             </span>
-            <span className="text-sm font-semibold text-poke-ink group-hover:text-poke-violet">
+            <h3 className="text-sm font-semibold text-poke-ink group-hover:text-poke-violet">
               {t.label}
-            </span>
+            </h3>
             <span className="text-xs leading-snug text-poke-dim">
               {t.desc}
             </span>
