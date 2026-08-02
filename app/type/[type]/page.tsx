@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import SeoNav from "@/components/SeoNav";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByType, getRandomPokemon } from "@/lib/pokeapi";
-import { titleCase } from "@/lib/seo";
+import { GEN_REGION, TYPE_GEN, titleCase } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,10 @@ export default async function TypePage({
   const t = titleCase(type);
   const pool = await getPoolByType(type);
   const initial = pool.length ? await getRandomPokemon(pool) : await getRandomPokemon();
+  const gen = TYPE_GEN[type] ?? 1;
+  const region = GEN_REGION[gen];
+  const linkCls =
+    "font-medium text-poke-violet underline underline-offset-2";
 
   return (
     <main className="pt-6 pb-10">
@@ -36,6 +41,25 @@ export default async function TypePage({
         title={`Random ${t}-type Pokémon Generator`}
         description={`Looking for a random ${t}-type Pokémon? Here's one — tap Generate Again for another.`}
       />
+      <p className="mb-6 max-w-2xl text-sm leading-relaxed text-poke-dim">
+        {t}-type Pokémon first appeared in{" "}
+        <Link className={linkCls} href={`/gen/${gen}`}>
+          Generation {gen}
+        </Link>{" "}
+        alongside the{" "}
+        <Link className={linkCls} href={`/by/${region}`}>
+          {titleCase(region)} region
+        </Link>
+        . Roll one above, browse all 18 types with the{" "}
+        <Link className={linkCls} href="/type">
+          Type Generator
+        </Link>
+        , or go{" "}
+        <Link className={linkCls} href="/random">
+          fully random
+        </Link>
+        .
+      </p>
       <FilteredGenerator query={`type=${type}`} initial={initial} />
       <SeoNav current={{ type: "type", value: type }} />
     </main>

@@ -45,6 +45,30 @@ export const REGION_GAME: Record<string, string> = {
   paldea: "Scarlet & Violet",
 };
 
+// Region ↔ generation correspondence (region debuted in that generation).
+export const REGION_GEN: Record<string, number> = {
+  kanto: 1,
+  johto: 2,
+  hoenn: 3,
+  sinnoh: 4,
+  unova: 5,
+  kalos: 6,
+  alola: 7,
+  galar: 8,
+  paldea: 9,
+};
+
+export const GEN_REGION: Record<number, string> = Object.fromEntries(
+  Object.entries(REGION_GEN).map(([r, g]) => [g, r]),
+) as Record<number, string>;
+
+// Types that debuted after Gen 1 (all others default to 1).
+export const TYPE_GEN: Record<string, number> = {
+  dark: 2,
+  steel: 2,
+  fairy: 6,
+};
+
 export function titleCase(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }

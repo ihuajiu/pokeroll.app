@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import SeoNav from "@/components/SeoNav";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByRegion, getRandomPokemon } from "@/lib/pokeapi";
-import { REGION_GAME, titleCase } from "@/lib/seo";
+import { REGION_GAME, REGION_GEN, titleCase } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +34,9 @@ export default async function RegionPage({
   const game = REGION_GAME[region] ?? "";
   const pool = await getPoolByRegion(region);
   const initial = pool.length ? await getRandomPokemon(pool) : await getRandomPokemon();
+  const gen = REGION_GEN[region] ?? 1;
+  const linkCls =
+    "font-medium text-poke-violet underline underline-offset-2";
 
   return (
     <main className="pt-6 pb-10">
@@ -40,6 +44,18 @@ export default async function RegionPage({
         title={`Random ${r} Pokémon Generator`}
         description={`Explore the Pokémon of ${r}${game ? `, featured in Pokémon ${game}` : ""}. Here's one for you — tap Generate Again for another.`}
       />
+      <p className="mb-6 max-w-2xl text-sm leading-relaxed text-poke-dim">
+        {r} is home to the{" "}
+        <Link className={linkCls} href={`/gen/${gen}`}>
+          Generation {gen} Pokédex
+        </Link>
+        {game ? ` and the games Pokémon ${game}` : ""}. Roll one above, or try
+        the{" "}
+        <Link className={linkCls} href="/random">
+          fully random generator
+        </Link>{" "}
+        instead.
+      </p>
       <FilteredGenerator query={`region=${region}`} initial={initial} />
       <SeoNav current={{ type: "region", value: region }} />
     </main>
