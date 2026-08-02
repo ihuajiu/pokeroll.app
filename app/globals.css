@@ -1008,7 +1008,7 @@ body {
 }
 /* keep the meta bar clear of the rotated stamp */
 .adventure-teaser .am-meta {
-  padding-right: 60px;
+  padding-right: 92px;
 }
 .adventure-teaser .at-stamp {
   position: absolute;
@@ -1022,27 +1022,6 @@ body {
   font: 800 13px/1 var(--mono);
   color: var(--cc, rgb(var(--accent)));
   opacity: 0.75;
-}
-/* dashed blanks standing in for the trainer name / role line */
-.adventure-teaser .at-blank {
-  border-bottom: 2px dashed
-    color-mix(in srgb, var(--cc, rgb(var(--accent))) 40%, rgb(var(--border)));
-}
-.adventure-teaser .at-blank-lg {
-  width: 58%;
-  height: 30px;
-  margin-top: 10px;
-}
-.adventure-teaser .at-blank-sm {
-  width: 38%;
-  height: 16px;
-  margin-top: 12px;
-}
-/* redacted values read as "to be rolled", not as data */
-.adventure-teaser .am-cell .am-v {
-  color: var(--cc, rgb(var(--accent)));
-  opacity: 0.7;
-  letter-spacing: 0.08em;
 }
 
 /* ── Wide team-card variant (Team / roster page) ─────────────────────────

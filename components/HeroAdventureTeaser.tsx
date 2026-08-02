@@ -3,10 +3,10 @@
 import Link from "next/link";
 
 /**
- * Hero teaser card for the Adventure platform pivot. Renders an *unwritten*
- * Adventure Manifest — dashed blanks, ??? values and six empty team dots —
- * so landing on /adventure feels like filling in this very form. Reuses the
- * .adventure-manifest style system (globals.css) for a consistent
+ * Hero teaser card for the Adventure platform pivot. Renders a *filled*
+ * sample Adventure Manifest — real-looking trainer, region, challenge, goal
+ * and a full six-dot team — so visitors instantly see what one roll produces.
+ * Reuses the .adventure-manifest style system (globals.css) for a consistent
  * teaser → manifest narrative across all four theme states.
  */
 export default function HeroAdventureTeaser() {
@@ -16,10 +16,10 @@ export default function HeroAdventureTeaser() {
       style={{ ["--cc" as string]: "#ee3b3b" }}
     >
       <span className="am-ghost" aria-hidden="true">
-        ?
+        J
       </span>
       <span className="at-stamp" aria-hidden="true">
-        ?
+        SAMPLE
       </span>
 
       <div className="am-meta">
@@ -27,27 +27,35 @@ export default function HeroAdventureTeaser() {
           <span className="am-dot" />
           Adventure Manifest
         </span>
-        <span>Vol. ??</span>
+        <span>Difficulty · Normal</span>
       </div>
 
       <div className="am-hero">
         <div className="am-kicker">Trainer Profile</div>
-        <div className="at-blank at-blank-lg" aria-hidden="true" />
-        <div className="at-blank at-blank-sm" aria-hidden="true" />
+        <h2 className="am-name">Mira</h2>
+        <p className="am-role">
+          <b>Ace Trainer</b>
+          <span className="am-sep">/</span>
+          <i>Tactical</i>
+        </p>
+        <span className="am-style">Style · Tactical</span>
       </div>
 
       <div className="am-grid">
-        <div className="am-cell">
+        <div className="am-cell region">
           <div className="am-k">Region</div>
-          <div className="am-v">???</div>
+          <div className="am-v">
+            Johto
+            <small>Gold &amp; Silver</small>
+          </div>
         </div>
         <div className="am-cell">
           <div className="am-k">Challenge</div>
-          <div className="am-v">???</div>
+          <div className="am-v">Nuzlocke Challenge</div>
         </div>
         <div className="am-cell">
           <div className="am-k">Goal</div>
-          <div className="am-v">???</div>
+          <div className="am-v">Become Champion</div>
         </div>
       </div>
 
@@ -55,7 +63,7 @@ export default function HeroAdventureTeaser() {
         <span>Team · 6 unknown companions</span>
         <span className="am-team-dots" aria-hidden="true">
           {Array.from({ length: 6 }).map((_, i) => (
-            <i key={i} />
+            <i key={i} className="on" />
           ))}
         </span>
       </div>
