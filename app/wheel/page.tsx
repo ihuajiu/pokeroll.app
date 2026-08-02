@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import WheelGenerator from "@/components/WheelGenerator";
 import RelatedTools from "@/components/RelatedTools";
+import SeoNav from "@/components/SeoNav";
 import PageHeader from "@/components/PageHeader";
 import { getRandomPokemon } from "@/lib/pokeapi";
 
@@ -24,6 +25,7 @@ export default async function WheelPage() {
       />
       <WheelGenerator initial={{ items }} />
       <RelatedTools current="/wheel" />
+      <SeoNav />
     </main>
   );
 }
