@@ -175,7 +175,12 @@ export default async function Home() {
                 <span className="cc-go">
                   Explore <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                 </span>
-                <img className="cc-mon" src={SPRITE(t.p)} alt="" loading="lazy" />
+                <img
+                  className="cc-mon"
+                  src={SPRITE(t.p)}
+                  alt={`${t.label} example Pokémon artwork`}
+                  loading="lazy"
+                />
               </Link>
             ))}
           </div>
@@ -209,7 +214,11 @@ export default async function Home() {
                     style={{ "--cc": GROUP_COLOR[g.id] } as CSSProperties}
                   >
                     <div className="art">
-                      <img src={SPRITE(TOOL_SPRITE[t.href] ?? 25)} alt="" loading="lazy" />
+                      <img
+                        src={SPRITE(TOOL_SPRITE[t.href] ?? 25)}
+                        alt={`${t.label} example Pokémon artwork`}
+                        loading="lazy"
+                      />
                     </div>
                     <div className="body">
                       <span className="cat">

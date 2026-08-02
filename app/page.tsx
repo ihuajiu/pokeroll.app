@@ -4,7 +4,7 @@ import HomeTool from "@/components/HomeTool";
 export const metadata: Metadata = {
   title: "PokeRoll — Random Pokémon Generator",
   description:
-    "Roll a random Pokémon in one tap. Every pull comes with a name, type, ability, base stats, generation and an official sprite.",
+    "Roll a random Pokémon in one tap — every pull comes with a name, type, ability, base stats, generation and official artwork. Free fan-made tool.",
   keywords: [
     "random pokemon generator",
     "pokemon generator",
