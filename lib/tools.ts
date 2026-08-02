@@ -181,3 +181,30 @@ export const TOOL_GROUPS: {
     desc: "Build your squad or roll a ready-made team of six.",
   },
 ];
+
+// Curated internal-link graph: for each tool page (key = href), the 4-5 most
+// relevant other tools. Powers the RelatedTools module on every tool page.
+// Principle: cluster by theme (stats / looks / gameplay), and always include
+// one of the two main entry points (/random or /adventure).
+export const RELATED_TOOLS: Record<string, string[]> = {
+  "/adventure": ["/random", "/team/random", "/challenge/shiny", "/wheel", "/fusion"],
+  "/random": ["/adventure", "/team/random", "/starter", "/legendary", "/nickname"],
+  "/type": ["/random", "/starter", "/ability", "/move", "/legendary"],
+  "/ability": ["/move", "/bst", "/type", "/random", "/adventure"],
+  "/move": ["/ability", "/bst", "/type", "/random"],
+  "/bst": ["/number", "/ability", "/move", "/random", "/legendary"],
+  "/number": ["/bst", "/nickname", "/random", "/adventure"],
+  "/starter": ["/type", "/random", "/adventure", "/cute"],
+  "/cute": ["/mythical", "/nickname", "/starter", "/random"],
+  "/mythical": ["/legendary", "/mega", "/cute", "/random", "/adventure"],
+  "/legendary": ["/mythical", "/mega", "/challenge/shiny", "/random", "/adventure"],
+  "/mega": ["/legendary", "/mythical", "/fusion", "/random"],
+  "/nickname": ["/number", "/cute", "/team", "/random"],
+  "/challenge/guess": ["/no-names", "/challenge/shiny", "/wheel", "/adventure", "/random"],
+  "/challenge/shiny": ["/challenge/guess", "/legendary", "/wheel", "/adventure", "/random"],
+  "/no-names": ["/challenge/guess", "/nickname", "/random", "/adventure"],
+  "/wheel": ["/challenge/guess", "/challenge/shiny", "/fusion", "/adventure", "/random"],
+  "/fusion": ["/wheel", "/mega", "/adventure", "/random"],
+  "/team/random": ["/team", "/adventure", "/random", "/challenge/guess"],
+  "/team": ["/team/random", "/adventure", "/nickname", "/random"],
+};

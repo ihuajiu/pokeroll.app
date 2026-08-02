@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
+import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 import {
   getChallenge,
@@ -70,6 +71,7 @@ export default async function GuessChallengePage({
         </Link>
       </p>
       <ChallengeGenerator challenge={challenge} />
+      <RelatedTools current="/challenge/guess" />
     </main>
   );
 }

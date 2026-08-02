@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import RandomGenerator from "@/components/RandomGenerator";
+import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 import { getPokemonById, getRandomPokemon } from "@/lib/pokeapi";
 
@@ -48,6 +49,9 @@ export default async function RandomGeneratorPage({
         />
       </div>
       <RandomGenerator initial={initial} />
+      <div className="mx-auto max-w-[1080px] px-6">
+        <RelatedTools current="/random" />
+      </div>
     </main>
   );
 }

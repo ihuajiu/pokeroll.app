@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import VariantGenerator from "@/components/VariantGenerator";
+import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 import { getVariant, getRandomPokemon, getStarters } from "@/lib/pokeapi";
 
@@ -106,6 +107,7 @@ export default async function VariantPage({
           kind="starter"
           initial={{ kind: "starter", pokemon }}
         />
+        <RelatedTools current={`/${variant}`} />
       </main>
     );
   }
@@ -129,6 +131,7 @@ export default async function VariantPage({
           initial={{ kind: "no-names", pokemon }}
           mode="no-names"
         />
+        <RelatedTools current={`/${variant}`} />
       </main>
     );
   }
@@ -138,6 +141,7 @@ export default async function VariantPage({
     <main className="pt-6 pb-10">
       <PageHeader title={headerTitle} description={m.description} />
       <VariantGenerator kind={variant} initial={initial} />
+      <RelatedTools current={`/${variant}`} />
     </main>
   );
 }

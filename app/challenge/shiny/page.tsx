@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
+import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 import {
   getChallenge,
@@ -70,6 +71,7 @@ export default async function ShinyChallengePage({
         wildPool={wildPool}
         startFound={reveal}
       />
+      <RelatedTools current="/challenge/shiny" />
     </main>
   );
 }

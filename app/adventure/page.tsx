@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AdventureView from "@/components/AdventureView";
+import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 import { rollAdventure } from "@/lib/adventure";
 import { DIFFICULTIES, randomSeed } from "@/lib/adventure-types";
@@ -44,6 +45,7 @@ export default async function AdventurePage({
       />
       <div className="mx-auto max-w-5xl px-3">
         <AdventureView initial={adventure} />
+        <RelatedTools current="/adventure" />
       </div>
     </main>
   );
