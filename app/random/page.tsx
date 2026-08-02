@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import RandomGenerator from "@/components/RandomGenerator";
 import RelatedTools from "@/components/RelatedTools";
+import FaqSection from "@/components/FaqSection";
 import SeoNav from "@/components/SeoNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -55,6 +56,26 @@ export default async function RandomGeneratorPage({
       </div>
       <RandomGenerator initial={initial} />
       <div className="mx-auto max-w-[1080px] px-6">
+        <FaqSection
+          items={[
+            {
+              q: "How does the random Pokémon generator work?",
+              a: "Every roll picks one Pokémon at random from the full National Pokédex — over 1,000 species across all nine generations — and shows its name, types, ability, base stats, height, weight and official artwork.",
+            },
+            {
+              q: "Can I reproduce or share a specific result?",
+              a: "Yes. Use the Share button on the card — the link carries the exact Pokémon, so anyone opening it sees the same pull. You can also download the card as an image.",
+            },
+            {
+              q: "Can I narrow the results down?",
+              a: "Open the advanced filters to roll within a specific generation, region, type or category — or use the dedicated Gen, Region and Type generator pages linked below.",
+            },
+            {
+              q: "Where does the Pokémon data come from?",
+              a: "All species data comes from PokéAPI and is bundled locally with the site, so every roll is instant.",
+            },
+          ]}
+        />
         <RelatedTools current="/random" />
         <SeoNav />
       </div>

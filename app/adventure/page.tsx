@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AdventureView from "@/components/AdventureView";
 import RelatedTools from "@/components/RelatedTools";
+import FaqSection from "@/components/FaqSection";
 import PageHeader from "@/components/PageHeader";
 import { rollAdventure } from "@/lib/adventure";
 import { DIFFICULTIES, randomSeed } from "@/lib/adventure-types";
@@ -52,6 +53,26 @@ export default async function AdventurePage({
       />
       <div className="mx-auto max-w-5xl px-3">
         <AdventureView initial={adventure} />
+        <FaqSection
+          items={[
+            {
+              q: "What does one adventure include?",
+              a: "A trainer name, role and style, a rival, a region, your starter, a team of six, a challenge, a gym journey, a legendary encounter and a final goal — all rolled in one tap.",
+            },
+            {
+              q: "What is the seed in the link?",
+              a: "An 8-character code that drives the roll. The same seed and difficulty always produce the exact same adventure, so every link is reproducible.",
+            },
+            {
+              q: "What does difficulty change?",
+              a: "Difficulty scales the adventure from Easy to Extreme — it shapes the challenges you face, like shiny odds and encounter rules.",
+            },
+            {
+              q: "Can I share my adventure?",
+              a: "Yes — copy the page link. It carries the seed and difficulty, so friends open the identical adventure manifest.",
+            },
+          ]}
+        />
         <RelatedTools current="/adventure" />
       </div>
     </main>

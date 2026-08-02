@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import RelatedTools from "@/components/RelatedTools";
+import FaqSection from "@/components/FaqSection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import {
@@ -91,6 +92,22 @@ export default async function ShinyChallengePage({
           opening it see your result first, then can start their own hunt.
         </p>
       </section>
+      <FaqSection
+        items={[
+          {
+            q: "What are the shiny odds?",
+            a: "Normal, Hard and Extreme modes use the same 1-in-4096 rate as the mainline games. Easy mode raises it to 1-in-204 per click.",
+          },
+          {
+            q: "What is Easy mode?",
+            a: "A friendlier hunt: 1-in-204 odds per Encounter, and your shiny is guaranteed to appear within 204 draws — no endless dry streaks.",
+          },
+          {
+            q: "What happens when I find a shiny?",
+            a: "The found card unlocks Share and Download. The shared link opens straight on your found shiny, and the downloaded card image carries a QR code friends can scan to start their own hunt.",
+          },
+        ]}
+      />
       <RelatedTools current="/challenge/shiny" />
     </main>
   );
