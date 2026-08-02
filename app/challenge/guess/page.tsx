@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import RelatedTools from "@/components/RelatedTools";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import {
   getChallenge,
@@ -56,6 +57,13 @@ export default async function GuessChallengePage({
 
   return (
     <main className="pt-6 pb-10">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Challenges", href: "/#browse" },
+          { label: "Guess the Pokémon" },
+        ]}
+      />
       <PageHeader
         compact
         title={challenge.title}

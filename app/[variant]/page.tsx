@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import VariantGenerator from "@/components/VariantGenerator";
 import RelatedTools from "@/components/RelatedTools";
 import SeoNav from "@/components/SeoNav";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getVariant, getRandomPokemon, getStarters } from "@/lib/pokeapi";
+import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 
 export const dynamic = "force-dynamic";
 
@@ -99,10 +101,19 @@ export default async function VariantPage({
   const m = META[variant as VariantKey];
   const headerTitle = m.title.replace(/ — Fan-made Tool$/, "");
 
+  const tool = TOOLS.find((t) => t.href === `/${variant}`);
+  const group = TOOL_GROUPS.find((g) => g.id === tool?.group);
+  const crumbs = [
+    { label: "Home", href: "/" },
+    ...(group ? [{ label: group.title, href: "/#browse" }] : []),
+    { label: tool?.label ?? headerTitle },
+  ];
+
   if (variant === "starter") {
     const pokemon = await getRandomPokemon(getStarters());
     return (
       <main className="pt-6 pb-10">
+        <Breadcrumbs items={crumbs} />
         <PageHeader title={headerTitle} description={m.description} />
         <VariantGenerator
           kind="starter"
@@ -118,6 +129,7 @@ export default async function VariantPage({
     const pokemon = await getRandomPokemon();
     return (
       <main className="pt-6 pb-10">
+        <Breadcrumbs items={crumbs} />
         <PageHeader title={headerTitle} description={m.description} />
         <p className="mb-6 text-sm text-poke-dim">
           Want a seeded multi-card quiz to share?{" "}
@@ -142,6 +154,7 @@ export default async function VariantPage({
   const initial = await getVariant(variant);
   return (
     <main className="pt-6 pb-10">
+      <Breadcrumbs items={crumbs} />
       <PageHeader title={headerTitle} description={m.description} />
       <VariantGenerator kind={variant} initial={initial} />
       <RelatedTools current={`/${variant}`} />

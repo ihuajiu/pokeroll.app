@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import SeoNav from "@/components/SeoNav";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByRegion, getRandomPokemon } from "@/lib/pokeapi";
 import { REGION_GAME, REGION_GEN, titleCase } from "@/lib/seo";
@@ -40,6 +41,13 @@ export default async function RegionPage({
 
   return (
     <main className="pt-6 pb-10">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Random Pokémon", href: "/random" },
+          { label: `${r} Pokémon` },
+        ]}
+      />
       <PageHeader
         title={`Random ${r} Pokémon Generator`}
         description={`Explore the Pokémon of ${r}${game ? `, featured in Pokémon ${game}` : ""}. Here's one for you — tap Generate Again for another.`}

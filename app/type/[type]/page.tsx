@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import SeoNav from "@/components/SeoNav";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByType, getRandomPokemon } from "@/lib/pokeapi";
 import { GEN_REGION, TYPE_GEN, titleCase } from "@/lib/seo";
@@ -37,6 +38,13 @@ export default async function TypePage({
 
   return (
     <main className="pt-6 pb-10">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Random Pokémon", href: "/random" },
+          { label: `${t}-type Pokémon` },
+        ]}
+      />
       <PageHeader
         title={`Random ${t}-type Pokémon Generator`}
         description={`Looking for a random ${t}-type Pokémon? Here's one — tap Generate Again for another.`}

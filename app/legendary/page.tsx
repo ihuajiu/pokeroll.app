@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import SeoNav from "@/components/SeoNav";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getAllPokemon, getRandomPokemon } from "@/lib/pokeapi";
 
@@ -26,6 +27,13 @@ export default async function LegendaryPage() {
 
   return (
     <main className="pt-6 pb-10">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Generators", href: "/#browse" },
+          { label: "Legendary Generator" },
+        ]}
+      />
       <PageHeader
         title="Random Legendary Pokémon Generator"
         description="Only Legendary Pokémon in this pool — tap Generate Again for another legendary roll."

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import RelatedTools from "@/components/RelatedTools";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import {
   getChallenge,
@@ -57,6 +58,13 @@ export default async function ShinyChallengePage({
 
   return (
     <main className="pt-6 pb-10">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Challenges", href: "/#browse" },
+          { label: "Shiny Hunt" },
+        ]}
+      />
       <PageHeader
         compact
         title={challenge.title}

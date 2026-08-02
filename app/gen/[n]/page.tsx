@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import SeoNav from "@/components/SeoNav";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByGeneration, getRandomPokemon } from "@/lib/pokeapi";
 import { GEN_REGION, REGION_GAME, titleCase } from "@/lib/seo";
@@ -36,6 +37,13 @@ export default async function GenPage({
 
   return (
     <main className="pt-6 pb-10">
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Random Pokémon", href: "/random" },
+          { label: `Generation ${gen}` },
+        ]}
+      />
       <PageHeader
         title={`Random Generation ${gen} Pokémon Generator`}
         description={`Generation ${gen} introduced many fan-favorite Pokémon. Here's a random one — tap Generate Again for more.`}

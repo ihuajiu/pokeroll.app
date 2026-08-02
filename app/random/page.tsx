@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import RandomGenerator from "@/components/RandomGenerator";
 import RelatedTools from "@/components/RelatedTools";
 import SeoNav from "@/components/SeoNav";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPokemonById, getRandomPokemon } from "@/lib/pokeapi";
 
@@ -43,6 +44,9 @@ export default async function RandomGeneratorPage({
   return (
     <main className="pt-4 pb-10">
       <div className="mx-auto max-w-[1080px] px-6">
+        <Breadcrumbs
+          items={[{ label: "Home", href: "/" }, { label: "Random Pokémon" }]}
+        />
         <PageHeader
           title="Random Pokémon Generator"
           description="Roll a random Pokémon in one tap — every pull comes with its name, type, ability, stats and an official sprite."
