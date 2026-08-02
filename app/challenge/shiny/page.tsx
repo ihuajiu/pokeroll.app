@@ -16,13 +16,14 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Shiny Pokémon Generator — Shiny Hunt Challenge",
   description:
-    "The shiny Pokémon generator with real hunt odds: click Encounter, find your shiny and share the card. Easy mode guarantees a shiny within 204 draws. Fan-made tool.",
+    "The shiny Pokémon generator with real hunt odds: click Encounter, find your shiny and share the card. Easy mode guarantees a shiny within 204 draws.",
   keywords: [
     "shiny pokemon generator",
     "random shiny pokemon",
     "shiny hunt",
     "shiny odds",
   ],
+  alternates: { canonical: "/challenge/shiny" },
 };
 
 type SP = Record<string, string | string[] | undefined>;
@@ -79,6 +80,17 @@ export default async function ShinyChallengePage({
         wildPool={wildPool}
         startFound={reveal}
       />
+      <section className="mt-10 max-w-2xl">
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
+          How the hunt works
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-poke-dim">
+          Every Encounter click rolls the same 1-in-4096 odds as the games
+          (Easy mode: 1-in-204 with a shiny guaranteed within 204 draws). When
+          your shiny appears, share the found card or the link — friends
+          opening it see your result first, then can start their own hunt.
+        </p>
+      </section>
       <RelatedTools current="/challenge/shiny" />
     </main>
   );

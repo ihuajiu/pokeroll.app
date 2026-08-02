@@ -16,7 +16,8 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Guess the Pokémon — Silhouette Challenge",
   description:
-    "Guess hidden Pokémon from their silhouettes, reveal them one by one to check, then share the link to challenge a friend. Fan-made tool.",
+    "Guess hidden Pokémon from their silhouettes, reveal them one by one to check, then share the seeded link to challenge a friend. Free fan-made tool.",
+  alternates: { canonical: "/challenge/guess" },
 };
 
 type SP = Record<string, string | string[] | undefined>;
@@ -79,6 +80,17 @@ export default async function GuessChallengePage({
         </Link>
       </p>
       <ChallengeGenerator challenge={challenge} />
+      <section className="mt-10 max-w-2xl">
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
+          How to play
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-poke-dim">
+          Study each silhouette and lock in your guess, then flip the card to
+          reveal the Pokémon. Filters narrow the pool by type, region or
+          generation, and the seed in the link reproduces the exact same
+          challenge — share it with a friend and compare scores.
+        </p>
+      </section>
       <RelatedTools current="/challenge/guess" />
     </main>
   );
