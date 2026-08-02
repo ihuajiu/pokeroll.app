@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { REGIONS, TYPES, GENS } from "@/lib/seo";
 
-const BASE = process.env.SITE_URL ?? "https://random-pokemon-generator.example";
+const BASE = process.env.SITE_URL ?? "https://pokeroll.app";
 
 const VARIANTS = [
   "type",
@@ -26,8 +26,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages = [
     `${BASE}/`,
+    `${BASE}/random`,
     `${BASE}/random-pokemon-generator`,
+    `${BASE}/adventure`,
     `${BASE}/team`,
+    `${BASE}/team/random`,
     `${BASE}/challenge/guess`,
     `${BASE}/challenge/shiny`,
     `${BASE}/disclaimer`,
