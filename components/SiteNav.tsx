@@ -142,7 +142,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
 
           <Link
             href="/adventure"
-            className="hidden game-btn game-btn-primary px-4 py-2 text-sm sm:inline-flex"
+            className="hdr-cta hidden game-btn game-btn-primary px-4 py-2 text-sm sm:inline-flex"
           >
             Roll Adventure
           </Link>
@@ -152,7 +152,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
             onClick={() => setMobile((v) => !v)}
             aria-label="Menu"
             aria-expanded={mobile}
-            className="game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center md:hidden"
+            className="hdr-burger game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center md:hidden"
           >
             <svg
               viewBox="0 0 24 24"
