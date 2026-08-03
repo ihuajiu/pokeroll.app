@@ -18,7 +18,6 @@ const VARIANTS = [
   "nickname",
   "fusion",
   "wheel",
-  "challenge",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

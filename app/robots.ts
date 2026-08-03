@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE = process.env.SITE_URL ?? "https://random-pokemon-generator.example";
+const BASE = process.env.SITE_URL ?? "https://pokeroll.app";
 
 export default function robots(): MetadataRoute.Robots {
   return {

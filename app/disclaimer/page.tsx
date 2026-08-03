@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Disclaimer & Affiliate Notice — Fan-made Pokémon Tool",
   description:
     "Fan-made, unofficial site. Not affiliated with Nintendo, Game Freak or The Pokémon Company. Affiliate disclosure included.",
+  alternates: { canonical: "/disclaimer" },
 };
 
 export default function DisclaimerPage() {
