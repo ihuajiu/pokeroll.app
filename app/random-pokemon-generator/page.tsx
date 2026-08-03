@@ -42,7 +42,7 @@ export default async function RandomGeneratorPage({
 
   return (
     <main className="pt-4 pb-10">
-      <div className="mx-auto max-w-[1080px] px-6">
+      <div className="mx-auto max-w-[1080px] px-0 lg:px-6">
         <Breadcrumbs
           items={[{ label: "Home", href: "/" }, { label: "Random Pokémon" }]}
         />
@@ -53,7 +53,7 @@ export default async function RandomGeneratorPage({
         />
       </div>
       <RandomGenerator initial={initial} />
-      <div className="mx-auto max-w-[1080px] px-6">
+      <div className="mx-auto max-w-[1080px] px-0 lg:px-6">
         <FaqSection
           items={[
             {

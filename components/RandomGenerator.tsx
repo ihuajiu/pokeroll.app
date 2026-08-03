@@ -192,7 +192,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
   // gear icon; clicking expands the bar outward into a single row of five
   // selects, so the card never moves more than one row down.
   return (
-    <div className="mx-auto max-w-[1080px] px-6">
+    <div className="mx-auto max-w-[1080px] px-0 lg:px-6">
       <div className="mb-4 flex justify-center">
         <div
           className={`overflow-hidden transition-[width] duration-300 ${

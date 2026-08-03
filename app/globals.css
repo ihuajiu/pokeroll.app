@@ -687,10 +687,17 @@ body {
   padding: 22px;
   box-shadow: 0 22px 50px -22px rgba(20, 12, 48, 0.45), var(--shadow);
   animation: pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  scale: 0.88;
   transform-origin: top center;
   container-type: inline-size;
   transition: opacity 0.2s ease;
+}
+/* Prototype look: cards render at 88% of their layout box. Desktop only —
+   on narrow screens the shrink wastes scarce width and stretches the card
+   into a tall-skinny shape (measured 258px visual inside a 390px viewport). */
+@media (min-width: 1024px) {
+  .hero-card {
+    scale: 0.88;
+  }
 }
 /* Loading state (driven by the .is-loading class from HeroCard). */
 .hero-card.is-loading { opacity: 0.5; }
