@@ -2,25 +2,15 @@ import Link from "next/link";
 import { REGIONS, TYPES, GENS, titleCase } from "@/lib/seo";
 import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 
+import LogoMark from "./LogoMark";
+
 export default function Footer() {
   return (
     <footer className="foot">
       <div className="foot-grid">
         <div className="foot-brand">
           <div className="brand-name">
-            <svg className="ball" viewBox="0 0 100 100" aria-hidden="true">
-              <circle cx="50" cy="50" r="46" fill="currentColor" />
-              <path d="M4 50a46 46 0 0 1 92 0Z" fill="#fff" />
-              <rect x="2" y="45" width="96" height="10" fill="#1f2430" />
-              <circle cx="50" cy="50" r="15" fill="#fff" stroke="#1f2430" strokeWidth="7" />
-              <g fill="#1f2430">
-                <circle cx="44" cy="44" r="3.2" />
-                <circle cx="56" cy="44" r="3.2" />
-                <circle cx="50" cy="50" r="3.2" />
-                <circle cx="44" cy="56" r="3.2" />
-                <circle cx="56" cy="56" r="3.2" />
-              </g>
-            </svg>
+            <LogoMark className="ball" />
             <span>Poke<span className="red">Roll</span></span>
           </div>
           <p>

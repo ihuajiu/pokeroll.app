@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { TOOLS, TOOL_GROUPS, type ToolMeta } from "@/lib/tools";
 import { GroupIcon } from "./ToolIcons";
+import LogoMark from "./LogoMark";
 import ThemeToggle from "@/components/ThemeToggle";
 import TeamTray from "@/components/TeamTray";
 
@@ -39,19 +40,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
           href="/"
           className="brand"
         >
-          <svg className="ball" viewBox="0 0 100 100" aria-hidden="true">
-            <circle cx="50" cy="50" r="46" fill="currentColor" />
-            <path d="M4 50a46 46 0 0 1 92 0Z" fill="#fff" />
-            <rect x="2" y="45" width="96" height="10" fill="#1f2430" />
-            <circle cx="50" cy="50" r="15" fill="#fff" stroke="#1f2430" strokeWidth="7" />
-            <g fill="#1f2430">
-              <circle cx="44" cy="44" r="3.2" />
-              <circle cx="56" cy="44" r="3.2" />
-              <circle cx="50" cy="50" r="3.2" />
-              <circle cx="44" cy="56" r="3.2" />
-              <circle cx="56" cy="56" r="3.2" />
-            </g>
-          </svg>
+          <LogoMark className="ball" />
           <span>Poke<span className="red">Roll</span></span>
         </Link>
 
