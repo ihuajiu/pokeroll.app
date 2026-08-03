@@ -466,11 +466,11 @@ function findContentBottom(
 }
 
 /**
- * Webfont CSS for the capture, fetched ourselves. html-to-image's own font
- * pass reads document.styleSheets' cssRules, which throws a SecurityError
- * for the cross-origin Google Fonts <link> (noisy in the Next dev overlay).
- * Google Fonts serves CORS headers, so a plain fetch works and the fonts
- * still embed correctly.
+ * Webfont CSS for the capture. The site self-hosts fonts (same-origin
+ * @font-face in the app stylesheet), so html-to-image's own font pass can
+ * read them from document.styleSheets — this helper only needs to cover any
+ * future external stylesheet whose cssRules would throw a SecurityError.
+ * Returns "" when there is no external font stylesheet to inline.
  */
 let fontCssPromise: Promise<string> | null = null;
 function getFontEmbedCSS(): Promise<string> {
@@ -532,6 +532,18 @@ async function renderPokemonCardDom(
   clone.style.margin = "0";
   holder.appendChild(clone);
   el.parentElement?.appendChild(holder);
+  // The QR/brand band lives where the action bar sits. Locate it in the DOM
+  // instead of pixel-scanning for the "empty" area: in dark mode the card's
+  // own dark background reads as content everywhere, so the scan finds no
+  // empty band and the QR was silently skipped (dark-mode downloads lost the
+  // QR + brand). The clone is unzoomed, so rect math is safe here.
+  let actionsTopCss: number | null = null;
+  const actionsEl = clone.querySelector(".hero-actions");
+  if (actionsEl instanceof HTMLElement) {
+    actionsTopCss =
+      actionsEl.getBoundingClientRect().top -
+      clone.getBoundingClientRect().top;
+  }
   let shot: HTMLCanvasElement;
   try {
     shot = await toCanvas(clone, { pixelRatio: scale, fontEmbedCSS, filter });
@@ -562,7 +574,10 @@ async function renderPokemonCardDom(
   const b = findOpaqueBounds(shot);
   const cardW = b.right - b.left + 1;
   const cardH = b.bottom - b.top + 1;
-  const contentBottom = findContentBottom(shot, b) - b.top;
+  const contentBottom =
+    actionsTopCss != null
+      ? actionsTopCss * scale - b.top
+      : findContentBottom(shot, b) - b.top;
   canvas.width = cardW;
   canvas.height = cardH;
   const ctx = canvas.getContext("2d")!;
@@ -593,24 +608,34 @@ async function renderPokemonCardDom(
     ctx.restore();
     ctx.drawImage(qrImg, qx + 5 * u, qy + 5 * u, q - 10 * u, q - 10 * u);
 
-    // Brand block (left): domain + module, same info as the shiny card
+    // Brand block (left): domain + module, same info as the shiny card.
+    // Colors follow the captured card's theme — dark-mode cards need light
+    // text or the brand lines vanish into the background.
+    const isDarkCard =
+      document.documentElement.getAttribute("data-mode") === "dark";
     const lines: { text: string; font: string; color: string }[] = [
       {
         text: "PokeRoll.app",
         font: `800 ${15 * u}px Sora, Outfit, system-ui, sans-serif`,
-        color: "rgba(31, 36, 48, 0.92)",
+        color: isDarkCard
+          ? "rgba(255, 255, 255, 0.92)"
+          : "rgba(31, 36, 48, 0.92)",
       },
       {
         text: meta.module || "Random Pokémon Generator",
         font: `400 ${11.5 * u}px Outfit, system-ui, sans-serif`,
-        color: "rgba(31, 36, 48, 0.55)",
+        color: isDarkCard
+          ? "rgba(255, 255, 255, 0.55)"
+          : "rgba(31, 36, 48, 0.55)",
       },
     ];
     if (bandH >= 56 * u) {
       lines.push({
         text: "Scan to roll your own",
         font: `600 ${10 * u}px Outfit, system-ui, sans-serif`,
-        color: "rgba(31, 36, 48, 0.4)",
+        color: isDarkCard
+          ? "rgba(255, 255, 255, 0.4)"
+          : "rgba(31, 36, 48, 0.4)",
       });
     }
     const lineH = 15 * u;
