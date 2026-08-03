@@ -5,7 +5,7 @@ import HeroCard from "@/components/HeroCard";
 import { getRandomPokemon } from "@/lib/pokeapi";
 import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 
-const SPRITE = (id: number) => `/pokemon/artwork/${id}.png`;
+const SPRITE = (id: number) => `/pokemon/artwork/${id}.webp`;
 
 type JumpTool = {
   href: string;

@@ -3,6 +3,7 @@
 // Requires network access (only at fetch time). Runtime code never fetches.
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 
 const BASE = "https://pokeapi.co/api/v2";
 const OUT = path.join(process.cwd(), "data", "pokedex.json");
@@ -69,7 +70,12 @@ async function fetchImage(url, dest, retries = 3) {
       if (res.status === 404) return false; // not all forms have every image
       if (res.status === 429 || res.status >= 500) throw new Error("transient " + res.status);
       if (!res.ok) throw new Error("http " + res.status);
-      const buf = Buffer.from(await res.arrayBuffer());
+      let buf = Buffer.from(await res.arrayBuffer());
+      // Official art is mirrored as WebP (see convert-to-webp.mjs); the
+      // PokeAPI CDN serves PNG, so convert on the way in.
+      if (dest.endsWith(".webp")) {
+        buf = await sharp(buf).webp({ quality: 80 }).toBuffer();
+      }
       fs.writeFileSync(dest, buf);
       return true;
     } catch (e) {
@@ -111,9 +117,9 @@ async function getPokemon(idOrName) {
     region: GEN_REGION[gen] ?? "Unknown",
     // Local self-hosted images (downloaded below into public/pokemon/)
     sprite: `/pokemon/sprite/${p.id}.png`,
-    artwork: `/pokemon/artwork/${p.id}.png`,
+    artwork: `/pokemon/artwork/${p.id}.webp`,
     shinySprite: hasShiny ? `/pokemon/shiny/${p.id}.png` : undefined,
-    shinyArtwork: hasShiny ? `/pokemon/shiny-artwork/${p.id}.png` : undefined,
+    shinyArtwork: hasShiny ? `/pokemon/shiny-artwork/${p.id}.webp` : undefined,
     isLegendary: !!species?.is_legendary,
     isMythical: !!species?.is_mythical,
     // PokeAPI: height in decimetres, weight in hectograms -> store m / kg
@@ -194,7 +200,7 @@ async function main() {
     const id = p.dexNumber;
     imgTasks.push({
       url: `${IMG_BASE}/other/official-artwork/${id}.png`,
-      dest: path.join(PUBLIC_DIR, "artwork", `${id}.png`),
+      dest: path.join(PUBLIC_DIR, "artwork", `${id}.webp`),
     });
     imgTasks.push({
       url: `${IMG_BASE}/${id}.png`,
@@ -207,7 +213,7 @@ async function main() {
       });
       imgTasks.push({
         url: `${IMG_BASE}/other/official-artwork/shiny/${id}.png`,
-        dest: path.join(PUBLIC_DIR, "shiny-artwork", `${id}.png`),
+        dest: path.join(PUBLIC_DIR, "shiny-artwork", `${id}.webp`),
       });
     }
   }

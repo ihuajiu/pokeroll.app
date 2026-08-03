@@ -3,6 +3,7 @@
 // Same pattern as fetch-pokedex.mjs — network only at fetch time, runtime stays local.
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 
 const IMG_BASE =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny";
@@ -17,7 +18,11 @@ async function fetchImage(id, dest, retries = 3) {
       if (res.status === 404) return false; // not every mon has shiny official artwork
       if (res.status === 429 || res.status >= 500) throw new Error("transient " + res.status);
       if (!res.ok) throw new Error("http " + res.status);
-      const buf = Buffer.from(await res.arrayBuffer());
+      let buf = Buffer.from(await res.arrayBuffer());
+      // Mirrored as WebP (see convert-to-webp.mjs); CDN serves PNG.
+      if (dest.endsWith(".webp")) {
+        buf = await sharp(buf).webp({ quality: 80 }).toBuffer();
+      }
       fs.writeFileSync(dest, buf);
       return true;
     } catch (e) {
@@ -68,7 +73,7 @@ async function main() {
 
   const ok = new Set();
   await runPool(ids, 12, async (id) => {
-    const dest = path.join(PUBLIC_DIR, `${id}.png`);
+    const dest = path.join(PUBLIC_DIR, `${id}.webp`);
     if (fs.existsSync(dest)) {
       ok.add(id);
       return;
@@ -79,7 +84,7 @@ async function main() {
   let tagged = 0;
   for (const p of pokemon) {
     if (ok.has(p.dexNumber)) {
-      p.shinyArtwork = `/pokemon/shiny-artwork/${p.dexNumber}.png`;
+      p.shinyArtwork = `/pokemon/shiny-artwork/${p.dexNumber}.webp`;
       tagged++;
     } else {
       delete p.shinyArtwork;
