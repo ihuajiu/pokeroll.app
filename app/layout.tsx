@@ -3,6 +3,7 @@ import "./globals.css";
 import Link from "next/link";
 import Script from "next/script";
 import { headers } from "next/headers";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import SiteNav from "@/components/SiteNav";
 import Footer from "@/components/Footer";
 
@@ -60,6 +61,7 @@ export default async function RootLayout({
           {children}
         </div>
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );
