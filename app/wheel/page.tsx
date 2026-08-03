@@ -17,7 +17,6 @@ export const metadata: Metadata = {
     "random pokemon wheel",
     "pokemon spinner",
     "pokemon picker wheel",
-    "pokemon random wheel",
   ],
   alternates: { canonical: "/wheel" },
 };

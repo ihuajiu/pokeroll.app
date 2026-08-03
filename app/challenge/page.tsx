@@ -16,10 +16,8 @@ export const metadata: Metadata = {
     "Roll a random Pokémon challenge idea — Nuzlocke, Monotype, Wonder Locke and more, each with rules and a difficulty rating in one tap. Free fan-made tool.",
   keywords: [
     "pokemon challenge generator",
-    "random pokemon challenge generator",
     "pokemon challenge ideas",
     "pokemon nuzlocke generator",
-    "random nuzlocke challenge",
   ],
   alternates: { canonical: "/challenge" },
 };

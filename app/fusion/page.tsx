@@ -18,7 +18,6 @@ export const metadata: Metadata = {
     "random pokemon fusion generator",
     "pokemon fusion maker",
     "pokemon fusion creator",
-    "pokemon fusion randomizer",
   ],
   alternates: { canonical: "/fusion" },
 };
