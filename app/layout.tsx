@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
+import Script from "next/script";
 import { headers } from "next/headers";
 import SiteNav from "@/components/SiteNav";
 import Footer from "@/components/Footer";
@@ -48,6 +49,17 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-screen antialiased">
+        {/* Google Analytics 4 — loads after hydration so it never blocks first paint. */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-M74KET4Y45"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-M74KET4Y45');`}
+        </Script>
         <div className="bg-decor" aria-hidden="true">
           <div className="dots" />
           <div className="scan" />
