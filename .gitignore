@@ -6,7 +6,10 @@ node_modules/
 *.log
 *.err
 .playwright-cli/
-browse-cards*.png
 *.orig.*
-data/pokedex.json
+# 临时输出与根目录截图（不进库)
+err.txt
+out.txt
+/*.png
+# 新增宝可梦图不进库(已有 3217 张在库);数据文件 data/pokedex.json 必须入库——运行时在仓库内读它
 public/pokemon/
