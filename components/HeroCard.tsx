@@ -6,7 +6,6 @@ import { TYPE_HEX } from "@/lib/typeColors";
 import {
   downloadPokemonCard,
   sharePokemonLink,
-  type PokemonCardStyle,
 } from "@/lib/shareCard";
 
 const STAT_ROWS: { key: keyof Pokemon["stats"]; label: string }[] = [
@@ -80,7 +79,6 @@ export default function HeroCard({
   const [shareDone, setShareDone] = useState<"shared" | "copied" | null>(null);
   const [dlDone, setDlDone] = useState(false);
   const [popOpen, setPopOpen] = useState(false);
-  const [cardStyle, setCardStyle] = useState<PokemonCardStyle>("classic");
   /** Root card element — captured as the classic-style download image. */
   const cardRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
@@ -177,7 +175,7 @@ export default function HeroCard({
 
   async function handleDownload() {
     if (!cardRef.current) return;
-    const ok = await downloadPokemonCard(cardStyle, cardRef.current, cardData());
+    const ok = await downloadPokemonCard(cardRef.current, cardData());
     if (ok) {
       setDlDone(true);
       setTimeout(() => setDlDone(false), 1800);
@@ -355,23 +353,6 @@ export default function HeroCard({
 
               {popOpen ? (
                 <div className="share-pop" ref={popRef}>
-                  <div className="share-pop-label">Card style</div>
-                  <div className="share-pop-styles">
-                    <button
-                      type="button"
-                      className={`style-chip${cardStyle === "classic" ? " is-on" : ""}`}
-                      onClick={() => setCardStyle("classic")}
-                    >
-                      Classic
-                    </button>
-                    <button
-                      type="button"
-                      className={`style-chip${cardStyle === "tcg" ? " is-on" : ""}`}
-                      onClick={() => setCardStyle("tcg")}
-                    >
-                      TCG
-                    </button>
-                  </div>
                   <div className="share-pop-actions">
                     <button type="button" className="act" onClick={handleShareLink}>
                       {shareDone === "shared"

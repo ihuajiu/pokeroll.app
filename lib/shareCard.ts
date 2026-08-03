@@ -3,7 +3,6 @@
 // bottom-right encodes the reproducible link, so anyone scanning it lands
 // on this exact result. Same-origin local artwork keeps the canvas untainted.
 import QRCode from "qrcode";
-import { TYPE_HEX } from "@/lib/typeColors";
 
 export interface ShinyCardData {
   name: string;
@@ -367,7 +366,7 @@ export interface PokemonCardMeta {
   module?: string;
 }
 
-/** Full payload for the canvas-drawn TCG style. */
+/** Full payload for the Pokémon share/download card. */
 export interface PokemonCardData extends PokemonCardMeta {
   dex: number;
   types: string[];
@@ -387,9 +386,6 @@ export interface PokemonCardData extends PokemonCardMeta {
   height?: number; // metres
   weight?: number; // kilograms
 }
-
-/** "classic" snapshots the on-page card; "tcg" draws the dark TCG card. */
-export type PokemonCardStyle = "classic" | "tcg";
 
 /** Bounds of the solid content in a canvas (0-based, inclusive).
  *  Semi-transparent pixels (drop shadows, glows) are ignored. */
@@ -636,201 +632,25 @@ async function renderPokemonCardDom(
   );
 }
 
-// Pokémon-style per-stat colors (same palette as HeroCard's stat bars).
-const STAT_META: { key: keyof PokemonCardData["stats"]; label: string; color: string }[] = [
-  { key: "hp", label: "HP", color: "#78C850" },
-  { key: "atk", label: "ATK", color: "#F08030" },
-  { key: "def", label: "DEF", color: "#6890F0" },
-  { key: "spa", label: "SPA", color: "#A040A0" },
-  { key: "spd", label: "SPD", color: "#98D8D8" },
-  { key: "spe", label: "SPE", color: "#F8D030" },
-];
-
-/** TCG style: draws the dark foil card to a PNG blob. The canvas is the card
- *  itself — 3:4 (1080×1440), transparent outside the rounded corners. */
-async function renderPokemonCardTcg(data: PokemonCardData): Promise<Blob> {
-  await document.fonts?.ready.catch(() => undefined);
-  const TW = 1080;
-  const TH = 1440; // 3:4
-  const R = 48; // corner radius — outside this path stays transparent
-  const canvas = document.createElement("canvas");
-  canvas.width = TW;
-  canvas.height = TH;
-  const ctx = canvas.getContext("2d")!;
-  const tc = TYPE_HEX[data.types[0]] ?? TYPE_HEX.normal;
-
-  // Clip everything to the card's rounded silhouette
-  ctx.save();
-  roundRect(ctx, 0, 0, TW, TH, R);
-  ctx.clip();
-
-  // Dark card backdrop
-  ctx.fillStyle = "#14161f";
-  ctx.fillRect(0, 0, TW, TH);
-  const top = ctx.createRadialGradient(TW / 2, 0, 80, TW / 2, TH * 0.35, TH * 0.95);
-  top.addColorStop(0, "#1b1e2b");
-  top.addColorStop(1, "rgba(27, 30, 43, 0)");
-  ctx.fillStyle = top;
-  ctx.fillRect(0, 0, TW, TH);
-
-  // Foil sheen band
-  ctx.save();
-  ctx.globalCompositeOperation = "screen";
-  const sheen = ctx.createLinearGradient(0, 0, TW, TH);
-  sheen.addColorStop(0.15, "rgba(0, 0, 0, 0)");
-  sheen.addColorStop(0.35, "rgba(94, 234, 212, 0.10)");
-  sheen.addColorStop(0.48, "rgba(129, 140, 248, 0.12)");
-  sheen.addColorStop(0.58, "rgba(240, 171, 252, 0.12)");
-  sheen.addColorStop(0.7, "rgba(253, 230, 138, 0.10)");
-  sheen.addColorStop(0.85, "rgba(0, 0, 0, 0)");
-  ctx.fillStyle = sheen;
-  ctx.fillRect(0, 0, TW, TH);
-  ctx.restore();
-
-  // Card head: dex number (left) + type pills (right, type-colored)
-  const tag = `#${String(data.dex).padStart(4, "0")}`;
-  ctx.textAlign = "left";
-  ctx.font = fitFont(ctx, tag, 800, 30, 260);
-  if ("letterSpacing" in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = "8px";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
-  ctx.fillText(tag, 84, 110);
-  if ("letterSpacing" in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = "0px";
-
-  const pillTexts = data.types.map(
-    (t) => t.charAt(0).toUpperCase() + t.slice(1),
-  );
-  ctx.textAlign = "center";
-  let right = TW - 84;
-  for (let i = pillTexts.length - 1; i >= 0; i--) {
-    const t = pillTexts[i];
-    const font = fitFont(ctx, t, 700, 24, 200, 14);
-    ctx.font = font;
-    const w = ctx.measureText(t).width + 48;
-    const x = right - w;
-    roundRect(ctx, x, 76, w, 52, 26);
-    ctx.fillStyle = TYPE_HEX[data.types[i]] ?? TYPE_HEX.normal;
-    ctx.fill();
-    ctx.fillStyle = "#ffffff";
-    ctx.fillText(t, x + w / 2, 110);
-    right = x - 14;
-  }
-
-  // Type-colored halo behind the artwork
-  const halo = ctx.createRadialGradient(TW / 2, 580, 30, TW / 2, 580, 420);
-  halo.addColorStop(0, `${tc}59`); // ~35% alpha
-  halo.addColorStop(1, "rgba(0, 0, 0, 0)");
-  ctx.fillStyle = halo;
-  ctx.fillRect(80, 60, TW - 160, 980);
-
-  // Artwork with a type-colored drop shadow
-  const img = await loadImage(data.img);
-  const s = 470;
-  ctx.save();
-  ctx.shadowColor = `${tc}8c`; // ~55% alpha
-  ctx.shadowBlur = 42;
-  ctx.drawImage(img, TW / 2 - s / 2, 580 - s / 2, s, s);
-  ctx.restore();
-
-  // Title
-  ctx.font = fitFont(ctx, data.name, 800, 78, TW - 200);
-  ctx.fillStyle = "#ffffff";
-  ctx.fillText(data.name, TW / 2, 930);
-
-  // Subtitle: BST · Region · Gen · Height · Weight
-  const region =
-    data.region.charAt(0).toUpperCase() + data.region.slice(1);
-  const subParts = [`BST ${data.bst}`, region, `Gen ${data.generation}`];
-  if (data.height != null) subParts.push(`${data.height} m`);
-  if (data.weight != null) subParts.push(`${data.weight} kg`);
-  const sub = subParts.join(" · ");
-  ctx.font = fitFont(ctx, sub, 400, 32, TW - 200);
-  ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
-  ctx.fillText(sub, TW / 2, 990);
-
-  // Mini stat row (kept clear of the QR box on the right)
-  const statLeft = 92;
-  const statRight = TW - 92 - 216 - 40;
-  const colW = (statRight - statLeft) / STAT_META.length;
-  STAT_META.forEach(({ key, label, color }, i) => {
-    const cx = statLeft + colW * i + colW / 2;
-    ctx.textAlign = "center";
-    ctx.font = "700 20px Outfit, system-ui, sans-serif";
-    ctx.fillStyle = color;
-    ctx.fillText(label, cx, 1076);
-    ctx.font = "800 34px Sora, Outfit, system-ui, sans-serif";
-    ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-    ctx.fillText(String(data.stats[key]), cx, 1122);
-  });
-
-  // Footer brand (left)
-  ctx.textAlign = "left";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-  ctx.font = "800 40px Sora, Outfit, system-ui, sans-serif";
-  ctx.fillText("PokeRoll.app", 92, TH - 108);
-  ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
-  ctx.font = "400 30px Outfit, system-ui, sans-serif";
-  ctx.fillText(data.module || "Random Pokémon Generator", 92, TH - 66);
-
-  // QR (bottom-right) with caption
-  const qr = await QRCode.toDataURL(data.url, {
-    margin: 1,
-    width: 180,
-    color: { dark: "#1f2430", light: "#ffffff" },
-  });
-  const qrImg = await loadImage(qr);
-  const bx = TW - 92 - 216;
-  const by = TH - 92 - 256;
-  roundRect(ctx, bx, by, 216, 256, 24);
-  ctx.fillStyle = "#ffffff";
-  ctx.fill();
-  ctx.strokeStyle = "rgba(31, 36, 48, 0.14)";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.drawImage(qrImg, bx + 18, by + 18, 180, 180);
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#6b7280";
-  ctx.font = "600 17px Outfit, system-ui, sans-serif";
-  ctx.fillText("Scan to roll your own", bx + 108, by + 228);
-
-  ctx.restore(); // un-clip
-
-  // Holo foil border along the card edge (drawn last, on top)
-  roundRect(ctx, 3, 3, TW - 6, TH - 6, R - 3);
-  ctx.strokeStyle = holoGradient(ctx, 0, 0, TW, TH);
-  ctx.lineWidth = 6;
-  ctx.stroke();
-
-  return new Promise((resolve, reject) =>
-    canvas.toBlob(
-      (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
-      "image/png",
-    ),
-  );
-}
-
-/** Renders the chosen style to a PNG blob. */
+/** Renders the card to a PNG blob. */
 export async function renderPokemonCard(
-  style: PokemonCardStyle,
   el: HTMLElement,
   data: PokemonCardData,
 ): Promise<Blob> {
-  return style === "tcg"
-    ? renderPokemonCardTcg(data)
-    : renderPokemonCardDom(el, data);
+  return renderPokemonCardDom(el, data);
 }
 
 function pokemonFileName(name: string): string {
   return `pokemon-${name.toLowerCase().replace(/\s+/g, "-")}.png`;
 }
 
-/** Renders the card in the chosen style and downloads the PNG straight away. */
+/** Renders the card and downloads the PNG straight away. */
 export async function downloadPokemonCard(
-  style: PokemonCardStyle,
   el: HTMLElement,
   data: PokemonCardData,
 ): Promise<boolean> {
   try {
-    const blob = await renderPokemonCard(style, el, data);
+    const blob = await renderPokemonCard(el, data);
     downloadBlob(blob, pokemonFileName(data.name));
     return true;
   } catch {
