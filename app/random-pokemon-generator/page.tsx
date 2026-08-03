@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import RandomGenerator from "@/components/RandomGenerator";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
-import SeoNav from "@/components/SeoNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPokemonById, getRandomPokemon } from "@/lib/pokeapi";
@@ -76,7 +75,6 @@ export default async function RandomGeneratorPage({
           ]}
         />
         <RelatedTools current="/random-pokemon-generator" />
-        <SeoNav />
       </div>
     </main>
   );

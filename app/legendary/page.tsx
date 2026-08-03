@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import FilteredGenerator from "@/components/FilteredGenerator";
-import SeoNav from "@/components/SeoNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getAllPokemon, getRandomPokemon } from "@/lib/pokeapi";
@@ -39,7 +38,6 @@ export default async function LegendaryPage() {
         description="Only Legendary Pokémon in this pool — tap Generate Again for another legendary roll."
       />
       <FilteredGenerator query="legendary=1" initial={initial} />
-      <SeoNav />
     </main>
   );
 }

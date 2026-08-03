@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import RelatedTools from "@/components/RelatedTools";
-import SeoNav from "@/components/SeoNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByGeneration, getRandomPokemon } from "@/lib/pokeapi";
@@ -79,7 +78,6 @@ export default async function GenPage({
       </p>
       <FilteredGenerator query={`gen=${gen}`} initial={initial} />
       <RelatedTools hrefs={["/random-pokemon-generator", "/starter", "/type", "/adventure"]} />
-      <SeoNav current={{ type: "gen", value: String(gen) }} />
     </main>
   );
 }

@@ -17,7 +17,7 @@ export default function FaqSection({ items }: { items: Faq[] }) {
   };
 
   return (
-    <section className="mt-10 max-w-2xl">
+    <section className="mt-10">
       <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
         FAQ
       </h2>

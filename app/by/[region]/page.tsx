@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import RelatedTools from "@/components/RelatedTools";
-import SeoNav from "@/components/SeoNav";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByRegion, getRandomPokemon } from "@/lib/pokeapi";
@@ -73,7 +72,6 @@ export default async function RegionPage({
       </p>
       <FilteredGenerator query={`region=${region}`} initial={initial} />
       <RelatedTools hrefs={["/random-pokemon-generator", "/type", "/team/random", "/adventure"]} />
-      <SeoNav current={{ type: "region", value: region }} />
     </main>
   );
 }
