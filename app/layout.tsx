@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import Script from "next/script";
-import { headers } from "next/headers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import SiteNav from "@/components/SiteNav";
 import Footer from "@/components/Footer";
@@ -27,12 +26,24 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const headersList = await headers();
-  const currentPath = headersList.get("x-invoke-path") || "";
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* 预加载首屏两个字体,避免 swap 造成的布局偏移(CLS) */}
+        <link
+          rel="preload"
+          href="/fonts/outfit-var.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/sora-var.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var s=JSON.parse(localStorage.getItem('pokefield-theme')||'{}');var mode=s.mode||'light';var skin=s.skin||'versus';var el=document.documentElement;el.setAttribute('data-mode',mode);el.setAttribute('data-skin',skin);el.classList.toggle('dark',mode==='dark');}catch(e){}})();`,
@@ -55,7 +66,7 @@ export default async function RootLayout({
           <div className="dots" />
           <div className="scan" />
         </div>
-        <SiteNav currentPath={currentPath} />
+        <SiteNav />
 
         <div className="mx-auto max-w-[1240px] px-6 pb-10">
           {children}

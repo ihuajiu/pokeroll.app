@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+// ISR:首页从 CDN 缓存直接返回(TTFB 从 ~2.25s 降到 ~100ms),
+// 每小时重新生成一次,Hero 展示卡随之换一只。
+export const revalidate = 3600;
+
 export default function Page() {
   return (
     <main className="pt-1 pb-10">
