@@ -3,6 +3,39 @@
 @tailwind utilities;
 
 /* ============================================================
+   Self-hosted fonts (public/fonts) — 不依赖 Google Fonts CDN,
+   任何网络环境下都能加载。Outfit / Sora 为可变字体。
+   ============================================================ */
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/outfit-var.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Sora";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/sora-var.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/space-mono-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/space-mono-700.woff2") format("woff2");
+}
+
+/* ============================================================
    PokeField theme (prototype: home-field-guide.html)
    Brand: red + orange. Each card carries a --cc type color that
    drives its glow, badge and stat fills.
