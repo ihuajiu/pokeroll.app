@@ -51,7 +51,7 @@ export default async function RegionPage({
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Random Pokémon", href: "/random" },
+          { label: "Random Pokémon", href: "/random-pokemon-generator" },
           { label: `${r} Pokémon` },
         ]}
       />
@@ -66,13 +66,13 @@ export default async function RegionPage({
         </Link>
         {game ? ` and the games Pokémon ${game}` : ""}. Roll one above, or try
         the{" "}
-        <Link className={linkCls} href="/random">
+        <Link className={linkCls} href="/random-pokemon-generator">
           fully random generator
         </Link>{" "}
         instead.
       </p>
       <FilteredGenerator query={`region=${region}`} initial={initial} />
-      <RelatedTools hrefs={["/random", "/type", "/team/random", "/adventure"]} />
+      <RelatedTools hrefs={["/random-pokemon-generator", "/type", "/team/random", "/adventure"]} />
       <SeoNav current={{ type: "region", value: region }} />
     </main>
   );

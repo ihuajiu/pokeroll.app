@@ -29,7 +29,7 @@ const JUMP_TOOLS: JumpTool[] = [
     icon: <SvgIcon><path d="M5 8h14M5 12h14M5 16h8" /></SvgIcon>,
   },
   {
-    href: "/random", label: "Random Generator", desc: "Summon a random Pokémon with full stats & artwork.",
+    href: "/random-pokemon-generator", label: "Random Generator", desc: "Summon a random Pokémon with full stats & artwork.",
     color: "#16c79a", p: 25, count: "DEX",
     icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
   },
@@ -66,7 +66,7 @@ const GROUP_COLOR: Record<string, string> = {
 // Decorative sprite per tool (dex number) — display-layer data, kept out of
 // lib/tools.ts so the catalog stays purely navigational.
 const TOOL_SPRITE: Record<string, number> = {
-  "/random": 25,
+  "/random-pokemon-generator": 25,
   "/type": 37,
   "/ability": 132,
   "/move": 143,

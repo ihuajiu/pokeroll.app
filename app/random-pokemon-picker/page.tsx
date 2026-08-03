@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "random pokemon generator",
     "pick a random pokemon",
   ],
-  alternates: { canonical: "/random" },
+  alternates: { canonical: "/random-pokemon-generator" },
 };
 
-export { default } from "../random/page";
+export { default } from "../random-pokemon-generator/page";

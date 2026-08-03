@@ -26,7 +26,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages = [
     `${BASE}/`,
-    `${BASE}/random`,
     `${BASE}/random-pokemon-generator`,
     `${BASE}/adventure`,
     `${BASE}/team`,

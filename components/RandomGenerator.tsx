@@ -83,7 +83,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
       const next: Pokemon = await res.json();
       setPokemon(next);
       // Keep the URL in sync so the Share button copies a reproducible link.
-      window.history.replaceState(null, "", `/random?p=${next.name}`);
+      window.history.replaceState(null, "", `/random-pokemon-generator?p=${next.name}`);
     } catch {
       // keep previous result on failure
     } finally {

@@ -17,7 +17,7 @@ const MAIN: {
   dropdownGroup?: ToolMeta["group"];
 }[] = [
   { href: "/adventure", label: "Adventure" },
-  { href: "/random", label: "Generators" },
+  { href: "/random-pokemon-generator", label: "Generators" },
   { href: "/team/random", label: "Team" },
   { href: "/challenge/guess", label: "Challenges", dropdownGroup: "challenge" },
   { href: "/fusion", label: "Tools", dropdownGroup: "tool" },

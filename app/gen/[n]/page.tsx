@@ -47,7 +47,7 @@ export default async function GenPage({
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Random Pokémon", href: "/random" },
+          { label: "Random Pokémon", href: "/random-pokemon-generator" },
           { label: `Generation ${gen}` },
         ]}
       />
@@ -72,13 +72,13 @@ export default async function GenPage({
           type
         </Link>
         , or go{" "}
-        <Link className={linkCls} href="/random">
+        <Link className={linkCls} href="/random-pokemon-generator">
           fully random
         </Link>
         .
       </p>
       <FilteredGenerator query={`gen=${gen}`} initial={initial} />
-      <RelatedTools hrefs={["/random", "/starter", "/type", "/adventure"]} />
+      <RelatedTools hrefs={["/random-pokemon-generator", "/starter", "/type", "/adventure"]} />
       <SeoNav current={{ type: "gen", value: String(gen) }} />
     </main>
   );

@@ -48,7 +48,7 @@ export default async function TypePage({
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Random Pokémon", href: "/random" },
+          { label: "Random Pokémon", href: "/random-pokemon-generator" },
           { label: `${t}-type Pokémon` },
         ]}
       />
@@ -70,13 +70,13 @@ export default async function TypePage({
           Type Generator
         </Link>
         , or go{" "}
-        <Link className={linkCls} href="/random">
+        <Link className={linkCls} href="/random-pokemon-generator">
           fully random
         </Link>
         .
       </p>
       <FilteredGenerator query={`type=${type}`} initial={initial} />
-      <RelatedTools hrefs={["/type", "/random", "/starter", "/legendary"]} />
+      <RelatedTools hrefs={["/type", "/random-pokemon-generator", "/starter", "/legendary"]} />
       <SeoNav current={{ type: "type", value: type }} />
     </main>
   );
