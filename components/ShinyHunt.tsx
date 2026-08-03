@@ -314,8 +314,10 @@ export default function ShinyHunt({
 
   /* ---------------- Hunting: light theme card ---------------- */
   return (
-    <div className="mx-auto max-w-[680px]">
-      <div className="relative overflow-hidden rounded-3xl border border-poke-border bg-poke-surface shadow-panel">
+    <div className="mx-auto w-full max-w-[480px]">
+      {/* 3:4 as a floor (matches the generator cards): on narrow screens the
+          content simply grows past it, so nothing ever clips. */}
+      <div className="relative flex aspect-[3/4] flex-col overflow-hidden rounded-3xl border border-poke-border bg-poke-surface shadow-panel">
         {/* Ambient wash: brand spotlight while hunting */}
         <div
           aria-hidden="true"
@@ -363,8 +365,9 @@ export default function ShinyHunt({
           />
         </div>
 
-        {/* Stage */}
-        <div className="relative flex min-h-[400px] flex-col items-center justify-center px-8 pb-9 pt-8 text-center">
+        {/* Stage — flex-1 absorbs the 3:4 floor's spare height, keeping the
+            artwork and the Encounter button vertically centered. */}
+        <div className="relative flex min-h-[400px] flex-1 flex-col items-center justify-center px-8 pb-9 pt-8 text-center">
           {/* Spotlight rings behind the artwork */}
           <div
             aria-hidden="true"

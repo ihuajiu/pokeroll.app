@@ -26,6 +26,12 @@ export default function Footer() {
           <p>
             Roll a random Pokémon — names, types, stats and shinies in one tap.
           </p>
+          <a
+            className="foot-contact"
+            href="mailto:smith.chou.2023@gmail.com?subject=PokeRoll%20Feedback"
+          >
+            ✉ Contact Us — send your feedback
+          </a>
         </div>
         {TOOL_GROUPS.map((g) => {
           const links = TOOLS.filter((t) => t.group === g.id);

@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import HeroAdventureTeaser from "@/components/HeroAdventureTeaser";
+import HeroCard from "@/components/HeroCard";
+import { getRandomPokemon } from "@/lib/pokeapi";
 import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
 
 const SPRITE = (id: number) => `/pokemon/artwork/${id}.png`;
@@ -24,14 +25,14 @@ const SvgIcon = ({ children }: { children: React.ReactNode }) => (
 
 const JUMP_TOOLS: JumpTool[] = [
   {
-    href: "/adventure", label: "Adventure Mode", desc: "Roll a full Pokémon adventure — trainer, starter, team, challenge & goal.",
-    color: "#ee3b3b", p: 4, count: "MAIN",
-    icon: <SvgIcon><path d="M5 8h14M5 12h14M5 16h8" /></SvgIcon>,
+    href: "/random-pokemon-generator", label: "Random Generator", desc: "Summon a random Pokémon with full stats & artwork.",
+    color: "#16c79a", p: 25, count: "MAIN",
+    icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
   },
   {
-    href: "/random-pokemon-generator", label: "Random Generator", desc: "Summon a random Pokémon with full stats & artwork.",
-    color: "#16c79a", p: 25, count: "DEX",
-    icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
+    href: "/adventure", label: "Adventure Mode", desc: "Roll a full Pokémon adventure — trainer, starter, team, challenge & goal.",
+    color: "#ee3b3b", p: 4, count: "ADV",
+    icon: <SvgIcon><path d="M5 8h14M5 12h14M5 16h8" /></SvgIcon>,
   },
   {
     href: "/team/random", label: "Random Team", desc: "Roll a ready-made squad of six random Pokémon.",
@@ -49,8 +50,8 @@ const JUMP_TOOLS: JumpTool[] = [
     icon: <SvgIcon><path d="M12 2l2.4 5 5.6.8-4 4 1 5.6L12 20l-5 2.4 1-5.6-4-4 5.6-.8z" /></SvgIcon>,
   },
   {
-    href: "/no-names", label: "No Names", desc: "Hide the name, guess from its artwork & types.",
-    color: "#8b5cf6", p: 492, count: "GUESS",
+    href: "/challenge/guess", label: "Guess the Pokémon", desc: "Names hidden — guess from the silhouette, reveal to check.",
+    color: "#8b5cf6", p: 68, count: "GUESS",
     icon: <SvgIcon><path d="M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4" /><circle cx="12" cy="18" r="1" fill="currentColor" /></SvgIcon>,
   },
 ];
@@ -87,26 +88,30 @@ const TOOL_SPRITE: Record<string, number> = {
 };
 
 export default async function Home() {
+  // Build-time random showcase card — visitors can re-roll it client-side
+  // right in the hero (writes ?p= so the pull is shareable).
+  const initial = await getRandomPokemon();
   return (
     <>
       {/* Hero */}
       <section className="relative pt-10">
         <div className="grid items-center gap-10 xl:grid-cols-2">
           <div className="hero-copy">
-            <span className="eyebrow">Random Adventure Platform</span>
+            <span className="eyebrow">Random Pokémon Generator &amp; Tools</span>
             <h1 className="font-display font-extrabold">
-              Roll Your Pokémon <span className="accent">Adventure</span>.
+              Random Pokémon <span className="accent">Generator</span>.
             </h1>
             <p className="lead">
-              One tap rolls your trainer, region, starter, team, challenge and
-              goal — a full Pokémon adventure, every time you roll.
+              Roll a random Pokémon in one tap — 1,000+ species with full
+              stats and artwork. Or roll a random Pokémon team, a challenge
+              run, even a full Pokémon adventure. Free, instant and shareable.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/adventure" className="btn-primary">
-                Roll Adventure
+              <Link href="/random-pokemon-generator" className="btn-primary">
+                Roll a Pokémon
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </Link>
-              <a href="#tools" className="btn-ghost">Explore Tools</a>
+              <Link href="/adventure" className="btn-ghost">Roll Adventure</Link>
             </div>
             <div className="hero-meta">
               <div>
@@ -142,7 +147,7 @@ export default async function Home() {
                   <circle cx="50" cy="50" r="6" fill="currentColor" />
                 </svg>
               </div>
-              <HeroAdventureTeaser />
+              <HeroCard pokemon={initial} variant="wide" />
             </div>
           </div>
         </div>
