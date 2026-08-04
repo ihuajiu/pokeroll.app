@@ -39,7 +39,7 @@ const REGION_TO_GEN: Record<string, string> = Object.fromEntries(
 const selectCls =
   "rounded-lg border border-poke-border bg-white px-2 py-1.5 text-sm text-poke-ink focus:border-poke-red focus:outline-none";
 const labelCls =
-  "flex w-full flex-col gap-1 text-xs font-semibold text-poke-dim lg:w-28";
+  "flex w-full flex-col gap-1 text-xs font-semibold text-poke-dim lg:w-[104px]";
 
 /**
  * The /random generator: one-tap roll by default, with a collapsible
