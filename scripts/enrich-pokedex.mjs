@@ -135,7 +135,7 @@ function fallbackDesc(p) {
 
 function formInfo(name) {
   if (/^gigantamax-/.test(name)) return { form: "gigantamax" };
-  const reg = name.match(/-(alola|galar|hisui)$/);
+  const reg = name.match(/-(alola|galar|hisui)(?:-(standard|zen))?$/);
   if (reg) {
     return { form: reg[1] === "alola" ? "alolan" : reg[1] === "galar" ? "galarian" : "hisuian" };
   }
@@ -158,7 +158,7 @@ function displayNameFor(name, form) {
     return `Paldean ${toTitle(base)}${variant ? " (" + toTitle(variant) + ")" : ""}`;
   }
   const label = form === "alolan" ? "Alolan" : form === "galarian" ? "Galarian" : "Hisuian";
-  const base = name.replace(/-(alola|galar|hisui)$/, "");
+  const base = name.replace(/-(alola|galar|hisui)(?:-(standard|zen))?$/, "");
   return `${label} ${toTitle(base)}`;
 }
 
