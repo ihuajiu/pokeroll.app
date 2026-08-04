@@ -149,15 +149,15 @@ export default function ShinyHunt({
   /* ---------------- Found: dark TCG foil card ---------------- */
   if (found) {
     return (
-      <div className="mx-auto max-w-[680px]">
+      <div className="mx-auto w-full max-w-[480px]">
         <div
           ref={cardRef}
           onPointerMove={onPointerMove}
           onPointerLeave={onPointerLeave}
-          className="tcg-card overflow-hidden rounded-[26px]"
+          className="tcg-card flex aspect-[3/4] flex-col overflow-hidden rounded-[26px]"
         >
           {/* Card head: SHINY tag + difficulty/odds chips */}
-          <div className="relative flex items-center justify-between gap-3 px-7 pt-6">
+          <div className="relative flex items-center justify-between gap-3 px-6 pt-4">
             <span className="tcg-gold-text inline-flex items-center gap-2 text-sm font-extrabold tracking-[0.28em]">
               ✦ SHINY
             </span>
@@ -175,14 +175,14 @@ export default function ShinyHunt({
           </div>
 
           {/* HUD: counter + full gold bar */}
-          <div className="relative px-7 pt-4">
+          <div className="relative px-6 pt-3">
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/45">
               Encounters
             </div>
-            <div className="mt-0.5 font-display text-4xl font-extrabold tabular-nums leading-none text-white">
+            <div className="mt-0.5 font-display text-3xl font-extrabold tabular-nums leading-none text-white">
               {count.toLocaleString()}
             </div>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
+            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
               <div
                 className="h-full rounded-full"
                 style={{
@@ -194,10 +194,10 @@ export default function ShinyHunt({
           </div>
 
           {/* Stage */}
-          <div className="relative grid min-h-[380px] place-items-center px-6 pb-2 pt-4">
+          <div className="relative grid min-h-[210px] flex-1 place-items-center px-6 pb-1 pt-2 sm:min-h-[280px]">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 animate-[tcg-breathe-gold_3.2s_ease-in-out_infinite] rounded-full"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[210px] w-[210px] -translate-x-1/2 -translate-y-1/2 animate-[tcg-breathe-gold_3.2s_ease-in-out_infinite] sm:h-[320px] sm:w-[320px] rounded-full"
               style={{
                 background:
                   "radial-gradient(circle, rgba(250, 204, 21, 0.30), transparent 65%)",
@@ -205,12 +205,12 @@ export default function ShinyHunt({
             />
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/20"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/20 sm:h-[280px] sm:w-[280px]"
             />
             <img
               src={shinyImg}
               alt={`Shiny ${target.displayName}`}
-              className="relative h-[300px] w-[300px] animate-[tcg-float_3.6s_ease-in-out_infinite] object-contain drop-shadow-[0_0_34px_rgba(250,204,21,0.55)]"
+              className="relative h-44 w-44 animate-[tcg-float_3.6s_ease-in-out_infinite] object-contain drop-shadow-[0_0_34px_rgba(250,204,21,0.55)] sm:h-[260px] sm:w-[260px]"
             />
             {/* Ambient twinkles */}
             {SPARKLES.map((s, i) => (
@@ -242,11 +242,11 @@ export default function ShinyHunt({
           </div>
 
           {/* Info */}
-          <div className="relative px-8 pb-2 text-center">
-            <div className="tcg-gold-text font-display text-[42px] font-extrabold leading-tight">
+          <div className="relative px-6 pb-1 text-center">
+            <div className="tcg-gold-text font-display text-2xl font-extrabold leading-tight sm:text-[32px]">
               Shiny {target.displayName}
             </div>
-            <p className="mt-2 text-[15px] text-white/60">
+            <p className="mt-1.5 text-sm text-white/60">
               Found after{" "}
               <strong className="font-bold text-amber-200">
                 {encounters.toLocaleString()} encounters
@@ -255,22 +255,102 @@ export default function ShinyHunt({
             </p>
           </div>
 
-          {/* Actions */}
-          <div className="relative flex flex-wrap items-center justify-center gap-3 px-7 pb-8 pt-5">
-            <button
-              onClick={async () => {
-                setImgBusy(true);
-                const how = await shareShinyCard(buildCardData());
-                setImgBusy(false);
-                if (how) {
-                  setShareDone(how);
-                  setTimeout(() => setShareDone(null), 1800);
-                }
-              }}
-              disabled={imgBusy}
-              className="inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-3.5 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95 disabled:opacity-60"
+          {/* Actions: icon buttons */}
+          <div className="relative flex flex-col items-center px-6 pb-5 pt-3">
+            <div className="flex flex-wrap items-center justify-center gap-2.5">
+              <button
+                onClick={async () => {
+                  setImgBusy(true);
+                  const how = await shareShinyCard(buildCardData());
+                  setImgBusy(false);
+                  if (how) {
+                    setShareDone(how);
+                    setTimeout(() => setShareDone(null), 1800);
+                  }
+                }}
+                disabled={imgBusy}
+                aria-label="Share your shiny"
+                title="Share your shiny"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-poke-btn text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95 disabled:opacity-60"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+                  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+                </svg>
+              </button>
+              <button
+                onClick={async () => {
+                  setImgBusy(true);
+                  const ok = await downloadShinyCard(buildCardData());
+                  setImgBusy(false);
+                  if (ok) {
+                    setDlDone(true);
+                    setTimeout(() => setDlDone(false), 1800);
+                  }
+                }}
+                disabled={imgBusy}
+                aria-label="Download card"
+                title="Download card"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white/85 transition hover:border-amber-300 hover:text-amber-300 active:scale-95 disabled:opacity-60"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+              </button>
+              {onNewHunt && (
+                <button
+                  onClick={onNewHunt}
+                  aria-label="Start your own hunt"
+                  title="Start your own hunt"
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white/85 transition hover:border-amber-300 hover:text-amber-300 active:scale-95"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="4" />
+                    <g fill="currentColor" stroke="none">
+                      <circle cx="8.5" cy="8.5" r="1.3" />
+                      <circle cx="15.5" cy="8.5" r="1.3" />
+                      <circle cx="12" cy="12" r="1.3" />
+                      <circle cx="8.5" cy="15.5" r="1.3" />
+                      <circle cx="15.5" cy="15.5" r="1.3" />
+                    </g>
+                  </svg>
+                </button>
+              )}
+            </div>
+            <p
+              aria-live="polite"
+              className="mt-1.5 min-h-4 text-center text-xs font-semibold text-amber-200"
             >
-              <span aria-hidden="true">✨</span>
               {imgBusy
                 ? "Rendering…"
                 : shareDone === "shared"
@@ -279,33 +359,10 @@ export default function ShinyHunt({
                     ? "Link copied!"
                     : shareDone === "downloaded"
                       ? "Image saved!"
-                      : "Share your shiny"}
-            </button>
-            <button
-              onClick={async () => {
-                setImgBusy(true);
-                const ok = await downloadShinyCard(buildCardData());
-                setImgBusy(false);
-                if (ok) {
-                  setDlDone(true);
-                  setTimeout(() => setDlDone(false), 1800);
-                }
-              }}
-              disabled={imgBusy}
-              className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-6 py-3.5 text-base font-bold text-white/85 transition hover:border-amber-300 hover:text-amber-300 active:scale-95 disabled:opacity-60"
-            >
-              <span aria-hidden="true">⬇</span>
-              {dlDone ? "Saved!" : "Download card"}
-            </button>
-            {onNewHunt && (
-              <button
-                onClick={onNewHunt}
-                className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-6 py-3.5 text-base font-bold text-white/85 transition hover:border-amber-300 hover:text-amber-300 active:scale-95"
-              >
-                <span aria-hidden="true">🎲</span>
-                Start your own hunt
-              </button>
-            )}
+                      : dlDone
+                        ? "Image saved!"
+                        : ""}
+            </p>
           </div>
         </div>
       </div>
