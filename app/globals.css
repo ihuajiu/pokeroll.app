@@ -786,8 +786,8 @@ body {
   z-index: 1;
 }
 .team-card .hero-card-art img {
-  width: 150px;
-  height: 150px;
+  width: 118px;
+  height: 118px;
   object-fit: contain;
   filter: drop-shadow(0 16px 22px color-mix(in srgb, var(--cc, rgb(var(--accent))) 45%, rgba(0, 0, 0, 0.35)));
   animation: none;
@@ -813,7 +813,7 @@ body {
 /* The description sits below the type chips; the sprite's art is centered in
    its box with transparent margins, so it can safely use more width. */
 .team-card.hero-card .hero-card-desc {
-  max-width: calc(100% - 154px);
+  max-width: calc(100% - 118px);
 }
 /* Big ID badge as the small label */
 .team-card.hero-card .dex {
