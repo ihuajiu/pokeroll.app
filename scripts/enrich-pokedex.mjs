@@ -111,8 +111,9 @@ function pickDescription(species) {
   const pick = en.find((e) => PREFERRED_VERSIONS.includes(e.version.name)) ?? en[0];
   return cleanFlavor(pick.flavor_text);
 }
-function truncate(text, max = 100) {
-  // Keep complete sentences while staying within max (cards show 3 lines).
+function truncate(text, max = 104) {
+  // Keep complete sentences while staying within max (cards show 3 lines);
+  // never append an ellipsis so short descriptions don't look cut off.
   if (!text) return text;
   if (text.length <= max) return text;
   const sentences = text.match(/[^.!?]*[.!?]+/g) || [];
@@ -124,7 +125,7 @@ function truncate(text, max = 100) {
   if (out.trim().length >= 30) return out.trim();
   const cut = text.slice(0, max);
   const sp = cut.lastIndexOf(" ");
-  return (sp > 50 ? cut.slice(0, sp) : cut) + "...";
+  return sp > 50 ? cut.slice(0, sp) : cut;
 }
 function fallbackDesc(p) {
   const types = (p.types || []).map((t) => t.charAt(0).toUpperCase() + t.slice(1)).join("/");
