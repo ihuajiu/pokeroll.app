@@ -114,6 +114,8 @@ export default function HeroCard({
   const cardRef = useRef<HTMLDivElement>(null);
   /** Name heading — long names auto-shrink to fit one line. */
   const nameRef = useRef<HTMLHeadingElement>(null);
+  /** Tag row (form chip + type chips) — 3 tags auto-shrink to fit one line. */
+  const tagRowRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const shareBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -184,6 +186,40 @@ export default function HeroCard({
     ro.observe(el);
     return () => ro.disconnect();
   }, [name, hideName]);
+
+  // Three tags (form chip + two types) shrink together so they stay on one
+  // line — measured with wrapping off, then the tag-scale is set on the row.
+  useEffect(() => {
+    const row = tagRowRef.current;
+    if (!row || !row.children.length) return;
+    const measure = (scale: number) => {
+      row.style.setProperty("--tag-scale", String(scale));
+      row.style.flexWrap = "nowrap";
+      const w = row.scrollWidth;
+      row.style.flexWrap = "";
+      return w;
+    };
+    const fit = () => {
+      const full = measure(1);
+      const have = row.clientWidth;
+      if (full <= have + 1) {
+        row.style.setProperty("--tag-scale", "1");
+        return;
+      }
+      let lo = 0.6;
+      let hi = 1;
+      for (let i = 0; i < 8; i++) {
+        const mid = (lo + hi) / 2;
+        if (measure(mid) <= have + 1) lo = mid;
+        else hi = mid;
+      }
+      row.style.setProperty("--tag-scale", lo.toFixed(3));
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(row);
+    return () => ro.disconnect();
+  }, [data.types, data.form]);
 
   async function handleRoll() {
     if (onRoll) {
@@ -355,7 +391,7 @@ export default function HeroCard({
         <h3 ref={nameRef}>{name}</h3>
         {hideName ? <span className="section-chip">Mystery</span> : null}
 
-        <div className="try-types">
+        <div className="try-types" ref={tagRowRef}>
           {!hideName && data.form ? (
             <span className={`form-chip form-chip--${data.form}`}>
               {FORM_LABELS[data.form] ?? data.form}
@@ -367,7 +403,6 @@ export default function HeroCard({
               className="type-chip"
               style={{ background: TYPE_HEX[t] ?? TYPE_HEX.normal }}
             >
-              <span className="dot" />
               {t}
             </span>
           ))}

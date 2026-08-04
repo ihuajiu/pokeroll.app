@@ -889,9 +889,9 @@ body {
   border-radius: 9999px;
   /* Smaller badge-like type: still stretches to the row height so it stays
      flush with the type chips, but the uppercase label reads more quietly. */
-  padding: 0 7px;
-  font: 700 9px var(--mono);
-  letter-spacing: 0.04em;
+  padding: 0 calc(7px * var(--tag-scale, 1));
+  font: 700 calc(9px * var(--tag-scale, 1)) var(--mono);
+  letter-spacing: calc(0.04em * var(--tag-scale, 1));
   text-transform: uppercase;
   color: #fff;
   box-shadow:
@@ -1513,17 +1513,11 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font: 600 12px var(--font);
+  font: 600 calc(12px * var(--tag-scale, 1)) var(--font);
   color: #fff;
-  padding: 4px 11px;
+  padding: calc(4px * var(--tag-scale, 1)) calc(11px * var(--tag-scale, 1));
   border-radius: 999px;
   white-space: nowrap;
-}
-.type-chip .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
 }
 .hero-card .statgrid {
   margin-top: 14px;
