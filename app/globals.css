@@ -830,8 +830,10 @@ body {
   letter-spacing: -1px;
   text-transform: capitalize;
   color: rgb(var(--text));
-  /* Clear the corner sprite; long names auto-shrink instead of covering it. */
+  /* Clear the corner sprite; long names auto-shrink instead of covering it.
+     Reserve one line at the max font so shrink never changes card height. */
   max-width: calc(100% - 128px);
+  min-height: 36px;
   white-space: normal;
   overflow-wrap: break-word;
 }
@@ -1238,6 +1240,7 @@ body {
 }
 .team-card--wide.hero-card h3 {
   font: 800 clamp(30px, 8cqi, 46px) / 1.02 var(--display);
+  min-height: 47px;
 }
 .team-card--wide.hero-card .try-types {
   margin-bottom: 6px;
@@ -1295,6 +1298,7 @@ body {
   .team-card--wide.hero-card h3 {
     max-width: calc(100% - 120px);
     font-size: clamp(22px, 7cqi, 34px);
+    min-height: 36px;
   }
   .team-card--wide.hero-card .hero-card-info {
     gap: 7px;
@@ -1409,6 +1413,7 @@ body {
   .hero-visual .team-card--wide.hero-card h3 {
     max-width: calc(100% - 144px);
     font-size: clamp(22px, 7cqi, 34px);
+    min-height: 36px;
   }
   .random-stage .team-card--wide.hero-card .statgrid,
   .card-stage .team-card--wide.hero-card .statgrid,
@@ -1506,9 +1511,10 @@ body {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 14px;
-  /* Always reserve two rows (2 × 28px chips + gap) so tag wrapping never
-     changes the card height mid-roll. */
+  /* Reserve two rows (2 × 28px chips + gap) so tag wrapping never changes
+     the card height, but keep the chips at natural height (no stretch). */
   min-height: 64px;
+  align-items: flex-start;
 }
 /* Type chips on the hero card — 1:1 with prototype .chip
    (colored pill · white label · white dot) */
