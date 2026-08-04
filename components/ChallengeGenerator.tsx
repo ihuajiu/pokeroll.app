@@ -46,10 +46,10 @@ export default function ChallengeGenerator({
   const { config } = challenge;
   const mode = config.mode;
 
-  const [count, setCount] = useState(config.count ? String(config.count) : "");
+  const [count, setCount] = useState(config.count ? String(config.count) : "4");
   const [type, setType] = useState(config.type ?? "");
   const [region, setRegion] = useState(config.region ?? "");
-  const [difficulty, setDifficulty] = useState<string>(config.difficulty ?? "");
+  const [difficulty, setDifficulty] = useState<string>(config.difficulty ?? "Easy");
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
   const [copied, setCopied] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -135,7 +135,7 @@ export default function ChallengeGenerator({
   // Guess mode: difficulty = how much information the hidden card gives up.
   // Easy shows a type hint; Hard/Extreme zoom the silhouette so less of the
   // shape is visible.
-  const guessDifficulty = config.difficulty ?? "Normal";
+  const guessDifficulty = config.difficulty ?? "Easy";
   const silhouetteZoom =
     guessDifficulty === "Extreme"
       ? "scale-[2.2]"

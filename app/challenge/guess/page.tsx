@@ -37,19 +37,18 @@ export default async function GuessChallengePage({
 }) {
   const sp = await searchParams;
   const countRaw = Number(get(sp, "count"));
-  // No count param = "Random" in the UI; the server falls back to 5 until
-  // the user rolls a concrete pick.
-  const count = countRaw ? Math.min(12, Math.max(1, countRaw)) : undefined;
+  // No count param = default of 4 until the user picks another value.
+  const count = countRaw ? Math.min(12, Math.max(1, countRaw)) : 4;
   const type = get(sp, "type") || undefined;
   const region = get(sp, "region") || undefined;
   const genRaw = get(sp, "gen");
   const gen = genRaw ? Number(genRaw) : undefined;
   const seed = get(sp, "seed") || Math.random().toString(36).slice(2, 10);
   const difficultyRaw = get(sp, "difficulty") as ChallengeDifficulty | undefined;
-  // No difficulty param = "Random" in the UI; undefined behaves like Normal
-  // server-side until the user rolls a concrete pick.
-  const difficulty =
-    difficultyRaw && DIFFICULTIES.includes(difficultyRaw) ? difficultyRaw : undefined;
+  // No difficulty param = default of Easy (type hint, no zoom) until the
+  // user picks another value.
+  const difficulty: ChallengeDifficulty =
+    difficultyRaw && DIFFICULTIES.includes(difficultyRaw) ? difficultyRaw : "Easy";
 
   const config: ChallengeConfig = {
     mode: "guess",

@@ -87,20 +87,21 @@ async function pickDistinct(
 
 function maxCountForDifficulty(difficulty: string | undefined): number {
   switch (difficulty) {
-    case "Easy":
-      return 12;
+    case "Normal":
+      return 10;
     case "Hard":
       return 8;
     case "Extreme":
       return 6;
-    case "Normal":
+    case "Easy":
     default:
-      return 10;
+      // No difficulty = default of Easy.
+      return 12;
   }
 }
 
 export async function getChallenge(config: ChallengeConfig): Promise<Challenge> {
-  const { mode, count = 5, type, gen, region, seed, difficulty } = config;
+  const { mode, count = 4, type, gen, region, seed, difficulty } = config;
   const maxCount = maxCountForDifficulty(difficulty);
   const clamped = Math.max(1, Math.min(count, maxCount));
   const rng = mulberry32(
@@ -108,7 +109,7 @@ export async function getChallenge(config: ChallengeConfig): Promise<Challenge> 
   );
 
   if (mode === "shiny") {
-    const odds = SHINY_ODDS[difficulty ?? "Normal"] ?? SHINY_ODDS.Normal;
+    const odds = SHINY_ODDS[difficulty ?? "Easy"] ?? SHINY_ODDS.Easy;
     const p = 1 / odds;
     const r = rng();
     // Easy uses a pity draw — uniform in 1..odds, so the hunt is guaranteed
