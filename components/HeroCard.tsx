@@ -329,13 +329,13 @@ export default function HeroCard({
         <div className="dex">{dex}</div>
         <h3>{name}</h3>
         {hideName ? <span className="section-chip">Mystery</span> : null}
-        {!hideName && data.form ? (
-          <span className={`form-chip form-chip--${data.form}`}>
-            {FORM_LABELS[data.form] ?? data.form}
-          </span>
-        ) : null}
 
         <div className="try-types">
+          {!hideName && data.form ? (
+            <span className={`form-chip form-chip--${data.form}`}>
+              {FORM_LABELS[data.form] ?? data.form}
+            </span>
+          ) : null}
           {data.types.map((t) => (
             <span
               key={t}
