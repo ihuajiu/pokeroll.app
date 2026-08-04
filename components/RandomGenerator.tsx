@@ -215,7 +215,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
         <div
           className={`overflow-hidden transition-[width] duration-300 ${
             open
-              ? "w-[680px] max-w-full rounded-xl border border-poke-border bg-poke-surface shadow-sm"
+              ? "w-[760px] max-w-full rounded-xl border border-poke-border bg-poke-surface shadow-sm"
               : "breathe w-11"
           }`}
         >
@@ -231,7 +231,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
               >
                 {gearIcon}
               </button>
-              <div className="grid flex-1 grid-cols-2 gap-2.5 sm:grid-cols-3 lg:flex lg:flex-initial">
+              <div className="grid flex-1 grid-cols-2 gap-2.5 sm:grid-cols-3 lg:flex lg:flex-initial lg:flex-wrap">
                 {selects}
               </div>
             </div>
