@@ -889,9 +889,9 @@ body {
   border-radius: 9999px;
   /* Smaller badge-like type: still stretches to the row height so it stays
      flush with the type chips, but the uppercase label reads more quietly. */
-  padding: 0 9px;
-  font: 700 10px var(--mono);
-  letter-spacing: 0.07em;
+  padding: 0 7px;
+  font: 700 9px var(--mono);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #fff;
   box-shadow:
@@ -1506,16 +1506,7 @@ body {
   overflow: hidden;
   white-space: nowrap;
 }
-.hero-card .try-types {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
-  /* Reserve two rows (2 × 28px chips + gap) so tag wrapping never changes
-     the card height, but keep the chips at natural height (no stretch). */
-  min-height: 64px;
-  align-items: flex-start;
-}
+.hero-card .try-types { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 /* Type chips on the hero card — 1:1 with prototype .chip
    (colored pill · white label · white dot) */
 .type-chip {
