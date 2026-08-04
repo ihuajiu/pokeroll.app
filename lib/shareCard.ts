@@ -509,20 +509,27 @@ async function renderPokemonCardDom(
   const filter = (node: Node) =>
     !(node instanceof HTMLElement && node.classList.contains("hero-actions"));
 
-  // The /random stage scales the card with CSS `zoom`, which breaks
-  // html-to-image's size math (blank gutter inside the capture). Snapshot an
-  // off-screen clone instead of mutating the live card — flipping zoom on the
-  // original made it visibly shrink and pop back during capture. The clone
-  // sits in a fixed holder inserted next to the original, so every
-  // ancestor-scoped rule (stage metrics, grid overrides) still applies while
-  // the clone itself keeps plain static styles: html-to-image inlines the
-  // captured node's computed position, so the off-screen offset must live on
-  // the holder, never on the captured node.
+  // The generator stages transform the card on-page (CSS `zoom`, `scale`,
+  // auto margins), which breaks html-to-image's size math — a zoomed capture
+  // gets a blank gutter, and an in-place capture inlines the computed margin /
+  // scale origin, shifting the painted card inside the canvas (the homepage
+  // hero card lost its right edge that way). Snapshot a neutralized clone
+  // instead of mutating the live card. The clone sits in a fixed holder
+  // inserted next to the original, so every ancestor-scoped rule (stage
+  // metrics, grid overrides) still applies while the clone itself keeps plain
+  // static styles: html-to-image inlines the captured node's computed
+  // position, so any offset must live on the holder, never on the captured
+  // node. The holder overlays the original card's on-screen rect — Chromium
+  // culls painting for nodes placed off-screen or fully occluded, which used
+  // to produce a transparent canvas.
+  const rect = el.getBoundingClientRect();
   const holder = document.createElement("div");
-  holder.style.cssText =
-    "position:fixed;left:-10000px;top:0;pointer-events:none;";
+  holder.style.cssText = `position:fixed;left:${Math.round(rect.left)}px;top:${Math.round(rect.top)}px;z-index:9999;pointer-events:none;`;
   const clone = el.cloneNode(true) as HTMLElement;
+  // Neutralize every on-page transform so the capture renders the plain
+  // 1:1 card — the same shape the /random page produces.
   clone.style.zoom = "1";
+  clone.style.scale = "none";
   // Pin the clone to the original's layout box so the capture matches the
   // on-page card exactly, zoomed stage or stretched roster alike. Use
   // offsetWidth/offsetHeight — getBoundingClientRect is unreliable in the
@@ -536,7 +543,7 @@ async function renderPokemonCardDom(
   // instead of pixel-scanning for the "empty" area: in dark mode the card's
   // own dark background reads as content everywhere, so the scan finds no
   // empty band and the QR was silently skipped (dark-mode downloads lost the
-  // QR + brand). The clone is unzoomed, so rect math is safe here.
+  // QR + brand). The clone is fully neutralized, so rect math is safe here.
   let actionsTopCss: number | null = null;
   const actionsEl = clone.querySelector(".hero-actions");
   if (actionsEl instanceof HTMLElement) {
@@ -551,17 +558,30 @@ async function renderPokemonCardDom(
     holder.remove();
   }
 
-  // Some browser/version combinations render the off-screen clone as a fully
-  // transparent canvas. Detect that and fall back to the legacy in-place
-  // capture (brief zoom flicker, but always correct) instead of shipping a
-  // blank image.
+  // Some browser/version combinations render the clone as a fully transparent
+  // canvas. Detect that and fall back to an in-place capture with the same
+  // neutralizations (brief flicker, but always correct) instead of shipping a
+  // blank image. The action-bar offset must be re-measured in this state so it
+  // stays in the same coordinate space as the capture.
   if (!hasOpaquePixels(shot)) {
     const inlineZoom = el.style.zoom;
+    const inlineScale = el.style.scale;
+    const inlineMargin = el.style.margin;
     el.style.zoom = "1";
+    el.style.scale = "none";
+    el.style.margin = "0";
+    const liveActions = el.querySelector(".hero-actions");
+    if (liveActions instanceof HTMLElement) {
+      actionsTopCss =
+        liveActions.getBoundingClientRect().top -
+        el.getBoundingClientRect().top;
+    }
     try {
       shot = await toCanvas(el, { pixelRatio: scale, fontEmbedCSS, filter });
     } finally {
       el.style.zoom = inlineZoom;
+      el.style.scale = inlineScale;
+      el.style.margin = inlineMargin;
     }
   }
 
