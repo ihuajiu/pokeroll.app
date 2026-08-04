@@ -1134,31 +1134,54 @@ body {
 }
 /* Narrow screens: the wide layout's 224px corner sprite and 260px reserved
    text track don't fit — fall back to the compact team-card metrics so the
-   name can float under the sprite instead of being squeezed behind it. */
+   name can float under the sprite instead of being squeezed behind it.
+   Everything is tightened a further notch (124px sprite, 3×2 meta grid,
+   slimmer stat bars) so a phone-width card lands near the 3:4 card shape
+   instead of stretching tall-skinny. */
 @media (max-width: 560px) {
   .team-card--wide.hero-card {
     min-height: 0;
-    padding: 22px 20px 18px 22px;
+    padding: 18px 18px 14px 20px;
   }
   .team-card--wide .hero-card-art {
-    top: 14px;
-    right: 14px;
+    top: 12px;
+    right: 12px;
   }
   .team-card--wide .hero-card-art img {
-    width: 150px;
-    height: 150px;
+    width: 124px;
+    height: 124px;
   }
   .team-card--wide.hero-card .dex,
   .team-card--wide.hero-card .try-types {
-    max-width: calc(100% - 164px);
+    max-width: calc(100% - 136px);
   }
   .team-card--wide.hero-card h3 {
     max-width: 100%;
     font-size: clamp(22px, 7cqi, 34px);
   }
+  .team-card--wide.hero-card .hero-card-info {
+    gap: 7px;
+  }
   .team-card--wide.hero-card .statgrid {
-    margin-top: 42px;
-    grid-template-columns: 1fr 1fr;
+    margin-top: 30px;
+    gap: 8px 12px;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .team-card--wide.hero-card .bars {
+    margin-top: 12px;
+    gap: 5px;
+  }
+  .team-card--wide.hero-card .bar {
+    font-size: 12px;
+  }
+  .team-card--wide.hero-card .bar .bt {
+    height: 9px;
+  }
+  .team-card--wide.hero-card .bar .bv {
+    font-size: 12.5px;
+  }
+  .team-card--wide.hero-card .hero-actions {
+    padding-top: 12px;
   }
 }
 /* Single-card generator stage (.random-stage on /random, .card-stage on the
@@ -1172,6 +1195,22 @@ body {
   height: auto;
   align-self: start;
   min-height: 500px;
+}
+/* Phones: give the single-card stage the 3:4 card shape. The stage becomes
+   the inline-size container so the card's min-height can be written as
+   width × 4/3 — a floor, not a lock: over-tall content (long names, extra
+   chips) still grows instead of clipping against a hard aspect-ratio. */
+@media (max-width: 560px) {
+  .random-stage,
+  .card-stage,
+  .hero-visual {
+    container-type: inline-size;
+  }
+  .random-stage .team-card.hero-card,
+  .card-stage .team-card.hero-card,
+  .hero-visual .team-card.hero-card {
+    min-height: calc(100cqw * 4 / 3);
+  }
 }
 /* Desktop: instead of reflowing the interior per size, the card is laid out
    once at the 400px baseline (where its interior is balanced) and scaled up
