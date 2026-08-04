@@ -28,8 +28,10 @@ export type Pokemon = {
   // raw lowercase names used for reverse indexing (ability/move -> pokemon)
   abilityNames?: string[];
   moveNames?: string[];
-  /** One-line English Pok?dex flavor text ("what is this?" for newbies). */
+  /** One-line English Pokédex flavor text ("what is this?" for newbies). */
   description?: string;
+  /** Complete English flavor text — shown on hover when description is cut. */
+  descriptionFull?: string;
   /** Alternate-form tag: mega / alolan / galarian / hisuian / paldean / gigantamax. */
   form?: string;
 };

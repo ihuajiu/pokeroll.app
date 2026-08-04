@@ -374,7 +374,9 @@ export default function HeroCard({
         </div>
 
         {!hideName && data.description ? (
-          <p className="hero-card-desc">{data.description}</p>
+          <p className="hero-card-desc" title={data.descriptionFull || data.description}>
+            {data.description}
+          </p>
         ) : null}
 
         <div className="statgrid">
