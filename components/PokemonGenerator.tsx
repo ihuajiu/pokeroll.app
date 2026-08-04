@@ -33,7 +33,7 @@ export default function PokemonGenerator({ initial }: { initial: Pokemon }) {
         <p className="text-sm text-poke-dim">Your random Pokémon is…</p>
       </div>
       <div className="card-stage flex justify-center">
-        <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} variant="wide" />
+        <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} variant="wide" favoritable />
       </div>
       <div className="mt-5 flex flex-wrap gap-3">
         <ShareButton name={pokemon.name} />

@@ -535,6 +535,12 @@ body {
   border-color: rgb(var(--brand) / 0.7);
   color: rgb(var(--brand));
 }
+/* Header favorites entry: its count badge hangs outside the button corner,
+   so it must escape the .game-btn overflow clip (the ::before sheen has its
+   own border-radius, so unclipping is safe). */
+.game-btn-ghost.fav-entry {
+  overflow: visible;
+}
 
 /* Prototype 1:1 buttons — used for hero/cta actions */
 .btn-primary {
@@ -913,6 +919,44 @@ body {
    lockable cards. */
 .team-card.hero-card:has(> .lock-toggle) .dex {
   margin-left: 32px;
+}
+
+/* Favorite toggle: mirrors the lock toggle but pinned top-right on roster
+   cards (no action bar). Favorited state fills the heart red. */
+.hero-card .fav-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  border: 1.5px solid rgb(var(--border));
+  background: color-mix(in srgb, rgb(var(--surface)) 88%, transparent);
+  color: rgb(var(--text-faint));
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease,
+    background 0.15s ease, transform 0.15s ease;
+}
+.hero-card .fav-toggle:hover {
+  color: rgb(var(--brand));
+  border-color: color-mix(in srgb, rgb(var(--brand)) 55%, rgb(var(--border)));
+  transform: scale(1.08);
+}
+.hero-card .fav-toggle.is-on {
+  color: #fff;
+  background: rgb(var(--brand));
+  border-color: rgb(var(--brand));
+  box-shadow: 0 4px 12px -6px rgb(var(--brand));
+}
+/* Action-bar heart (cards with the Save/Share/Roll bar). */
+.hero-actions .act-fav.is-on {
+  color: #fff;
+  background: rgb(var(--brand));
+  border-color: rgb(var(--brand));
 }
 
 /* ============================================================

@@ -341,6 +341,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
                 lockable
                 locked={locks.has(i)}
                 onToggleLock={() => toggleLock(i)}
+                favoritable
               />
             ))}
           </div>

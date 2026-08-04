@@ -253,7 +253,7 @@ export default function AdventureView({
             Your Starter
           </h2>
           <div className="card-stage mx-auto flex max-w-[640px] justify-center">
-            <HeroCard pokemon={a.starter} showActions variant="wide" />
+            <HeroCard pokemon={a.starter} showActions variant="wide" favoritable />
           </div>
         </div>
       )}
@@ -278,6 +278,7 @@ export default function AdventureView({
               pokemon={a.rival.starter}
               variant="wide"
               showActions={false}
+              favoritable
             />
           </div>
         </div>
@@ -299,6 +300,7 @@ export default function AdventureView({
                 pokemon={p}
                 variant="team"
                 showActions={false}
+                favoritable
               />
             ))}
           </div>
@@ -370,6 +372,7 @@ export default function AdventureView({
               pokemon={a.legendary.pokemon}
               variant="wide"
               showActions={false}
+              favoritable
             />
           </div>
         </div>

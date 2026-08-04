@@ -77,6 +77,7 @@ export default function VariantGenerator({
           hideName={mode === "no-names"}
           onRoll={regenerate}
           variant="wide"
+          favoritable
         />
       </div>
       <div className="mt-4 flex flex-wrap justify-center gap-3">

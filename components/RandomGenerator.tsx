@@ -243,7 +243,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
 
       {/* Single centered card; desktop width is viewport-driven (3:4). */}
       <div className="random-stage grid items-start gap-6">
-        <HeroCard pokemon={pokemon} loading={loading} onRoll={roll} variant="wide" />
+        <HeroCard pokemon={pokemon} loading={loading} onRoll={roll} variant="wide" favoritable />
       </div>
     </div>
   );

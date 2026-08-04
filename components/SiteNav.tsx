@@ -8,6 +8,7 @@ import { GroupIcon } from "./ToolIcons";
 import LogoMark from "./LogoMark";
 import ThemeToggle from "@/components/ThemeToggle";
 import TeamTray from "@/components/TeamTray";
+import { useFavorites } from "@/components/useFavorites";
 
 // 五分组主导航：每组指向该组的第一个工具页。
 // 下拉是数据驱动的——dropdownGroup 指向 lib/tools.ts 里的分组，组内 ≥2 个
@@ -29,6 +30,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
   const pathname = usePathname();
   const activePath = pathname || currentPath;
   const isActive = (href: string) => activePath === href || activePath === href + "/";
+  const { favorites } = useFavorites();
 
   return (
     <header
@@ -126,6 +128,32 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/favorites"
+            aria-label={`Favorites (${favorites.length})`}
+            title="Favorites"
+            className="game-btn game-btn-ghost fav-entry inline-flex h-9 w-9 items-center justify-center"
+          >
+            <span className="relative inline-flex">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-5 w-5"
+                aria-hidden="true"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+              {favorites.length > 0 && (
+                <span className="absolute -right-2.5 -top-1.5 rounded-full bg-[#ee3b3b] px-1 text-[10px] font-bold leading-4 text-white">
+                  {favorites.length}
+                </span>
+              )}
+            </span>
+          </Link>
           <TeamTray />
           <ThemeToggle />
 

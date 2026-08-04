@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Pokemon } from "@/lib/types";
 import { TYPE_HEX } from "@/lib/typeColors";
+import { useFavorites } from "@/components/useFavorites";
 import {
   downloadPokemonCard,
   sharePokemonLink,
@@ -46,6 +47,10 @@ export default function HeroCard({
   locked = false,
   /** Toggle handler for the lock button. */
   onToggleLock,
+  /** Show a heart toggle that adds this Pokémon to the Favorites list.
+   *  With the action bar visible it sits at the left of the bar; on
+   *  roster-style cards (no action bar) it floats at the top-right corner. */
+  favoritable = false,
   /** Optional DOM id for the "New roll" button, so an external control can
    *  trigger this card's internal re-roll. */
   rollButtonId,
@@ -84,6 +89,8 @@ export default function HeroCard({
   locked?: boolean;
   /** Toggle handler for the lock button. */
   onToggleLock?: () => void;
+  /** Show a heart toggle that adds this Pokémon to the Favorites list. */
+  favoritable?: boolean;
   /** Optional DOM id for the "New roll" button, so an external control can
    *  trigger this card's internal re-roll. */
   rollButtonId?: string;
@@ -140,6 +147,8 @@ export default function HeroCard({
   const ability = data.abilities?.[0] ?? "—";
   const name = hideName ? "Mystery" : data.displayName;
   const cc = TYPE_HEX[data.types[0]] ?? TYPE_HEX.normal;
+  const { has: isFavorited, toggle: toggleFavorite } = useFavorites();
+  const favorited = favoritable ? isFavorited(data.dexNumber) : false;
 
   async function handleRoll() {
     if (onRoll) {
@@ -245,6 +254,32 @@ export default function HeroCard({
               <path d="M8 11V7a4 4 0 0 1 7.9-.8" />
             </svg>
           )}
+        </button>
+      )}
+      {favoritable && !showActions && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(data);
+          }}
+          aria-pressed={favorited}
+          aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+          title={favorited ? "Remove from favorites" : "Add to favorites"}
+          className={`fav-toggle${favorited ? " is-on" : ""}`}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill={favorited ? "currentColor" : "none"}
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-3.5 w-3.5"
+            aria-hidden="true"
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
         </button>
       )}
       <div className="hero-card-art">
@@ -358,6 +393,26 @@ export default function HeroCard({
 
       {showActions ? (
         <div className="hero-actions">
+          {favoritable ? (
+            <button
+              type="button"
+              className={`act act-fav${favorited ? " is-on" : ""}`}
+              aria-pressed={favorited}
+              onClick={() => toggleFavorite(data)}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill={favorited ? "currentColor" : "none"}
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+              {favorited ? "Favorited" : "Favorite"}
+            </button>
+          ) : null}
           {hideName ? (
             // Mystery cards must not leak the answer through a rendered
             // image — plain link share only, no popover.

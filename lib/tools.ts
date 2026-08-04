@@ -207,4 +207,5 @@ export const RELATED_TOOLS: Record<string, string[]> = {
   "/fusion": ["/wheel", "/mega", "/adventure", "/random-pokemon-generator"],
   "/team/random": ["/team", "/adventure", "/random-pokemon-generator", "/challenge/guess"],
   "/team": ["/team/random", "/adventure", "/nickname", "/random-pokemon-generator"],
+  "/favorites": ["/random-pokemon-generator", "/team/random", "/adventure", "/legendary", "/cute"],
 };

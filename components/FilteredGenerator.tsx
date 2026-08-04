@@ -31,7 +31,7 @@ export default function FilteredGenerator({
   return (
     <div className="mx-auto w-full max-w-[640px]">
       <div className="card-stage flex justify-center">
-        <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} variant="wide" />
+        <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} variant="wide" favoritable />
       </div>
       <div className="mt-5 flex flex-wrap gap-3">
         <AddToTeamButton pokemon={pokemon} />
