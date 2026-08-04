@@ -856,12 +856,17 @@ body {
   color: rgb(var(--text));
   font-weight: 700;
 }
-/* One-line Pokédex description ("what is this?" for newbies). */
+/* One-line Pokédex description ("what is this?" for newbies). Data is
+   capped at ~100 chars so it fits 3 lines on the standard card; the clamp is
+   a safety net so compact roster cards never exceed 3 lines either. */
 .hero-card-desc {
   margin: 0;
   font: 400 13px/1.5 var(--font);
   color: rgb(var(--text-dim));
-  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 /* Alternate-form chip (Mega / Alolan / Galarian / Hisuian / Paldean / Gigantamax). */
 .form-chip {

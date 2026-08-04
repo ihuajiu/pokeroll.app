@@ -111,12 +111,20 @@ function pickDescription(species) {
   const pick = en.find((e) => PREFERRED_VERSIONS.includes(e.version.name)) ?? en[0];
   return cleanFlavor(pick.flavor_text);
 }
-function truncate(text, max = 180) {
+function truncate(text, max = 100) {
+  // Keep complete sentences while staying within max (cards show 3 lines).
   if (!text) return text;
   if (text.length <= max) return text;
+  const sentences = text.match(/[^.!?]*[.!?]+/g) || [];
+  let out = "";
+  for (const s of sentences) {
+    if ((out + s).length <= max) out += s;
+    else break;
+  }
+  if (out.trim().length >= 30) return out.trim();
   const cut = text.slice(0, max);
-  const idx = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
-  return idx > 60 ? cut.slice(0, idx + 1) : cut.slice(0, cut.lastIndexOf(" ")) + "...";
+  const sp = cut.lastIndexOf(" ");
+  return (sp > 50 ? cut.slice(0, sp) : cut) + "...";
 }
 function fallbackDesc(p) {
   const types = (p.types || []).map((t) => t.charAt(0).toUpperCase() + t.slice(1)).join("/");
