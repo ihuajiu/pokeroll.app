@@ -864,16 +864,17 @@ body {
 /* One-line Pokédex description ("what is this?" for newbies). Data is
    capped at ~100 chars so it fits 3 lines on the standard card; the clamp is
    a safety net so compact roster cards never exceed 3 lines either. */
-/* Description always reserves exactly 3 lines (1.5 × 13px × 3 = 58.5px) so
-   the card height never jumps when rolling to a different Pokemon. */
+/* Description always reserves exactly 4 lines (1.5 × 13px × 4 = 78px):
+   complete sentences up to ~108 chars fit without clipping, and the card
+   height never jumps when rolling to a different Pokemon. */
 .hero-card-desc {
   margin: 0;
   font: 400 13px/1.5 var(--font);
   color: rgb(var(--text-dim));
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
-  height: 58.5px;
+  height: 78px;
   overflow: hidden;
 }
 /* Alternate-form chip (Mega / Alolan / Galarian / Hisuian / Paldean / Gigantamax).

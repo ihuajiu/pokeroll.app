@@ -111,7 +111,7 @@ function pickDescription(species) {
   const pick = en.find((e) => PREFERRED_VERSIONS.includes(e.version.name)) ?? en[0];
   return cleanFlavor(pick.flavor_text);
 }
-function truncate(text, max = 104) {
+function truncate(text, max = 108) {
   // Keep complete sentences while staying within max (cards show 3 lines);
   // never append an ellipsis so short descriptions don't look cut off.
   if (!text) return text;
