@@ -40,7 +40,7 @@ function pickDescription(species) {
   const pick = en.find((e) => PREFERRED_VERSIONS.includes(e.version.name)) ?? en[0];
   return cleanFlavor(pick.flavor_text);
 }
-function truncate(text, max = 108) {
+function truncate(text, max = 94) {
   if (!text) return text;
   if (text.length <= max) return text;
   const sentences = text.match(/[^.!?]*[.!?]+/g) || [];
