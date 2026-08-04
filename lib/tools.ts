@@ -142,6 +142,13 @@ export const TOOLS: ToolMeta[] = [
     icon: "🤝",
   },
   {
+    href: "/team/challenge",
+    label: "Team Challenge",
+    desc: "Roll a seeded team and challenge a friend to beat it.",
+    group: "team",
+    icon: "⚔️",
+  },
+  {
     href: "/team",
     label: "Team Builder",
     desc: "Collect favourites into a themed squad.",
@@ -205,7 +212,8 @@ export const RELATED_TOOLS: Record<string, string[]> = {
   "/no-names": ["/challenge/guess", "/nickname", "/random-pokemon-generator", "/adventure"],
   "/wheel": ["/challenge/guess", "/challenge/shiny", "/fusion", "/adventure", "/random-pokemon-generator"],
   "/fusion": ["/wheel", "/mega", "/adventure", "/random-pokemon-generator"],
-  "/team/random": ["/team", "/adventure", "/random-pokemon-generator", "/challenge/guess"],
-  "/team": ["/team/random", "/adventure", "/nickname", "/random-pokemon-generator"],
+  "/team/random": ["/team/challenge", "/team", "/adventure", "/random-pokemon-generator", "/challenge/guess"],
+  "/team": ["/team/challenge", "/team/random", "/adventure", "/nickname", "/random-pokemon-generator"],
+  "/team/challenge": ["/team/random", "/team", "/adventure", "/random-pokemon-generator", "/challenge/guess"],
   "/favorites": ["/random-pokemon-generator", "/team/random", "/adventure", "/legendary", "/cute"],
 };
