@@ -109,38 +109,15 @@ export default function HeroCard({
   const [internalLoading, setInternalLoading] = useState(false);
   const [shareDone, setShareDone] = useState<"shared" | "copied" | null>(null);
   const [dlDone, setDlDone] = useState(false);
-  const [popOpen, setPopOpen] = useState(false);
   /** Root card element — captured as the classic-style download image. */
   const cardRef = useRef<HTMLDivElement>(null);
   /** Name heading — long names auto-shrink to fit one line. */
   const nameRef = useRef<HTMLHeadingElement>(null);
   /** Tag row (form chip + type chips) — 3 tags auto-shrink to fit one line. */
   const tagRowRef = useRef<HTMLDivElement>(null);
-  const popRef = useRef<HTMLDivElement>(null);
-  const shareBtnRef = useRef<HTMLButtonElement>(null);
+  /** Stat meta grid — long text values (ability) auto-shrink to one line. */
+  const statRef = useRef<HTMLDivElement>(null);
 
-  // Close the share popover on outside click / Escape.
-  useEffect(() => {
-    if (!popOpen) return;
-    function onDoc(e: MouseEvent) {
-      const t = e.target as Node;
-      if (
-        popRef.current && !popRef.current.contains(t) &&
-        shareBtnRef.current && !shareBtnRef.current.contains(t)
-      ) {
-        setPopOpen(false);
-      }
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setPopOpen(false);
-    }
-    document.addEventListener("mousedown", onDoc);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDoc);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [popOpen]);
 
   // The bold "team" layout applies to any card showing stat bars. Mystery
   // cards (hideName) never show bars, so they keep the compact default look.
@@ -220,6 +197,58 @@ export default function HeroCard({
     ro.observe(row);
     return () => ro.disconnect();
   }, [data.types, data.form]);
+
+  // Long stat values (e.g. ability names) shrink to fit one line so the
+  // 3-column meta grid keeps a stable height.
+  useEffect(() => {
+    const grid = statRef.current;
+    if (!grid) return;
+    // Canvas measureText uses the real loaded font, so it matches the
+    // rendered width regardless of layout timing.
+    const canvas = document.createElement("canvas");
+    const cctx = canvas.getContext("2d");
+    const measure = (el: HTMLElement, fs: number) => {
+      if (!cctx) return 0;
+      const cs = getComputedStyle(el);
+      cctx.font = `${cs.fontWeight} ${fs}px ${cs.fontFamily}`;
+      return cctx.measureText(el.textContent || "").width;
+    };
+    const fit = () => {
+      grid.querySelectorAll<HTMLElement>(".row-text .sv").forEach((sv) => {
+        sv.style.fontSize = "";
+        const start = parseFloat(getComputedStyle(sv).fontSize);
+        if (!Number.isFinite(start)) return;
+        const have = sv.clientWidth;
+        // A value at least as wide as the box wraps its last word — shrink
+        // until the measured width is safely below the box (3px margin covers
+        // the small gap between canvas metrics and real rendering).
+        if (measure(sv, start) < have - 3) return;
+        let lo = 10;
+        let hi = start;
+        for (let i = 0; i < 8; i++) {
+          const mid = (lo + hi) / 2;
+          if (measure(sv, mid) < have - 3) lo = mid;
+          else hi = mid;
+        }
+        sv.style.fontSize = `${lo}px`;
+      });
+    };
+    fit();
+    // Re-run once layout settles and the fonts are ready — the first pass can
+    // measure with a fallback font (before Space Mono loads) and miss a shrink.
+    const raf = requestAnimationFrame(() => requestAnimationFrame(fit));
+    const timer = window.setTimeout(fit, 500);
+    document.fonts?.ready?.then(() => fit()).catch(() => undefined);
+    const ro = new ResizeObserver(fit);
+    ro.observe(grid);
+    window.addEventListener("resize", fit);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+      ro.disconnect();
+      window.removeEventListener("resize", fit);
+    };
+  }, [data.abilities, data.region]);
 
   async function handleRoll() {
     if (onRoll) {
@@ -414,7 +443,7 @@ export default function HeroCard({
           </p>
         ) : null}
 
-        <div className="statgrid">
+        <div className="statgrid" ref={statRef}>
           <div className="row row-text">
             <span className="sl">Ability</span>
             <span className="sv">{ability}</span>
@@ -477,8 +506,10 @@ export default function HeroCard({
           {favoritable ? (
             <button
               type="button"
-              className={`act act-fav${favorited ? " is-on" : ""}`}
+              className={`act-icon act-fav${favorited ? " is-on" : ""}`}
               aria-pressed={favorited}
+              aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+              title={favorited ? "Remove from favorites" : "Add to favorites"}
               onClick={() => toggleFavorite(data)}
             >
               <svg
@@ -491,13 +522,33 @@ export default function HeroCard({
               >
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
-              {favorited ? "Favorited" : "Favorite"}
             </button>
           ) : null}
-          {hideName ? (
-            // Mystery cards must not leak the answer through a rendered
-            // image — plain link share only, no popover.
-            <button type="button" className="act" onClick={handleShareLink}>
+          <button
+            type="button"
+            className="act-icon"
+            aria-label={shareDone ? "Link shared" : "Share link"}
+            title={
+              shareDone === "copied"
+                ? "Link copied!"
+                : shareDone === "shared"
+                  ? "Shared!"
+                  : "Share link"
+            }
+            onClick={handleShareLink}
+          >
+            {shareDone ? (
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -512,21 +563,28 @@ export default function HeroCard({
                 <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
                 <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
               </svg>
-              {shareDone === "shared"
-                ? "Shared!"
-                : shareDone === "copied"
-                  ? "Copied!"
-                  : "Share"}
-            </button>
-          ) : (
-            <>
-              <button
-                type="button"
-                ref={shareBtnRef}
-                className={`act${popOpen ? " is-open" : ""}`}
-                aria-expanded={popOpen}
-                onClick={() => setPopOpen((o) => !o)}
-              >
+            )}
+          </button>
+          {!hideName ? (
+            <button
+              type="button"
+              className="act-icon"
+              aria-label={dlDone ? "Image saved" : "Download card"}
+              title={dlDone ? "Image saved!" : "Download card"}
+              onClick={handleDownload}
+            >
+              {dlDone ? (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              ) : (
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -535,34 +593,13 @@ export default function HeroCard({
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <circle cx="18" cy="5" r="3" />
-                  <circle cx="6" cy="12" r="3" />
-                  <circle cx="18" cy="19" r="3" />
-                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" x2="12" y1="15" y2="3" />
                 </svg>
-                Share
-              </button>
-
-              {popOpen ? (
-                <div className="share-pop" ref={popRef}>
-                  <div className="share-pop-actions">
-                    <button type="button" className="act" onClick={handleShareLink}>
-                      {shareDone === "shared"
-                        ? "Shared!"
-                        : shareDone === "copied"
-                          ? "Copied!"
-                          : "Share link"}
-                    </button>
-                    <button type="button" className="act" onClick={handleDownload}>
-                      {dlDone ? "Saved!" : "Download"}
-                    </button>
-                  </div>
-                </div>
-              ) : null}
-            </>
-          )}
-
+              )}
+            </button>
+          ) : null}
           <button
             type="button"
             id={rollButtonId}

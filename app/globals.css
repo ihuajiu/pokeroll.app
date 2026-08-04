@@ -1670,6 +1670,26 @@ body {
   border-color: color-mix(in srgb, rgb(var(--accent)) 60%, rgb(var(--border)));
 }
 .act svg { width: 17px; height: 17px; }
+/* Icon-only action buttons (favorite / share link / download). */
+.act-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid rgb(var(--border));
+  background: rgb(var(--surface));
+  color: rgb(var(--text));
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.15s, background 0.15s, color 0.15s;
+}
+.act-icon:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, rgb(var(--accent)) 60%, rgb(var(--border)));
+}
+.act-icon svg { width: 18px; height: 18px; }
 .act-roll {
   margin-left: auto;
   background: rgb(var(--accent));
@@ -1685,23 +1705,6 @@ body {
   box-shadow: 0 1px 0 color-mix(in srgb, rgb(var(--accent)) 70%, #000);
 }
 .act-roll:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-/* Share popover — share-link / download actions. */
-.hero-actions { position: relative; }
-.share-pop {
-  position: absolute;
-  bottom: calc(100% + 10px);
-  left: 0;
-  z-index: 40;
-  width: 250px;
-  padding: 14px;
-  border-radius: 14px;
-  border: 1px solid rgb(var(--border));
-  background: rgb(var(--surface));
-  box-shadow: 0 16px 36px -14px rgba(0, 0, 0, 0.35);
-}
-.share-pop-actions { display: flex; gap: 8px; }
-.share-pop-actions .act { flex: 1; justify-content: center; }
 
 /* ============================================================
    Section block + header — prototype .block + .sec-head
