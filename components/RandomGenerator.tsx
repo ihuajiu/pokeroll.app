@@ -3,6 +3,7 @@
 import { useState } from "react";
 import HeroCard from "@/components/HeroCard";
 import { TYPES } from "@/lib/seo";
+import { useFavorites } from "@/components/useFavorites";
 import type { Pokemon } from "@/lib/types";
 
 const GENERATIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -55,7 +56,9 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
   const [type, setType] = useState("");
   const [legendary, setLegendary] = useState(""); // "" any, "1" only, "0" exclude
   const [starter, setStarter] = useState(""); // "" any, "1" only
+  const [excludeFav, setExcludeFav] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const { favorites } = useFavorites();
 
   function flash(msg: string) {
     setNotice(msg);
@@ -72,6 +75,9 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
       if (type) p.set("type", type);
       if (legendary) p.set("legendary", legendary);
       if (starter) p.set("starter", starter);
+      if (excludeFav && favorites.length > 0) {
+        p.set("exclude", favorites.map((f) => f.dexNumber).join(","));
+      }
       const res = await fetch(`/api/pokemon/random?${p.toString()}`, {
         cache: "no-store",
       });
@@ -184,6 +190,20 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
           <option value="">Any</option>
           <option value="1">Only</option>
         </select>
+      </label>
+      <label
+        className={`${labelCls} cursor-pointer select-none flex-row items-center gap-2`}
+        title="Skip Pok?mon you have favorited"
+      >
+        <input
+          type="checkbox"
+          checked={excludeFav}
+          onChange={(e) => setExcludeFav(e.target.checked)}
+          className="h-4 w-4 accent-poke-red"
+        />
+        <span className="text-xs font-semibold text-poke-dim">
+          Exclude favorites
+        </span>
       </label>
     </>
   );

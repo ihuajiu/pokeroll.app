@@ -28,6 +28,16 @@ const STAT_COLORS: Record<keyof Pokemon["stats"], string> = {
   spe: "#F8D030",  // 黄 yellow
 };
 
+// Alternate-form tags shown as a small chip next to the name.
+const FORM_LABELS: Record<string, string> = {
+  mega: "Mega",
+  alolan: "Alolan",
+  galarian: "Galarian",
+  hisuian: "Hisuian",
+  paldean: "Paldean",
+  gigantamax: "Gigantamax",
+};
+
 export default function HeroCard({
   pokemon,
   loading,
@@ -319,6 +329,11 @@ export default function HeroCard({
         <div className="dex">{dex}</div>
         <h3>{name}</h3>
         {hideName ? <span className="section-chip">Mystery</span> : null}
+        {!hideName && data.form ? (
+          <span className={`form-chip form-chip--${data.form}`}>
+            {FORM_LABELS[data.form] ?? data.form}
+          </span>
+        ) : null}
 
         <div className="try-types">
           {data.types.map((t) => (
@@ -332,6 +347,10 @@ export default function HeroCard({
             </span>
           ))}
         </div>
+
+        {!hideName && data.description ? (
+          <p className="hero-card-desc">{data.description}</p>
+        ) : null}
 
         <div className="statgrid">
           <div className="row row-text">

@@ -839,7 +839,35 @@ body {
 /* Meta rows (Ability / Region / BST / Gen) as a full-width 2×2 grid that
    starts below the top-right sprite, so the right column (Region / Gen)
    fills the right side and values never wrap. */
-.team-card.hero-card .statgrid {
+.team-card/* One-line Pokdex description ("what is this?" for newbies). */
+.hero-card-desc {
+  margin: 0;
+  font: 400 12.5px/1.5 var(--font);
+  color: rgb(var(--text-faint));
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* Alternate-form chip (Mega / Alolan / Galarian / Hisuian / Paldean / Gigantamax). */
+.form-chip {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  border-radius: 9999px;
+  padding: 3px 10px;
+  font: 700 10.5px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.form-chip--mega { background: #d3386b; }
+.form-chip--alolan,
+.form-chip--galarian,
+.form-chip--hisuian,
+.form-chip--paldean { background: #3b82f6; }
+.form-chip--gigantamax { color: #3a2c00; background: linear-gradient(90deg, #f59e0b, #fde047); }
+.hero-card .statgrid {
   margin-top: 42px;
   gap: 10px 20px;
   grid-template-columns: 1fr 1fr;

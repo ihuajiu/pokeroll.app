@@ -29,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     `${BASE}/adventure`,
     `${BASE}/team`,
     `${BASE}/team/random`,
+    `${BASE}/team/challenge`,
     `${BASE}/challenge/guess`,
     `${BASE}/challenge/shiny`,
     `${BASE}/disclaimer`,
