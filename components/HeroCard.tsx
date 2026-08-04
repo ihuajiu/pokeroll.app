@@ -112,6 +112,8 @@ export default function HeroCard({
   const [popOpen, setPopOpen] = useState(false);
   /** Root card element — captured as the classic-style download image. */
   const cardRef = useRef<HTMLDivElement>(null);
+  /** Name heading — long names auto-shrink to fit one line. */
+  const nameRef = useRef<HTMLHeadingElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const shareBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -159,6 +161,29 @@ export default function HeroCard({
   const cc = TYPE_HEX[data.types[0]] ?? TYPE_HEX.normal;
   const { has: isFavorited, toggle: toggleFavorite } = useFavorites();
   const favorited = favoritable ? isFavorited(data.dexNumber) : false;
+
+  // Long names shrink to fit one line (min 15px), wrapping only as a
+  // last resort for extremely long names.
+  useEffect(() => {
+    const el = nameRef.current;
+    if (!el || hideName) return;
+    const fit = () => {
+      el.style.fontSize = "";
+      el.style.whiteSpace = "nowrap";
+      const start = parseFloat(getComputedStyle(el).fontSize);
+      let fs = Number.isFinite(start) && start > 0 ? start : 24;
+      const MIN = 15;
+      while (fs > MIN && el.scrollWidth > el.clientWidth) {
+        fs -= 0.5;
+        el.style.fontSize = `${fs}px`;
+      }
+      el.style.whiteSpace = "";
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [name, hideName]);
 
   async function handleRoll() {
     if (onRoll) {
@@ -327,7 +352,7 @@ export default function HeroCard({
 
       <div className="hero-card-info">
         <div className="dex">{dex}</div>
-        <h3>{name}</h3>
+        <h3 ref={nameRef}>{name}</h3>
         {hideName ? <span className="section-chip">Mystery</span> : null}
 
         <div className="try-types">
