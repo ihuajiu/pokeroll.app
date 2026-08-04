@@ -807,9 +807,13 @@ body {
    The name (h3) is exempt: it may use the full width and wrap, floating under
    the sprite — overlap is intentional so long names stay fully visible. */
 .team-card.hero-card .dex,
-.team-card.hero-card .try-types,
-.team-card.hero-card .hero-card-desc {
+.team-card.hero-card .try-types {
   max-width: calc(100% - 174px);
+}
+/* The description sits below the type chips; the sprite's art is centered in
+   its box with transparent margins, so it can safely use more width. */
+.team-card.hero-card .hero-card-desc {
+  max-width: calc(100% - 154px);
 }
 /* Big ID badge as the small label */
 .team-card.hero-card .dex {
