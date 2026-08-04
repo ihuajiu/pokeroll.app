@@ -191,17 +191,16 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
           <option value="1">Only</option>
         </select>
       </label>
-      <label
-        className="flex cursor-pointer select-none items-center gap-2 whitespace-nowrap text-xs font-semibold text-poke-dim"
-        title="Skip Pokémon you have favorited"
-      >
-        <input
-          type="checkbox"
-          checked={excludeFav}
-          onChange={(e) => setExcludeFav(e.target.checked)}
-          className="h-4 w-4 accent-poke-red"
-        />
-        <span>Exclude favorites</span>
+      <label className={labelCls} title="Skip Pokémon you have favorited">
+        Favorites
+        <select
+          value={excludeFav ? "exclude" : ""}
+          onChange={(e) => setExcludeFav(e.target.value === "exclude")}
+          className={selectCls}
+        >
+          <option value="">Any</option>
+          <option value="exclude">Exclude</option>
+        </select>
       </label>
     </>
   );
