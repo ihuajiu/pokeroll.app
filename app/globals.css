@@ -1501,7 +1501,15 @@ body {
   overflow: hidden;
   white-space: nowrap;
 }
-.hero-card .try-types { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.hero-card .try-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+  /* Always reserve two rows (2 × 28px chips + gap) so tag wrapping never
+     changes the card height mid-roll. */
+  min-height: 64px;
+}
 /* Type chips on the hero card — 1:1 with prototype .chip
    (colored pill · white label · white dot) */
 .type-chip {
