@@ -191,6 +191,18 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
           <option value="1">Only</option>
         </select>
       </label>
+      <label
+        className="flex cursor-pointer select-none items-center gap-2 whitespace-nowrap text-xs font-semibold text-poke-dim"
+        title="Skip Pokémon you have favorited"
+      >
+        <input
+          type="checkbox"
+          checked={excludeFav}
+          onChange={(e) => setExcludeFav(e.target.checked)}
+          className="h-4 w-4 accent-poke-red"
+        />
+        <span>Exclude favorites</span>
+      </label>
     </>
   );
 
@@ -199,7 +211,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
   // selects, so the card never moves more than one row down.
   return (
     <div className="mx-auto max-w-[1080px] px-0 lg:px-6">
-      <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
+      <div className="mb-4 flex justify-center">
         <div
           className={`overflow-hidden transition-[width] duration-300 ${
             open
@@ -236,18 +248,6 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
             </button>
           )}
         </div>
-        <label
-          className="flex cursor-pointer select-none items-center gap-2 text-xs font-semibold text-poke-dim"
-          title="Skip Pokémon you have favorited"
-        >
-          <input
-            type="checkbox"
-            checked={excludeFav}
-            onChange={(e) => setExcludeFav(e.target.checked)}
-            className="h-4 w-4 accent-poke-red"
-          />
-          <span>Exclude favorites</span>
-        </label>
       </div>
 
       {notice && (
