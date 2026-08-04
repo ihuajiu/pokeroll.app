@@ -871,6 +871,50 @@ body {
   font-size: 12.5px;
 }
 
+/* Lock toggle (Random Team): small button pinned to the card's top-left
+   corner — the top-right is reserved for the corner sprite. Locked state
+   fills the button red and traces the card with a faint red outline. */
+.hero-card .lock-toggle {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  border: 1.5px solid rgb(var(--border));
+  background: color-mix(in srgb, rgb(var(--surface)) 88%, transparent);
+  color: rgb(var(--text-faint));
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease,
+    background 0.15s ease, transform 0.15s ease;
+}
+.hero-card .lock-toggle:hover {
+  color: rgb(var(--brand));
+  border-color: color-mix(in srgb, rgb(var(--brand)) 55%, rgb(var(--border)));
+  transform: scale(1.08);
+}
+.hero-card .lock-toggle.is-on {
+  color: #fff;
+  background: rgb(var(--brand));
+  border-color: rgb(var(--brand));
+  box-shadow: 0 4px 12px -6px rgb(var(--brand));
+}
+.team-card.hero-card.is-locked {
+  border-color: color-mix(in srgb, rgb(var(--brand)) 48%, rgb(var(--border)));
+  box-shadow: 0 1px 0 rgb(var(--border-soft)) inset,
+    0 0 0 1.5px color-mix(in srgb, rgb(var(--brand)) 32%, transparent),
+    0 6px 16px -16px var(--cc, rgb(var(--accent)));
+}
+/* The lock button overlaps the dex badge's spot — nudge the badge right on
+   lockable cards. */
+.team-card.hero-card:has(> .lock-toggle) .dex {
+  margin-left: 32px;
+}
+
 /* ============================================================
    Adventure Manifest — the rolled-adventure narrative banner.
    Uses the same design tokens as the team cards (surface / border /

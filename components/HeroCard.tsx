@@ -39,6 +39,13 @@ export default function HeroCard({
   selectable = false,
   selected = false,
   onToggleSelect,
+  /** Show a lock toggle (top-left corner) that keeps this card across
+   *  re-rolls — used by the Random Team roller. */
+  lockable = false,
+  /** Whether this card is currently locked. */
+  locked = false,
+  /** Toggle handler for the lock button. */
+  onToggleLock,
   /** Optional DOM id for the "New roll" button, so an external control can
    *  trigger this card's internal re-roll. */
   rollButtonId,
@@ -70,6 +77,13 @@ export default function HeroCard({
   selected?: boolean;
   /** Toggle handler for the selection checkbox. */
   onToggleSelect?: () => void;
+  /** Show a lock toggle (top-left corner) that keeps this card across
+   *  re-rolls — used by the Random Team roller. */
+  lockable?: boolean;
+  /** Whether this card is currently locked. */
+  locked?: boolean;
+  /** Toggle handler for the lock button. */
+  onToggleLock?: () => void;
   /** Optional DOM id for the "New roll" button, so an external control can
    *  trigger this card's internal re-roll. */
   rollButtonId?: string;
@@ -186,10 +200,53 @@ export default function HeroCard({
     <div
       ref={cardRef}
       className={`hero-card${hideName ? " hero-card--mystery" : ""}${variantClass}${
-        isLoading ? " is-loading" : ""
-      }`}
+        locked ? " is-locked" : ""
+      }${isLoading ? " is-loading" : ""}`}
       style={{ ["--cc" as string]: cc }}
     >
+      {lockable && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleLock?.();
+          }}
+          aria-pressed={locked}
+          aria-label={locked ? "Unlock — allow re-roll" : "Lock — keep on re-roll"}
+          title={locked ? "Unlock — allow re-roll" : "Lock — keep on re-roll"}
+          className={`lock-toggle${locked ? " is-on" : ""}`}
+        >
+          {locked ? (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-3.5 w-3.5"
+              aria-hidden="true"
+            >
+              <rect x="4" y="11" width="16" height="10" rx="2" fill="currentColor" stroke="none" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+          ) : (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-3.5 w-3.5"
+              aria-hidden="true"
+            >
+              <rect x="4" y="11" width="16" height="10" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 7.9-.8" />
+            </svg>
+          )}
+        </button>
+      )}
       <div className="hero-card-art">
         {spriteUrl ? (
           // eslint-disable-next-line @next/next/no-img-element

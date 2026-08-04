@@ -59,6 +59,9 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
   const [rolled, setRolled] = useState<Pokemon[] | null>(initial ?? null);
   const [rolling, setRolling] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  /** Locked slot indices — locked cards survive re-rolls in place. Keyed by
+   *  slot index (not dexNumber) so duplicate Pokémon each get their own lock. */
+  const [locks, setLocks] = useState<ReadonlySet<number>>(new Set());
   const { add, team, max } = useTeam();
 
   function flash(msg: string) {
@@ -66,27 +69,67 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
     setTimeout(() => setNotice(null), 2600);
   }
 
+  function toggleLock(i: number) {
+    setLocks((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
+    });
+  }
+
+  /** Team Size shrunk: trim from the end, dropping unlocked cards first and
+   *  locked ones only when there is no other choice. */
+  function trimTo(n: number) {
+    if (!rolled || n >= rolled.length) return;
+    const pairs = rolled.map((p, i) => ({ p, locked: locks.has(i) }));
+    const idxs = pairs.map((_, i) => i);
+    const drop = new Set(
+      [
+        ...idxs.filter((i) => !pairs[i].locked).reverse(),
+        ...idxs.filter((i) => pairs[i].locked).reverse(),
+      ].slice(0, pairs.length - n),
+    );
+    const survivors = pairs.filter((_, i) => !drop.has(i));
+    setRolled(survivors.map((s) => s.p));
+    setLocks(
+      new Set(survivors.flatMap((s, i) => (s.locked ? [i] : []))),
+    );
+  }
+
   async function roll() {
     if (rolling) return;
+    if (rolled && locks.size >= rolled.length) return; // everything locked
     setRolling(true);
     try {
       const p = new URLSearchParams();
       if (gen) p.set("gen", gen);
       if (region) p.set("region", region);
       if (type) p.set("type", type);
+      // With locks active only the unlocked slots are refilled; the request
+      // asks for exactly that many new Pokémon and they replace the unlocked
+      // slots in order. First roll uses the picked (or random) team size.
       const sizePick =
         size ||
         String(TEAM_SIZES[Math.floor(Math.random() * TEAM_SIZES.length)]);
-      p.set("count", sizePick);
+      const need = rolled ? rolled.length - locks.size : Number(sizePick);
+      p.set("count", String(need));
       p.set("seed", Math.random().toString(36).slice(2, 10));
       const res = await fetch(`/api/team/random?${p.toString()}`, {
         cache: "no-store",
       });
       if (!res.ok) throw new Error("roll failed");
       const data = (await res.json()) as { pokemon: Pokemon[] };
-      setRolled(data.pokemon);
-      if (data.pokemon.length === 0) {
-        flash("No Pokémon match those filters — try widening them.");
+      if (rolled && locks.size > 0) {
+        const queue = [...data.pokemon];
+        setRolled(
+          rolled.map((cur, i) => (locks.has(i) ? cur : (queue.shift() ?? cur))),
+        );
+      } else {
+        setRolled(data.pokemon);
+        if (data.pokemon.length === 0) {
+          flash("No Pokémon match those filters — try widening them.");
+        }
       }
     } catch {
       /* keep previous roll on failure */
@@ -208,7 +251,14 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
                   Team Size
                   <select
                     value={size}
-                    onChange={(e) => setSize(e.target.value)}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      setSize(v);
+                      // Shrinking the team trims the current roll on the spot
+                      // (unlocked cards drop first); growing it just widens the
+                      // target — the next Roll tops up the extra slots.
+                      if (v) trimTo(Number(v));
+                    }}
                     className={selectCls}
                   >
                     <option value="">Random</option>
@@ -237,7 +287,12 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
         <button
           type="button"
           onClick={roll}
-          disabled={rolling}
+          disabled={rolling || (rolled != null && locks.size >= rolled.length)}
+          title={
+            rolled != null && locks.size >= rolled.length
+              ? "All cards are locked — unlock one to roll"
+              : undefined
+          }
           className="absolute right-6 inline-flex items-center gap-2 rounded-xl bg-poke-red px-7 py-3 text-base font-bold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <svg
@@ -257,7 +312,11 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
               <circle cx="15.5" cy="15.5" r="1.3" />
             </g>
           </svg>
-          {rolling ? "Rolling…" : "Roll"}
+          {rolling
+            ? "Rolling…"
+            : rolled && locks.size > 0 && locks.size < rolled.length
+              ? `Roll (${rolled.length - locks.size})`
+              : "Roll"}
         </button>
       </div>
 
@@ -273,12 +332,15 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
       {rolled && rolled.length > 0 && (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {rolled.map((p) => (
+            {rolled.map((p, i) => (
               <HeroCard
-                key={p.dexNumber}
+                key={`${i}-${p.dexNumber}`}
                 pokemon={p}
                 variant="team"
                 showActions={false}
+                lockable
+                locked={locks.has(i)}
+                onToggleLock={() => toggleLock(i)}
               />
             ))}
           </div>
