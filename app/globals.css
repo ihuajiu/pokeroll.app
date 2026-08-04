@@ -808,7 +808,8 @@ body {
    the sprite — overlap is intentional so long names stay fully visible. */
 .team-card.hero-card .dex,
 .team-card.hero-card .try-types {
-  max-width: calc(100% - 174px);
+  /* Sprite is 118px now; keep a small gap so chips stay on one line. */
+  max-width: calc(100% - 128px);
 }
 /* The description sits below the type chips; the sprite's art is centered in
    its box with transparent margins, so it can safely use more width. */
