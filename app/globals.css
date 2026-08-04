@@ -809,7 +809,7 @@ body {
 .team-card.hero-card .dex,
 .team-card.hero-card .try-types,
 .team-card.hero-card .hero-card-desc {
-  max-width: calc(100% - 198px);
+  max-width: calc(100% - 174px);
 }
 /* Big ID badge as the small label */
 .team-card.hero-card .dex {
@@ -861,10 +861,7 @@ body {
   margin: 0;
   font: 400 13px/1.5 var(--font);
   color: rgb(var(--text-dim));
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: block;
 }
 /* Alternate-form chip (Mega / Alolan / Galarian / Hisuian / Paldean / Gigantamax). */
 .form-chip {
@@ -1216,7 +1213,7 @@ body {
 .team-card--wide.hero-card h3,
 .team-card--wide.hero-card .try-types,
 .team-card--wide.hero-card .hero-card-desc {
-  max-width: calc(100% - 260px);
+  max-width: calc(100% - 240px);
 }
 .team-card--wide.hero-card h3 {
   font: 800 clamp(30px, 8cqi, 46px) / 1.02 var(--display);
@@ -1272,7 +1269,7 @@ body {
   .team-card--wide.hero-card .dex,
   .team-card--wide.hero-card .try-types,
   .team-card--wide.hero-card .hero-card-desc {
-    max-width: calc(100% - 136px);
+    max-width: calc(100% - 120px);
   }
   .team-card--wide.hero-card h3 {
     max-width: 100%;
@@ -1384,7 +1381,7 @@ body {
   .hero-visual .team-card--wide.hero-card .dex,
   .hero-visual .team-card--wide.hero-card .try-types,
   .hero-visual .team-card--wide.hero-card .hero-card-desc {
-    max-width: calc(100% - 164px);
+    max-width: calc(100% - 144px);
   }
   .random-stage .team-card--wide.hero-card h3,
   .card-stage .team-card--wide.hero-card h3,
