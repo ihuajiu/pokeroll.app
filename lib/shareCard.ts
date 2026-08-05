@@ -807,33 +807,38 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   const gold = goldGradient(ctx, 60, W - 60);
   const amber = "#fbbf24";
 
-  // Header
+  // Header — compact: brand tag, winner headline, totals, gold divider
   ctx.textAlign = "center";
   ctx.fillStyle = gold;
-  ctx.font = "800 30px Sora, Outfit, sans-serif";
+  ctx.font = "800 26px Sora, Outfit, sans-serif";
   if ("letterSpacing" in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = "6px";
-  ctx.fillText("✦ TEAM CHALLENGE ✦", W / 2, 64);
+  ctx.fillText("✦ TEAM CHALLENGE ✦", W / 2, 58);
   if ("letterSpacing" in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = "0px";
-  ctx.fillStyle = gold;
-  ctx.font = "800 62px Sora, Outfit, sans-serif";
-  ctx.fillText("RESULT", W / 2, 140);
-  ctx.fillStyle = amber;
-  ctx.font = "800 40px Sora, Outfit, sans-serif";
-  ctx.fillText(data.result, W / 2, 202);
-  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-  ctx.font = "600 23px Sora, Outfit, sans-serif";
+  const resFont = fitFont(ctx, data.result, 800, 46, W - 220, 26);
+  ctx.font = resFont;
+  const resW = ctx.measureText(data.result).width;
+  ctx.fillStyle = goldGradient(ctx, W / 2 - resW / 2, W / 2 + resW / 2);
+  ctx.fillText(data.result, W / 2, 124);
+  ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+  ctx.font = "600 22px Sora, Outfit, sans-serif";
   ctx.fillText(
     `Challenger ${data.myBst} BST   ·   Challenge ${data.chBst} BST`,
     W / 2,
-    248,
+    168,
   );
+  ctx.strokeStyle = "rgba(250, 204, 21, 0.25)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(96, 198);
+  ctx.lineTo(W - 96, 198);
+  ctx.stroke();
 
   // Golden halo behind the lineups
   const glow = ctx.createRadialGradient(W / 2, H / 2, 30, W / 2, H / 2, 620);
   glow.addColorStop(0, "rgba(250, 204, 21, 0.12)");
   glow.addColorStop(1, "rgba(250, 204, 21, 0)");
   ctx.fillStyle = glow;
-  ctx.fillRect(0, 260, W, 920);
+  ctx.fillRect(0, 240, W, 950);
 
   // Twinkles
   ctx.fillStyle = "rgba(252, 211, 77, 0.85)";
@@ -864,7 +869,7 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   const size = 96;
   const nameW = 250;
   const barH = 9;
-  const rows = [330, 460, 590, 720, 850, 980];
+  const rows = [276, 412, 548, 684, 820, 956];
   // Mirrored lineups around the VS: left reads [ avatar | name + BST bar ],
   // right reads [ name + BST bar | avatar ].
   const leftAvatarX = 84;
@@ -936,9 +941,9 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   const challengerColor = won ? winAccent : "rgba(255,255,255,0.6)";
   const columnLabel = (text: string, x: number, color: string) => {
     ctx.textAlign = "center";
-    ctx.font = "800 24px Sora, Outfit, sans-serif";
+    ctx.font = "800 22px Sora, Outfit, sans-serif";
     ctx.fillStyle = color;
-    ctx.fillText(text, x, 300);
+    ctx.fillText(text, x, 238);
   };
   columnLabel(
     lost ? "★ THE CHALLENGE — WINNER" : "THE CHALLENGE",
@@ -974,7 +979,7 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   ctx.textAlign = "center";
   ctx.fillStyle = gold;
   ctx.font = "900 72px Sora, Outfit, sans-serif";
-  ctx.fillText("VS", 506, 660);
+  ctx.fillText("VS", 506, 650);
 
   // Footer: brand (left) + QR (right, no caption)
   ctx.textAlign = "left";
