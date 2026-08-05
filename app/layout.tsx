@@ -60,10 +60,10 @@ export default async function RootLayout({
         />
         <style
           dangerouslySetInnerHTML={{
-            __html: `@font-face{font-family:"Outfit";font-style:normal;font-weight:100 900;font-display:swap;src:url("/fonts/outfit-var.woff2") format("woff2")}
-@font-face{font-family:"Sora";font-style:normal;font-weight:100 800;font-display:swap;src:url("/fonts/sora-var.woff2") format("woff2")}
-@font-face{font-family:"Space Mono";font-style:normal;font-weight:400;font-display:swap;src:url("/fonts/space-mono-400.woff2") format("woff2")}
-@font-face{font-family:"Space Mono";font-style:normal;font-weight:700;font-display:swap;src:url("/fonts/space-mono-700.woff2") format("woff2")}`,
+            __html: `@font-face{font-family:"Outfit";font-style:normal;font-weight:100 900;font-display:optional;src:url("/fonts/outfit-var.woff2") format("woff2")}
+@font-face{font-family:"Sora";font-style:normal;font-weight:100 800;font-display:optional;src:url("/fonts/sora-var.woff2") format("woff2")}
+@font-face{font-family:"Space Mono";font-style:normal;font-weight:400;font-display:optional;src:url("/fonts/space-mono-400.woff2") format("woff2")}
+@font-face{font-family:"Space Mono";font-style:normal;font-weight:700;font-display:optional;src:url("/fonts/space-mono-700.woff2") format("woff2")}`,
           }}
         />
         <script
