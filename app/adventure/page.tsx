@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AdventureView from "@/components/AdventureView";
+import GuideSteps from "@/components/GuideSteps";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import PageHeader from "@/components/PageHeader";
@@ -51,6 +52,26 @@ export default async function AdventurePage({
       />
       <div className="mx-auto max-w-5xl px-3">
         <AdventureView initial={adventure} />
+        <GuideSteps
+          className="mt-10"
+          steps={[
+            {
+              n: "1",
+              t: "Roll your adventure",
+              d: "One tap rolls your trainer, rival, region, starter, team of six, challenge, legendary and goal.",
+            },
+            {
+              n: "2",
+              t: "Pick a difficulty",
+              d: "Easy, Normal, Hard or Extreme — the higher it goes, the wilder the journey.",
+            },
+            {
+              n: "3",
+              t: "Share it",
+              d: "Copy the seeded link so friends replay the exact same adventure — or add the team to yours.",
+            },
+          ]}
+        />
         <FaqSection
           items={[
             {

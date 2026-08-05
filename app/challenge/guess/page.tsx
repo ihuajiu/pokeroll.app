@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
+import GuideSteps from "@/components/GuideSteps";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -85,17 +86,26 @@ export default async function GuessChallengePage({
         </Link>
       </p>
       <ChallengeGenerator challenge={challenge} />
-      <section className="mt-10 max-w-2xl">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
-          How to play
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-poke-dim">
-          Study each silhouette and lock in your guess, then flip the card to
-          reveal the Pokémon. Filters narrow the pool by type, region or
-          generation, and the seed in the link reproduces the exact same
-          challenge — share it with a friend and compare scores.
-        </p>
-      </section>
+      <GuideSteps
+        className="mt-10 max-w-5xl"
+        steps={[
+          {
+            n: "1",
+            t: "Study the silhouettes",
+            d: "Shape, size and the Easy type hint are all you've got — lock in your guess.",
+          },
+          {
+            n: "2",
+            t: "Flip to reveal",
+            d: "Click a card to flip it and see if you named the Pokémon right.",
+          },
+          {
+            n: "3",
+            t: "Share & compare",
+            d: "The seed in the link recreates the same lineup — share it and race a friend.",
+          },
+        ]}
+      />
       <RelatedTools current="/challenge/guess" />
     </main>
   );
