@@ -4,6 +4,18 @@
 // on this exact result. Same-origin local artwork keeps the canvas untainted.
 import QRCode from "qrcode";
 
+/** True when the native share sheet is genuinely useful
+ *  (phone/tablet). Desktop Chromium/Edge expose navigator.share but pop a
+ *  clunky system dialog — there we fall back to one-tap clipboard copy. */
+export function isMobileShare(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    (window.matchMedia?.("(pointer: coarse)").matches ||
+      /Android|iPhone|iPad|iPod/i.test(navigator.userAgent))
+  );
+}
+
+
 export interface ShinyCardData {
   name: string;
   /** Local artwork url, e.g. /pokemon/shiny-artwork/81.png */
@@ -332,7 +344,7 @@ export async function shareShinyCard(
         // Cancelled or no share targets — fall through to the next option.
       }
     }
-    if (typeof navigator !== "undefined" && navigator.share) {
+    if (isMobileShare() && typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title: "Shiny Hunt Challenge", text, url: data.url });
         return "shared";
@@ -711,7 +723,7 @@ export async function sharePokemonLink(
   meta: PokemonCardMeta,
 ): Promise<"shared" | "copied" | null> {
   const text = `I rolled ${meta.name} on PokeRoll.app — what will you get?`;
-  if (typeof navigator !== "undefined" && navigator.share) {
+  if (isMobileShare() && typeof navigator !== "undefined" && navigator.share) {
     try {
       await navigator.share({ title: "Random Pokémon Generator", text, url: meta.url });
       return "shared";
@@ -1076,7 +1088,7 @@ export async function shareTeamResult(
         // fall through
       }
     }
-    if (typeof navigator !== "undefined" && navigator.share) {
+    if (isMobileShare() && typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title: "Team Challenge Result", text, url: data.url });
         return "shared";

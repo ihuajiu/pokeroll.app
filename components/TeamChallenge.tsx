@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import HeroCard from "@/components/HeroCard";
 import type { Pokemon } from "@/lib/types";
 import { downloadTeamResult, type TeamResultCardData } from "@/lib/shareCard";
+import { isMobileShare } from "@/lib/shareCard";
 
 function bstTotal(list: Pokemon[]) {
   return list.reduce((s, p) => s + (p.bst || 0), 0);
@@ -146,7 +147,7 @@ export default function TeamChallenge({
   async function challenge() {
     const url = `${window.location.origin}/team/challenge?seed=${seed ?? ""}${params}`;
     const text = `I rolled this team of ${team.length} with PokeRoll — can you beat it?`;
-    if (typeof navigator !== "undefined" && navigator.share) {
+    if (isMobileShare() && typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title: "Team Challenge", text, url });
         return;
@@ -197,7 +198,7 @@ export default function TeamChallenge({
         : myBst < chBst
           ? `The challenge team beat me ${chBst}-${myBst} BST on PokeRoll Team Challenge — think you can do better?`
           : `It's a tie — ${myBst} BST each on PokeRoll Team Challenge!`;
-    if (typeof navigator !== "undefined" && navigator.share) {
+    if (isMobileShare() && typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title: "Team Challenge Result", text, url });
         return;
