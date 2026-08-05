@@ -20,7 +20,7 @@ const MAIN: {
 }[] = [
   { href: "/adventure", label: "Adventure" },
   { href: "/random-pokemon-generator", label: "Generators" },
-  { href: "/team/random", label: "Team" },
+  { href: "/team/random", label: "Team", dropdownGroup: "team" },
   { href: "/challenge/guess", label: "Challenges", dropdownGroup: "challenge" },
   { href: "/fusion", label: "Tools", dropdownGroup: "tool" },
 ];
