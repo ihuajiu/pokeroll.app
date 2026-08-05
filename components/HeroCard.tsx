@@ -62,6 +62,7 @@ export default function HeroCard({
    *  With the action bar visible it sits at the left of the bar; on
    *  roster-style cards (no action bar) it floats at the top-right corner. */
   favoritable = false,
+  hideRoll = false,
   /** Optional DOM id for the "New roll" button, so an external control can
    *  trigger this card's internal re-roll. */
   rollButtonId,
@@ -102,6 +103,8 @@ export default function HeroCard({
   onToggleLock?: () => void;
   /** Show a heart toggle that adds this Pokémon to the Favorites list. */
   favoritable?: boolean;
+  /** Hide the "New roll" button (e.g. fixed result cards). */
+  hideRoll?: boolean;
   /** Optional DOM id for the "New roll" button, so an external control can
    *  trigger this card's internal re-roll. */
   rollButtonId?: string;
@@ -610,6 +613,7 @@ export default function HeroCard({
               )}
             </button>
           ) : null}
+          {!hideRoll && (
           <button
             type="button"
             id={rollButtonId}
@@ -630,6 +634,7 @@ export default function HeroCard({
             </svg>
             {isLoading ? "Rolling…" : "New roll"}
           </button>
+          )}
         </div>
       ) : null}
       {favMsg && typeof document !== "undefined"

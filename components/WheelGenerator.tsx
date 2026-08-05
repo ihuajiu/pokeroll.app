@@ -162,7 +162,7 @@ export default function WheelGenerator({
                       </span>
                     )}
                   </div>
-                  <HeroCard pokemon={p} variant="team" favoritable />
+                  <HeroCard pokemon={p} variant="team" favoritable hideRoll />
                 </div>
               ))}
             </div>
@@ -370,7 +370,7 @@ export default function WheelGenerator({
                     </span>
                   )}
                 </div>
-                <HeroCard pokemon={r.pokemon} variant="team" favoritable />
+                <HeroCard pokemon={r.pokemon} variant="team" favoritable hideRoll />
               </div>
             ))}
           </div>
