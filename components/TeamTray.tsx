@@ -31,7 +31,7 @@ export default function TeamTray() {
         aria-label={`Your team (${team.length}/${max})`}
         aria-expanded={open}
         title="Your team"
-        className="game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center"
+        className="game-btn game-btn-ghost fav-entry inline-flex h-9 w-9 items-center justify-center"
       >
         <span className="relative inline-flex">
           {/* Two-person (team) icon + live count badge */}
