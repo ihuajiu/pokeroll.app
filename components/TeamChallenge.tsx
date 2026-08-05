@@ -23,8 +23,7 @@ function DetailedHowTo() {
         <li>
           <strong className="text-poke-ink">2. Roll yours.</strong> Tap{" "}
           <em>Roll my team</em> to generate your own 6-Pokémon squad — one roll
-          per challenge, so no retrying until you win. Start a new challenge to
-          try again.
+          per challenge, so no retrying until you win.
         </li>
         <li>
           <strong className="text-poke-ink">3. Compare.</strong> Both teams are
@@ -41,6 +40,12 @@ function DetailedHowTo() {
           <em>Share the result card</em> or <em>Download card</em> creates an
           image of the matchup (with a QR code) — great for posting in your
           community.
+        </li>
+        <li>
+          <strong className="text-poke-ink">6. Start your own.</strong>{" "}
+          <em>Start your own challenge</em> makes you the host — you re-roll the
+          challenge team and share it with a friend, instead of rolling against
+          your own squad again.
         </li>
       </ol>
     </div>
@@ -233,7 +238,7 @@ export default function TeamChallenge({
   // The responder gets one roll per challenge; to try again they start a
   // fresh challenge instead of re-rolling the same one until they win.
   function startNewChallenge() {
-    router.push(`/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}${params}`);
+    router.push(`/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}&owner=1${params}`);
   }
 
   const steps = [
@@ -257,7 +262,7 @@ export default function TeamChallenge({
           {isOwner
             ? "Share the link — a friend rolls their own team to try to beat this one."
             : yours
-              ? "One roll per challenge — start a new challenge to try again."
+              ? "One roll per challenge — start your own challenge to share with a friend."
               : "You get 6 random Pokémon — higher total base stats than the challenge team wins."}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
@@ -278,7 +283,7 @@ export default function TeamChallenge({
             {isOwner
               ? "Re-roll challenge"
               : yours
-                ? "Start a new challenge"
+                ? "Start your own challenge"
                 : "Roll my team"}
           </button>
           <button
