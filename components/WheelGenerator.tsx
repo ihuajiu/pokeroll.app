@@ -7,7 +7,7 @@ import HeroCard from "./HeroCard";
 import GenerateButton from "./GenerateButton";
 import { useTeam } from "./useTeam";
 import LogoMark from "./LogoMark";
-import ShareButton from "./ShareButton";
+import ShareDialog from "./ShareDialog";
 
 export type WheelPayload = { items: Pokemon[] };
 
@@ -357,7 +357,7 @@ export default function WheelGenerator({
             </p>
           )}
           <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <ShareButton
+            <ShareDialog
               url={`/wheel?result=1&players=${playerCount}&dex=${results
                 .map((r) => r.pokemon.dexNumber)
                 .join(",")}`}
@@ -367,7 +367,6 @@ export default function WheelGenerator({
                   : undefined
               }
               label="Share results"
-              copiedLabel="Link copied!"
               className="rounded-xl bg-amber-500 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-amber-600"
             />
             <button
