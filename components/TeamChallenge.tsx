@@ -22,8 +22,9 @@ function DetailedHowTo() {
         </li>
         <li>
           <strong className="text-poke-ink">2. Roll yours.</strong> Tap{" "}
-          <em>Roll my team</em> to generate your own 6-Pokémon squad. You can
-          re-roll as many times as you like until you're happy.
+          <em>Roll my team</em> to generate your own 6-Pokémon squad — one roll
+          per challenge, so no retrying until you win. Start a new challenge to
+          try again.
         </li>
         <li>
           <strong className="text-poke-ink">3. Compare.</strong> Both teams are
@@ -229,6 +230,12 @@ export default function TeamChallenge({
     );
   }
 
+  // The responder gets one roll per challenge; to try again they start a
+  // fresh challenge instead of re-rolling the same one until they win.
+  function startNewChallenge() {
+    router.push(`/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}${params}`);
+  }
+
   const steps = [
     { n: "1", t: "Roll a team", d: "That's the lineup you'll challenge with." },
     { n: "2", t: "Share the link", d: "A friend opens the exact same team." },
@@ -250,12 +257,12 @@ export default function TeamChallenge({
           {isOwner
             ? "Share the link — a friend rolls their own team to try to beat this one."
             : yours
-              ? "Re-roll your squad as many times as you like, then compare total BST."
+              ? "One roll per challenge — start a new challenge to try again."
               : "You get 6 random Pokémon — higher total base stats than the challenge team wins."}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
-            onClick={isOwner ? rerollChallenge : rollMine}
+            onClick={isOwner ? rerollChallenge : yours ? startNewChallenge : rollMine}
             className="inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-3.5 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden="true">
@@ -271,7 +278,7 @@ export default function TeamChallenge({
             {isOwner
               ? "Re-roll challenge"
               : yours
-                ? "Re-roll my team"
+                ? "Start a new challenge"
                 : "Roll my team"}
           </button>
           <button
