@@ -879,11 +879,12 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
     avatarX: number,
     accent: string,
     barColor: string,
+    align: "left" | "right",
   ) => {
     team.forEach((p, i) => {
       const y = rows[i];
       const img = imgs[i];
-      // avatar frame (right of the name)
+      // avatar frame
       ctx.save();
       if (accent === winAccent) {
         ctx.shadowColor = "rgba(250, 204, 21, 0.45)";
@@ -907,19 +908,23 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
         const dh = img.height * scale;
         ctx.drawImage(img, avatarX + (size - dw) / 2, y + (size - dh) / 2, dw, dh);
       }
-      // name to the left, vertically centered with the avatar
-      ctx.textAlign = "left";
-      ctx.font = fitFont(ctx, p.name, 700, 23, nameW, 12);
+      // Name + BST bar: a stack anchored to the TOP of the row. Left column
+      // is flush-left, right column is flush-right, and the right bar grows
+      // toward the left so the two lineups mirror each other.
+      const alignX = align === "right" ? nameX + nameW : nameX;
+      ctx.textAlign = align;
+      ctx.font = fitFont(ctx, p.name, 700, 22, nameW, 12);
       ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-      ctx.fillText(p.name, nameX, y + size / 2 + 8);
-      // BST progress bar under the name
-      const barY = y + size / 2 + 20;
+      ctx.fillText(p.name, alignX, y + 27);
+      const barY = y + 41;
       roundRect(ctx, nameX, barY, nameW, barH, 5);
       ctx.fillStyle = "rgba(255, 255, 255, 0.14)";
       ctx.fill();
       const frac = Math.max(0, Math.min(1, (p.bst || 0) / 800));
       if (frac > 0) {
-        roundRect(ctx, nameX, barY, Math.max(barH, nameW * frac), barH, 5);
+        const fillW = Math.max(barH, nameW * frac);
+        const fillX = align === "right" ? nameX + nameW - fillW : nameX;
+        roundRect(ctx, fillX, barY, fillW, barH, 5);
         ctx.fillStyle = barColor;
         ctx.fill();
       }
@@ -953,6 +958,7 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
     leftAvatarX,
     lost ? winAccent : loseAccent,
     lost ? amber : "rgba(255, 255, 255, 0.5)",
+    "left",
   );
   drawColumn(
     data.challenger,
@@ -961,6 +967,7 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
     rightAvatarX,
     won ? winAccent : loseAccent,
     won ? amber : "rgba(255, 255, 255, 0.5)",
+    "right",
   );
 
   // VS
