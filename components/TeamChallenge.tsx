@@ -28,6 +28,7 @@ export default function TeamChallenge({
 }) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [resultCopied, setResultCopied] = useState(false);
 
   const chBst = bstTotal(challenger);
   const myBst = yours ? bstTotal(yours) : null;
@@ -57,6 +58,34 @@ export default function TeamChallenge({
       await navigator.clipboard?.writeText(`${text}\n${url}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable */
+    }
+  }
+
+  async function shareResult() {
+    if (yours == null || myBst == null) return;
+    // The URL carries both seeds, so the link reproduces this exact matchup
+    // and the same winner for whoever opens it.
+    const url = window.location.href;
+    const text =
+      myBst > chBst
+        ? `My team (${myBst} BST) beat the challenge team (${chBst} BST) on PokeRoll — can you beat mine?`
+        : myBst < chBst
+          ? `The challenge team (${chBst} BST) beat my team (${myBst} BST) on PokeRoll — think you can do better?`
+          : `It's a tie — ${myBst} BST each on PokeRoll Team Challenge!`;
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title: "Team Challenge Result", text, url });
+        return;
+      } catch {
+        /* fall through to clipboard */
+      }
+    }
+    try {
+      await navigator.clipboard?.writeText(`${text}\n${url}`);
+      setResultCopied(true);
+      setTimeout(() => setResultCopied(false), 1800);
     } catch {
       /* clipboard unavailable */
     }
@@ -105,6 +134,19 @@ export default function TeamChallenge({
           </div>
           <p className="mt-2 text-lg font-extrabold text-poke-red">{result}</p>
           <p className="mt-1 text-xs text-poke-dim">Higher total base stats wins.</p>
+          <button
+            onClick={shareResult}
+            className="mt-3 inline-flex items-center gap-2 rounded-xl bg-poke-btn px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-poke-btnHover"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            {resultCopied ? "Link copied!" : "Share the result"}
+          </button>
         </div>
       )}
 
