@@ -31,11 +31,36 @@ export default function TeamTray() {
         aria-label={`Your team (${team.length}/${max})`}
         aria-expanded={open}
         title="Your team"
-        className="game-btn game-btn-ghost inline-flex h-9 items-center gap-1.5 whitespace-nowrap px-3 text-sm font-semibold"
+        className="game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center px-0 text-sm font-semibold md:w-auto md:px-3"
       >
-        Your Team
-        <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
-          {team.length}
+        {/* Icon-only on mobile; text + badge on desktop */}
+        <span className="relative inline-flex md:hidden">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5"
+            aria-hidden="true"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          {team.length > 0 && (
+            <span className="absolute -right-2.5 -top-1.5 rounded-full bg-[#ee3b3b] px-1 text-[10px] font-bold leading-4 text-white">
+              {team.length}
+            </span>
+          )}
+        </span>
+        <span className="hidden items-center gap-1.5 md:inline-flex">
+          Your Team
+          <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
+            {team.length}
+          </span>
         </span>
       </button>
 

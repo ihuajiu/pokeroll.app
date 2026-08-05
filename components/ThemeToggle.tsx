@@ -81,12 +81,13 @@ export default function ThemeToggle() {
           </svg>
         )}
       </button>
+      <span className="hidden sm:inline-flex">
       <button
         type="button"
         onClick={toggleSkin}
         aria-label={skin === "versus" ? "Switch to Pokédex skin" : "Switch to Versus skin"}
         title={skin === "versus" ? "Pokédex skin" : "Versus skin"}
-        className="game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center"
+        className="game-btn game-btn-ghost hidden h-9 w-9 items-center justify-center sm:inline-flex"
       >
         {skin === "versus" ? (
           <svg
@@ -119,6 +120,7 @@ export default function ThemeToggle() {
           </svg>
         )}
       </button>
+      </span>
     </>
   );
 }

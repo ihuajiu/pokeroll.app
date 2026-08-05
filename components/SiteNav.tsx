@@ -37,7 +37,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
       className="sticky top-0 z-30 border-b border-poke-border backdrop-blur-md"
       style={{ background: "var(--header-bg)" }}
     >
-      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-6 py-3">
+      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-2 px-4 py-3 md:gap-4 md:px-6">
         <Link
           href="/"
           className="brand"
@@ -127,7 +127,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 md:gap-2">
           <Link
             href="/favorites"
             aria-label={`Favorites (${favorites.length})`}
