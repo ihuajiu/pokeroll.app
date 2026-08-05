@@ -10,7 +10,7 @@ import AddToTeamButton from "./AddToTeamButton";
 export type WheelPayload = { items: Pokemon[] };
 
 const SEG = 8;
-const SIZE = 320;
+const SIZE = 340;
 
 export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
   const [items, setItems] = useState<Pokemon[]>(initial.items);
@@ -53,48 +53,94 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
       </div>
 
       <div className="relative mx-auto" style={{ width: SIZE, height: SIZE }}>
-        <div className="absolute left-1/2 z-10 -translate-x-1/2" style={{ top: -6 }}>
+        {/* Gold pointer (fixed above the wheel) */}
+        <div className="absolute left-1/2 z-30 -translate-x-1/2" style={{ top: -14 }}>
           <div
             style={{
               width: 0,
               height: 0,
-              borderLeft: "12px solid transparent",
-              borderRight: "12px solid transparent",
-              borderTop: "20px solid var(--accent)",
+              borderLeft: "14px solid transparent",
+              borderRight: "14px solid transparent",
+              borderTop: "28px solid #f59e0b",
+              filter: "drop-shadow(0 3px 4px rgba(0,0,0,0.35))",
             }}
           />
         </div>
+
+        {/* Outer gold ring */}
         <div
-          className="absolute inset-0 rounded-full border-4 border-poke-border shadow-lg"
+          className="absolute inset-0 rounded-full"
           style={{
             background:
-              "conic-gradient(var(--wheel-a) 0deg 45deg, var(--wheel-b) 45deg 90deg, var(--wheel-a) 90deg 135deg, var(--wheel-b) 135deg 180deg, var(--wheel-a) 180deg 225deg, var(--wheel-b) 225deg 270deg, var(--wheel-a) 270deg 315deg, var(--wheel-b) 315deg 360deg)",
-            transform: `rotate(${rotation}deg)`,
-            transition: spinning
-              ? "transform 4s cubic-bezier(0.17,0.67,0.12,0.99)"
-              : "none",
+              "linear-gradient(135deg, #fde68a 0%, #f59e0b 45%, #fbbf24 70%, #fff7d6 100%)",
+            padding: 5,
+            boxShadow:
+              "0 0 0 4px rgba(245, 158, 11, 0.12), 0 22px 48px -22px rgba(245, 158, 11, 0.55)",
           }}
         >
-          {items.map((p, i) => (
+          <div className="relative h-full w-full overflow-hidden rounded-full bg-poke-surface">
+            {/* Rotating segments + artwork */}
             <div
-              key={`${p.dexNumber}-${i}`}
-              className="absolute left-1/2 top-1/2"
+              className="absolute inset-0"
               style={{
-                transform: `translate(-50%,-50%) rotate(${i * (360 / SEG)}deg) translateY(-${SIZE / 2 - 36}px)`,
+                background:
+                  "conic-gradient(#ee3b3b 0deg 45deg, #ffffff 45deg 90deg, #ee3b3b 90deg 135deg, #ffffff 135deg 180deg, #ee3b3b 180deg 225deg, #ffffff 225deg 270deg, #ee3b3b 270deg 315deg, #ffffff 315deg 360deg)",
+                transform: `rotate(${rotation}deg)`,
+                transition: spinning
+                  ? "transform 4s cubic-bezier(0.17,0.67,0.12,0.99)"
+                  : "none",
               }}
             >
-              {p.artwork ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={p.artwork}
-                  alt={p.displayName}
-                  width={48}
-                  height={48}
-                  style={{ width: 48, height: 48 }}
-                />
-              ) : null}
+              {/* Gold separators between segments */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background:
+                    "repeating-conic-gradient(rgba(245, 158, 11, 0.9) 0deg 0.8deg, transparent 0.8deg 45deg)",
+                }}
+              />
+              {items.map((p, i) => (
+                <div
+                  key={`${p.dexNumber}-${i}`}
+                  className="absolute left-1/2 top-1/2"
+                  style={{
+                    transform: `translate(-50%,-50%) rotate(${i * (360 / SEG)}deg) translateY(-${SIZE / 2 - 40}px)`,
+                  }}
+                >
+                  {p.artwork ? (
+                    <div
+                      className={`flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-md transition-transform duration-500 ${
+                        winner === i ? "scale-110 ring-4 ring-amber-400" : ""
+                      }`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={p.artwork}
+                        alt={p.displayName}
+                        width={44}
+                        height={44}
+                        style={{ width: 44, height: 44 }}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Center Poké Ball hub */}
+        <div
+          className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+          style={{ width: 84, height: 84 }}
+        >
+          <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-white shadow-xl">
+            <div className="h-1/2 w-full bg-poke-btn" />
+            <div className="h-1/2 w-full bg-white" />
+            <div className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-poke-ink shadow-md">
+              <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -103,7 +149,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
           type="button"
           onClick={spin}
           disabled={spinning}
-          className="rounded-xl bg-poke-btn px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-xl bg-poke-btn px-6 py-2.5 font-semibold text-white shadow-glow transition hover:bg-poke-btnHover disabled:cursor-not-allowed disabled:opacity-60"
         >
           {spinning ? "Spinning…" : "Spin!"}
         </button>
