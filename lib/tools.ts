@@ -122,9 +122,9 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     href: "/wheel",
-    label: "Spin the Wheel",
-    desc: "Let the wheel decide your next Pokémon.",
-    group: "generator",
+    label: "Wheel Battle",
+    desc: "Multiplayer wheel — 2-6 players spin, highest BST wins.",
+    group: "challenge",
     icon: "🎡",
   },
   {

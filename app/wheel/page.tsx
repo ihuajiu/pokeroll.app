@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import WheelGenerator from "@/components/WheelGenerator";
+import GuideSteps from "@/components/GuideSteps";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -54,7 +55,29 @@ export default async function WheelPage({
         title="Pokémon Wheel Generator"
         description="Spin the wheel for a random Pokémon — a fun game-of-chance picker across the Pokédex."
       />
-      <WheelGenerator initial={{ items }} shared={shared} />
+      {!shared && (
+  <GuideSteps
+    className="mx-auto mb-6 max-w-[1100px] px-4"
+    steps={[
+      {
+        n: "1",
+        t: "Pick your players",
+        d: "Choose 2-6 players — each one takes a turn spinning the wheel.",
+      },
+      {
+        n: "2",
+        t: "Spin & land",
+        d: "Every spin lands on a Pokémon and stacks into the round results below.",
+      },
+      {
+        n: "3",
+        t: "Battle & share",
+        d: "Highest BST wins the round — share the result to challenge friends.",
+      },
+    ]}
+  />
+)}
+<WheelGenerator initial={{ items }} shared={shared} />
       <RelatedTools current="/wheel" />
     </main>
   );
