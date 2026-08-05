@@ -868,6 +868,7 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
 
   const size = 96;
   const nameW = 250;
+  const barW = 180;
   const barH = 9;
   const rows = [326, 458, 590, 722, 854, 986];
   // Mirrored lineups around the VS: left reads [ avatar | name + BST bar ],
@@ -922,12 +923,14 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
       ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
       ctx.fillText(p.name, alignX, y + 27);
       const barY = y + 41;
-      roundRect(ctx, nameX, barY, nameW, barH, 5);
+      // Shorter bar than the name block so the VS keeps breathing room.
+      const barX = align === "right" ? nameX + nameW - barW : nameX;
+      roundRect(ctx, barX, barY, barW, barH, 5);
       ctx.fillStyle = "rgba(255, 255, 255, 0.14)";
       ctx.fill();
       const frac = Math.max(0, Math.min(1, (p.bst || 0) / 800));
       if (frac > 0) {
-        const fillW = Math.max(barH, nameW * frac);
+        const fillW = Math.max(barH, barW * frac);
         const fillX = align === "right" ? nameX + nameW - fillW : nameX;
         roundRect(ctx, fillX, barY, fillW, barH, 5);
         ctx.fillStyle = barColor;
