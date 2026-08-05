@@ -4,11 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeroCard from "@/components/HeroCard";
 import type { Pokemon } from "@/lib/types";
-import {
-  downloadTeamResult,
-  shareTeamResult,
-  type TeamResultCardData,
-} from "@/lib/shareCard";
+import { downloadTeamResult, type TeamResultCardData } from "@/lib/shareCard";
 
 function bstTotal(list: Pokemon[]) {
   return list.reduce((s, p) => s + (p.bst || 0), 0);
@@ -187,15 +183,28 @@ export default function TeamChallenge({
   }
 
   async function shareResult() {
-    if (cardBusy) return;
-    const data = resultCardData();
-    if (!data) return;
-    setCardBusy(true);
-    const how = await shareTeamResult(data);
-    setCardBusy(false);
-    if (how === "copied") {
+    if (yours == null || myBst == null) return;
+    const url = resultHref();
+    const text =
+      myBst > chBst
+        ? `I beat the challenge team ${myBst}-${chBst} BST on PokeRoll Team Challenge — can you?`
+        : myBst < chBst
+          ? `The challenge team beat me ${chBst}-${myBst} BST on PokeRoll Team Challenge — think you can do better?`
+          : `It's a tie — ${myBst} BST each on PokeRoll Team Challenge!`;
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title: "Team Challenge Result", text, url });
+        return;
+      } catch {
+        /* fall through to clipboard */
+      }
+    }
+    try {
+      await navigator.clipboard?.writeText(`${text}\n${url}`);
       setResultCopied(true);
       setTimeout(() => setResultCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable */
     }
   }
 
@@ -325,7 +334,7 @@ export default function TeamChallenge({
               ? "Rendering…"
               : resultCopied
                 ? "Link copied!"
-                : "Share the result card"}
+                : "Share result"}
           </button>
           <button
             onClick={downloadResult}

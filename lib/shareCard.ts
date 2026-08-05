@@ -784,11 +784,12 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   const red = "#ee3b3b";
   const ink = "#1f2430";
   const gray = "#7a8294";
+  const light = "#f3f5f9";
 
   // Light backdrop
   const bg = ctx.createLinearGradient(0, 0, 0, H);
   bg.addColorStop(0, "#ffffff");
-  bg.addColorStop(1, "#eef1f6");
+  bg.addColorStop(1, "#f0f2f7");
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
@@ -797,24 +798,24 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   band.addColorStop(0, "#ee3b3b");
   band.addColorStop(1, "#d9292f");
   ctx.fillStyle = band;
-  ctx.fillRect(0, 0, W, 250);
+  ctx.fillRect(0, 0, W, 240);
 
   ctx.textAlign = "center";
   ctx.fillStyle = "rgba(255,255,255,0.85)";
-  ctx.font = "700 24px Sora, Outfit, sans-serif";
-  ctx.fillText("POKEROLL · TEAM CHALLENGE", W / 2, 78);
+  ctx.font = "700 22px Sora, Outfit, sans-serif";
+  ctx.fillText("POKEROLL · TEAM CHALLENGE", W / 2, 62);
   ctx.fillStyle = "#ffffff";
-  ctx.font = "800 60px Sora, Outfit, sans-serif";
-  ctx.fillText("RESULT", W / 2, 152);
+  ctx.font = "800 56px Sora, Outfit, sans-serif";
+  ctx.fillText("RESULT", W / 2, 128);
   ctx.fillStyle = "#ffffff";
-  ctx.font = "800 38px Sora, Outfit, sans-serif";
-  ctx.fillText(data.result, W / 2, 212);
-  ctx.fillStyle = "rgba(255,255,255,0.9)";
+  ctx.font = "800 40px Sora, Outfit, sans-serif";
+  ctx.fillText(data.result, W / 2, 190);
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
   ctx.font = "600 24px Sora, Outfit, sans-serif";
   ctx.fillText(
     `Challenger ${data.myBst} BST   ·   Challenge ${data.chBst} BST`,
     W / 2,
-    250,
+    236,
   );
 
   // Load artworks
@@ -833,52 +834,50 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
 
   const won = data.myBst > data.chBst;
   const lost = data.chBst > data.myBst;
-  const accentW = red;
-  const accentL = "#c3c8d2";
-  const chAccent = won ? accentW : accentL;
-  const ch2Accent = lost ? accentW : accentL;
+  const winnerAccent = red;
+  const loserAccent = "#c3c8d2";
 
-  const size = 150;
-  const lx = [100, 280];
-  const ly = [340, 510, 680];
-  // Right block offset down 60 for a subtle up-down stagger.
-  const rx = [700, 880];
-  const ry = [400, 570, 740];
+  const size = 170;
+  const gap = 20;
+  const colW = size + gap;
+  const gridW = colW * 3 - gap;
+  const x0 = (W - gridW) / 2;
+  const xs = [x0, x0 + colW, x0 + colW * 2];
+  const ysA = [320, 510]; // challenge team rows
+  const ysB = [810, 1000]; // challenger team rows
 
-  // Team labels
-  ctx.textAlign = "center";
-  ctx.font = "800 26px Sora, Outfit, sans-serif";
-  ctx.fillStyle = won ? red : gray;
-  ctx.fillText(won ? "★ THE CHALLENGER — WINNER" : "THE CHALLENGER", (lx[0] + lx[1] + size) / 2, 306);
-  ctx.fillStyle = lost ? red : gray;
-  ctx.fillText(lost ? "★ THE CHALLENGE — WINNER" : "THE CHALLENGE", (rx[0] + rx[1] + size) / 2, 366);
+  const label = (text: string, y: number, color: string) => {
+    ctx.textAlign = "center";
+    ctx.font = "800 28px Sora, Outfit, sans-serif";
+    ctx.fillStyle = color;
+    ctx.fillText(text, W / 2, y);
+  };
 
   const drawGrid = (
     team: { name: string }[],
     imgs: (HTMLImageElement | null)[],
-    xs: number[],
     ys: number[],
     accent: string,
   ) => {
     team.forEach((p, i) => {
-      const x = xs[i % 2];
-      const y = ys[Math.floor(i / 2)];
+      const x = xs[i % 3];
+      const y = ys[Math.floor(i / 3)];
       const img = imgs[i];
       // frame
       ctx.save();
       ctx.shadowColor = "rgba(31,36,48,0.12)";
       ctx.shadowBlur = 10;
       ctx.shadowOffsetY = 4;
-      roundRect(ctx, x, y, size, size, 22);
+      roundRect(ctx, x, y, size, size, 24);
       ctx.fillStyle = "#ffffff";
       ctx.fill();
       ctx.restore();
       ctx.strokeStyle = accent;
       ctx.lineWidth = 4;
-      roundRect(ctx, x, y, size, size, 22);
+      roundRect(ctx, x, y, size, size, 24);
       ctx.stroke();
       if (img) {
-        const pad = 12;
+        const pad = 14;
         const scale = Math.min((size - pad * 2) / img.width, (size - pad * 2) / img.height);
         const dw = img.width * scale;
         const dh = img.height * scale;
@@ -886,25 +885,30 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
       }
       // name
       ctx.textAlign = "center";
-      ctx.font = fitFont(ctx, p.name, 700, 20, size - 8, 12);
+      ctx.font = fitFont(ctx, p.name, 700, 22, size - 8, 13);
       ctx.fillStyle = ink;
-      ctx.fillText(p.name, x + size / 2, y + size + 26);
+      ctx.fillText(p.name, x + size / 2, y + size + 28);
     });
   };
 
-  drawGrid(data.challenger, challengerImgs, lx, ly, chAccent);
-  drawGrid(data.challenge, challengeImgs, rx, ry, ch2Accent);
+  // Challenge team (top)
+  label(lost ? "★ THE CHALLENGE — WINNER" : "THE CHALLENGE", 282, lost ? red : gray);
+  drawGrid(data.challenge, challengeImgs, ysA, lost ? winnerAccent : loserAccent);
 
-  // VS badge
+  // VS divider
   ctx.textAlign = "center";
   ctx.fillStyle = red;
-  ctx.font = "900 96px Sora, Outfit, sans-serif";
-  ctx.fillText("VS", 540, 545);
+  ctx.font = "900 84px Sora, Outfit, sans-serif";
+  ctx.fillText("VS", W / 2, 758);
+
+  // Challenger team (bottom)
+  label(won ? "★ THE CHALLENGER — WINNER" : "THE CHALLENGER", 780, won ? red : gray);
+  drawGrid(data.challenger, challengerImgs, ysB, won ? winnerAccent : loserAccent);
 
   // Footer
   const q = 150;
   const qx = W - 70 - q;
-  const qy = 1180;
+  const qy = 1210;
   const qr = await QRCode.toDataURL(data.url, {
     margin: 0,
     width: Math.round(q - 24),
@@ -924,15 +928,15 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   ctx.textAlign = "left";
   ctx.fillStyle = ink;
   ctx.font = "800 34px Sora, Outfit, sans-serif";
-  ctx.fillText("PokeRoll.app", 70, qy + 62);
+  ctx.fillText("PokeRoll.app", 70, qy + 64);
   ctx.fillStyle = gray;
   ctx.font = "400 24px Outfit, sans-serif";
-  ctx.fillText("Team Challenge", 70, qy + 100);
+  ctx.fillText("Team Challenge", 70, qy + 104);
   ctx.fillStyle = gray;
   ctx.font = "600 22px Outfit, sans-serif";
-  ctx.fillText("Scan to take the challenge", 70, qy + 134);
+  ctx.fillText("Scan to take the challenge", 70, qy + 138);
 
-  // Rounded corners (transparent)
+  // Rounded corners
   const mask = document.createElement("canvas");
   mask.width = W;
   mask.height = H;
