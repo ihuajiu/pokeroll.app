@@ -165,6 +165,7 @@ export default function FavoritesClient({
                 pokemon={p}
                 variant="team"
                 favoritable={!isShared}
+                hideRoll
               />
               {!isShared && (
                 <button
@@ -172,7 +173,7 @@ export default function FavoritesClient({
                   onClick={() => remove(p.dexNumber)}
                   aria-label={`Remove ${p.displayName} from favorites`}
                   title="Remove from favorites"
-                  className="absolute bottom-2 right-2 z-20 rounded-lg border border-poke-border bg-poke-surface/90 px-2.5 py-1 text-xs font-semibold text-poke-dim shadow-sm transition hover:border-poke-red hover:text-poke-red"
+                  className="absolute right-2 top-2 z-20 rounded-lg border border-poke-border bg-poke-surface/90 px-2.5 py-1 text-xs font-semibold text-poke-dim shadow-sm transition hover:border-poke-red hover:text-poke-red"
                 >
                   Remove
                 </button>
