@@ -4,6 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeroCard from "@/components/HeroCard";
 import type { Pokemon } from "@/lib/types";
+import {
+  downloadTeamResult,
+  shareTeamResult,
+  type TeamResultCardData,
+} from "@/lib/shareCard";
 
 function bstTotal(list: Pokemon[]) {
   return list.reduce((s, p) => s + (p.bst || 0), 0);
@@ -33,6 +38,7 @@ export default function TeamChallenge({
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [resultCopied, setResultCopied] = useState(false);
+  const [cardBusy, setCardBusy] = useState(false);
 
   const chBst = bstTotal(challenger);
   const myBst = yours ? bstTotal(yours) : null;
@@ -73,34 +79,51 @@ export default function TeamChallenge({
     }
   }
 
+  // The result link carries both seeds + result=1, so it reproduces this
+  // exact matchup and winner for whoever opens it.
+  function resultHref(): string {
+    const u = new URL(window.location.href);
+    u.searchParams.set("result", "1");
+    return u.toString();
+  }
+
+  function resultCardData(): TeamResultCardData | null {
+    if (yours == null || myBst == null) return null;
+    return {
+      challenger: yours.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite })),
+      challenge: challenger.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite })),
+      chBst,
+      myBst,
+      result:
+        myBst > chBst
+          ? "THE CHALLENGER WINS!"
+          : myBst < chBst
+            ? "THE CHALLENGE WINS!"
+            : "IT'S A TIE!",
+      url: resultHref(),
+    };
+  }
+
   async function shareResult() {
-    if (yours == null || myBst == null) return;
-    // The URL carries both seeds, so the link reproduces this exact matchup
-    // and the same winner for whoever opens it.
-    const url = new URL(window.location.href);
-    url.searchParams.set("result", "1");
-    const href = url.toString();
-    const text =
-      myBst > chBst
-        ? `My team (${myBst} BST) beat the challenge team (${chBst} BST) on PokeRoll — can you beat mine?`
-        : myBst < chBst
-          ? `The challenge team (${chBst} BST) beat my team (${myBst} BST) on PokeRoll — think you can do better?`
-          : `It's a tie — ${myBst} BST each on PokeRoll Team Challenge!`;
-    if (typeof navigator !== "undefined" && navigator.share) {
-      try {
-        await navigator.share({ title: "Team Challenge Result", text, url: href });
-        return;
-      } catch {
-        /* fall through to clipboard */
-      }
-    }
-    try {
-      await navigator.clipboard?.writeText(`${text}\n${href}`);
+    if (cardBusy) return;
+    const data = resultCardData();
+    if (!data) return;
+    setCardBusy(true);
+    const how = await shareTeamResult(data);
+    setCardBusy(false);
+    if (how === "copied") {
       setResultCopied(true);
       setTimeout(() => setResultCopied(false), 1800);
-    } catch {
-      /* clipboard unavailable */
     }
+  }
+
+  async function downloadResult() {
+    if (cardBusy) return;
+    const data = resultCardData();
+    if (!data) return;
+    setCardBusy(true);
+    await downloadTeamResult(data);
+    setCardBusy(false);
   }
 
   function rollMine() {
@@ -157,7 +180,23 @@ export default function TeamChallenge({
               <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
             </svg>
-            {resultCopied ? "Link copied!" : "Share the result"}
+            {cardBusy
+              ? "Rendering…"
+              : resultCopied
+                ? "Link copied!"
+                : "Share the result card"}
+          </button>
+          <button
+            onClick={downloadResult}
+            disabled={cardBusy}
+            className="mt-3 inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-2 text-sm font-bold text-white/85 transition hover:border-amber-300 hover:text-amber-300"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" x2="12" y1="15" y2="3" />
+            </svg>
+            Download card
           </button>
         </div>
       )}

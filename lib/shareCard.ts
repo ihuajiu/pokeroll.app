@@ -730,3 +730,250 @@ export async function sharePokemonLink(
   }
   return null;
 }
+
+/* ── Team Challenge result card ───────────────────────────────────────── */
+
+export interface TeamResultCardData {
+  /** The team that rolled against the challenge (the "challenger"). */
+  challenger: { name: string; img: string }[];
+  /** The shared challenge team. */
+  challenge: { name: string; img: string }[];
+  chBst: number;
+  myBst: number;
+  /** Winner line, e.g. "The challenger wins!". */
+  result: string;
+  /** Result link (reproduces this matchup + winner). */
+  url: string;
+}
+
+const TCW = 1080;
+const TCH = 1280;
+
+async function drawTeamAvatar(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  x: number,
+  y: number,
+  size: number,
+  accent: string,
+) {
+  roundRect(ctx, x, y, size, size, 18);
+  ctx.fillStyle = "#1b1e2b";
+  ctx.fill();
+  ctx.strokeStyle = accent;
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  const pad = 10;
+  const scale = Math.min((size - pad * 2) / img.width, (size - pad * 2) / img.height);
+  const dw = img.width * scale;
+  const dh = img.height * scale;
+  ctx.drawImage(img, x + (size - dw) / 2, y + (size - dh) / 2, dw, dh);
+}
+
+/** Dark "versus" result card: two teams as 2x3 avatar frames, the right
+ *  block offset down so the lineups stagger up-down around the VS. */
+export async function renderTeamResultCard(data: TeamResultCardData): Promise<Blob> {
+  await document.fonts?.ready.catch(() => undefined);
+  const canvas = document.createElement("canvas");
+  canvas.width = TCW;
+  canvas.height = TCH;
+  const ctx = canvas.getContext("2d")!;
+
+  // Dark backdrop (matches the shiny TCG card)
+  ctx.fillStyle = "#14161f";
+  ctx.fillRect(0, 0, TCW, TCH);
+  const top = ctx.createRadialGradient(TCW / 2, 0, 80, TCW / 2, TCH * 0.3, TCH);
+  top.addColorStop(0, "#1b1e2b");
+  top.addColorStop(1, "rgba(27, 30, 43, 0)");
+  ctx.fillStyle = top;
+  ctx.fillRect(0, 0, TCW, TCH);
+
+  const gold = goldGradient(ctx, 60, TCW - 60);
+
+  // Header
+  ctx.textAlign = "center";
+  ctx.fillStyle = "rgba(255,255,255,0.6)";
+  ctx.font = "700 24px Sora, Outfit, sans-serif";
+  ctx.fillText("POKEROLL", TCW / 2, 66);
+  ctx.fillStyle = gold;
+  ctx.font = "800 62px Sora, Outfit, sans-serif";
+  ctx.fillText("TEAM CHALLENGE", TCW / 2, 132);
+  ctx.fillStyle = "#fbbf24";
+  ctx.font = "800 38px Sora, Outfit, sans-serif";
+  ctx.fillText(data.result, TCW / 2, 194);
+  ctx.fillStyle = "rgba(255,255,255,0.75)";
+  ctx.font = "600 24px Sora, Outfit, sans-serif";
+  ctx.fillText(
+    `Challenger ${data.myBst} BST   ·   Challenge ${data.chBst} BST`,
+    TCW / 2,
+    234,
+  );
+
+  // Load artworks
+  const loadMany = async (team: { img: string }[]) =>
+    Promise.all(
+      team.map(async (p) => {
+        try {
+          return await loadImage(p.img);
+        } catch {
+          return null;
+        }
+      }),
+    );
+  const challengerImgs = await loadMany(data.challenger);
+  const challengeImgs = await loadMany(data.challenge);
+
+  const won = data.myBst > data.chBst;
+  const lost = data.chBst > data.myBst;
+  const winAccent = "#fbbf24";
+  const loseAccent = "#4b5563";
+  const chAccent = won ? winAccent : loseAccent;
+  const ch2Accent = lost ? winAccent : loseAccent;
+
+  const size = 150;
+  const lx = [120, 290];
+  const ly = [300, 460, 620];
+  // Right block is pushed down 60px so the two lineups stagger up-down.
+  const rx = [670, 840];
+  const ry = [360, 520, 680];
+
+  const drawGrid = (
+    team: { name: string }[],
+    imgs: (HTMLImageElement | null)[],
+    xs: number[],
+    ys: number[],
+    accent: string,
+  ) => {
+    team.forEach((p, i) => {
+      const x = xs[i % 2];
+      const y = ys[Math.floor(i / 2)];
+      const img = imgs[i];
+      if (img) {
+        drawTeamAvatar(ctx, img, x, y, size, accent);
+      } else {
+        roundRect(ctx, x, y, size, size, 18);
+        ctx.fillStyle = "#1b1e2b";
+        ctx.fill();
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+      ctx.textAlign = "center";
+      ctx.font = fitFont(ctx, p.name, 700, 20, size - 8, 12);
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.fillText(p.name, x + size / 2, y + size + 24);
+    });
+  };
+
+  // Winner tag above the winning block
+  if (won || lost) {
+    const tagX = won ? (lx[0] + lx[1] + size) / 2 : (rx[0] + rx[1] + size) / 2;
+    const tagY = won ? 268 : 328;
+    ctx.textAlign = "center";
+    ctx.fillStyle = winAccent;
+    ctx.font = "800 26px Sora, Outfit, sans-serif";
+    ctx.fillText("WINNER", tagX, tagY);
+  }
+
+  drawGrid(data.challenger, challengerImgs, lx, ly, chAccent);
+  drawGrid(data.challenge, challengeImgs, rx, ry, ch2Accent);
+
+  // VS
+  ctx.textAlign = "center";
+  ctx.fillStyle = gold;
+  ctx.font = "900 104px Sora, Outfit, sans-serif";
+  ctx.fillText("VS", 540, 545);
+
+  // Footer: QR (right) + brand (left)
+  const bandTop = 900;
+  const q = 120;
+  const qx = TCW - 60 - q;
+  const qy = bandTop + 16;
+  const qr = await QRCode.toDataURL(data.url, {
+    margin: 0,
+    width: Math.round(q - 20),
+    color: { dark: "#1f2430", light: "#ffffff" },
+  });
+  const qrImg = await loadImage(qr);
+  ctx.save();
+  ctx.shadowColor = "rgba(0, 0, 0, 0.18)";
+  ctx.shadowBlur = 8;
+  ctx.shadowOffsetY = 2;
+  roundRect(ctx, qx, qy, q, q, 12);
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+  ctx.restore();
+  ctx.drawImage(qrImg, qx + 10, qy + 10, q - 20, q - 20);
+
+  ctx.textAlign = "left";
+  ctx.fillStyle = "rgba(255,255,255,0.92)";
+  ctx.font = "800 30px Sora, Outfit, sans-serif";
+  ctx.fillText("PokeRoll.app", 60, bandTop + 56);
+  ctx.fillStyle = "rgba(255,255,255,0.55)";
+  ctx.font = "400 22px Outfit, sans-serif";
+  ctx.fillText("Team Challenge", 60, bandTop + 92);
+  ctx.fillStyle = "rgba(255,255,255,0.4)";
+  ctx.font = "600 20px Outfit, sans-serif";
+  ctx.fillText("Scan to take the challenge", 60, bandTop + 124);
+
+  return new Promise((resolve, reject) =>
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob failed"))), "image/png"),
+  );
+}
+
+function teamFileName(): string {
+  return "team-challenge-result.png";
+}
+
+export async function downloadTeamResult(data: TeamResultCardData): Promise<boolean> {
+  try {
+    const blob = await renderTeamResultCard(data);
+    downloadBlob(blob, teamFileName());
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** One-tap share of the result card: image share → link share → clipboard → download. */
+export async function shareTeamResult(
+  data: TeamResultCardData,
+): Promise<"shared" | "copied" | "downloaded" | null> {
+  const text = data.result;
+  try {
+    const blob = await renderTeamResultCard(data);
+    const file = new File([blob], teamFileName(), { type: "image/png" });
+    if (typeof navigator !== "undefined" && navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          text: `${text}\n${data.url}`,
+          url: data.url,
+        });
+        return "shared";
+      } catch {
+        // fall through
+      }
+    }
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title: "Team Challenge Result", text, url: data.url });
+        return "shared";
+      } catch {
+        // fall through
+      }
+    }
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(`${text}\n${data.url}`);
+        return "copied";
+      } catch {
+        // fall through
+      }
+    }
+    downloadBlob(blob, file.name);
+    return "downloaded";
+  } catch {
+    return null;
+  }
+}
