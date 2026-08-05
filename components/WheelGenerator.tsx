@@ -18,7 +18,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
   const [spinning, setSpinning] = useState(false);
   const [winner, setWinner] = useState<number | null>(null);
   // Multiplayer: one turn per player, up to 6 players, results stacked below.
-  const [playerCount, setPlayerCount] = useState(4);
+  const [playerCount, setPlayerCount] = useState(3);
   const [results, setResults] = useState<{ player: number; pokemon: Pokemon }[]>([]);
   const [addedNotice, setAddedNotice] = useState<string | null>(null);
   const { team, add } = useTeam();
@@ -194,7 +194,9 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
       <p className="mt-5 text-center text-sm font-semibold text-poke-dim">
         {roundComplete
           ? "Round complete — check the results below!"
-          : `Player ${currentPlayer} of ${playerCount} — spin the wheel`}
+          : playerCount === 1
+            ? "Spin the wheel"
+            : `Player ${currentPlayer} of ${playerCount} — spin the wheel`}
       </p>
 
       <div className="mt-2 flex flex-wrap justify-center gap-3">
@@ -212,7 +214,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
       {/* Players selector */}
       <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
         <span className="text-sm font-semibold text-poke-dim">Players</span>
-        {[2, 3, 4, 5, 6].map((n) => (
+        {[1, 2, 3, 4, 5, 6].map((n) => (
           <button
             key={n}
             type="button"
