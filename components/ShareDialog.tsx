@@ -23,12 +23,17 @@ const ICONS: Record<string, { viewBox: string; d: string }> = {
 };
 
 /** International-first, Chinese platforms at the back. */
-const PLATFORMS = [
+const PLATFORMS: {
+  id: string;
+  label: string;
+  color: string;
+  scale?: number;
+}[] = [
   { id: "x", label: "X", color: "bg-neutral-900 hover:bg-neutral-700" },
   { id: "reddit", label: "Reddit", color: "bg-[#ff4500] hover:bg-[#e03e00]" },
   { id: "tumblr", label: "Tumblr", color: "bg-[#36465d] hover:bg-[#2b3749]" },
-  { id: "facebook", label: "Facebook", color: "bg-[#1877f2] hover:bg-[#1264d1]" },
-  { id: "telegram", label: "Telegram", color: "bg-[#26a5e4] hover:bg-[#1f8fc7]" },
+  { id: "facebook", label: "Facebook", color: "bg-[#1877f2] hover:bg-[#1264d1]", scale: 1.35 },
+  { id: "telegram", label: "Telegram", color: "bg-[#26a5e4] hover:bg-[#1f8fc7]", scale: 1.35 },
   { id: "whatsapp", label: "WhatsApp", color: "bg-[#25d366] hover:bg-[#1fbe59]" },
   { id: "pinterest", label: "Pinterest", color: "bg-[#bd081c] hover:bg-[#a30718]" },
   { id: "linkedin", label: "LinkedIn", color: "bg-[#0a66c2] hover:bg-[#0958a8]" },
@@ -36,7 +41,7 @@ const PLATFORMS = [
   { id: "weibo", label: "微博", color: "bg-[#e6162d] hover:bg-[#c50e1f]" },
   { id: "wechat", label: "微信", color: "bg-[#07c160] hover:bg-[#06ad56]" },
   { id: "qq", label: "QQ", color: "bg-[#12b7f5] hover:bg-[#0ea5e0]" },
-] as const;
+];
 
 type PlatformId = (typeof PLATFORMS)[number]["id"];
 
@@ -220,6 +225,11 @@ export default function ShareDialog({
                       viewBox={ICONS[p.id].viewBox}
                       fill="currentColor"
                       className="h-[18px] w-[18px]"
+                      style={
+                        p.scale
+                          ? { transform: `scale(${p.scale})` }
+                          : undefined
+                      }
                       aria-hidden="true"
                     >
                       <path d={ICONS[p.id].d} />
