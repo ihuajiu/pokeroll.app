@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
 import HeroCard from "./HeroCard";
 import GenerateButton from "./GenerateButton";
-import AddToTeamButton from "./AddToTeamButton";
+import { useTeam } from "./useTeam";
 
 export type WheelPayload = { items: Pokemon[] };
 
@@ -17,19 +17,61 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [winner, setWinner] = useState<number | null>(null);
+  // Multiplayer: one turn per player, up to 6 players, results stacked below.
+  const [playerCount, setPlayerCount] = useState(4);
+  const [results, setResults] = useState<{ player: number; pokemon: Pokemon }[]>([]);
+  const [addedNotice, setAddedNotice] = useState<string | null>(null);
+  const { team, add } = useTeam();
 
+  const currentPlayer = results.length + 1;
+  const roundComplete = results.length >= playerCount;
+  const leader = results.reduce<{ player: number; pokemon: Pokemon } | null>(
+    (best, r) =>
+      !best || (r.pokemon.bst || 0) > (best.pokemon.bst || 0) ? r : best,
+    null,
+  );
   function spin() {
-    if (spinning) return;
+    if (spinning || roundComplete) return;
     setSpinning(true);
     setWinner(null);
     const target = Math.floor(Math.random() * SEG);
     const offset = ((-target * (360 / SEG) - 180 / SEG) - (rotation % 360) + 360) % 360;
     const next = rotation + 360 * 5 + offset;
     setRotation(next);
+    const player = results.length + 1;
     setTimeout(() => {
       setSpinning(false);
       setWinner(target);
+      const landed = items[target];
+      if (landed) setResults((r) => [...r, { player, pokemon: landed }]);
     }, 4200);
+  }
+
+  function changePlayers(n: number) {
+    setPlayerCount(n);
+    setResults([]);
+    setWinner(null);
+  }
+
+  function newRound() {
+    setResults([]);
+    setWinner(null);
+  }
+
+  function addAllToTeam() {
+    let added = 0;
+    results.forEach((r) => {
+      if (!team.some((t) => t.dexNumber === r.pokemon.dexNumber)) {
+        add(r.pokemon);
+        added++;
+      }
+    });
+    setAddedNotice(
+      added > 0
+        ? `Added ${added} to your team.`
+        : "All landed Pokémon are already in your team.",
+    );
+    setTimeout(() => setAddedNotice(null), 2000);
   }
 
   async function regenerate() {
@@ -43,13 +85,11 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
     }
   }
 
-  const winPokemon = winner !== null ? items[winner] : null;
-
   return (
-    <div className="mx-auto max-w-[560px]">
+    <div className="mx-auto w-full max-w-[1100px] px-4">
       <div className="mb-4 text-center">
         <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
-        <p className="text-sm text-poke-dim">Spin the wheel and see where it lands — tap Add to Team to keep the winner.</p>
+        <p className="text-sm text-poke-dim">Up to 6 players take turns spinning — every landing stacks in the results below.</p>
       </div>
 
       <div className="relative mx-auto" style={{ width: SIZE, height: SIZE }}>
@@ -151,26 +191,99 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-3">
+      <p className="mt-5 text-center text-sm font-semibold text-poke-dim">
+        {roundComplete
+          ? "Round complete — check the results below!"
+          : `Player ${currentPlayer} of ${playerCount} — spin the wheel`}
+      </p>
+
+      <div className="mt-2 flex flex-wrap justify-center gap-3">
         <button
           type="button"
           onClick={spin}
-          disabled={spinning}
+          disabled={spinning || roundComplete}
           className="rounded-xl bg-poke-btn px-6 py-2.5 font-semibold text-white shadow-glow transition hover:bg-poke-btnHover disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {spinning ? "Spinning…" : "Spin!"}
+          {spinning ? "Spinning…" : roundComplete ? "Round complete" : "Spin!"}
         </button>
         <GenerateButton onClick={regenerate} loading={false} />
       </div>
 
-      {winPokemon ? (
-        <div className="mx-auto mt-4 w-full max-w-[640px]">
-          <p className="mb-2 text-center text-sm text-poke-dim">You landed on…</p>
-          <div className="card-stage flex justify-center">
-            <HeroCard pokemon={winPokemon} variant="wide" favoritable />
+      {/* Players selector */}
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+        <span className="text-sm font-semibold text-poke-dim">Players</span>
+        {[2, 3, 4, 5, 6].map((n) => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => changePlayers(n)}
+            aria-pressed={playerCount === n}
+            className={`h-9 w-9 rounded-lg text-sm font-bold transition ${
+              playerCount === n
+                ? "bg-poke-btn text-white shadow-sm"
+                : "border border-poke-border bg-poke-surface text-poke-ink hover:border-poke-red hover:text-poke-red"
+            }`}
+          >
+            {n}
+          </button>
+        ))}
+      </div>
+
+      {results.length > 0 && (
+        <div className="mt-8">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wide text-poke-dim">
+              Round results · {results.length}/{playerCount}
+            </h3>
+            {roundComplete && leader ? (
+              <span className="text-sm font-bold text-amber-500">
+                👑 Player {leader.player} wins with {leader.pokemon.displayName} ({leader.pokemon.bst} BST)!
+              </span>
+            ) : (
+              <span className="text-sm text-poke-dim">
+                Player {currentPlayer} still to spin
+              </span>
+            )}
           </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {results.map((r, i) => (
+              <div key={`${r.player}-${i}`} className="relative">
+                <div className="mb-1 flex items-center justify-center gap-2">
+                  <span className="rounded-full bg-poke-chip px-2.5 py-0.5 text-xs font-bold text-poke-ink">
+                    Player {r.player}
+                  </span>
+                  {roundComplete && leader && leader.player === r.player && (
+                    <span className="text-base" aria-label="Round leader">
+                      👑
+                    </span>
+                  )}
+                </div>
+                <HeroCard pokemon={r.pokemon} variant="team" favoritable />
+              </div>
+            ))}
+          </div>
+          {addedNotice && (
+            <p role="status" className="mt-4 text-center text-sm font-medium text-poke-ink">
+              {addedNotice}
+            </p>
+          )}
           <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <AddToTeamButton pokemon={winPokemon} />
+            <button
+              type="button"
+              onClick={addAllToTeam}
+              className="rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
+            >
+              Add all to Team
+            </button>
+            {roundComplete && (
+              <button
+                type="button"
+                onClick={newRound}
+                className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+              >
+                New round
+              </button>
+            )}
             <Link
               href="/team"
               className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
@@ -179,7 +292,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
             </Link>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
