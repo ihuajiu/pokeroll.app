@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
+import GuideSteps from "@/components/GuideSteps";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -76,22 +77,31 @@ export default async function ShinyChallengePage({
             : "Click Encounter and see how long it takes to find your shiny — same 1/4096 odds as the games. Share the link and compare with a friend."
         }
       />
+<GuideSteps
+  className="mb-6"
+  steps={[
+    {
+      n: "1",
+      t: "Click Encounter",
+      d: "Each click is one draw — 1-in-204 on Easy, 1-in-4096 otherwise, and Easy guarantees a shiny within 204 clicks.",
+    },
+    {
+      n: "2",
+      t: "Find your shiny",
+      d: "When it sparkles, the found card unlocks Share and Download.",
+    },
+    {
+      n: "3",
+      t: "Share the hunt",
+      d: "Share the card or the seeded link — friends see your result, then start their own hunt.",
+    },
+  ]}
+/>
       <ChallengeGenerator
         challenge={challenge}
         wildPool={wildPool}
         startFound={reveal}
       />
-      <section className="mt-10 max-w-2xl">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
-          How the hunt works
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-poke-dim">
-          Every Encounter click rolls the same 1-in-4096 odds as the games
-          (Easy mode: 1-in-204 with a shiny guaranteed within 204 draws). When
-          your shiny appears, share the found card or the link — friends
-          opening it see your result first, then can start their own hunt.
-        </p>
-      </section>
       <FaqSection
         items={[
           {

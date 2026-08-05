@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import TeamGenerator from "@/components/TeamGenerator";
+import GuideSteps from "@/components/GuideSteps";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import PageHeader from "@/components/PageHeader";
@@ -34,6 +35,26 @@ export default async function RandomTeamPage({
         title="Random Pokémon Team"
         description="Roll a filtered squad of random Pokémon — then add your favourites to Your Team."
       />
+<GuideSteps
+  className="mb-6"
+  steps={[
+    {
+      n: "1",
+      t: "Roll a squad",
+      d: "One tap draws a fresh random team — lock cards you like, then re-roll just the rest.",
+    },
+    {
+      n: "2",
+      t: "Filter the pool",
+      d: "Restrict by generation, region, type or team size before rolling.",
+    },
+    {
+      n: "3",
+      t: "Share or save",
+      d: "The link carries your squad — share it, or tap Add to Team to keep favourites.",
+    },
+  ]}
+/>
       <TeamGenerator initial={pokemon} />
       <FaqSection
         items={[
