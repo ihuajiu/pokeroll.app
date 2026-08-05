@@ -174,8 +174,8 @@ export default function TeamChallenge({
   function resultCardData(): TeamResultCardData | null {
     if (yours == null || myBst == null) return null;
     return {
-      challenger: yours.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite })),
-      challenge: team.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite })),
+      challenger: yours.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite, bst: p.bst || 0 })),
+      challenge: team.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite, bst: p.bst || 0 })),
       chBst,
       myBst,
       result:

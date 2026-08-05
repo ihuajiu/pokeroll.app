@@ -735,9 +735,9 @@ export async function sharePokemonLink(
 
 export interface TeamResultCardData {
   /** The team that rolled against the challenge (the "challenger"). */
-  challenger: { name: string; img: string }[];
+  challenger: { name: string; img: string; bst: number }[];
   /** The shared challenge team. */
-  challenge: { name: string; img: string }[];
+  challenge: { name: string; img: string; bst: number }[];
   chBst: number;
   myBst: number;
   /** Winner line, e.g. "The challenger wins!". */
@@ -861,84 +861,113 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   const winAccent = amber;
   const loseAccent = "rgba(255, 255, 255, 0.28)";
 
-  const size = 112;
-  const nameGap = 16;
-  const rows = [320, 450, 580, 710, 840, 970];
-  const leftX = 108;
-  const rightX = 658;
-
-  const teamLabel = (text: string, color: string) => {
-    ctx.textAlign = "center";
-    ctx.font = "800 27px Sora, Outfit, sans-serif";
-    ctx.fillStyle = color;
-    ctx.fillText(text, W / 2, 292);
-  };
+  const size = 96;
+  const nameW = 250;
+  const barH = 9;
+  const rows = [330, 460, 590, 720, 850, 980];
+  // Each row reads [ name + BST bar | avatar ] — name sits on the LEFT of
+  // the avatar so nothing hugs the card edges.
+  const leftNameX = 84;
+  const leftAvatarX = leftNameX + nameW + 16;
+  const rightNameX = 566;
+  const rightAvatarX = rightNameX + nameW + 16;
 
   const drawColumn = (
-    team: { name: string }[],
+    team: { name: string; bst: number }[],
     imgs: (HTMLImageElement | null)[],
-    x: number,
+    nameX: number,
+    avatarX: number,
     accent: string,
+    barColor: string,
   ) => {
     team.forEach((p, i) => {
       const y = rows[i];
       const img = imgs[i];
-      // avatar frame
+      // avatar frame (right of the name)
       ctx.save();
       if (accent === winAccent) {
         ctx.shadowColor = "rgba(250, 204, 21, 0.45)";
-        ctx.shadowBlur = 18;
+        ctx.shadowBlur = 16;
       } else {
         ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
         ctx.shadowBlur = 8;
       }
-      roundRect(ctx, x, y, size, size, 18);
+      roundRect(ctx, avatarX, y, size, size, 16);
       ctx.fillStyle = "#1b1e2b";
       ctx.fill();
       ctx.restore();
       ctx.strokeStyle = accent;
       ctx.lineWidth = 4;
-      roundRect(ctx, x, y, size, size, 18);
+      roundRect(ctx, avatarX, y, size, size, 16);
       ctx.stroke();
       if (img) {
-        const pad = 10;
+        const pad = 9;
         const scale = Math.min((size - pad * 2) / img.width, (size - pad * 2) / img.height);
         const dw = img.width * scale;
         const dh = img.height * scale;
-        ctx.drawImage(img, x + (size - dw) / 2, y + (size - dh) / 2, dw, dh);
+        ctx.drawImage(img, avatarX + (size - dw) / 2, y + (size - dh) / 2, dw, dh);
       }
-      // name to the right, vertically centered
+      // name to the left, vertically centered with the avatar
       ctx.textAlign = "left";
-      ctx.font = fitFont(ctx, p.name, 700, 24, 200, 12);
+      ctx.font = fitFont(ctx, p.name, 700, 23, nameW, 12);
       ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-      ctx.fillText(p.name, x + size + nameGap, y + size / 2 + 9);
+      ctx.fillText(p.name, nameX, y + size / 2 + 8);
+      // BST progress bar under the name
+      const barY = y + size / 2 + 20;
+      roundRect(ctx, nameX, barY, nameW, barH, 5);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.14)";
+      ctx.fill();
+      const frac = Math.max(0, Math.min(1, (p.bst || 0) / 800));
+      if (frac > 0) {
+        roundRect(ctx, nameX, barY, Math.max(barH, nameW * frac), barH, 5);
+        ctx.fillStyle = barColor;
+        ctx.fill();
+      }
     });
   };
 
-  // Labels (above each column)
-  const challengeColor = lost ? winAccent : "rgba(255,255,255,0.62)";
-  const challengerColor = won ? winAccent : "rgba(255,255,255,0.62)";
-  teamLabel(
+  // Column labels sit in their own band ABOVE the lineups — never on avatars.
+  const challengeColor = lost ? winAccent : "rgba(255,255,255,0.6)";
+  const challengerColor = won ? winAccent : "rgba(255,255,255,0.6)";
+  const columnLabel = (text: string, x: number, color: string) => {
+    ctx.textAlign = "center";
+    ctx.font = "800 24px Sora, Outfit, sans-serif";
+    ctx.fillStyle = color;
+    ctx.fillText(text, x, 300);
+  };
+  columnLabel(
     lost ? "★ THE CHALLENGE — WINNER" : "THE CHALLENGE",
+    leftNameX + nameW / 2,
     challengeColor,
   );
+  columnLabel(
+    won ? "★ THE CHALLENGER — WINNER" : "THE CHALLENGER",
+    rightNameX + nameW / 2,
+    challengerColor,
+  );
 
-  drawColumn(data.challenge, challengeImgs, leftX, lost ? winAccent : loseAccent);
-  drawColumn(data.challenger, challengerImgs, rightX, won ? winAccent : loseAccent);
-
-  // Team name badges under each column (small caps)
-  ctx.textAlign = "center";
-  ctx.font = "700 20px Sora, Outfit, sans-serif";
-  ctx.fillStyle = challengeColor;
-  ctx.fillText("THE CHALLENGE", leftX + size / 2, 1030);
-  ctx.fillStyle = challengerColor;
-  ctx.fillText("THE CHALLENGER", rightX + size / 2, 1030);
+  drawColumn(
+    data.challenge,
+    challengeImgs,
+    leftNameX,
+    leftAvatarX,
+    lost ? winAccent : loseAccent,
+    lost ? amber : "rgba(255, 255, 255, 0.5)",
+  );
+  drawColumn(
+    data.challenger,
+    challengerImgs,
+    rightNameX,
+    rightAvatarX,
+    won ? winAccent : loseAccent,
+    won ? amber : "rgba(255, 255, 255, 0.5)",
+  );
 
   // VS
   ctx.textAlign = "center";
   ctx.fillStyle = gold;
-  ctx.font = "900 84px Sora, Outfit, sans-serif";
-  ctx.fillText("VS", 540, 650);
+  ctx.font = "900 72px Sora, Outfit, sans-serif";
+  ctx.fillText("VS", 506, 660);
 
   // Footer: brand (left) + QR (right, no caption)
   ctx.textAlign = "left";
