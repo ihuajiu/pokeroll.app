@@ -865,10 +865,10 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   const nameW = 250;
   const barH = 9;
   const rows = [330, 460, 590, 720, 850, 980];
-  // Each row reads [ name + BST bar | avatar ] — name sits on the LEFT of
-  // the avatar so nothing hugs the card edges.
-  const leftNameX = 84;
-  const leftAvatarX = leftNameX + nameW + 16;
+  // Mirrored lineups around the VS: left reads [ avatar | name + BST bar ],
+  // right reads [ name + BST bar | avatar ].
+  const leftAvatarX = 84;
+  const leftNameX = leftAvatarX + size + 16;
   const rightNameX = 566;
   const rightAvatarX = rightNameX + nameW + 16;
 
@@ -937,12 +937,12 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
   };
   columnLabel(
     lost ? "★ THE CHALLENGE — WINNER" : "THE CHALLENGE",
-    leftNameX + nameW / 2,
+    (leftAvatarX + leftNameX + nameW) / 2,
     challengeColor,
   );
   columnLabel(
     won ? "★ THE CHALLENGER — WINNER" : "THE CHALLENGER",
-    rightNameX + nameW / 2,
+    (rightNameX + rightAvatarX + size) / 2,
     challengerColor,
   );
 
