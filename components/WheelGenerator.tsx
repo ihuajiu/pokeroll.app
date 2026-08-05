@@ -104,7 +104,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                   key={`${p.dexNumber}-${i}`}
                   className="absolute left-1/2 top-1/2"
                   style={{
-                    transform: `translate(-50%,-50%) rotate(${i * (360 / SEG)}deg) translateY(-${SIZE / 2 - 84}px)`,
+                    transform: `translate(-50%,-50%) rotate(${i * (360 / SEG) + 180 / SEG}deg) translateY(-${SIZE / 2 - 84}px)`,
                   }}
                 >
                   {p.artwork ? (
