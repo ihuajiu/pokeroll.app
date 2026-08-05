@@ -31,10 +31,10 @@ export default function TeamTray() {
         aria-label={`Your team (${team.length}/${max})`}
         aria-expanded={open}
         title="Your team"
-        className="game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center px-0 text-sm font-semibold md:w-auto md:px-3"
+        className="game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center"
       >
-        {/* Icon-only on mobile; text + badge on desktop */}
-        <span className="relative inline-flex md:hidden">
+        <span className="relative inline-flex">
+          {/* Two-person (team) icon + live count badge */}
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -55,12 +55,6 @@ export default function TeamTray() {
               {team.length}
             </span>
           )}
-        </span>
-        <span className="hidden items-center gap-1.5 md:inline-flex">
-          Your Team
-          <span className="rounded-full bg-[#ee3b3b] px-1.5 text-xs font-bold leading-5 text-white">
-            {team.length}
-          </span>
         </span>
       </button>
 
