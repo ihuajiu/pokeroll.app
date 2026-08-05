@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: "Disclaimer & Affiliate Notice — Fan-made Pokémon Tool",
   description:
     "Fan-made, unofficial site. Not affiliated with Nintendo, Game Freak or The Pokémon Company. Affiliate disclosure included.",
+  keywords: [
+    "pokemon fan site disclaimer",
+    "pokemon fan tool legal",
+    "pokemon affiliate disclosure",
+    "unofficial pokemon site",
+  ],
   alternates: { canonical: "/disclaimer" },
 };
 
