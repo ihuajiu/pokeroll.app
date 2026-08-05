@@ -104,7 +104,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                   key={`${p.dexNumber}-${i}`}
                   className="absolute left-1/2 top-1/2"
                   style={{
-                    transform: `translate(-50%,-50%) rotate(${i * (360 / SEG)}deg) translateY(-${SIZE / 2 - 88}px)`,
+                    transform: `translate(-50%,-50%) rotate(${i * (360 / SEG)}deg) translateY(-${SIZE / 2 - 84}px)`,
                   }}
                 >
                   {p.artwork ? (
@@ -117,11 +117,11 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                       <img
                         src={p.artwork}
                         alt={p.displayName}
-                        width={96}
-                        height={96}
+                        width={112}
+                        height={112}
                         style={{
-                          width: 96,
-                          height: 96,
+                          width: 112,
+                          height: 112,
                           filter:
                             winner === i
                               ? "drop-shadow(0 0 14px rgba(250, 204, 21, 0.95)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35))"
