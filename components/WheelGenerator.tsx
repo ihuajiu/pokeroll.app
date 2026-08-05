@@ -109,8 +109,8 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                 >
                   {p.artwork ? (
                     <div
-                      className={`flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-md transition-transform duration-500 ${
-                        winner === i ? "scale-110 ring-4 ring-amber-400" : ""
+                      className={`transition-transform duration-500 ${
+                        winner === i ? "scale-110" : ""
                       }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -119,7 +119,14 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                         alt={p.displayName}
                         width={64}
                         height={64}
-                        style={{ width: 64, height: 64 }}
+                        style={{
+                          width: 64,
+                          height: 64,
+                          filter:
+                            winner === i
+                              ? "drop-shadow(0 0 14px rgba(250, 204, 21, 0.95)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35))"
+                              : "drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35))",
+                        }}
                       />
                     </div>
                   ) : null}
