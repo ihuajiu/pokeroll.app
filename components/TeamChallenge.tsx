@@ -140,6 +140,51 @@ export default function TeamChallenge({
 
   return (
     <div className="mx-auto w-full max-w-[1100px] px-4">
+      {/* Take the challenge — primary action first */}
+      <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
+        <h2 className="text-xl font-extrabold text-poke-ink">
+          {yours
+            ? "Here's your shot — try to beat it!"
+            : "Take the challenge — roll your team"}
+        </h2>
+        <p className="mx-auto mt-1 max-w-md text-sm text-poke-dim">
+          {yours
+            ? "Re-roll your squad as many times as you like, then compare total BST."
+            : "You get 6 random Pokémon — higher total base stats than the challenge team wins."}
+        </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+          <button
+            onClick={rollMine}
+            className="inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-3.5 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="4" />
+              <g fill="currentColor" stroke="none">
+                <circle cx="8.5" cy="8.5" r="1.4" />
+                <circle cx="15.5" cy="8.5" r="1.4" />
+                <circle cx="12" cy="12" r="1.4" />
+                <circle cx="8.5" cy="15.5" r="1.4" />
+                <circle cx="15.5" cy="15.5" r="1.4" />
+              </g>
+            </svg>
+            {yours ? "Re-roll my team" : "Roll my team"}
+          </button>
+          <button
+            onClick={challenge}
+            className="inline-flex items-center gap-2 rounded-2xl border border-poke-border bg-poke-surface px-6 py-3.5 text-sm font-bold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            {copied ? "Link copied!" : "Challenge a friend"}
+          </button>
+        </div>
+      </div>
+
       {/* How to play */}
       <div className="mb-6 grid gap-3 rounded-2xl border border-poke-border bg-poke-surface p-5 sm:grid-cols-3">
         {steps.map((s) => (
@@ -227,20 +272,37 @@ export default function TeamChallenge({
         </div>
       )}
 
-      {/* Actions */}
-      <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <button
-          onClick={challenge}
-          className="rounded-xl bg-poke-btn px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-poke-btnHover"
-        >
-          {copied ? "Link copied!" : "Challenge a friend"}
-        </button>
-        <button
-          onClick={rollMine}
-          className="rounded-xl border border-poke-border bg-poke-surface px-6 py-3 text-sm font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
-        >
-          {yours ? "Re-roll my team" : "Roll my team"}
-        </button>
+      {/* Detailed how-to */}
+      <div className="mt-12 rounded-2xl border border-poke-border bg-poke-surface p-6">
+        <h2 className="text-base font-extrabold text-poke-ink">How to use the Team Challenge</h2>
+        <ol className="mt-3 space-y-2 text-sm leading-relaxed text-poke-dim">
+          <li>
+            <strong className="text-poke-ink">1. The challenge team.</strong>{" "}
+            This page always shows a seeded 6-Pokémon squad — everyone who opens the
+            same link sees the exact same lineup (that's the "challenge").
+          </li>
+          <li>
+            <strong className="text-poke-ink">2. Roll yours.</strong> Tap{" "}
+            <em>Roll my team</em> to generate your own 6-Pokémon squad. You can
+            re-roll as many times as you like until you're happy.
+          </li>
+          <li>
+            <strong className="text-poke-ink">3. Compare.</strong> Both teams are
+            shown with their total base stats (BST) — the higher total wins, and
+            ties are possible.
+          </li>
+          <li>
+            <strong className="text-poke-ink">4. Share.</strong>{" "}
+            <em>Challenge a friend</em> copies a link with the same challenge team,
+            so a friend gets the identical lineup to try to beat.
+          </li>
+          <li>
+            <strong className="text-poke-ink">5. Export the result.</strong>{" "}
+            <em>Share the result card</em> or <em>Download card</em> creates an
+            image of the matchup (with a QR code) — great for posting in your
+            community.
+          </li>
+        </ol>
       </div>
     </div>
   );

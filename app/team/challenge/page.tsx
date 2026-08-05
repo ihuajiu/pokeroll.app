@@ -61,17 +61,6 @@ export default async function TeamChallengePage({
         count={count}
         resultView={resultView}
       />
-      <section className="mt-10 max-w-2xl">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
-          How it works
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-poke-dim">
-          The challenge team is generated deterministically from the seed in the
-          link, so everyone who opens it sees the exact same lineup. Share it
-          with a friend — they roll their own team and the two squads are
-          compared by total base stats to decide who wins.
-        </p>
-      </section>
       <RelatedTools current="/team/challenge" />
     </main>
   );
