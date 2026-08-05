@@ -71,7 +71,7 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
     <div className="mx-auto max-w-[1040px]">
       <div className="mb-4 text-center">
         <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
-        <p className="text-sm text-poke-dim">Fuse two random Pokémon into one!</p>
+        <p className="text-sm text-poke-dim">Fuse two random Pokémon into a new hybrid — tap Add to Team to keep it.</p>
       </div>
 
       <div className="fusion-stage grid grid-cols-1 items-center gap-4 sm:grid-cols-[1fr_auto_1fr]">

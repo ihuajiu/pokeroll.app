@@ -49,7 +49,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
     <div className="mx-auto max-w-[440px]">
       <div className="mb-4 text-center">
         <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
-        <p className="text-sm text-poke-dim">Spin the wheel for a random Pokémon!</p>
+        <p className="text-sm text-poke-dim">Spin the wheel and see where it lands — tap Add to Team to keep the winner.</p>
       </div>
 
       <div className="relative mx-auto" style={{ width: SIZE, height: SIZE }}>

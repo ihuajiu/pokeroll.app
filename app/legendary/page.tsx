@@ -37,6 +37,9 @@ export default async function LegendaryPage() {
         title="Random Legendary Pokémon Generator"
         description="Only Legendary Pokémon in this pool — tap Generate Again for another legendary roll."
       />
+      <p className="mb-6 text-sm text-poke-dim">
+        Tap Generate Again to roll another Legendary — Add to Team keeps it in your squad.
+      </p>
       <FilteredGenerator query="legendary=1" initial={initial} />
     </main>
   );
