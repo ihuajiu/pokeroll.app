@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Pokémon Team Challenge — Roll a Team, Challenge a Friend",
   description:
-    "Roll a seeded team of 6 Pokémon, share the link, and challenge a friend to beat your lineup. Free fan-made tool.",
+    "Roll a seeded team of 6 Pokémon, share the link, and challenge a friend — their team is compared by total BST to pick a winner. Free fan-made tool.",
   keywords: [
     "pokemon team challenge",
     "random pokemon team",
@@ -23,16 +23,22 @@ export const metadata: Metadata = {
 export default async function TeamChallengePage({
   searchParams,
 }: {
-  searchParams: Promise<{ seed?: string | string[]; count?: string | string[] }>;
+  searchParams: Promise<{
+    seed?: string | string[];
+    mine?: string | string[];
+    count?: string | string[];
+  }>;
 }) {
   const sp = await searchParams;
   const seed = typeof sp.seed === "string" ? sp.seed : undefined;
+  const mine = typeof sp.mine === "string" ? sp.mine : undefined;
   if (!seed) {
     redirect(`/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}`);
   }
   const countRaw = Number(sp.count);
   const count = countRaw ? Math.min(12, Math.max(3, countRaw)) : 6;
-  const { pokemon } = await getRandomTeam({ seed, count });
+  const { pokemon: challenger } = await getRandomTeam({ seed, count });
+  const yours = mine ? (await getRandomTeam({ seed: mine, count })).pokemon : null;
 
   return (
     <main className="pt-6 pb-10">
@@ -44,17 +50,23 @@ export default async function TeamChallengePage({
       />
       <PageHeader
         title="Pokémon Team Challenge"
-        description={`I rolled a team of ${pokemon.length} — roll yours and let's see who wins.`}
+        description={`A seeded team of ${challenger.length} — share the link, roll yours, and let total BST pick a winner.`}
       />
-      <TeamChallenge pokemon={pokemon} seed={seed} />
+      <TeamChallenge
+        challenger={challenger}
+        yours={yours}
+        seed={seed}
+        count={count}
+      />
       <section className="mt-10 max-w-2xl">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
           How it works
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-poke-dim">
-          The team is generated deterministically from the seed in the link, so
-          everyone who opens it sees the exact same lineup. Challenge a friend,
-          compare squads, and roll your own to settle it.
+          The challenge team is generated deterministically from the seed in the
+          link, so everyone who opens it sees the exact same lineup. Share it
+          with a friend — they roll their own team and the two squads are
+          compared by total base stats to decide who wins.
         </p>
       </section>
       <RelatedTools current="/team/challenge" />
