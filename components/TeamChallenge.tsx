@@ -331,9 +331,10 @@ export default function TeamChallenge({
           </div>
           <p className="mt-2 text-lg font-extrabold text-poke-red">{result}</p>
           <p className="mt-1 text-xs text-poke-dim">Higher total base stats wins.</p>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={shareResult}
-            className="mt-3 inline-flex items-center gap-2 rounded-xl bg-poke-btn px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-poke-btnHover"
+            className="inline-flex items-center gap-2 rounded-xl bg-poke-btn px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-poke-btnHover"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
               <circle cx="18" cy="5" r="3" />
@@ -351,7 +352,7 @@ export default function TeamChallenge({
           <button
             onClick={downloadResult}
             disabled={cardBusy}
-            className="mt-3 inline-flex items-center gap-2 rounded-xl border border-poke-border bg-poke-tint px-5 py-2 text-sm font-bold text-poke-ink shadow-sm transition hover:border-poke-btn hover:bg-poke-btn hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-xl border border-poke-border bg-poke-tint px-5 py-2.5 text-sm font-bold text-poke-ink shadow-sm transition hover:border-poke-btn hover:bg-poke-btn hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -360,6 +361,7 @@ export default function TeamChallenge({
             </svg>
             Download card
           </button>
+          </div>
         </div>
       )}
 
