@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
 import HeroCard from "./HeroCard";
@@ -13,7 +13,14 @@ export type WheelPayload = { items: Pokemon[] };
 const SEG = 8;
 const SIZE = 520;
 
-export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
+export default function WheelGenerator({
+  initial,
+  shared = null,
+}: {
+  initial: WheelPayload;
+  /** Shared round result (result=1 link): show the PK results read-only. */
+  shared?: { players: number; dexes: number[] } | null;
+}) {
   const [items, setItems] = useState<Pokemon[]>(initial.items);
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
@@ -22,6 +29,8 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
   const [playerCount, setPlayerCount] = useState(3);
   const [results, setResults] = useState<{ player: number; pokemon: Pokemon }[]>([]);
   const [addedNotice, setAddedNotice] = useState<string | null>(null);
+  const [shareDone, setShareDone] = useState(false);
+  const [sharedPokemon, setSharedPokemon] = useState<Pokemon[] | null>(null);
   const { team, add } = useTeam();
 
   const currentPlayer = results.length + 1;
@@ -75,6 +84,49 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
     setTimeout(() => setAddedNotice(null), 2000);
   }
 
+  // Shared result link: fetch the landed Pokémon for the read-only view.
+  useEffect(() => {
+    if (!shared) return;
+    let cancelled = false;
+    Promise.all(
+      shared.dexes.map((d) =>
+        fetch(`/api/pokemon/${d}`)
+          .then((r) => (r.ok ? r.json() : null))
+          .catch(() => null),
+      ),
+    ).then((res) => {
+      if (!cancelled) setSharedPokemon(res.filter(Boolean) as Pokemon[]);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [shared]);
+
+  async function shareResults() {
+    if (results.length === 0) return;
+    const url = `${window.location.origin}/wheel?result=1&players=${playerCount}&dex=${results
+      .map((r) => r.pokemon.dexNumber)
+      .join(",")}`;
+    const text = leader
+      ? `Player ${leader.player} won the PokeRoll wheel round with ${leader.pokemon.displayName} (${leader.pokemon.bst} BST)!`
+      : "PokeRoll wheel round results";
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title: "PokeRoll Wheel Results", text, url });
+        return;
+      } catch {
+        /* fall through to clipboard */
+      }
+    }
+    try {
+      await navigator.clipboard?.writeText(`${text}\n${url}`);
+      setShareDone(true);
+      setTimeout(() => setShareDone(false), 1800);
+    } catch {
+      /* clipboard unavailable */
+    }
+  }
+
   async function regenerate() {
     setSpinning(false);
     setWinner(null);
@@ -86,6 +138,62 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
     }
   }
 
+  if (shared) {
+    const sharedLeader = (sharedPokemon ?? []).reduce<
+      { player: number; pokemon: Pokemon } | null
+    >(
+      (best, p, i) =>
+        !best || (p.bst || 0) > (best.pokemon.bst || 0)
+          ? { player: i + 1, pokemon: p }
+          : best,
+      null,
+    );
+    const loaded =
+      sharedPokemon !== null && sharedPokemon.length === shared.dexes.length;
+    return (
+      <div className="mx-auto w-full max-w-[1100px] px-4">
+        <div className="mb-5 text-center">
+          <p className="text-lg font-semibold text-poke-ink">Wheel round result</p>
+          <p className="text-sm text-poke-dim">
+            {loaded && sharedLeader
+              ? `Player ${sharedLeader.player} won with ${sharedLeader.pokemon.displayName} (${sharedLeader.pokemon.bst} BST)!`
+              : `A ${shared.players}-player round shared on PokeRoll`}
+          </p>
+        </div>
+        {loaded ? (
+          <>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {sharedPokemon!.map((p, i) => (
+                <div key={`${i}-${p.dexNumber}`} className="relative">
+                  <div className="mb-1 flex items-center justify-center gap-2">
+                    <span className="rounded-full bg-poke-chip px-2.5 py-0.5 text-xs font-bold text-poke-ink">
+                      Player {i + 1}
+                    </span>
+                    {sharedLeader && sharedLeader.player === i + 1 && (
+                      <span className="text-base" aria-label="Round leader">
+                        👑
+                      </span>
+                    )}
+                  </div>
+                  <HeroCard pokemon={p} variant="team" favoritable />
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <Link
+                href="/wheel"
+                className="rounded-xl bg-poke-btn px-6 py-2.5 font-semibold text-white shadow-glow transition hover:bg-poke-btnHover"
+              >
+                Spin your own wheel
+              </Link>
+            </div>
+          </>
+        ) : (
+          <p className="py-10 text-center text-sm text-poke-dim">Loading results…</p>
+        )}
+      </div>
+    );
+  }
   return (
     <div className="mx-auto w-full max-w-[1100px] px-4">
       <div className="mb-4 text-center">
@@ -204,6 +312,15 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
           {spinning ? "Spinning…" : roundComplete ? "Round complete" : "Spin!"}
         </button>
         <GenerateButton onClick={regenerate} loading={false} />
+        {results.length > 0 && (
+          <button
+            type="button"
+            onClick={newRound}
+            className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+          >
+            New round
+          </button>
+        )}
       </div>
 
       {/* Players selector */}
@@ -267,20 +384,18 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             <button
               type="button"
+              onClick={shareResults}
+              className="rounded-xl bg-amber-500 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-amber-600"
+            >
+              {shareDone ? "Link copied!" : "Share results"}
+            </button>
+            <button
+              type="button"
               onClick={addAllToTeam}
               className="rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
             >
               Add all to Team
             </button>
-            {roundComplete && (
-              <button
-                type="button"
-                onClick={newRound}
-                className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
-              >
-                New round
-              </button>
-            )}
             <Link
               href="/team"
               className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"

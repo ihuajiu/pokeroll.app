@@ -7,8 +7,11 @@ export async function GET(
   { params }: { params: Promise<{ name: string }> },
 ) {
   const { name } = await params;
+  // Numeric paths (e.g. /api/pokemon/25) resolve by Pokédex number;
+  // anything else is looked up by name/slug.
+  const id = /^\d+$/.test(name) ? Number(name) : name;
   try {
-    return Response.json(await getPokemonById(name));
+    return Response.json(await getPokemonById(id));
   } catch {
     return Response.json({ error: "Pokémon not found" }, { status: 404 });
   }
