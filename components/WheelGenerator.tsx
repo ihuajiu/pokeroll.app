@@ -23,7 +23,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
     setSpinning(true);
     setWinner(null);
     const target = Math.floor(Math.random() * SEG);
-    const offset = ((-target * (360 / SEG)) - (rotation % 360) + 360) % 360;
+    const offset = ((-target * (360 / SEG) - 180 / SEG) - (rotation % 360) + 360) % 360;
     const next = rotation + 360 * 5 + offset;
     setRotation(next);
     setTimeout(() => {
