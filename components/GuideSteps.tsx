@@ -19,7 +19,7 @@ export default function GuideSteps({
   className?: string;
 }) {
   return (
-    <section className={className}>
+    <section className={`mx-auto w-full max-w-[1100px] px-4 ${className}`.trim()}>
       <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
         {title}
       </h2>

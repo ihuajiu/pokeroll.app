@@ -29,9 +29,9 @@ export default async function TeamPage({
         title="Your Pokémon Team"
         description="Your saved squad — add Pokémon from any generator, then build and share."
       />
-      <TeamClient sharedNames={sp.team ?? null} />
+
       <GuideSteps
-        className="mt-10"
+        className="mb-6"
         title="How to build your team"
         steps={[
           {
@@ -51,6 +51,7 @@ export default async function TeamPage({
           },
         ]}
       />
+      <TeamClient sharedNames={sp.team ?? null} />
       <RelatedTools current="/team" />
     </main>
   );

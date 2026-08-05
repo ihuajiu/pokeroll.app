@@ -51,9 +51,9 @@ export default async function AdventurePage({
         description="One tap rolls your trainer, region, starter, team, challenge and goal — a full Pokémon adventure every time."
       />
       <div className="mx-auto max-w-5xl px-3">
-        <AdventureView initial={adventure} />
+
         <GuideSteps
-          className="mt-10"
+          className="mb-6"
           steps={[
             {
               n: "1",
@@ -72,6 +72,7 @@ export default async function AdventurePage({
             },
           ]}
         />
+        <AdventureView initial={adventure} />
         <FaqSection
           items={[
             {

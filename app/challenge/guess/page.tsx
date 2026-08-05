@@ -85,9 +85,9 @@ export default async function GuessChallengePage({
           Mystery Pokémon →
         </Link>
       </p>
-      <ChallengeGenerator challenge={challenge} />
+
       <GuideSteps
-        className="mt-10 max-w-5xl"
+        className="mb-6"
         steps={[
           {
             n: "1",
@@ -106,6 +106,7 @@ export default async function GuessChallengePage({
           },
         ]}
       />
+      <ChallengeGenerator challenge={challenge} />
       <RelatedTools current="/challenge/guess" />
     </main>
   );
