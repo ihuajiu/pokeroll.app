@@ -79,9 +79,7 @@ export default function FavoritesClient({
         {!isShared && (
           <p className="mt-1 text-xs font-semibold text-poke-dim">
             {favorites.length} / 15
-            {isFull
-              ? " — Free tier full. Premium unlocks unlimited favorites."
-              : " free slots used"}
+            {isFull ? " — max reached" : " slots used"}
           </p>
         )}
       </div>

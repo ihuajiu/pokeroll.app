@@ -905,23 +905,29 @@ body {
 .form-chip--paldean { background: #3b82f6; }
 .form-chip--gigantamax { color: #3a2c00; background: linear-gradient(90deg, #f59e0b, #fde047); }
 
-/* Favorites-limit toast shown when the free 15-slot cap is hit. */
+/* Favorites-limit notice: centered in the viewport so it is never
+   obscured by the card, large enough to read comfortably. */
 .fav-limit-toast {
-  position: absolute;
+  position: fixed;
   left: 50%;
-  bottom: 14px;
-  transform: translateX(-50%);
-  z-index: 60;
-  max-width: 90%;
-  padding: 8px 14px;
-  border-radius: 999px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  max-width: min(90vw, 420px);
+  padding: 20px 28px;
+  border-radius: 18px;
   background: rgb(var(--surface));
   border: 1px solid rgb(var(--border));
-  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.35);
-  font: 600 12.5px var(--font);
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45);
+  font: 700 16px/1.4 var(--font);
   color: rgb(var(--text));
-  white-space: nowrap;
-  animation: pop 0.25s ease both;
+  text-align: center;
+  animation: fav-toast-in 0.2s ease both;
+}
+
+@keyframes fav-toast-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 /* Type-colored stat bars span the full width at the bottom. */
 .team-card.hero-card .bars {

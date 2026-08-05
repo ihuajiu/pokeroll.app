@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Pokemon } from "@/lib/types";
 import { TYPE_HEX } from "@/lib/typeColors";
 import { useFavorites } from "@/components/useFavorites";
@@ -145,7 +146,7 @@ export default function HeroCard({
   function handleFavorite() {
     const r = toggleFavorite(data);
     if (r === "limit") {
-      setFavMsg("Favorites full (15) — Premium unlocks unlimited.");
+      setFavMsg("Max 15 favorites — remove one to add another.");
       setTimeout(() => setFavMsg(null), 2600);
     }
   }
@@ -631,11 +632,14 @@ export default function HeroCard({
           </button>
         </div>
       ) : null}
-      {favMsg ? (
-        <div role="status" className="fav-limit-toast">
-          {favMsg}
-        </div>
-      ) : null}
+      {favMsg && typeof document !== "undefined"
+        ? createPortal(
+            <div role="status" className="fav-limit-toast">
+              {favMsg}
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }
