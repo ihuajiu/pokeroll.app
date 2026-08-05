@@ -5,6 +5,9 @@ import type { Pokemon } from "@/lib/types";
 
 const KEY = "rpg-favorites";
 
+/** Free tier keeps up to 15 favorites; more is a Premium feature. */
+export const MAX_FAVORITES = 15;
+
 function load(): Pokemon[] {
   if (typeof window === "undefined") return [];
   try {
@@ -72,23 +75,27 @@ function getServerSnapshot(): Pokemon[] {
 export function useFavorites() {
   const favorites = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  const add = useCallback((p: Pokemon) => {
+  const add = useCallback((p: Pokemon): "added" | "exists" | "limit" => {
     const cur = ensure();
-    if (cur.some((x) => x.dexNumber === p.dexNumber)) return;
+    if (cur.some((x) => x.dexNumber === p.dexNumber)) return "exists";
+    if (cur.length >= MAX_FAVORITES) return "limit";
     setStore([...cur, p]);
+    return "added";
   }, []);
 
   const remove = useCallback((dexNumber: number) => {
     setStore(ensure().filter((x) => x.dexNumber !== dexNumber));
   }, []);
 
-  const toggle = useCallback((p: Pokemon) => {
+  const toggle = useCallback((p: Pokemon): "added" | "removed" | "limit" => {
     const cur = ensure();
     if (cur.some((x) => x.dexNumber === p.dexNumber)) {
       setStore(cur.filter((x) => x.dexNumber !== p.dexNumber));
-    } else {
-      setStore([...cur, p]);
+      return "removed";
     }
+    if (cur.length >= MAX_FAVORITES) return "limit";
+    setStore([...cur, p]);
+    return "added";
   }, []);
 
   // Merge a batch of pokemon (e.g. imported from a shared snapshot link),
@@ -97,8 +104,10 @@ export function useFavorites() {
     const cur = ensure();
     const seen = new Set(cur.map((x) => x.dexNumber));
     const fresh = list.filter((x) => !seen.has(x.dexNumber));
-    if (fresh.length > 0) setStore([...cur, ...fresh]);
-    return fresh.length;
+    const room = Math.max(0, MAX_FAVORITES - cur.length);
+    const accepted = fresh.slice(0, room);
+    if (accepted.length > 0) setStore([...cur, ...accepted]);
+    return accepted.length;
   }, []);
 
   const has = useCallback(
@@ -110,5 +119,7 @@ export function useFavorites() {
     setStore([]);
   }, []);
 
-  return { favorites, add, remove, toggle, merge, has, clear };
+  const isFull = favorites.length >= MAX_FAVORITES;
+
+  return { favorites, add, remove, toggle, merge, has, clear, isFull };
 }

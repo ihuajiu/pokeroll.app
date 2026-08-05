@@ -904,6 +904,25 @@ body {
 .form-chip--hisuian,
 .form-chip--paldean { background: #3b82f6; }
 .form-chip--gigantamax { color: #3a2c00; background: linear-gradient(90deg, #f59e0b, #fde047); }
+
+/* Favorites-limit toast shown when the free 15-slot cap is hit. */
+.fav-limit-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 60;
+  max-width: 90%;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgb(var(--surface));
+  border: 1px solid rgb(var(--border));
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.35);
+  font: 600 12.5px var(--font);
+  color: rgb(var(--text));
+  white-space: nowrap;
+  animation: pop 0.25s ease both;
+}
 /* Type-colored stat bars span the full width at the bottom. */
 .team-card.hero-card .bars {
   margin-top: 16px;

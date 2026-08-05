@@ -109,6 +109,7 @@ export default function HeroCard({
   const [internalLoading, setInternalLoading] = useState(false);
   const [shareDone, setShareDone] = useState<"shared" | "copied" | null>(null);
   const [dlDone, setDlDone] = useState(false);
+  const [favMsg, setFavMsg] = useState<string | null>(null);
   /** Root card element — captured as the classic-style download image. */
   const cardRef = useRef<HTMLDivElement>(null);
   /** Name heading — long names auto-shrink to fit one line. */
@@ -140,6 +141,14 @@ export default function HeroCard({
   const cc = TYPE_HEX[data.types[0]] ?? TYPE_HEX.normal;
   const { has: isFavorited, toggle: toggleFavorite } = useFavorites();
   const favorited = favoritable ? isFavorited(data.dexNumber) : false;
+
+  function handleFavorite() {
+    const r = toggleFavorite(data);
+    if (r === "limit") {
+      setFavMsg("Favorites full (15) — Premium unlocks unlimited.");
+      setTimeout(() => setFavMsg(null), 2600);
+    }
+  }
 
   // Long names shrink to fit one line (min 15px), wrapping only as a
   // last resort for extremely long names.
@@ -361,7 +370,7 @@ export default function HeroCard({
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            toggleFavorite(data);
+            handleFavorite();
           }}
           aria-pressed={favorited}
           aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
@@ -510,7 +519,7 @@ export default function HeroCard({
               aria-pressed={favorited}
               aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
               title={favorited ? "Remove from favorites" : "Add to favorites"}
-              onClick={() => toggleFavorite(data)}
+              onClick={handleFavorite}
             >
               <svg
                 viewBox="0 0 24 24"
@@ -620,6 +629,11 @@ export default function HeroCard({
             </svg>
             {isLoading ? "Rolling…" : "New roll"}
           </button>
+        </div>
+      ) : null}
+      {favMsg ? (
+        <div role="status" className="fav-limit-toast">
+          {favMsg}
         </div>
       ) : null}
     </div>

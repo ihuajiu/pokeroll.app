@@ -15,7 +15,7 @@ export default function FavoritesClient({
   /** True when `?m=` was present but every entry was invalid. */
   sharedInvalid: boolean;
 }) {
-  const { favorites, remove, merge, clear } = useFavorites();
+  const { favorites, remove, merge, clear, isFull } = useFavorites();
   const [copied, setCopied] = useState(false);
   const [merged, setMerged] = useState<number | null>(null);
 
@@ -76,6 +76,14 @@ export default function FavoritesClient({
             ? "A favorites snapshot shared with you — read-only"
             : "Pokémon you've favorited on this device"}
         </p>
+        {!isShared && (
+          <p className="mt-1 text-xs font-semibold text-poke-dim">
+            {favorites.length} / 15
+            {isFull
+              ? " — Free tier full. Premium unlocks unlimited favorites."
+              : " free slots used"}
+          </p>
+        )}
       </div>
 
       {isShared && !sharedInvalid && (
