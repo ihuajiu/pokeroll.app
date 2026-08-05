@@ -20,11 +20,15 @@ export default function TeamChallenge({
   yours,
   seed,
   count,
+  resultView = false,
 }: {
   challenger: Pokemon[];
   yours: Pokemon[] | null;
   seed: string;
   count: number;
+  /** True when this page was opened as a shared result (label the mine team
+   *  as "their team" instead of "your team" to avoid perspective ambiguity). */
+  resultView?: boolean;
 }) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
@@ -35,10 +39,13 @@ export default function TeamChallenge({
   // Neutral labels so the winner is clear in every context: the "challenge"
   // is the team in the shared link, the "challenger" is the one that rolled
   // against it (whoever is viewing, the wording stays the same).
+  const mineLabel = resultView ? "Their team" : "Your team";
   const result =
     yours && myBst != null
       ? myBst > chBst
-        ? "The challenger wins!"
+        ? resultView
+          ? "Their team wins!"
+          : "You win!"
         : myBst < chBst
           ? "The challenge wins!"
           : "It's a tie!"
@@ -70,7 +77,9 @@ export default function TeamChallenge({
     if (yours == null || myBst == null) return;
     // The URL carries both seeds, so the link reproduces this exact matchup
     // and the same winner for whoever opens it.
-    const url = window.location.href;
+    const url = new URL(window.location.href);
+    url.searchParams.set("result", "1");
+    const href = url.toString();
     const text =
       myBst > chBst
         ? `My team (${myBst} BST) beat the challenge team (${chBst} BST) on PokeRoll — can you beat mine?`
@@ -79,14 +88,14 @@ export default function TeamChallenge({
           : `It's a tie — ${myBst} BST each on PokeRoll Team Challenge!`;
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
-        await navigator.share({ title: "Team Challenge Result", text, url });
+        await navigator.share({ title: "Team Challenge Result", text, url: href });
         return;
       } catch {
         /* fall through to clipboard */
       }
     }
     try {
-      await navigator.clipboard?.writeText(`${text}\n${url}`);
+      await navigator.clipboard?.writeText(`${text}\n${href}`);
       setResultCopied(true);
       setTimeout(() => setResultCopied(false), 1800);
     } catch {
@@ -128,7 +137,7 @@ export default function TeamChallenge({
         <div className="mb-6 rounded-2xl border border-poke-red/40 bg-poke-surface px-6 py-5 text-center shadow-sm">
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold">
             <span className="text-poke-ink">
-              The challenger <span className="text-poke-red">{myBst} BST</span>
+              {mineLabel} <span className="text-poke-red">{myBst} BST</span>
             </span>
             <span className="text-poke-dim">vs</span>
             <span className="text-poke-ink">
@@ -169,7 +178,7 @@ export default function TeamChallenge({
       {yours && myBst != null && (
         <div className="mt-10">
           <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-            🫵 The challenger · {myBst} BST
+            🫵 {mineLabel} · {myBst} BST
           </h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {yours.map((p) => (

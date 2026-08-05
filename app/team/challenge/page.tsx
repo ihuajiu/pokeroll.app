@@ -27,11 +27,13 @@ export default async function TeamChallengePage({
     seed?: string | string[];
     mine?: string | string[];
     count?: string | string[];
+    result?: string | string[];
   }>;
 }) {
   const sp = await searchParams;
   const seed = typeof sp.seed === "string" ? sp.seed : undefined;
   const mine = typeof sp.mine === "string" ? sp.mine : undefined;
+  const resultView = sp.result === "1";
   if (!seed) {
     redirect(`/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}`);
   }
@@ -57,6 +59,7 @@ export default async function TeamChallengePage({
         yours={yours}
         seed={seed}
         count={count}
+        resultView={resultView}
       />
       <section className="mt-10 max-w-2xl">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
