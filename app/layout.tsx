@@ -73,6 +73,20 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-screen antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "PokeRoll",
+              url: "https://pokeroll.app",
+              description:
+                "Free fan-made Pokémon tools — random generator, team builder, challenges, wheel and more.",
+              inLanguage: "en",
+            }),
+          }}
+        />
         {/* Google Analytics 4 — loads after hydration so it never blocks first paint. */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-M74KET4Y45"

@@ -8,18 +8,30 @@ import { getPokemonById, getRandomPokemon } from "@/lib/pokeapi";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Random Pokémon Generator — PokeRoll",
-  description:
-    "Roll a random Pokémon in one tap — every pull comes with its name, type, ability, base stats, generation and official artwork. Free fan-made tool.",
-  keywords: [
-    "random pokemon generator",
-    "pokemon generator",
-    "pokemon random generator",
-    "random pokemon",
-  ],
-  alternates: { canonical: "/random-pokemon-generator" },
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ p?: string }>;
+}): Promise<Metadata> {
+  const { p } = await searchParams;
+  // Share previews show the actual rolled Pokémon when ?p= is present.
+  const ogImage = p
+    ? `/api/og?p=${encodeURIComponent(p)}`
+    : "/api/og";
+  return {
+    title: "Random Pokémon Generator — PokeRoll",
+    description:
+      "Roll a random Pokémon in one tap — every pull comes with its name, type, ability, base stats, generation and official artwork. Free fan-made tool.",
+    keywords: [
+      "random pokemon generator",
+      "pokemon generator",
+      "pokemon random generator",
+      "random pokemon",
+    ],
+    alternates: { canonical: "/random-pokemon-generator" },
+    openGraph: { images: [{ url: ogImage, width: 1200, height: 630 }] },
+  };
+}
 
 export default async function RandomGeneratorPage({
   searchParams,
