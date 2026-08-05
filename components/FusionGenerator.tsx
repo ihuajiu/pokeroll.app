@@ -96,7 +96,7 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
 
       <p className="mb-2 text-center text-sm text-poke-dim">Your fusion is…</p>
       <div className="card-stage mx-auto flex max-w-[640px] justify-center">
-        <HeroCard pokemon={fused} loading={loading} onRoll={regenerate} variant="wide" />
+        <HeroCard pokemon={fused} loading={loading} onRoll={regenerate} variant="wide" favoritable />
       </div>
 
       <div className="mt-4 flex flex-wrap justify-center gap-3">

@@ -163,7 +163,6 @@ export default function FavoritesClient({
             <div key={p.dexNumber} className="relative">
               <HeroCard
                 pokemon={p}
-                showActions={false}
                 variant="team"
                 favoritable={!isShared}
               />

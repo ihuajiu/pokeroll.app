@@ -277,8 +277,7 @@ export default function AdventureView({
             <HeroCard
               pokemon={a.rival.starter}
               variant="wide"
-              showActions={false}
-              favoritable
+                            favoritable
             />
           </div>
         </div>
