@@ -32,12 +32,15 @@ export default function TeamChallenge({
 
   const chBst = bstTotal(challenger);
   const myBst = yours ? bstTotal(yours) : null;
+  // Neutral labels so the winner is clear in every context: the "challenge"
+  // is the team in the shared link, the "challenger" is the one that rolled
+  // against it (whoever is viewing, the wording stays the same).
   const result =
     yours && myBst != null
       ? myBst > chBst
-        ? "Your team wins!"
+        ? "The challenger wins!"
         : myBst < chBst
-          ? "The challenge team wins!"
+          ? "The challenge wins!"
           : "It's a tie!"
       : null;
 
@@ -125,11 +128,11 @@ export default function TeamChallenge({
         <div className="mb-6 rounded-2xl border border-poke-red/40 bg-poke-surface px-6 py-5 text-center shadow-sm">
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold">
             <span className="text-poke-ink">
-              Your team <span className="text-poke-red">{myBst} BST</span>
+              The challenger <span className="text-poke-red">{myBst} BST</span>
             </span>
             <span className="text-poke-dim">vs</span>
             <span className="text-poke-ink">
-              Challenge team <span className="text-poke-red">{chBst} BST</span>
+              The challenge <span className="text-poke-red">{chBst} BST</span>
             </span>
           </div>
           <p className="mt-2 text-lg font-extrabold text-poke-red">{result}</p>
@@ -153,7 +156,7 @@ export default function TeamChallenge({
       {/* Challenge team */}
       <div>
         <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-          🏳️ The challenge team · {chBst} BST
+          🏳️ The challenge · {chBst} BST
         </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {challenger.map((p) => (
@@ -166,7 +169,7 @@ export default function TeamChallenge({
       {yours && myBst != null && (
         <div className="mt-10">
           <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-            🫵 Your team · {myBst} BST
+            🫵 The challenger · {myBst} BST
           </h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {yours.map((p) => (
