@@ -775,38 +775,46 @@ async function drawTeamAvatar(
 export async function renderTeamResultCard(data: TeamResultCardData): Promise<Blob> {
   await document.fonts?.ready.catch(() => undefined);
   const canvas = document.createElement("canvas");
-  canvas.width = TCW;
-  canvas.height = TCH;
+  const W = 1080;
+  const H = 1440; // 3:4 portrait
+  canvas.width = W;
+  canvas.height = H;
   const ctx = canvas.getContext("2d")!;
 
-  // Dark backdrop (matches the shiny TCG card)
-  ctx.fillStyle = "#14161f";
-  ctx.fillRect(0, 0, TCW, TCH);
-  const top = ctx.createRadialGradient(TCW / 2, 0, 80, TCW / 2, TCH * 0.3, TCH);
-  top.addColorStop(0, "#1b1e2b");
-  top.addColorStop(1, "rgba(27, 30, 43, 0)");
-  ctx.fillStyle = top;
-  ctx.fillRect(0, 0, TCW, TCH);
+  const red = "#ee3b3b";
+  const ink = "#1f2430";
+  const gray = "#7a8294";
 
-  const gold = goldGradient(ctx, 60, TCW - 60);
+  // Light backdrop
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, "#ffffff");
+  bg.addColorStop(1, "#eef1f6");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
 
-  // Header
+  // Red header band
+  const band = ctx.createLinearGradient(0, 0, W, 0);
+  band.addColorStop(0, "#ee3b3b");
+  band.addColorStop(1, "#d9292f");
+  ctx.fillStyle = band;
+  ctx.fillRect(0, 0, W, 250);
+
   ctx.textAlign = "center";
-  ctx.fillStyle = "rgba(255,255,255,0.6)";
+  ctx.fillStyle = "rgba(255,255,255,0.85)";
   ctx.font = "700 24px Sora, Outfit, sans-serif";
-  ctx.fillText("POKEROLL", TCW / 2, 66);
-  ctx.fillStyle = gold;
-  ctx.font = "800 62px Sora, Outfit, sans-serif";
-  ctx.fillText("TEAM CHALLENGE", TCW / 2, 132);
-  ctx.fillStyle = "#fbbf24";
+  ctx.fillText("POKEROLL · TEAM CHALLENGE", W / 2, 78);
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "800 60px Sora, Outfit, sans-serif";
+  ctx.fillText("RESULT", W / 2, 152);
+  ctx.fillStyle = "#ffffff";
   ctx.font = "800 38px Sora, Outfit, sans-serif";
-  ctx.fillText(data.result, TCW / 2, 194);
-  ctx.fillStyle = "rgba(255,255,255,0.75)";
+  ctx.fillText(data.result, W / 2, 212);
+  ctx.fillStyle = "rgba(255,255,255,0.9)";
   ctx.font = "600 24px Sora, Outfit, sans-serif";
   ctx.fillText(
     `Challenger ${data.myBst} BST   ·   Challenge ${data.chBst} BST`,
-    TCW / 2,
-    234,
+    W / 2,
+    250,
   );
 
   // Load artworks
@@ -825,17 +833,25 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
 
   const won = data.myBst > data.chBst;
   const lost = data.chBst > data.myBst;
-  const winAccent = "#fbbf24";
-  const loseAccent = "#4b5563";
-  const chAccent = won ? winAccent : loseAccent;
-  const ch2Accent = lost ? winAccent : loseAccent;
+  const accentW = red;
+  const accentL = "#c3c8d2";
+  const chAccent = won ? accentW : accentL;
+  const ch2Accent = lost ? accentW : accentL;
 
   const size = 150;
-  const lx = [120, 290];
-  const ly = [300, 460, 620];
-  // Right block is pushed down 60px so the two lineups stagger up-down.
-  const rx = [670, 840];
-  const ry = [360, 520, 680];
+  const lx = [100, 280];
+  const ly = [340, 510, 680];
+  // Right block offset down 60 for a subtle up-down stagger.
+  const rx = [700, 880];
+  const ry = [400, 570, 740];
+
+  // Team labels
+  ctx.textAlign = "center";
+  ctx.font = "800 26px Sora, Outfit, sans-serif";
+  ctx.fillStyle = won ? red : gray;
+  ctx.fillText(won ? "★ THE CHALLENGER — WINNER" : "THE CHALLENGER", (lx[0] + lx[1] + size) / 2, 306);
+  ctx.fillStyle = lost ? red : gray;
+  ctx.fillText(lost ? "★ THE CHALLENGE — WINNER" : "THE CHALLENGE", (rx[0] + rx[1] + size) / 2, 366);
 
   const drawGrid = (
     team: { name: string }[],
@@ -848,73 +864,85 @@ export async function renderTeamResultCard(data: TeamResultCardData): Promise<Bl
       const x = xs[i % 2];
       const y = ys[Math.floor(i / 2)];
       const img = imgs[i];
+      // frame
+      ctx.save();
+      ctx.shadowColor = "rgba(31,36,48,0.12)";
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 4;
+      roundRect(ctx, x, y, size, size, 22);
+      ctx.fillStyle = "#ffffff";
+      ctx.fill();
+      ctx.restore();
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 4;
+      roundRect(ctx, x, y, size, size, 22);
+      ctx.stroke();
       if (img) {
-        drawTeamAvatar(ctx, img, x, y, size, accent);
-      } else {
-        roundRect(ctx, x, y, size, size, 18);
-        ctx.fillStyle = "#1b1e2b";
-        ctx.fill();
-        ctx.strokeStyle = accent;
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        const pad = 12;
+        const scale = Math.min((size - pad * 2) / img.width, (size - pad * 2) / img.height);
+        const dw = img.width * scale;
+        const dh = img.height * scale;
+        ctx.drawImage(img, x + (size - dw) / 2, y + (size - dh) / 2, dw, dh);
       }
+      // name
       ctx.textAlign = "center";
       ctx.font = fitFont(ctx, p.name, 700, 20, size - 8, 12);
-      ctx.fillStyle = "rgba(255,255,255,0.85)";
-      ctx.fillText(p.name, x + size / 2, y + size + 24);
+      ctx.fillStyle = ink;
+      ctx.fillText(p.name, x + size / 2, y + size + 26);
     });
   };
-
-  // Winner tag above the winning block
-  if (won || lost) {
-    const tagX = won ? (lx[0] + lx[1] + size) / 2 : (rx[0] + rx[1] + size) / 2;
-    const tagY = won ? 268 : 328;
-    ctx.textAlign = "center";
-    ctx.fillStyle = winAccent;
-    ctx.font = "800 26px Sora, Outfit, sans-serif";
-    ctx.fillText("WINNER", tagX, tagY);
-  }
 
   drawGrid(data.challenger, challengerImgs, lx, ly, chAccent);
   drawGrid(data.challenge, challengeImgs, rx, ry, ch2Accent);
 
-  // VS
+  // VS badge
   ctx.textAlign = "center";
-  ctx.fillStyle = gold;
-  ctx.font = "900 104px Sora, Outfit, sans-serif";
+  ctx.fillStyle = red;
+  ctx.font = "900 96px Sora, Outfit, sans-serif";
   ctx.fillText("VS", 540, 545);
 
-  // Footer: QR (right) + brand (left)
-  const bandTop = 900;
-  const q = 120;
-  const qx = TCW - 60 - q;
-  const qy = bandTop + 16;
+  // Footer
+  const q = 150;
+  const qx = W - 70 - q;
+  const qy = 1180;
   const qr = await QRCode.toDataURL(data.url, {
     margin: 0,
-    width: Math.round(q - 20),
+    width: Math.round(q - 24),
     color: { dark: "#1f2430", light: "#ffffff" },
   });
   const qrImg = await loadImage(qr);
   ctx.save();
-  ctx.shadowColor = "rgba(0, 0, 0, 0.18)";
-  ctx.shadowBlur = 8;
-  ctx.shadowOffsetY = 2;
-  roundRect(ctx, qx, qy, q, q, 12);
+  ctx.shadowColor = "rgba(31,36,48,0.18)";
+  ctx.shadowBlur = 14;
+  ctx.shadowOffsetY = 4;
+  roundRect(ctx, qx, qy, q, q, 16);
   ctx.fillStyle = "#ffffff";
   ctx.fill();
   ctx.restore();
-  ctx.drawImage(qrImg, qx + 10, qy + 10, q - 20, q - 20);
+  ctx.drawImage(qrImg, qx + 12, qy + 12, q - 24, q - 24);
 
   ctx.textAlign = "left";
-  ctx.fillStyle = "rgba(255,255,255,0.92)";
-  ctx.font = "800 30px Sora, Outfit, sans-serif";
-  ctx.fillText("PokeRoll.app", 60, bandTop + 56);
-  ctx.fillStyle = "rgba(255,255,255,0.55)";
-  ctx.font = "400 22px Outfit, sans-serif";
-  ctx.fillText("Team Challenge", 60, bandTop + 92);
-  ctx.fillStyle = "rgba(255,255,255,0.4)";
-  ctx.font = "600 20px Outfit, sans-serif";
-  ctx.fillText("Scan to take the challenge", 60, bandTop + 124);
+  ctx.fillStyle = ink;
+  ctx.font = "800 34px Sora, Outfit, sans-serif";
+  ctx.fillText("PokeRoll.app", 70, qy + 62);
+  ctx.fillStyle = gray;
+  ctx.font = "400 24px Outfit, sans-serif";
+  ctx.fillText("Team Challenge", 70, qy + 100);
+  ctx.fillStyle = gray;
+  ctx.font = "600 22px Outfit, sans-serif";
+  ctx.fillText("Scan to take the challenge", 70, qy + 134);
+
+  // Rounded corners (transparent)
+  const mask = document.createElement("canvas");
+  mask.width = W;
+  mask.height = H;
+  const mctx = mask.getContext("2d")!;
+  roundRect(mctx, 0, 0, W, H, 44);
+  mctx.fillStyle = "#fff";
+  mctx.fill();
+  ctx.globalCompositeOperation = "destination-in";
+  ctx.drawImage(mask, 0, 0);
+  ctx.globalCompositeOperation = "source-over";
 
   return new Promise((resolve, reject) =>
     canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob failed"))), "image/png"),
