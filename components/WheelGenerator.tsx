@@ -104,7 +104,7 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                   key={`${p.dexNumber}-${i}`}
                   className="absolute left-1/2 top-1/2"
                   style={{
-                    transform: `translate(-50%,-50%) rotate(${i * (360 / SEG)}deg) translateY(-${SIZE / 2 - 62}px)`,
+                    transform: `translate(-50%,-50%) rotate(${i * (360 / SEG)}deg) translateY(-${SIZE / 2 - 88}px)`,
                   }}
                 >
                   {p.artwork ? (
@@ -117,11 +117,11 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
                       <img
                         src={p.artwork}
                         alt={p.displayName}
-                        width={64}
-                        height={64}
+                        width={96}
+                        height={96}
                         style={{
-                          width: 64,
-                          height: 64,
+                          width: 96,
+                          height: 96,
                           filter:
                             winner === i
                               ? "drop-shadow(0 0 14px rgba(250, 204, 21, 0.95)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35))"
@@ -139,13 +139,13 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
         {/* Center Poké Ball hub */}
         <div
           className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
-          style={{ width: 112, height: 112 }}
+          style={{ width: 88, height: 88 }}
         >
           <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-white shadow-xl">
             <div className="h-1/2 w-full bg-poke-btn" />
             <div className="h-1/2 w-full bg-white" />
-            <div className="absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-poke-ink shadow-md">
-              <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
+            <div className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-poke-ink shadow-md">
+              <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
             </div>
           </div>
         </div>
