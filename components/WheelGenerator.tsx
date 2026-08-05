@@ -6,6 +6,7 @@ import type { Pokemon } from "@/lib/types";
 import HeroCard from "./HeroCard";
 import GenerateButton from "./GenerateButton";
 import { useTeam } from "./useTeam";
+import LogoMark from "./LogoMark";
 
 export type WheelPayload = { items: Pokemon[] };
 
@@ -176,18 +177,12 @@ export default function WheelGenerator({ initial }: { initial: WheelPayload }) {
           </div>
         </div>
 
-        {/* Center Poké Ball hub */}
+        {/* Center hub: PokeRoll logo */}
         <div
-          className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-1/2 top-1/2 z-20 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-xl"
           style={{ width: 88, height: 88 }}
         >
-          <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-white shadow-xl">
-            <div className="h-1/2 w-full bg-poke-btn" />
-            <div className="h-1/2 w-full bg-white" />
-            <div className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-poke-ink shadow-md">
-              <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
-            </div>
-          </div>
+          <LogoMark className="h-14 w-14 text-poke-btn" />
         </div>
       </div>
 
