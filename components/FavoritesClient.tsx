@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useFavorites } from "./useFavorites";
 import HeroCard from "./HeroCard";
 import type { Pokemon } from "@/lib/types";
-import { isMobileShare } from "@/lib/shareCard";
 
 export default function FavoritesClient({
   shared,
@@ -34,7 +33,7 @@ export default function FavoritesClient({
   async function share() {
     const url = snapshotUrl(favorites);
     try {
-      if (isMobileShare() && navigator.share) {
+      if (navigator.share) {
         await navigator.share({ title: "My Pokémon Favorites", url });
         return;
       }

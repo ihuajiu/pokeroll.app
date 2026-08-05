@@ -6,7 +6,6 @@ import type { Challenge, ChallengeMode } from "@/lib/challenge";
 import { DIFFICULTIES } from "@/lib/adventure-types";
 import { TYPES, REGIONS, titleCase } from "@/lib/seo";
 import ShinyHunt, { type WildMon } from "./ShinyHunt";
-import { isMobileShare } from "@/lib/shareCard";
 
 const HINTS: Record<ChallengeMode, string> = {
   guess: "Names hidden — reveal to check",
@@ -100,7 +99,7 @@ export default function ChallengeGenerator({
     const text =
       shinyResult ?? `${challenge.title} — Pokémon Challenge Generator`;
     // Prefer the native share sheet (mobile + supported desktops).
-    if (isMobileShare() && typeof navigator !== "undefined" && navigator.share) {
+    if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title: challenge.title, text, url: href });
         return "shared";

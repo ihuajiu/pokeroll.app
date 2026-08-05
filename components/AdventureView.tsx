@@ -5,7 +5,6 @@ import HeroCard from "@/components/HeroCard";
 import { useTeam } from "@/components/useTeam";
 import { titleCase, REGION_GAME } from "@/lib/seo";
 import { TYPE_HEX } from "@/lib/typeColors";
-import { isMobileShare } from "@/lib/shareCard";
 import {
   DIFFICULTIES,
   randomSeed,
@@ -76,7 +75,7 @@ export default function AdventureView({
       typeof window !== "undefined" ? window.location.href : "/adventure";
     const text = `${shareText(a)}\n${url}`;
     // Prefer the native social share sheet (mobile + supported desktops).
-    if (isMobileShare() && typeof navigator !== "undefined" && navigator.share) {
+    if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({
           title: "My Pokémon Adventure",
