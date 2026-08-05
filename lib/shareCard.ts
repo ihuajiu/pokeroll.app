@@ -235,16 +235,20 @@ export async function renderShinyCard(data: ShinyCardData): Promise<Blob> {
   ctx.fillText(suf, sx, 916);
   ctx.textAlign = "center";
 
-  // Footer brand (left)
+  // Footer brand (left) + QR (right, no caption below). The brand block is
+  // vertically centered against the QR box, matching the challenge card.
   ctx.textAlign = "left";
   ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
   ctx.font = "800 40px Sora, Outfit, system-ui, sans-serif";
-  ctx.fillText("PokeRoll.app", 92, H - 108);
+  ctx.fillText("PokeRoll.app", 92, H - 230);
   ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
   ctx.font = "400 30px Outfit, system-ui, sans-serif";
-  ctx.fillText("Shiny Hunt Challenge", 92, H - 66);
+  ctx.fillText("Shiny Hunt Challenge", 92, H - 185);
+  ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+  ctx.font = "600 22px Outfit, system-ui, sans-serif";
+  ctx.fillText("Scan to hunt your own", 92, H - 147);
 
-  // QR (bottom-right) with caption
+  // QR (bottom-right, square, no caption below)
   const qr = await QRCode.toDataURL(data.url, {
     margin: 1,
     width: 180,
@@ -252,18 +256,14 @@ export async function renderShinyCard(data: ShinyCardData): Promise<Blob> {
   });
   const qrImg = await loadImage(qr);
   const bx = W - 92 - 216;
-  const by = H - 92 - 256;
-  roundRect(ctx, bx, by, 216, 256, 24);
+  const by = H - 92 - 216;
+  roundRect(ctx, bx, by, 216, 216, 24);
   ctx.fillStyle = "#ffffff";
   ctx.fill();
   ctx.strokeStyle = "rgba(31, 36, 48, 0.14)";
   ctx.lineWidth = 2;
   ctx.stroke();
   ctx.drawImage(qrImg, bx + 18, by + 18, 180, 180);
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#6b7280";
-  ctx.font = "600 17px Outfit, system-ui, sans-serif";
-  ctx.fillText("Scan to hunt your own", bx + 108, by + 228);
 
   // Holo foil border (drawn last, on top)
   roundRect(ctx, 22, 22, W - 44, H - 44, 36);
