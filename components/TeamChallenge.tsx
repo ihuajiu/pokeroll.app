@@ -62,6 +62,7 @@ export default function TeamChallenge({
   seed,
   count,
   resultView = false,
+  isOwner = false,
 }: {
   challenger: Pokemon[] | null;
   yours: Pokemon[] | null;
@@ -70,6 +71,8 @@ export default function TeamChallenge({
   /** True when this page was opened as a shared result (label the mine team
    *  as "their team" instead of "your team" to avoid perspective ambiguity). */
   resultView?: boolean;
+  /** owner=1: the challenge creator's view — re-roll/share only, no self-PK. */
+  isOwner?: boolean;
 }) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
@@ -95,7 +98,7 @@ export default function TeamChallenge({
           <button
             onClick={() =>
               router.push(
-                `/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}${startParams}`,
+                `/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}&owner=1${startParams}`,
               )
             }
             className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-4 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
@@ -211,6 +214,12 @@ export default function TeamChallenge({
     );
   }
 
+  function rerollChallenge() {
+    router.push(
+      `/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}&owner=1${params}`,
+    );
+  }
+
   const steps = [
     { n: "1", t: "Roll a team", d: "That's the lineup you'll challenge with." },
     { n: "2", t: "Share the link", d: "A friend opens the exact same team." },
@@ -222,18 +231,22 @@ export default function TeamChallenge({
       {/* Take the challenge — primary action first */}
       <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
         <h2 className="text-xl font-extrabold text-poke-ink">
-          {yours
-            ? "Here's your shot — try to beat it!"
-            : "Take the challenge — roll your team"}
+          {isOwner
+            ? "Your challenge team is ready"
+            : yours
+              ? "Here's your shot — try to beat it!"
+              : "Take the challenge — roll your team"}
         </h2>
         <p className="mt-1 text-sm text-poke-dim">
-          {yours
-            ? "Re-roll your squad as many times as you like, then compare total BST."
-            : "You get 6 random Pokémon — higher total base stats than the challenge team wins."}
+          {isOwner
+            ? "Share the link — a friend rolls their own team to try to beat this one."
+            : yours
+              ? "Re-roll your squad as many times as you like, then compare total BST."
+              : "You get 6 random Pokémon — higher total base stats than the challenge team wins."}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
-            onClick={rollMine}
+            onClick={isOwner ? rerollChallenge : rollMine}
             className="inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-3.5 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden="true">
@@ -246,7 +259,11 @@ export default function TeamChallenge({
                 <circle cx="15.5" cy="15.5" r="1.4" />
               </g>
             </svg>
-            {yours ? "Re-roll my team" : "Roll my team"}
+            {isOwner
+              ? "Re-roll challenge"
+              : yours
+                ? "Re-roll my team"
+                : "Roll my team"}
           </button>
           <button
             onClick={challenge}
@@ -328,7 +345,7 @@ export default function TeamChallenge({
       {/* Challenge team */}
       <div>
         <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-          🏳️ The challenge · {chBst} BST
+          {isOwner ? "🫵 Your challenge team" : "🏳️ The challenge"} · {chBst} BST
         </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {team.map((p) => (
