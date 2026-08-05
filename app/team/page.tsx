@@ -31,7 +31,7 @@ export default async function TeamPage({
       />
 
       <GuideSteps
-        className="mb-6"
+        className="mx-auto mb-6 max-w-[1100px] px-4"
         title="How to build your team"
         steps={[
           {

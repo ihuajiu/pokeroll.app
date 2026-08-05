@@ -35,26 +35,26 @@ export default async function RandomTeamPage({
         title="Random Pokémon Team"
         description="Roll a filtered squad of random Pokémon — then add your favourites to Your Team."
       />
-<GuideSteps
-  className="mb-6"
-  steps={[
-    {
-      n: "1",
-      t: "Roll a squad",
-      d: "One tap draws a fresh random team — lock cards you like, then re-roll just the rest.",
-    },
-    {
-      n: "2",
-      t: "Filter the pool",
-      d: "Restrict by generation, region, type or team size before rolling.",
-    },
-    {
-      n: "3",
-      t: "Share or save",
-      d: "The link carries your squad — share it, or tap Add to Team to keep favourites.",
-    },
-  ]}
-/>
+      <GuideSteps
+        className="mx-auto mb-6 max-w-[1100px] px-4"
+        steps={[
+          {
+            n: "1",
+            t: "Roll a squad",
+            d: "One tap draws a fresh random team — lock cards you like, then re-roll just the rest.",
+          },
+          {
+            n: "2",
+            t: "Filter the pool",
+            d: "Restrict by generation, region, type or team size before rolling.",
+          },
+          {
+            n: "3",
+            t: "Share or save",
+            d: "The link carries your squad — share it, or tap Add to Team to keep favourites.",
+          },
+        ]}
+      />
       <TeamGenerator initial={pokemon} />
       <FaqSection
         items={[
