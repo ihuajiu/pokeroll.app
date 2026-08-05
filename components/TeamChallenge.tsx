@@ -370,7 +370,7 @@ export default function TeamChallenge({
         <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
           {isOwner ? "🫵 Your challenge team" : "🏳️ The challenge"} · {chBst} BST
         </h3>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {team.map((p) => (
             <HeroCard key={p.dexNumber} pokemon={p} showActions={false} variant="team" />
           ))}
@@ -383,7 +383,7 @@ export default function TeamChallenge({
           <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
             🫵 {mineLabel} · {myBst} BST
           </h3>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {yours.map((p) => (
               <HeroCard key={p.dexNumber} pokemon={p} showActions={false} variant="team" />
             ))}

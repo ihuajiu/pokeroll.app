@@ -331,7 +331,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
 
       {rolled && rolled.length > 0 && (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {rolled.map((p, i) => (
               <HeroCard
                 key={`${i}-${p.dexNumber}`}

@@ -122,7 +122,7 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
           No Pokémon yet. Generate some and tap “Add to Team”.
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {list.map((p) => {
             const selected = selectedDex.has(p.dexNumber);
             return (

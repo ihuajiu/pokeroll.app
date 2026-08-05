@@ -764,6 +764,14 @@ body {
   pointer-events: none;
   z-index: 0;
 }
+/* Team roster cards in grids: natural height (override the desktop 0.88
+   scale phantom from .hero-card) so multi-card grids render tight — no
+   invisible 12% gap below each card. */
+.team-card.hero-card {
+  height: auto;
+  scale: 1;
+}
+
 .team-card.hero-card:hover {
   transform: translateY(-5px);
   border-color: var(--cc, rgb(var(--accent)));

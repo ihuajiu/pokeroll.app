@@ -149,7 +149,7 @@ export default function WheelGenerator({
         </div>
         {loaded ? (
           <>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
               {sharedPokemon!.map((p, i) => (
                 <div key={`${i}-${p.dexNumber}`} className="relative">
                   <div className="mb-1 flex items-center justify-center gap-2">
@@ -357,7 +357,7 @@ export default function WheelGenerator({
               </span>
             )}
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {results.map((r, i) => (
               <div key={`${r.player}-${i}`} className="relative">
                 <div className="mb-1 flex items-center justify-center gap-2">

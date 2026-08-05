@@ -149,6 +149,13 @@ export const TOOLS: ToolMeta[] = [
     icon: "⚔️",
   },
   {
+    href: "/team/coach",
+    label: "Team Coach",
+    desc: "Lock your picks, fill the rest with smart coverage.",
+    group: "team",
+    icon: "🧠",
+  },
+  {
     href: "/team",
     label: "Team Builder",
     desc: "Collect favourites into a themed squad.",
@@ -212,8 +219,9 @@ export const RELATED_TOOLS: Record<string, string[]> = {
   "/no-names": ["/challenge/guess", "/nickname", "/random-pokemon-generator", "/adventure"],
   "/wheel": ["/challenge/guess", "/challenge/shiny", "/fusion", "/adventure", "/random-pokemon-generator"],
   "/fusion": ["/wheel", "/mega", "/adventure", "/random-pokemon-generator"],
-  "/team/random": ["/team/challenge", "/team", "/adventure", "/random-pokemon-generator", "/challenge/guess"],
-  "/team": ["/team/challenge", "/team/random", "/adventure", "/nickname", "/random-pokemon-generator"],
-  "/team/challenge": ["/team/random", "/team", "/adventure", "/random-pokemon-generator", "/challenge/guess"],
+  "/team/random": ["/team/challenge", "/team/coach", "/team", "/adventure", "/random-pokemon-generator"],
+  "/team": ["/team/challenge", "/team/coach", "/team/random", "/adventure", "/nickname"],
+  "/team/challenge": ["/team/coach", "/team/random", "/team", "/adventure", "/random-pokemon-generator"],
+  "/team/coach": ["/team/random", "/team", "/team/challenge", "/adventure", "/random-pokemon-generator"],
   "/favorites": ["/random-pokemon-generator", "/team/random", "/adventure", "/legendary", "/cute"],
 };
