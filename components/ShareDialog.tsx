@@ -187,7 +187,8 @@ export default function ShareDialog({
       </button>
 
       {open && (
-        <div className="absolute bottom-full left-1/2 z-40 mb-2 w-auto -translate-x-1/2 rounded-2xl border border-poke-border bg-poke-surface px-3 py-3 shadow-xl">
+        <div className="absolute bottom-full left-1/2 z-40 mb-2 -translate-x-1/2 rounded-2xl border border-poke-border bg-poke-surface px-3 py-3 shadow-xl"
+          style={{ width: "max-content", maxWidth: "calc(100vw - 1.5rem)" }}>
           {qr ? (
             <div className="text-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -211,7 +212,7 @@ export default function ShareDialog({
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-2">
                 {PLATFORMS.map((p) => (
                   <button
                     key={p.id}

@@ -31,6 +31,18 @@ export default function WheelGenerator({
   const [results, setResults] = useState<{ player: number; pokemon: Pokemon }[]>([]);
   const [addedNotice, setAddedNotice] = useState<string | null>(null);
   const [sharedPokemon, setSharedPokemon] = useState<Pokemon[] | null>(null);
+
+  // Shrink the wheel on small screens so it never overflows the viewport.
+  const [scaleK, setScaleK] = useState(1);
+  useEffect(() => {
+    function onResize() {
+      // Global container px-6 (48) + this component px-4 (32) eat 80px of width.
+      setScaleK(Math.min(1, (document.documentElement.clientWidth - 80) / SIZE));
+    }
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
   const { team, add } = useTeam();
 
   const currentPlayer = results.length + 1;
@@ -176,7 +188,17 @@ export default function WheelGenerator({
         <p className="text-sm text-poke-dim">Up to 6 players take turns spinning — every landing stacks in the results below.</p>
       </div>
 
-      <div className="relative mx-auto" style={{ width: SIZE, height: SIZE }}>
+      <div className="relative mx-auto" style={{ width: SIZE * scaleK, height: SIZE * scaleK }}>
+        <div
+          className="absolute left-0 top-0"
+          style={{
+            width: SIZE,
+            height: SIZE,
+            transform: `scale(${scaleK})`,
+            transformOrigin: "top left",
+          }}
+        >
+          {/* (wheel content) */}
         {/* Gold pointer (fixed above the wheel) */}
         <div className="absolute left-1/2 z-30 -translate-x-1/2" style={{ top: -14 }}>
           <div
@@ -266,6 +288,7 @@ export default function WheelGenerator({
           style={{ width: 88, height: 88 }}
         >
           <LogoMark className="h-14 w-14 text-poke-btn" />
+        </div>
         </div>
       </div>
 
