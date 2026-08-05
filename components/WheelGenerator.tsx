@@ -7,6 +7,7 @@ import HeroCard from "./HeroCard";
 import GenerateButton from "./GenerateButton";
 import { useTeam } from "./useTeam";
 import LogoMark from "./LogoMark";
+import ShareButton from "./ShareButton";
 
 export type WheelPayload = { items: Pokemon[] };
 
@@ -29,7 +30,6 @@ export default function WheelGenerator({
   const [playerCount, setPlayerCount] = useState(3);
   const [results, setResults] = useState<{ player: number; pokemon: Pokemon }[]>([]);
   const [addedNotice, setAddedNotice] = useState<string | null>(null);
-  const [shareDone, setShareDone] = useState(false);
   const [sharedPokemon, setSharedPokemon] = useState<Pokemon[] | null>(null);
   const { team, add } = useTeam();
 
@@ -101,31 +101,6 @@ export default function WheelGenerator({
       cancelled = true;
     };
   }, [shared]);
-
-  async function shareResults() {
-    if (results.length === 0) return;
-    const url = `${window.location.origin}/wheel?result=1&players=${playerCount}&dex=${results
-      .map((r) => r.pokemon.dexNumber)
-      .join(",")}`;
-    const text = leader
-      ? `Player ${leader.player} won the PokeRoll wheel round with ${leader.pokemon.displayName} (${leader.pokemon.bst} BST)!`
-      : "PokeRoll wheel round results";
-    if (typeof navigator !== "undefined" && navigator.share) {
-      try {
-        await navigator.share({ title: "PokeRoll Wheel Results", text, url });
-        return;
-      } catch {
-        /* fall through to clipboard */
-      }
-    }
-    try {
-      await navigator.clipboard?.writeText(`${text}\n${url}`);
-      setShareDone(true);
-      setTimeout(() => setShareDone(false), 1800);
-    } catch {
-      /* clipboard unavailable */
-    }
-  }
 
   async function regenerate() {
     setSpinning(false);
@@ -382,13 +357,19 @@ export default function WheelGenerator({
             </p>
           )}
           <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <button
-              type="button"
-              onClick={shareResults}
+            <ShareButton
+              url={`/wheel?result=1&players=${playerCount}&dex=${results
+                .map((r) => r.pokemon.dexNumber)
+                .join(",")}`}
+              text={
+                leader
+                  ? `Player ${leader.player} won the PokeRoll wheel round with ${leader.pokemon.displayName} (${leader.pokemon.bst} BST)!`
+                  : undefined
+              }
+              label="Share results"
+              copiedLabel="Link copied!"
               className="rounded-xl bg-amber-500 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-amber-600"
-            >
-              {shareDone ? "Link copied!" : "Share results"}
-            </button>
+            />
             <button
               type="button"
               onClick={addAllToTeam}

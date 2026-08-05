@@ -36,7 +36,7 @@ export default function PokemonGenerator({ initial }: { initial: Pokemon }) {
         <HeroCard pokemon={pokemon} loading={loading} onRoll={regenerate} variant="wide" favoritable />
       </div>
       <div className="mt-5 flex flex-wrap gap-3">
-        <ShareButton name={pokemon.name} />
+        <ShareButton url={`${window.location.origin}/?p=${pokemon.name}`} />
         <AddToTeamButton pokemon={pokemon} />
         <Link
           href="/team"
