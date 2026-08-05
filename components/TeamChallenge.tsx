@@ -14,6 +14,42 @@ function bstTotal(list: Pokemon[]) {
   return list.reduce((s, p) => s + (p.bst || 0), 0);
 }
 
+function DetailedHowTo() {
+  return (
+    <div className="mt-12 rounded-2xl border border-poke-border bg-poke-surface p-6">
+      <h2 className="text-base font-extrabold text-poke-ink">How to use the Team Challenge</h2>
+      <ol className="mt-3 space-y-2 text-sm leading-relaxed text-poke-dim">
+        <li>
+          <strong className="text-poke-ink">1. The challenge team.</strong>{" "}
+          This page always shows a seeded 6-Pokémon squad — everyone who opens the
+          same link sees the exact same lineup (that's the "challenge").
+        </li>
+        <li>
+          <strong className="text-poke-ink">2. Roll yours.</strong> Tap{" "}
+          <em>Roll my team</em> to generate your own 6-Pokémon squad. You can
+          re-roll as many times as you like until you're happy.
+        </li>
+        <li>
+          <strong className="text-poke-ink">3. Compare.</strong> Both teams are
+          shown with their total base stats (BST) — the higher total wins, and
+          ties are possible.
+        </li>
+        <li>
+          <strong className="text-poke-ink">4. Share.</strong>{" "}
+          <em>Challenge a friend</em> copies a link with the same challenge team,
+          so a friend gets the identical lineup to try to beat.
+        </li>
+        <li>
+          <strong className="text-poke-ink">5. Export the result.</strong>{" "}
+          <em>Share the result card</em> or <em>Download card</em> creates an
+          image of the matchup (with a QR code) — great for posting in your
+          community.
+        </li>
+      </ol>
+    </div>
+  );
+}
+
 /**
  * Seeded Team Challenge. The seed in the URL always reproduces the exact
  * "challenge team" — share it and a friend sees the same lineup. The friend
@@ -27,9 +63,9 @@ export default function TeamChallenge({
   count,
   resultView = false,
 }: {
-  challenger: Pokemon[];
+  challenger: Pokemon[] | null;
   yours: Pokemon[] | null;
-  seed: string;
+  seed?: string;
   count: number;
   /** True when this page was opened as a shared result (label the mine team
    *  as "their team" instead of "your team" to avoid perspective ambiguity). */
@@ -40,7 +76,50 @@ export default function TeamChallenge({
   const [resultCopied, setResultCopied] = useState(false);
   const [cardBusy, setCardBusy] = useState(false);
 
-  const chBst = bstTotal(challenger);
+  // No seed yet = idle state: nothing is generated until the user clicks.
+  if (!challenger) {
+    const startParams = count !== 6 ? `&count=${count}` : "";
+    return (
+      <div className="mx-auto w-full max-w-[1100px] px-4">
+        <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-14 text-center shadow-sm">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-poke-chip text-4xl">
+            ⚔️
+          </div>
+          <h2 className="mt-4 text-2xl font-extrabold text-poke-ink">
+            Ready to start a Team Challenge?
+          </h2>
+          <p className="mx-auto mt-2 max-w-lg text-sm text-poke-dim">
+            Click below to generate a random 6-Pokémon challenge team — then roll
+            your own squad and see whose total base stats are higher.
+          </p>
+          <button
+            onClick={() =>
+              router.push(
+                `/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}${startParams}`,
+              )
+            }
+            className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-4 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="4" />
+              <g fill="currentColor" stroke="none">
+                <circle cx="8.5" cy="8.5" r="1.4" />
+                <circle cx="15.5" cy="8.5" r="1.4" />
+                <circle cx="12" cy="12" r="1.4" />
+                <circle cx="8.5" cy="15.5" r="1.4" />
+                <circle cx="15.5" cy="15.5" r="1.4" />
+              </g>
+            </svg>
+            Generate the challenge
+          </button>
+        </div>
+        <DetailedHowTo />
+      </div>
+    );
+  }
+
+  const team = challenger;
+  const chBst = bstTotal(team);
   const myBst = yours ? bstTotal(yours) : null;
   // Neutral labels so the winner is clear in every context: the "challenge"
   // is the team in the shared link, the "challenger" is the one that rolled
@@ -60,8 +139,8 @@ export default function TeamChallenge({
   const params = count !== 6 ? `&count=${count}` : "";
 
   async function challenge() {
-    const url = `${window.location.origin}/team/challenge?seed=${seed}${params}`;
-    const text = `I rolled this team of ${challenger.length} with PokeRoll — can you beat it?`;
+    const url = `${window.location.origin}/team/challenge?seed=${seed ?? ""}${params}`;
+    const text = `I rolled this team of ${team.length} with PokeRoll — can you beat it?`;
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({ title: "Team Challenge", text, url });
@@ -91,7 +170,7 @@ export default function TeamChallenge({
     if (yours == null || myBst == null) return null;
     return {
       challenger: yours.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite })),
-      challenge: challenger.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite })),
+      challenge: team.map((p) => ({ name: p.displayName, img: p.artwork || p.sprite })),
       chBst,
       myBst,
       result:
@@ -128,7 +207,7 @@ export default function TeamChallenge({
 
   function rollMine() {
     router.push(
-      `/team/challenge?seed=${seed}&mine=${Math.random().toString(36).slice(2, 10)}${params}`,
+      `/team/challenge?seed=${seed ?? ""}&mine=${Math.random().toString(36).slice(2, 10)}${params}`,
     );
   }
 
@@ -147,7 +226,7 @@ export default function TeamChallenge({
             ? "Here's your shot — try to beat it!"
             : "Take the challenge — roll your team"}
         </h2>
-        <p className="mx-auto mt-1 max-w-md text-sm text-poke-dim">
+        <p className="mt-1 text-sm text-poke-dim">
           {yours
             ? "Re-roll your squad as many times as you like, then compare total BST."
             : "You get 6 random Pokémon — higher total base stats than the challenge team wins."}
@@ -252,7 +331,7 @@ export default function TeamChallenge({
           🏳️ The challenge · {chBst} BST
         </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {challenger.map((p) => (
+          {team.map((p) => (
             <HeroCard key={p.dexNumber} pokemon={p} showActions={false} variant="team" />
           ))}
         </div>
@@ -273,37 +352,7 @@ export default function TeamChallenge({
       )}
 
       {/* Detailed how-to */}
-      <div className="mt-12 rounded-2xl border border-poke-border bg-poke-surface p-6">
-        <h2 className="text-base font-extrabold text-poke-ink">How to use the Team Challenge</h2>
-        <ol className="mt-3 space-y-2 text-sm leading-relaxed text-poke-dim">
-          <li>
-            <strong className="text-poke-ink">1. The challenge team.</strong>{" "}
-            This page always shows a seeded 6-Pokémon squad — everyone who opens the
-            same link sees the exact same lineup (that's the "challenge").
-          </li>
-          <li>
-            <strong className="text-poke-ink">2. Roll yours.</strong> Tap{" "}
-            <em>Roll my team</em> to generate your own 6-Pokémon squad. You can
-            re-roll as many times as you like until you're happy.
-          </li>
-          <li>
-            <strong className="text-poke-ink">3. Compare.</strong> Both teams are
-            shown with their total base stats (BST) — the higher total wins, and
-            ties are possible.
-          </li>
-          <li>
-            <strong className="text-poke-ink">4. Share.</strong>{" "}
-            <em>Challenge a friend</em> copies a link with the same challenge team,
-            so a friend gets the identical lineup to try to beat.
-          </li>
-          <li>
-            <strong className="text-poke-ink">5. Export the result.</strong>{" "}
-            <em>Share the result card</em> or <em>Download card</em> creates an
-            image of the matchup (with a QR code) — great for posting in your
-            community.
-          </li>
-        </ol>
-      </div>
+      <DetailedHowTo />
     </div>
   );
 }
