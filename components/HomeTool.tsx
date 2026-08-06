@@ -107,11 +107,11 @@ export default async function Home() {
               run, even a full Pokémon adventure. Free, instant and shareable.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/random-pokemon-generator" className="btn-primary">
+              <Link href="/random-pokemon-generator" title="Random Pokémon Generator" className="btn-primary">
                 Roll a Pokémon
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </Link>
-              <Link href="/adventure" className="btn-ghost">Roll Adventure</Link>
+              <Link href="/adventure" title="Roll Adventure" className="btn-ghost">Roll Adventure</Link>
             </div>
             <div className="hero-meta">
               <div>
@@ -167,7 +167,7 @@ export default async function Home() {
             {JUMP_TOOLS.map((t) => (
               <Link
                 key={t.label}
-                href={t.href}
+                href={t.href} title={t.label}
                 className="cat-card"
                 style={{ "--cc": t.color } as CSSProperties}
               >
@@ -214,7 +214,7 @@ export default async function Home() {
                 {TOOLS.filter((t) => t.group === g.id).map((t) => (
                   <Link
                     key={t.href}
-                    href={t.href}
+                    href={t.href} title={t.label}
                     className="browse-card"
                     style={{ "--cc": GROUP_COLOR[g.id] } as CSSProperties}
                   >

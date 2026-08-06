@@ -108,6 +108,7 @@ export default function FavoritesClient({
             ) : (
               <Link
                 href="/favorites"
+                title="Go to My Favorites"
                 className="rounded-lg bg-poke-red px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
               >
                 Saved{merged > 0 ? ` (+${merged})` : ""} — View Mine
@@ -140,6 +141,7 @@ export default function FavoritesClient({
           </p>
           <Link
             href="/favorites"
+            title="Go to My Favorites"
             className="mt-4 inline-block rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
           >
             Go to My Favorites
@@ -152,6 +154,7 @@ export default function FavoritesClient({
           </p>
           <Link
             href="/random-pokemon-generator"
+            title="Roll a Pokémon"
             className="mt-4 inline-block rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
           >
             Roll a Pokémon

@@ -60,12 +60,12 @@ export default async function RegionPage({
       />
       <p className="mb-6 max-w-2xl text-sm leading-relaxed text-poke-dim">
         {r} is home to the{" "}
-        <Link className={linkCls} href={`/gen/${gen}`}>
+        <Link className={linkCls} title={`Gen ${gen}`} href={`/gen/${gen}`}>
           Generation {gen} Pokédex
         </Link>
         {game ? ` and the games Pokémon ${game}` : ""}. Roll one above, or try
         the{" "}
-        <Link className={linkCls} href="/random-pokemon-generator">
+        <Link className={linkCls} title="Random Pokémon Generator" href="/random-pokemon-generator">
           fully random generator
         </Link>{" "}
         instead.

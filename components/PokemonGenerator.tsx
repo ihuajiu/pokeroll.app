@@ -39,13 +39,13 @@ export default function PokemonGenerator({ initial }: { initial: Pokemon }) {
         <ShareButton url={`${window.location.origin}/?p=${pokemon.name}`} />
         <AddToTeamButton pokemon={pokemon} />
         <Link
-          href="/team"
+          href="/team" title="View your team"
           className="game-btn game-btn-ghost px-5 py-2.5"
         >
           Build Team
         </Link>
         <Link
-          href="/challenge/guess"
+          href="/challenge/guess" title="Guess the Pokémon"
           className="game-btn game-btn-ghost px-5 py-2.5"
         >
           Create Challenge

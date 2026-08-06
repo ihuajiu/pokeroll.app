@@ -60,18 +60,18 @@ export default async function GenPage({
           <>
             {" "}
             introduced the{" "}
-            <Link className={linkCls} href={`/by/${region}`}>
+            <Link className={linkCls} title={`Browse ${region} region`} href={`/by/${region}`}>
               {titleCase(region)} region
             </Link>
             {game ? ` and Pokémon ${game}` : ""}
           </>
         ) : null}
         . Roll one above, browse by{" "}
-        <Link className={linkCls} href="/type">
+        <Link className={linkCls} title="Type generator" href="/type">
           type
         </Link>
         , or go{" "}
-        <Link className={linkCls} href="/random-pokemon-generator">
+        <Link className={linkCls} title="Random Pokémon Generator" href="/random-pokemon-generator">
           fully random
         </Link>
         .

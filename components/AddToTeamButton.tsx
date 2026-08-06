@@ -36,6 +36,7 @@ export default function AddToTeamButton({ pokemon }: { pokemon: Pokemon }) {
         </button>
         <Link
           href="/team"
+          title="View your team"
           className="game-btn game-btn-ghost px-5 py-2.5 font-semibold"
         >
           View Team ({team.length})

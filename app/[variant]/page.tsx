@@ -176,6 +176,7 @@ export default async function VariantPage({
           Want a seeded multi-card quiz to share?{" "}
           <Link
             href="/challenge/guess"
+            title="Guess the Pokémon"
             className="font-semibold text-[#ee3b3b] underline underline-offset-2"
           >
             Try the Silhouette Challenge →

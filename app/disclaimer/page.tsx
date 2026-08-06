@@ -32,6 +32,7 @@ export default function DisclaimerPage() {
           from the public{" "}
           <a
             href="https://pokeapi.co/"
+            title="PokéAPI"
             target="_blank"
             rel="noopener noreferrer"
             className="underline text-poke-red"
@@ -46,7 +47,7 @@ export default function DisclaimerPage() {
           site. This does not affect the tool, which remains free to use.
         </p>
         <p>
-          <Link href="/" className="font-semibold text-poke-red underline">
+          <Link href="/" title="PokeRoll home" className="font-semibold text-poke-red underline">
             ← Back to the generator
           </Link>
         </p>

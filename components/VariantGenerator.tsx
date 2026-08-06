@@ -83,7 +83,7 @@ export default function VariantGenerator({
       <div className="mt-4 flex flex-wrap justify-center gap-3">
         <AddToTeamButton pokemon={data.pokemon} />
         <Link
-          href="/team"
+          href="/team" title="View your team"
           className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
         >
           Build Team

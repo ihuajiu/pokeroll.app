@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import RandomGenerator from "@/components/RandomGenerator";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPokemonById, getRandomPokemon } from "@/lib/pokeapi";
+import { ogImageUrl } from "@/lib/og-meta";
 
 export const dynamic = "force-dynamic";
 
@@ -24,9 +25,7 @@ export async function generateMetadata({
       /* fall through to the generic preview */
     }
   }
-  const ogImage = name
-    ? `/api/og?p=${encodeURIComponent(name)}`
-    : "/api/og";
+  const ogImage = ogImageUrl(name);
   return {
     title: name
       ? `${name} — Random Pokémon Generator`

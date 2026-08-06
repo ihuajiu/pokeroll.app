@@ -11,7 +11,7 @@ export default function HeroActions() {
         Roll a Pokémon
       </button>
       <a
-        href="#tools"
+        href="#tools" title="Browse tools"
         className="btn-ghost"
       >
         Explore Tools

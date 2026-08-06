@@ -57,19 +57,19 @@ export default async function TypePage({
       />
       <p className="mb-6 max-w-2xl text-sm leading-relaxed text-poke-dim">
         {t}-type Pokémon first appeared in{" "}
-        <Link className={linkCls} href={`/gen/${gen}`}>
+        <Link className={linkCls} title={`Gen ${gen}`} href={`/gen/${gen}`}>
           Generation {gen}
         </Link>{" "}
         alongside the{" "}
-        <Link className={linkCls} href={`/by/${region}`}>
+        <Link className={linkCls} title={`Browse ${region} region`} href={`/by/${region}`}>
           {titleCase(region)} region
         </Link>
         . Roll one above, browse all 18 types with the{" "}
-        <Link className={linkCls} href="/type">
+        <Link className={linkCls} title="Type generator" href="/type">
           Type Generator
         </Link>
         , or go{" "}
-        <Link className={linkCls} href="/random-pokemon-generator">
+        <Link className={linkCls} title="Random Pokémon Generator" href="/random-pokemon-generator">
           fully random
         </Link>
         .

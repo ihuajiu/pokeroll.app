@@ -14,3 +14,13 @@ out.txt
 
 # brainstorm visual companion
 .superpowers/
+.cursor/
+.gitignore
+.opencode/
+.codex/
+.wolf/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.claude/settings.json
+.claude/

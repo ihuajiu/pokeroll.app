@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ogImageUrl } from "@/lib/og-meta";
 import SiteNav from "@/components/SiteNav";
 import Footer from "@/components/Footer";
 
@@ -17,7 +18,15 @@ export const metadata: Metadata = {
     "random pokemon",
   ],
   openGraph: {
-    images: [{ url: "/api/og", width: 1200, height: 630 }],
+    type: "website",
+    siteName: "PokeRoll",
+    locale: "en_US",
+    url: "/",
+    images: [{ url: ogImageUrl(), width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@JoeyChou2024",
   },
 };
 

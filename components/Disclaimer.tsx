@@ -8,6 +8,7 @@ export default function Disclaimer() {
         Pokémon data provided by{" "}
         <a
           href="https://pokeapi.co/"
+          title="PokéAPI"
           target="_blank"
           rel="noopener noreferrer"
           className="underline"

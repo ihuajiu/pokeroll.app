@@ -77,7 +77,7 @@ export default function TeamTray() {
               {team.map((p) => (
                 <li key={p.dexNumber}>
                   <Link
-                    href="/team"
+                    href="/team" title="View your team"
                     onClick={() => setOpen(false)}
                     className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition hover:bg-poke-bg"
                   >
@@ -99,7 +99,7 @@ export default function TeamTray() {
             </ul>
           )}
           <Link
-            href="/team"
+            href="/team" title="View your team"
             onClick={() => setOpen(false)}
             className="mt-2 inline-block w-full rounded-lg border border-poke-border px-3 py-1.5 text-center text-xs font-semibold text-poke-ink transition hover:border-[#ee3b3b] hover:text-[#ee3b3b]"
           >

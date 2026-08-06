@@ -168,7 +168,7 @@ export default function WheelGenerator({
             </div>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Link
-                href="/wheel"
+                href="/wheel" title="Spin your own wheel"
                 className="rounded-xl bg-poke-btn px-6 py-2.5 font-semibold text-white shadow-glow transition hover:bg-poke-btnHover"
               >
                 Spin your own wheel
@@ -400,7 +400,7 @@ export default function WheelGenerator({
               Add all to Team
             </button>
             <Link
-              href="/team"
+              href="/team" title="View your team"
               className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
             >
               Build Team

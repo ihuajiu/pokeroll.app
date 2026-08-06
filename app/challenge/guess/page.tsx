@@ -80,6 +80,7 @@ export default async function GuessChallengePage({
         Prefer one quick mystery card instead?{" "}
         <Link
           href="/no-names"
+          title="Mystery Pokémon"
           className="font-semibold text-[#ee3b3b] underline underline-offset-2"
         >
           Mystery Pokémon →

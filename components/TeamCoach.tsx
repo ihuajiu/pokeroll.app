@@ -400,7 +400,7 @@ export default function TeamCoach({
             />
           )}
           <Link
-            href="/team"
+            href="/team" title="View your team"
             className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
           >
             View my team

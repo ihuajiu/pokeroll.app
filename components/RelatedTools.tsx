@@ -32,7 +32,7 @@ export default function RelatedTools({
         {tools.map((t) => (
           <Link
             key={t.href}
-            href={t.href}
+            href={t.href} title={t.label}
             className="group flex flex-col gap-1 rounded-xl border border-poke-border bg-poke-surface p-3 transition hover:border-poke-violet"
           >
             <span className="text-lg" aria-hidden="true">

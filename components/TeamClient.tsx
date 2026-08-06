@@ -174,7 +174,7 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
           </button>
         )}
         <Link
-          href="/"
+          href="/" title="PokeRoll home"
           className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
         >
           ← Back to Generator
