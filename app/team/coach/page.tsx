@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Pokémon Team Coach — Fill the Rest of Your Team",
   description:
-    "Lock the Pokémon you already picked and let Team Coach fill the rest with type coverage and balanced roles. Free fan-made tool.",
+    "Lock the Pokémon you already picked and let Team Coach fill the rest with type coverage and balanced roles — then copy the team to Showdown. Free fan-made tool.",
   keywords: [
     "pokemon team builder",
     "pokemon team filler",

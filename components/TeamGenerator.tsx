@@ -247,8 +247,8 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
           },
           {
             n: "3",
-            t: "Share or save",
-            d: "The link carries your squad — share it, or tap Add to Team to keep favourites.",
+            t: "Share, save or export",
+            d: "Copy the squad as Showdown sets, flip any card to view its set, share the link, or tap Add to Team to keep favourites.",
           },
         ]}
       />

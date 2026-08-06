@@ -281,7 +281,7 @@ export default function TeamChallenge({
   const steps = [
     { n: "1", t: "Roll a team", d: "That's the lineup you'll challenge with." },
     { n: "2", t: "Share the link", d: "A friend opens the exact same team." },
-    { n: "3", t: "They roll & compare", d: "Total BST decides who wins." },
+    { n: "3", t: "They roll & compare", d: "Total BST decides who wins — export either team to Showdown." },
   ];
 
   return (

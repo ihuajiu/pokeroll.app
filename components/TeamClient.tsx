@@ -163,8 +163,8 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
           },
           {
             n: "3",
-            t: "Share it",
-            d: "Copy the team link so friends can view your lineup.",
+            t: "Share or export",
+            d: "Copy the team link for friends, or copy every set as Showdown text for battles.",
           },
         ]}
       />

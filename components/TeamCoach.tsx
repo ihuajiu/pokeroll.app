@@ -290,7 +290,7 @@ export default function TeamCoach({
           {
             n: "3",
             t: "Lock & re-roll",
-            d: "Lock Pokémon you like, re-roll the rest, then add all or share the link.",
+            d: "Lock Pokémon you like, re-roll the rest, then add all, share the link or copy the sets to Showdown.",
           },
         ]}
       />

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Your Pokémon Team — Fan-made Tool",
-  description: "Build and share your team of randomly generated Pokémon.",
+  description: "Your saved squad of randomly generated Pokémon — share the link or copy every set to Showdown for battles.",
   keywords: [
     "pokemon team builder",
     "random pokemon team builder",

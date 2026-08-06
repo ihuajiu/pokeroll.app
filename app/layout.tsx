@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "https://pokeroll.app"),
   title: "PokeRoll — Random Pokémon Generator",
   description:
-    "Roll a random Pokémon in one tap. Every pull comes with a name, type, ability, base stats, generation and an official sprite. Fan-made, not affiliated with Nintendo.",
+    "Free fan-made Pokémon toolbox — roll a random Pokémon, build teams, export sets to Showdown, take challenges and spin the wheel. Fan-made, not affiliated with Nintendo.",
   keywords: [
     "random pokemon generator",
     "pokemon randomizer",
@@ -91,7 +91,7 @@ export default async function RootLayout({
               name: "PokeRoll",
               url: "https://pokeroll.app",
               description:
-                "Free fan-made Pokémon tools — random generator, team builder, challenges, wheel and more.",
+                "Free fan-made Pokémon tools — random generator, team builder, Showdown export, challenges, wheel and more.",
               inLanguage: "en",
             }),
           }}

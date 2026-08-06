@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Pokémon Team Challenge — Roll a Team, Challenge a Friend",
   description:
-    "Roll a seeded team of 6 Pokémon, share the link, and challenge a friend — their team is compared by total BST to pick a winner. Free fan-made tool.",
+    "Roll a seeded team of 6 Pokémon, share the link, and challenge a friend — total BST picks the winner, then export either team to Showdown. Free fan-made tool.",
   keywords: [
     "pokemon team challenge",
     "random pokemon team",
