@@ -14,14 +14,26 @@ export async function generateMetadata({
   searchParams: Promise<{ p?: string }>;
 }): Promise<Metadata> {
   const { p } = await searchParams;
-  // Share previews show the actual rolled Pokémon when ?p= is present.
-  const ogImage = p
-    ? `/api/og?p=${encodeURIComponent(p)}`
+  // Shared ?p= links: show the actual Pokémon in the preview.
+  let name: string | undefined;
+  if (p) {
+    try {
+      const mon = await getPokemonById(p);
+      name = mon.displayName;
+    } catch {
+      /* fall through to the generic preview */
+    }
+  }
+  const ogImage = name
+    ? `/api/og?p=${encodeURIComponent(name)}`
     : "/api/og";
   return {
-    title: "Random Pokémon Generator — PokeRoll",
-    description:
-      "Roll a random Pokémon in one tap — every pull comes with its name, type, ability, base stats, generation and official artwork. Free fan-made tool.",
+    title: name
+      ? `${name} — Random Pokémon Generator`
+      : "Random Pokémon Generator — PokeRoll",
+    description: name
+      ? `I rolled ${name} on PokeRoll. Roll your own random Pokémon in one tap.`
+      : "Roll a random Pokémon in one tap — every pull comes with its name, type, ability, base stats, generation and official artwork. Free fan-made tool.",
     keywords: [
       "random pokemon generator",
       "pokemon generator",
@@ -29,7 +41,11 @@ export async function generateMetadata({
       "random pokemon",
     ],
     alternates: { canonical: "/random-pokemon-generator" },
-    openGraph: { images: [{ url: ogImage, width: 1200, height: 630 }] },
+    openGraph: {
+      title: name ? `${name} — Random Pokémon` : undefined,
+      description: name ? `I rolled ${name} on PokeRoll. What will you get?` : undefined,
+      images: [{ url: ogImage, width: 1200, height: 630 }],
+    },
   };
 }
 
