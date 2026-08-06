@@ -40,6 +40,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
       <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-2 px-4 py-3 md:gap-4 md:px-6">
         <Link
           href="/"
+          title="PokeRoll home"
           className="brand"
         >
           <LogoMark className="ball" />
@@ -55,6 +56,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
               <div key={m.href} className="group relative">
                 <Link
                   href={m.href}
+                  title={m.label}
                   className={`flex items-center gap-1 transition ${
                     items.some((l) => isActive(l.href))
                       ? "text-[#ee3b3b]"
@@ -81,6 +83,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                         <Link
                           key={l.href}
                           href={l.href}
+                          title={l.label}
                           className={`flex items-center gap-3 rounded-xl px-3 py-2 transition ${
                             active
                               ? "bg-[#ee3b3b]/10"
@@ -115,6 +118,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
               <Link
                 key={m.href}
                 href={m.href}
+                title={m.label}
                 className={`flex items-center gap-1.5 transition ${
                   isActive(m.href)
                     ? "text-[#ee3b3b]"
@@ -131,7 +135,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
           <Link
             href="/favorites"
             aria-label={`Favorites (${favorites.length})`}
-            title="Favorites"
+            title={`Favorites (${favorites.length})`}
             className="game-btn game-btn-ghost fav-entry inline-flex h-9 w-9 items-center justify-center"
           >
             <span className="relative inline-flex">
@@ -159,6 +163,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
 
           <Link
             href="/adventure"
+            title="Roll Adventure"
             className="hdr-cta hidden game-btn game-btn-primary px-4 py-2 text-sm sm:inline-flex"
           >
             Roll Adventure
@@ -195,6 +200,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                   <Link
                     href={first?.href ?? "/"}
                     onClick={() => setMobile(false)}
+                    title={g.title}
                     className={`mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-wide transition hover:text-[#ee3b3b] ${
                       active ? "text-[#ee3b3b]" : "text-poke-dim"
                     }`}
@@ -208,6 +214,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                         key={t.href}
                         href={t.href}
                         onClick={() => setMobile(false)}
+                        title={t.label}
                         className={`rounded-full border px-3 py-1 text-xs font-medium transition hover:border-[#ee3b3b] hover:text-[#ee3b3b] ${
                           isActive(t.href)
                             ? "border-[#ee3b3b] bg-[#ee3b3b]/10 text-[#ee3b3b]"
@@ -225,6 +232,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
           <Link
             href="/adventure"
             onClick={() => setMobile(false)}
+            title="Roll Adventure"
             className="game-btn game-btn-primary mt-4 w-full px-4 py-2 text-center text-sm"
           >
             Roll Adventure

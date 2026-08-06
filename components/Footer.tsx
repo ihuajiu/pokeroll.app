@@ -32,7 +32,7 @@ export default function Footer() {
             >
               <h4>{g.title}</h4>
               {links.map((t) => (
-                <Link key={t.href} href={t.href}>
+                <Link key={t.href} href={t.href} title={t.label}>
                   {t.label}
                 </Link>
               ))}
@@ -46,7 +46,7 @@ export default function Footer() {
           <h4>By Region</h4>
           <div className="fb-chips">
             {REGIONS.map((r) => (
-              <Link key={r} href={`/by/${r}`}>
+              <Link key={r} href={`/by/${r}`} title={titleCase(r)}>
                 {titleCase(r)}
               </Link>
             ))}
@@ -56,7 +56,7 @@ export default function Footer() {
           <h4>By Type</h4>
           <div className="fb-chips">
             {TYPES.map((t) => (
-              <Link key={t} href={`/type/${t}`}>
+              <Link key={t} href={`/type/${t}`} title={titleCase(t)}>
                 {titleCase(t)}
               </Link>
             ))}
@@ -66,7 +66,7 @@ export default function Footer() {
           <h4>By Generation</h4>
           <div className="fb-chips">
             {GENS.map((g) => (
-              <Link key={g} href={`/gen/${g}`}>
+              <Link key={g} href={`/gen/${g}`} title={`Gen ${g}`}>
                 Gen {g}
               </Link>
             ))}
@@ -85,7 +85,7 @@ export default function Footer() {
         >
           PokéAPI
         </a>
-        . <Link href="/disclaimer" className="underline">Disclaimer</Link>.
+        . <Link href="/disclaimer" title="Disclaimer" className="underline">Disclaimer</Link>.
       </div>
     </footer>
   );

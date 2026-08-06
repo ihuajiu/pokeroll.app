@@ -31,7 +31,7 @@ export default function Breadcrumbs({ items }: { items: Crumb[] }) {
               <li key={i} className="flex items-center gap-1.5">
                 {i > 0 && <span aria-hidden="true">›</span>}
                 {it.href && !last ? (
-                  <Link href={it.href} className="hover:text-poke-violet">
+                  <Link href={it.href} title={it.label} className="hover:text-poke-violet">
                     {it.label}
                   </Link>
                 ) : (
