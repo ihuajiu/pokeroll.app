@@ -118,6 +118,9 @@ export default function HeroCard({
   const [favMsg, setFavMsg] = useState<string | null>(null);
   const [flipped, setFlipped] = useState(false);
   const [showdownText, setShowdownText] = useState<string | null>(null);
+  const [sdPreview, setSdPreview] = useState(false);
+  const [sdPreviewPos, setSdPreviewPos] = useState<{ top: number; left: number } | null>(null);
+  const sdWrapRef = useRef<HTMLDivElement>(null);
   /** Root card element — captured as the classic-style download image. */
   const cardRef = useRef<HTMLDivElement>(null);
   /** Name heading — long names auto-shrink to fit one line. */
@@ -652,12 +655,48 @@ export default function HeroCard({
               )}
             </button>
           ) : null}
-          <ShowdownCopyButton
-            iconOnly
-            className="act-icon"
-            getText={loadShowdownSet}
-            title="Copy Showdown set"
-          />
+          <div
+            ref={sdWrapRef}
+            className="sd-preview-wrap"
+            onMouseEnter={() => {
+              setSdPreview(true);
+              const r = sdWrapRef.current?.getBoundingClientRect();
+              if (r) {
+                setSdPreviewPos({
+                  top: Math.max(8, r.top - 272),
+                  left: Math.max(8, r.right - 330),
+                });
+              }
+              if (!showdownText) {
+                loadShowdownSet()
+                  .then((t) => setShowdownText(t))
+                  .catch(() => {});
+              }
+            }}
+            onMouseLeave={() => setSdPreview(false)}
+          >
+            <ShowdownCopyButton
+              iconOnly
+              className="act-icon"
+              getText={loadShowdownSet}
+              title="Copy Showdown set"
+            />
+          </div>
+          {sdPreview && sdPreviewPos && typeof document !== "undefined"
+            ? createPortal(
+                <div
+                  className="sd-preview"
+                  role="tooltip"
+                  style={{ top: sdPreviewPos.top, left: sdPreviewPos.left }}
+                  onMouseEnter={() => setSdPreview(true)}
+                  onMouseLeave={() => setSdPreview(false)}
+                >
+                  <span className="sd-preview-title">Showdown Set</span>
+                  <pre className="sd-preview-text">{showdownText ?? "Loading…"}</pre>
+                </div>,
+                document.body,
+              )
+            : null}
           {!hideRoll && (
           <button
             type="button"

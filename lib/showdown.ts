@@ -311,8 +311,8 @@ export function pickEVs(pokemon: Pokemon): Record<keyof Pokemon["stats"], number
   const second = candidates[1];
   evs[first] = 252;
   evs[second] = 252;
-  const third = candidates.find((c) => c !== first && c !== second) ?? "hp";
-  evs[third] = 4;
+  // Leftover 4 EVs go to HP (standard 252/252/4 spread).
+  evs.hp = 4;
 
   return evs;
 }
