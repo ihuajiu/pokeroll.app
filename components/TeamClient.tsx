@@ -1,9 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTeam } from "./useTeam";
 import HeroCard from "./HeroCard";
+import TeamShowdownExport from "./TeamShowdownExport";
+import GuideSteps from "./GuideSteps";
 import type { Pokemon } from "@/lib/types";
 
 export default function TeamClient({ sharedNames }: { sharedNames: string | null }) {
@@ -79,16 +81,93 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
 
   return (
     <main className="mx-auto w-full max-w-[1100px] px-4">
-      <div className="mb-4 text-center">
-        <p className="text-lg font-semibold text-poke-ink">
-          {isShared ? "Shared Team" : "Your Team"}
-        </p>
-        <p className="text-sm text-poke-dim">
+      {/* CTA hero — like the challenge page's "ready" panel */}
+      <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
+        <h2 className="text-xl font-extrabold text-poke-ink">
+          {isShared ? "A team shared with you" : "Your Pokémon team is ready"}
+        </h2>
+        <p className="mt-1 text-sm text-poke-dim">
           {isShared
             ? "A team shared with you"
-            : "Pokémon you've collected on this device"}
+            : "Manage your squad — share it, or export every set to Showdown."}
         </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+          {!isShared && team.length > 0 && (
+            <>
+              <button
+                type="button"
+                onClick={share}
+                className="game-btn game-btn-primary px-6 py-3.5 text-sm font-bold"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                {copied ? "Link copied!" : "Share Team"}
+              </button>
+              <button
+                type="button"
+                onClick={clear}
+                className="game-btn game-btn-ghost px-6 py-3.5 text-sm font-bold"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
+                Clear Team
+              </button>
+            </>
+          )}
+          {isShared && (
+            <button
+              type="button"
+              onClick={copyLink}
+              className="game-btn game-btn-primary px-6 py-3.5 text-sm font-bold"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              {copied ? "Link copied!" : "Copy Link"}
+            </button>
+          )}
+          <Link
+            href="/" title="PokeRoll home"
+            className="game-btn game-btn-ghost px-6 py-3.5 text-sm font-bold"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Back to Generator
+          </Link>
+        </div>
       </div>
+
+      {/* How to play */}
+      <GuideSteps
+        className="mx-auto mb-6 max-w-[1100px] px-4"
+        steps={[
+          {
+            n: "1",
+            t: "Roll & add",
+            d: "Generate Pokémon on any tool and tap “Add to Team” to save them here.",
+          },
+          {
+            n: "2",
+            t: "Manage your squad",
+            d: "Select Pokémon to remove or clear — your team holds up to 6.",
+          },
+          {
+            n: "3",
+            t: "Share it",
+            d: "Copy the team link so friends can view your lineup.",
+          },
+        ]}
+      />
 
       {!isShared && team.length > 0 && (
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-poke-border bg-poke-surface px-4 py-2.5">
@@ -101,7 +180,7 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
             <button
               type="button"
               onClick={allSelected ? clearSelection : selectAll}
-              className="rounded-lg px-2.5 py-1 text-sm font-medium text-poke-ink transition hover:text-poke-red"
+              className="game-btn game-btn-ghost px-2.5 py-1 text-sm font-medium"
             >
               {allSelected ? "Clear selection" : "Select all"}
             </button>
@@ -109,7 +188,7 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
               type="button"
               onClick={removeSelected}
               disabled={selectedCount === 0}
-              className="rounded-lg bg-poke-red px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+              className="game-btn game-btn-primary px-3.5 py-1.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
             >
               Remove{selectedCount > 0 ? ` (${selectedCount})` : ""}
             </button>
@@ -145,41 +224,10 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
         </div>
       )}
 
-      <div className="relative z-10 mt-6 flex flex-wrap justify-center gap-3">
-        {!isShared && team.length > 0 && (
-          <>
-            <button
-              type="button"
-              onClick={share}
-              className="rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
-            >
-              {copied ? "Link copied!" : "Share Team"}
-            </button>
-            <button
-              type="button"
-              onClick={clear}
-              className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
-            >
-              Clear Team
-            </button>
-          </>
-        )}
-        {isShared && (
-          <button
-            type="button"
-            onClick={copyLink}
-            className="rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
-          >
-            {copied ? "Link copied!" : "Copy Link"}
-          </button>
-        )}
-        <Link
-          href="/" title="PokeRoll home"
-          className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
-        >
-          ← Back to Generator
-        </Link>
+      <div className="relative z-10 mt-6 flex flex-wrap items-center justify-end gap-3">
+        {list.length > 0 && <TeamShowdownExport team={list} />}
       </div>
+
     </main>
   );
 }

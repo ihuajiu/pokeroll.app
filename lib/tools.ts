@@ -1,4 +1,4 @@
-export interface ToolMeta {
+﻿export interface ToolMeta {
   href: string;
   label: string;
   desc: string;
@@ -157,7 +157,7 @@ export const TOOLS: ToolMeta[] = [
   },
   {
     href: "/team",
-    label: "Team Builder",
+    label: "My Team",
     desc: "Collect favourites into a themed squad.",
     group: "team",
     icon: "🧰",

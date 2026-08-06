@@ -1,10 +1,14 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeroCard from "@/components/HeroCard";
+import { useTeam } from "./useTeam";
 import type { Pokemon } from "@/lib/types";
 import { downloadTeamResult, type TeamResultCardData } from "@/lib/shareCard";
+import TeamShowdownExport from "./TeamShowdownExport";
+import ShowdownCopyButton from "./ShowdownCopyButton";
+
 
 function bstTotal(list: Pokemon[]) {
   return list.reduce((s, p) => s + (p.bst || 0), 0);
@@ -80,6 +84,30 @@ export default function TeamChallenge({
   const [copied, setCopied] = useState(false);
   const [resultCopied, setResultCopied] = useState(false);
   const [cardBusy, setCardBusy] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const { add, team: savedTeam, max } = useTeam();
+
+  function flash(msg: string) {
+    setNotice(msg);
+    setTimeout(() => setNotice(null), 2600);
+  }
+
+  /** Bulk-add a whole squad (skips ones already saved), like /team/random. */
+  function addAll(squad: Pokemon[]) {
+    const inTeam = new Set(savedTeam.map((p) => p.dexNumber));
+    const fresh = squad.filter((p) => !inTeam.has(p.dexNumber));
+    const slots = max - savedTeam.length;
+    if (slots <= 0) {
+      flash(`Team is full (${savedTeam.length}/${max}). Remove some first.`);
+      return;
+    }
+    if (fresh.length === 0) {
+      flash("All these Pokémon are already in your team.");
+      return;
+    }
+    fresh.slice(0, slots).forEach((p) => add(p));
+    flash(`Added ${Math.min(fresh.length, slots)} to your team.`);
+  }
 
   // No seed yet = idle state: nothing is generated until the user clicks.
   if (!challenger) {
@@ -103,7 +131,7 @@ export default function TeamChallenge({
                 `/team/challenge?seed=${Math.random().toString(36).slice(2, 10)}&owner=1${startParams}`,
               )
             }
-            className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-4 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
+            className="game-btn game-btn-primary mt-6 px-8 py-4 text-base font-extrabold active:scale-95"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden="true">
               <rect x="3" y="3" width="18" height="18" rx="4" />
@@ -125,6 +153,15 @@ export default function TeamChallenge({
 
   const team = challenger;
   const chBst = bstTotal(team);
+  // Lazy Showdown export for "Copy Both" — loads the moves dataset on demand.
+  function loadBothText() {
+    return import("@/lib/showdown").then((m) => {
+      if (yours && yours.length) {
+        return `${m.buildShowdownTeam(yours)}\n\n=== The challenge ===\n\n${m.buildShowdownTeam(team)}`;
+      }
+      return m.buildShowdownTeam(team);
+    });
+  }
   const myBst = yours ? bstTotal(yours) : null;
   // Neutral labels so the winner is clear in every context: the "challenge"
   // is the team in the shared link, the "challenger" is the one that rolled
@@ -249,6 +286,11 @@ export default function TeamChallenge({
 
   return (
     <div className="mx-auto w-full max-w-[1100px] px-4">
+      {notice && (
+        <p role="status" className="mb-3 text-center text-sm font-medium text-poke-ink">
+          {notice}
+        </p>
+      )}
       {/* Take the challenge — primary action first */}
       <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
         <h2 className="text-xl font-extrabold text-poke-ink">
@@ -268,7 +310,7 @@ export default function TeamChallenge({
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={isOwner ? rerollChallenge : yours ? startNewChallenge : rollMine}
-            className="inline-flex items-center gap-2 rounded-2xl bg-poke-btn px-8 py-3.5 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95"
+            className="game-btn game-btn-primary px-8 py-3.5 text-base font-extrabold active:scale-95"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden="true">
               <rect x="3" y="3" width="18" height="18" rx="4" />
@@ -288,7 +330,7 @@ export default function TeamChallenge({
           </button>
           <button
             onClick={challenge}
-            className="inline-flex items-center gap-2 rounded-2xl border border-poke-border bg-poke-surface px-6 py-3.5 text-sm font-bold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+            className="game-btn game-btn-ghost px-6 py-3.5 text-sm font-bold"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
               <circle cx="18" cy="5" r="3" />
@@ -317,6 +359,34 @@ export default function TeamChallenge({
         ))}
       </div>
 
+      {/* Challenge team */}
+      <div>
+        <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
+          {isOwner ? "🫵 Your challenge team" : "🏳️ The challenge"} · {chBst} BST
+        </h3>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {team.map((p) => (
+            <HeroCard key={p.dexNumber} pokemon={p} showActions={false} variant="team" />
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
+          <TeamShowdownExport team={team} />
+          <button
+            type="button"
+            onClick={() => addAll(team)}
+            className="game-btn game-btn-primary px-4 py-2 text-sm font-semibold"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Add all to Team
+          </button>
+        </div>
+      </div>
+
+
+
       {/* Result banner */}
       {yours && myBst != null && result && (
         <div className="mb-6 rounded-2xl border border-poke-red/40 bg-poke-surface px-6 py-5 text-center shadow-sm">
@@ -334,7 +404,7 @@ export default function TeamChallenge({
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={shareResult}
-            className="inline-flex items-center gap-2 rounded-xl bg-poke-btn px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-poke-btnHover"
+            className="game-btn game-btn-primary px-5 py-2.5 text-sm font-bold"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
               <circle cx="18" cy="5" r="3" />
@@ -352,7 +422,7 @@ export default function TeamChallenge({
           <button
             onClick={downloadResult}
             disabled={cardBusy}
-            className="inline-flex items-center gap-2 rounded-xl border border-poke-border bg-poke-tint px-5 py-2.5 text-sm font-bold text-poke-ink shadow-sm transition hover:border-poke-btn hover:bg-poke-btn hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+            className="game-btn game-btn-ghost px-5 py-2.5 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-60"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -361,21 +431,17 @@ export default function TeamChallenge({
             </svg>
             Download card
           </button>
+          <ShowdownCopyButton
+            getText={loadBothText}
+            label="Copy Both Sets"
+            badge="Showdown"
+            copiedLabel="Both copied!"
+            title="Copy both teams as Showdown sets"
+            className="game-btn game-btn-ghost px-5 py-2.5 text-sm font-bold"
+          />
           </div>
         </div>
       )}
-
-      {/* Challenge team */}
-      <div>
-        <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-          {isOwner ? "🫵 Your challenge team" : "🏳️ The challenge"} · {chBst} BST
-        </h3>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          {team.map((p) => (
-            <HeroCard key={p.dexNumber} pokemon={p} showActions={false} variant="team" />
-          ))}
-        </div>
-      </div>
 
       {/* Your team */}
       {yours && myBst != null && (
@@ -387,6 +453,20 @@ export default function TeamChallenge({
             {yours.map((p) => (
               <HeroCard key={p.dexNumber} pokemon={p} showActions={false} variant="team" />
             ))}
+          </div>
+          <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
+            <TeamShowdownExport team={yours} />
+            <button
+              type="button"
+              onClick={() => addAll(yours)}
+              className="game-btn game-btn-primary px-4 py-2 text-sm font-semibold"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Add all to Team
+            </button>
           </div>
         </div>
       )}

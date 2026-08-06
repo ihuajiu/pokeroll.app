@@ -1,7 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import HeroCard from "@/components/HeroCard";
+import GuideSteps from "./GuideSteps";
+import LogoMark from "./LogoMark";
+import TeamShowdownExport from "@/components/TeamShowdownExport";
 import { useTeam } from "@/components/useTeam";
 import { TYPES } from "@/lib/seo";
 import type { Pokemon } from "@/lib/types";
@@ -119,7 +122,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
         cache: "no-store",
       });
       if (!res.ok) throw new Error("roll failed");
-      const data = (await res.json()) as { pokemon: Pokemon[] };
+      const data = (await res.json()) as { pokemon: Pokemon[]; seed?: string };
       if (rolled && locks.size > 0) {
         const queue = [...data.pokemon];
         setRolled(
@@ -127,6 +130,17 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
         );
       } else {
         setRolled(data.pokemon);
+        // Keep the URL reproducible: filters + seed mean anyone opening the
+        // page link sees the same squad (matches the page FAQ).
+        if (data.seed) {
+          const qp = new URLSearchParams();
+          if (gen) qp.set("gen", gen);
+          if (region) qp.set("region", region);
+          if (type) qp.set("type", type);
+          qp.set("count", String(data.pokemon.length || Number(sizePick)));
+          qp.set("seed", data.seed);
+          window.history.replaceState(null, "", `/team/random?${qp.toString()}`);
+        }
         if (data.pokemon.length === 0) {
           flash("No Pokémon match those filters — try widening them.");
         }
@@ -173,27 +187,77 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
 
   return (
     <div className="mx-auto w-full max-w-[1100px] px-4">
-      <div className="relative mb-5 flex items-center justify-center">
-        <div
-          className={`overflow-hidden transition-[width] duration-300 ${
-            open
-              ? "w-[640px] max-w-full rounded-xl border border-poke-border bg-poke-surface shadow-sm"
-              : "breathe w-11"
-          }`}
-        >
-          {open ? (
-            <div className="flex items-start gap-3 p-3">
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-expanded={open}
-                aria-label="Collapse filters"
-                title="Collapse filters"
-                className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center self-end"
-              >
-                {gearIcon}
-              </button>
-              <div className="grid flex-1 grid-cols-2 gap-2.5 sm:grid-cols-4 lg:flex lg:flex-initial">
+      {notice && (
+        <p role="status" className="mb-3 text-center text-sm font-medium text-poke-ink">
+          {notice}
+        </p>
+      )}
+
+      {/* CTA hero — like the challenge page's "ready" panel */}
+      <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
+        <h2 className="text-xl font-extrabold text-poke-ink">Your random team is ready</h2>
+        <p className="mt-1 text-sm text-poke-dim">
+          Roll a filtered squad — lock favourites, re-roll the rest, then add them to your team or export to Showdown.
+        </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={roll}
+            disabled={rolling || (rolled != null && locks.size >= rolled.length)}
+            title={
+              rolled != null && locks.size >= rolled.length
+                ? "All cards are locked — unlock one to roll"
+                : undefined
+            }
+            className="game-btn game-btn-primary px-8 py-3.5 text-base font-extrabold"
+          >
+            <LogoMark className="h-5 w-5" />
+            {rolling
+              ? "Rolling…"
+              : rolled && locks.size > 0 && locks.size < rolled.length
+                ? `Roll (${rolled.length - locks.size})`
+                : "Roll"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label={open ? "Collapse filters" : "Filters"}
+            title={open ? "Collapse filters" : "Filters"}
+            className={`flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red ${open ? "" : "breathe"}`}
+          >
+            {gearIcon}
+          </button>
+        </div>
+      </div>
+
+      {/* How to play */}
+      <GuideSteps
+        className="mx-auto mb-6 max-w-[1100px] px-4"
+        steps={[
+          {
+            n: "1",
+            t: "Roll a squad",
+            d: "One tap draws a fresh random team — lock cards you like, then re-roll just the rest.",
+          },
+          {
+            n: "2",
+            t: "Filter the pool",
+            d: "Restrict by generation, region, type or team size before rolling.",
+          },
+          {
+            n: "3",
+            t: "Share or save",
+            d: "The link carries your squad — share it, or tap Add to Team to keep favourites.",
+          },
+        ]}
+      />
+
+      {/* Expanded filters */}
+      {open && (
+        <div className="mb-5 flex justify-center">
+          <div className="w-fit max-w-full rounded-xl border border-poke-border bg-poke-surface p-3 shadow-sm">
+<div className="grid flex-1 grid-cols-2 gap-2.5 sm:grid-cols-4 lg:flex lg:flex-initial">
                 <label className={labelCls}>
                   Generation
                   <select
@@ -270,63 +334,8 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
                   </select>
                 </label>
               </div>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              aria-expanded={open}
-              aria-label="Filters"
-              title="Filters"
-              className="flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red"
-            >
-              {gearIcon}
-            </button>
-          )}
+          </div>
         </div>
-        <button
-          type="button"
-          onClick={roll}
-          disabled={rolling || (rolled != null && locks.size >= rolled.length)}
-          title={
-            rolled != null && locks.size >= rolled.length
-              ? "All cards are locked — unlock one to roll"
-              : undefined
-          }
-          className="absolute right-6 inline-flex items-center gap-2 rounded-xl bg-poke-red px-7 py-3 text-base font-bold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="h-5 w-5"
-            aria-hidden="true"
-          >
-            <rect x="3" y="3" width="18" height="18" rx="4" />
-            <g fill="currentColor" stroke="none">
-              <circle cx="8.5" cy="8.5" r="1.3" />
-              <circle cx="15.5" cy="8.5" r="1.3" />
-              <circle cx="12" cy="12" r="1.3" />
-              <circle cx="8.5" cy="15.5" r="1.3" />
-              <circle cx="15.5" cy="15.5" r="1.3" />
-            </g>
-          </svg>
-          {rolling
-            ? "Rolling…"
-            : rolled && locks.size > 0 && locks.size < rolled.length
-              ? `Roll (${rolled.length - locks.size})`
-              : "Roll"}
-        </button>
-      </div>
-
-      {notice && (
-        <p
-          role="status"
-          className="mb-3 text-center text-sm font-medium text-poke-ink"
-        >
-          {notice}
-        </p>
       )}
 
       {rolled && rolled.length > 0 && (
@@ -345,11 +354,12 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
               />
             ))}
           </div>
-          <div className="mt-4 flex justify-end">
+          <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
+            <TeamShowdownExport team={rolled} />
             <button
               type="button"
               onClick={addAll}
-              className="rounded-xl bg-poke-btn px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
+              className="game-btn game-btn-primary px-4 py-2 text-sm font-semibold"
             >
               Add all to Team
               <span className="ml-1.5 rounded-full bg-white/20 px-1.5 text-xs leading-5">
@@ -359,6 +369,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
           </div>
         </>
       )}
+
     </div>
   );
 }

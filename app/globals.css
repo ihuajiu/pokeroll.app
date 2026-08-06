@@ -692,19 +692,11 @@ body {
   border-radius: var(--r-xl);
   padding: 22px;
   box-shadow: 0 22px 50px -22px rgba(20, 12, 48, 0.45), var(--shadow);
-  animation: pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  transform-origin: top center;
   container-type: inline-size;
-  transition: opacity 0.2s ease;
 }
-/* Prototype look: cards render at 88% of their layout box. Desktop only —
-   on narrow screens the shrink wastes scarce width and stretches the card
-   into a tall-skinny shape (measured 258px visual inside a 390px viewport). */
-@media (min-width: 1024px) {
-  .hero-card {
-    scale: 0.88;
-  }
-}
+/* Cards render at natural size so the front and Showdown back face always
+   match exactly (the old 0.88 desktop "prototype shrink" fought with the 3D
+   flip wrapper and made the back face bigger). */
 /* Loading state (driven by the .is-loading class from HeroCard). */
 .hero-card.is-loading { opacity: 0.5; }
 /* When the card itself is narrow (multi-column grids, etc.) stack the
@@ -2321,4 +2313,113 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Card flip -> Showdown set back face.
+   The hero-card itself rotates (perspective in the transform). The front
+   content and the back face swap via visibility at mid-flip, so it works even
+   where container-type flattens the 3D context. The back face is an absolute
+   child with inset:0, so it always matches the card size exactly. */
+.hero-card {
+  transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1) !important;
+}
+.hero-card.is-flipped {
+  transform: perspective(1400px) rotateY(180deg) !important;
+}
+.hero-card > *:not(.hero-card-back) {
+  transition: visibility 0s linear 0.25s;
+}
+.hero-card.is-flipped > *:not(.hero-card-back) {
+  visibility: hidden;
+}
+.hero-card-back {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: inherit;
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--cc, rgb(var(--accent))) 16%, rgb(var(--surface))) 0%,
+    rgb(var(--surface)) 60%
+  );
+  border: 1px solid rgb(var(--border));
+  box-shadow: 0 22px 50px -22px rgba(20, 12, 48, 0.45), var(--shadow);
+  transform: rotateY(180deg);
+  visibility: hidden;
+  overflow: hidden;
+  transition: visibility 0s linear 0.25s;
+}
+.hero-card.is-flipped .hero-card-back {
+  visibility: visible;
+}
+.hero-card-back .hcb-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.hero-card-back .hcb-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.hero-card-back .hcb-brand svg {
+  color: rgb(var(--accent));
+}
+.hero-card-back .hcb-title {
+  font: 800 15px/1 var(--display);
+  letter-spacing: 0.01em;
+  color: rgb(var(--text));
+}
+.hero-card-back .hcb-name {
+  font: 700 11px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--cc, rgb(var(--accent))) 85%, rgb(var(--text)));
+}
+.hero-card-back .hcb-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: 1px solid rgb(var(--border));
+  background: rgb(var(--surface-2));
+  color: rgb(var(--text-dim));
+  font-size: 14px;
+  line-height: 1;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.hero-card-back .hcb-close:hover {
+  border-color: rgb(var(--brand) / 0.7);
+  color: rgb(var(--brand));
+}
+.hero-card-back .hcb-text {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font: 400 11px/1.7 var(--mono);
+  color: rgb(var(--text));
+  background: color-mix(in srgb, rgb(var(--surface)) 78%, transparent);
+  border: 1px solid rgb(var(--border));
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: inset 0 2px 10px -6px rgba(20, 12, 48, 0.18);
+}
+.hero-card-back .hcb-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.hero-card-back .hcb-actions {
+  display: flex;
+  justify-content: flex-end;
 }

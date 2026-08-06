@@ -1,0 +1,431 @@
+﻿[
+    {
+        "slug":  "leftovers",
+        "name":  "Leftovers",
+        "tags":  [
+                     "heal",
+                     "tank"
+                 ]
+    },
+    {
+        "slug":  "life-orb",
+        "name":  "Life Orb",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "choice-band",
+        "name":  "Choice Band",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "choice-scarf",
+        "name":  "Choice Scarf",
+        "tags":  [
+                     "speed"
+                 ]
+    },
+    {
+        "slug":  "choice-specs",
+        "name":  "Choice Specs",
+        "tags":  [
+                     "spa",
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "focus-sash",
+        "name":  "Focus Sash",
+        "tags":  [
+                     "priority"
+                 ]
+    },
+    {
+        "slug":  "assault-vest",
+        "name":  "Assault Vest",
+        "tags":  [
+                     "tank",
+                     "spa"
+                 ]
+    },
+    {
+        "slug":  "rocky-helmet",
+        "name":  "Rocky Helmet",
+        "tags":  [
+                     "tank"
+                 ]
+    },
+    {
+        "slug":  "black-sludge",
+        "name":  "Black Sludge",
+        "tags":  [
+                     "heal",
+                     "tank"
+                 ]
+    },
+    {
+        "slug":  "sitrus-berry",
+        "name":  "Sitrus Berry",
+        "tags":  [
+                     "heal"
+                 ]
+    },
+    {
+        "slug":  "lum-berry",
+        "name":  "Lum Berry",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "chesto-berry",
+        "name":  "Chesto Berry",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "expert-belt",
+        "name":  "Expert Belt",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "wise-glasses",
+        "name":  "Wise Glasses",
+        "tags":  [
+                     "spa"
+                 ]
+    },
+    {
+        "slug":  "muscle-band",
+        "name":  "Muscle Band",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "weakness-policy",
+        "name":  "Weakness Policy",
+        "tags":  [
+                     "boost",
+                     "tank"
+                 ]
+    },
+    {
+        "slug":  "light-clay",
+        "name":  "Light Clay",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "eviolite",
+        "name":  "Eviolite",
+        "tags":  [
+                     "tank"
+                 ]
+    },
+    {
+        "slug":  "heavy-duty-boots",
+        "name":  "Heavy-Duty Boots",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "safety-goggles",
+        "name":  "Safety Goggles",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "flame-orb",
+        "name":  "Flame Orb",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "toxic-orb",
+        "name":  "Toxic Orb",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "scope-lens",
+        "name":  "Scope Lens",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "razor-claw",
+        "name":  "Razor Claw",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "kings-rock",
+        "name":  "King\u0027s Rock",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "quick-claw",
+        "name":  "Quick Claw",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "shed-shell",
+        "name":  "Shed Shell",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "eject-button",
+        "name":  "Eject Button",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "red-card",
+        "name":  "Red Card",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "air-balloon",
+        "name":  "Air Balloon",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "custap-berry",
+        "name":  "Custap Berry",
+        "tags":  [
+                     "priority"
+                 ]
+    },
+    {
+        "slug":  "salac-berry",
+        "name":  "Salac Berry",
+        "tags":  [
+                     "speed"
+                 ]
+    },
+    {
+        "slug":  "liechi-berry",
+        "name":  "Liechi Berry",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "ganlon-berry",
+        "name":  "Ganlon Berry",
+        "tags":  [
+                     "tank"
+                 ]
+    },
+    {
+        "slug":  "petaya-berry",
+        "name":  "Petaya Berry",
+        "tags":  [
+                     "spa"
+                 ]
+    },
+    {
+        "slug":  "apicot-berry",
+        "name":  "Apicot Berry",
+        "tags":  [
+                     "tank",
+                     "spd"
+                 ]
+    },
+    {
+        "slug":  "occa-berry",
+        "name":  "Occa Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "passho-berry",
+        "name":  "Passho Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "wacan-berry",
+        "name":  "Wacan Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "rindo-berry",
+        "name":  "Rindo Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "shuca-berry",
+        "name":  "Shuca Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "chople-berry",
+        "name":  "Chople Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "kebia-berry",
+        "name":  "Kebia Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "coba-berry",
+        "name":  "Coba Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "payapa-berry",
+        "name":  "Payapa Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "charti-berry",
+        "name":  "Charti Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "kasib-berry",
+        "name":  "Kasib Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "haban-berry",
+        "name":  "Haban Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "colbur-berry",
+        "name":  "Colbur Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "babiri-berry",
+        "name":  "Babiri Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "chilan-berry",
+        "name":  "Chilan Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "roseli-berry",
+        "name":  "Roseli Berry",
+        "tags":  [
+                     "tank",
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "mental-herb",
+        "name":  "Mental Herb",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "white-herb",
+        "name":  "White Herb",
+        "tags":  [
+                     "utility"
+                 ]
+    },
+    {
+        "slug":  "power-herb",
+        "name":  "Power Herb",
+        "tags":  [
+                     "utility",
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "zoom-lens",
+        "name":  "Zoom Lens",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "metronome",
+        "name":  "Metronome",
+        "tags":  [
+                     "boost"
+                 ]
+    },
+    {
+        "slug":  "leppa-berry",
+        "name":  "Leppa Berry",
+        "tags":  [
+                     "utility"
+                 ]
+    }
+]

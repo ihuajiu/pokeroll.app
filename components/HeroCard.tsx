@@ -1,10 +1,12 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Pokemon } from "@/lib/types";
 import { TYPE_HEX } from "@/lib/typeColors";
 import { useFavorites } from "@/components/useFavorites";
+import ShowdownCopyButton from "@/components/ShowdownCopyButton";
+import LogoMark from "@/components/LogoMark";
 import {
   downloadPokemonCard,
   sharePokemonLink,
@@ -114,6 +116,8 @@ export default function HeroCard({
   const [shareDone, setShareDone] = useState<"shared" | "copied" | null>(null);
   const [dlDone, setDlDone] = useState(false);
   const [favMsg, setFavMsg] = useState<string | null>(null);
+  const [flipped, setFlipped] = useState(false);
+  const [showdownText, setShowdownText] = useState<string | null>(null);
   /** Root card element — captured as the classic-style download image. */
   const cardRef = useRef<HTMLDivElement>(null);
   /** Name heading — long names auto-shrink to fit one line. */
@@ -135,6 +139,38 @@ export default function HeroCard({
 
   // Parent-owned data when a custom roll handler is supplied.
   const data = onRoll ? pokemon : internal;
+
+  // Lazy-loaded on first click so the moves dataset stays out of the
+  // initial bundle; the set is generated fresh each export.
+  function loadShowdownSet() {
+    return import("@/lib/showdown").then((m) => m.buildShowdownSet(data));
+  }
+
+  async function flipToShowdown() {
+    setFlipped(true);
+    if (!showdownText) {
+      try {
+        setShowdownText(await loadShowdownSet());
+      } catch {
+        /* keep the placeholder */
+      }
+    }
+  }
+
+  // Clicking the card body flips it to the Showdown view; clicks on the card
+  // controls (buttons, links, inputs) and selectable cards (/team) are skipped.
+  function handleCardClick(e: React.MouseEvent) {
+    const t = e.target as HTMLElement;
+    if (t.closest("button, a, input, textarea, select")) return;
+    if (selectable) return;
+    const next = !flipped;
+    setFlipped(next);
+    if (next && !showdownText) {
+      loadShowdownSet()
+        .then((txt) => setShowdownText(txt))
+        .catch(() => {});
+    }
+  }
   const isLoading = loading ?? internalLoading;
 
   const spriteUrl =
@@ -196,7 +232,9 @@ export default function HeroCard({
         row.style.setProperty("--tag-scale", "1");
         return;
       }
-      let lo = 0.6;
+      // Floor low enough that long form + type chips (e.g. Gigantamax + 2
+      // types) always fit on one line even with wider font rendering.
+      let lo = 0.4;
       let hi = 1;
       for (let i = 0; i < 8; i++) {
         const mid = (lo + hi) / 2;
@@ -323,7 +361,8 @@ export default function HeroCard({
       ref={cardRef}
       className={`hero-card${hideName ? " hero-card--mystery" : ""}${variantClass}${
         locked ? " is-locked" : ""
-      }${isLoading ? " is-loading" : ""}`}
+      }${isLoading ? " is-loading" : ""}${flipped ? " is-flipped" : ""}`}
+      onClick={handleCardClick}
       style={{ ["--cc" as string]: cc }}
     >
       {lockable && (
@@ -613,6 +652,12 @@ export default function HeroCard({
               )}
             </button>
           ) : null}
+          <ShowdownCopyButton
+            iconOnly
+            className="act-icon"
+            getText={loadShowdownSet}
+            title="Copy Showdown set"
+          />
           {!hideRoll && (
           <button
             type="button"
@@ -645,6 +690,40 @@ export default function HeroCard({
             document.body,
           )
         : null}
+      <div className="hero-card-back">
+          <div className="hcb-head">
+            <div className="hcb-brand">
+              <LogoMark className="h-5 w-5" />
+              <span className="hcb-title">Showdown Set</span>
+            </div>
+            <button
+              type="button"
+              className="hcb-close"
+              onClick={() => setFlipped(false)}
+              aria-label="Close Showdown set"
+              title="Back to card"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="hcb-name">{data.displayName}</div>
+          <pre className="hcb-text">{showdownText ?? "Generating set…"}</pre>
+          <div className="hcb-actions">
+            <ShowdownCopyButton
+              text={showdownText ?? ""}
+              label="Copy"
+              copiedLabel="Copied!"
+              className="game-btn game-btn-primary px-4 py-2 text-sm font-semibold"
+            />
+            <button
+              type="button"
+              className="game-btn game-btn-ghost px-4 py-2 text-sm font-semibold"
+              onClick={() => setFlipped(false)}
+            >
+              Back
+            </button>
+          </div>
+        </div>
     </div>
   );
 }

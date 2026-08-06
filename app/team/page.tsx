@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import TeamClient from "@/components/TeamClient";
-import GuideSteps from "@/components/GuideSteps";
 import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 
@@ -30,28 +29,14 @@ export default async function TeamPage({
         description="Your saved squad — add Pokémon from any generator, then build and share."
       />
 
-      <GuideSteps
-        className="mx-auto mb-6 max-w-[1100px] px-4"
-        title="How to build your team"
-        steps={[
-          {
-            n: "1",
-            t: "Roll & add",
-            d: "Generate Pokémon on any tool and tap “Add to Team” to save them here.",
-          },
-          {
-            n: "2",
-            t: "Manage your squad",
-            d: "Select Pokémon to remove or clear — your team holds up to 6.",
-          },
-          {
-            n: "3",
-            t: "Share it",
-            d: "Copy the team link so friends can view your lineup.",
-          },
-        ]}
-      />
+      
+
+
+
+
       <TeamClient sharedNames={sp.team ?? null} />
+
+
       <RelatedTools current="/team" />
     </main>
   );

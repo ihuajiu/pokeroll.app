@@ -289,10 +289,7 @@ export default function AdventureView({
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
             Your Team ({a.team.length})
           </h2>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-3"
-            style={{ gap: "4px" }}
-          >
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {a.team.map((p) => (
               <HeroCard
                 key={p.dexNumber}

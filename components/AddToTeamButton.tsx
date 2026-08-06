@@ -37,8 +37,12 @@ export default function AddToTeamButton({ pokemon }: { pokemon: Pokemon }) {
         <Link
           href="/team"
           title="View your team"
-          className="game-btn game-btn-ghost px-5 py-2.5 font-semibold"
+          className="game-btn game-btn-ghost inline-flex items-center gap-1.5 px-5 py-2.5 font-semibold"
         >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
           View Team ({team.length})
         </Link>
       </div>
@@ -50,8 +54,12 @@ export default function AddToTeamButton({ pokemon }: { pokemon: Pokemon }) {
       type="button"
       onClick={toggle}
       aria-label="Add to team"
-      className="game-btn game-btn-ghost px-5 py-2.5"
+      className="game-btn game-btn-ghost inline-flex items-center gap-1.5 px-5 py-2.5"
     >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
       Add to Team
     </button>
   );

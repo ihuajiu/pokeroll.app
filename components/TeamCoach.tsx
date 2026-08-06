@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -7,6 +7,8 @@ import HeroCard from "./HeroCard";
 import { useFavorites } from "./useFavorites";
 import { useTeam } from "./useTeam";
 import ShareDialog from "./ShareDialog";
+import GuideSteps from "./GuideSteps";
+import TeamShowdownExport from "./TeamShowdownExport";
 
 interface CoachResult {
   seed: string;
@@ -30,6 +32,8 @@ const TYPES = [
 
 const selectCls =
   "rounded-lg border border-poke-border bg-poke-surface px-3 py-2 text-sm text-poke-ink focus:border-poke-red focus:outline-none";
+const labelCls =
+  "flex w-full flex-col gap-1 text-xs font-semibold text-poke-dim lg:w-[104px]";
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -55,6 +59,7 @@ export default function TeamCoach({
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [picker, setPicker] = useState<"fav" | "team" | null>(null);
+  const [open, setOpen] = useState(false);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const keptDex = new Set(kept.map((p) => p.dexNumber));
@@ -198,6 +203,22 @@ export default function TeamCoach({
       })()
     : undefined;
 
+  const gearIcon = (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </svg>
+  );
+
   return (
     <div className="mx-auto w-full max-w-[1100px] px-4">
       {notice && (
@@ -206,7 +227,75 @@ export default function TeamCoach({
         </p>
       )}
 
-      {/* Team + add picks (optional) */}
+      {/* CTA hero — like the challenge page's "ready" panel */}
+      <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
+        <h2 className="text-xl font-extrabold text-poke-ink">Your balanced team is ready</h2>
+        <p className="mt-1 text-sm text-poke-dim">
+          Lock the Pokémon you already picked, fill the rest with type coverage — then add them to your team or export to Showdown.
+        </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={generate}
+            disabled={!canGenerate || busy}
+            className="game-btn game-btn-primary px-8 py-3.5 text-base font-extrabold disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="4" />
+              <g fill="currentColor" stroke="none">
+                <circle cx="8.5" cy="8.5" r="1.4" />
+                <circle cx="15.5" cy="8.5" r="1.4" />
+                <circle cx="12" cy="12" r="1.4" />
+                <circle cx="8.5" cy="15.5" r="1.4" />
+                <circle cx="15.5" cy="15.5" r="1.4" />
+              </g>
+            </svg>
+            {busy ? "Generating…" : result ? "Re-roll unlocked" : "Generate team"}
+          </button>
+          {result && (
+            <ShareDialog
+              url={shareUrl}
+              text="I built a team with PokeRoll Team Coach — what do you think?"
+              label="Share"
+              className="game-btn game-btn-primary px-6 py-3.5 text-sm font-bold"
+            />
+          )}
+          <Link
+            href="/team" title="View your team"
+            className="game-btn game-btn-ghost px-6 py-3.5 text-sm font-bold"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+            View my team
+          </Link>
+        </div>
+      </div>
+
+      {/* How to play */}
+      <GuideSteps
+        className="mx-auto mb-6 max-w-[1100px] px-4"
+        steps={[
+          {
+            n: "1",
+            t: "Add picks (optional)",
+            d: "Search or import from Favorites / Your Team — or skip and let the coach roll all 6.",
+          },
+          {
+            n: "2",
+            t: "Generate the team",
+            d: "Team Coach fills the team with balanced types and roles.",
+          },
+          {
+            n: "3",
+            t: "Lock & re-roll",
+            d: "Lock Pokémon you like, re-roll the rest, then add all or share the link.",
+          },
+        ]}
+      />
+
+      {/* Team Coach — picks + filters + generate + team in one panel */}
       <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-sm font-extrabold text-poke-ink">Your team</h2>
@@ -242,23 +331,136 @@ export default function TeamCoach({
               </div>
             )}
           </div>
+
           <button
             type="button"
             onClick={() => setPicker("fav")}
-            className="rounded-xl border border-poke-border bg-poke-surface px-4 py-2 text-sm font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+            className="game-btn game-btn-ghost px-4 py-2 text-sm font-semibold"
           >
-            Import from Favorites
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            Import Favorites
           </button>
           <button
             type="button"
             onClick={() => setPicker("team")}
-            className="rounded-xl border border-poke-border bg-poke-surface px-4 py-2 text-sm font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
+            className="game-btn game-btn-ghost px-4 py-2 text-sm font-semibold"
           >
-            Import from Team
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            Import Team
+          </button>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label={open ? "Collapse filters" : "Filters"}
+            title={open ? "Collapse filters" : "Filters"}
+            className={`flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red ${open ? "" : "breathe"}`}
+          >
+            {gearIcon}
           </button>
         </div>
 
+
+
+        {/* Expanded filters */}
+      {open && (
+        <div className="mb-4 flex justify-center">
+          <div className="w-fit max-w-full rounded-xl border border-poke-border bg-poke-surface p-3 shadow-sm">
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:flex lg:flex-initial lg:flex-wrap">
+
+
+            <label className={labelCls}>
+            Team size
+            <select
+            value={count}
+            onChange={(e) => {
+            setCount(Number(e.target.value));
+            setResult(null);
+            }}
+            className={selectCls}
+            >
+            {[3, 4, 5, 6].map((n) => (
+            <option key={n} value={n}>{n}</option>
+            ))}
+            </select>
+            </label>
+            <label className={labelCls}>
+            Generation
+            <select
+            value={gen}
+            onChange={(e) => {
+            setGen(e.target.value);
+            setResult(null);
+            }}
+            className={selectCls}
+            >
+            <option value="">Any</option>
+            {GEN_OPTIONS.map((g) => (
+            <option key={g} value={g}>Gen {g}</option>
+            ))}
+            </select>
+            </label>
+            <label className={labelCls}>
+            Region
+            <select
+            value={region}
+            onChange={(e) => {
+            setRegion(e.target.value);
+            setResult(null);
+            }}
+            className={selectCls}
+            >
+            <option value="">Any</option>
+            {REGIONS.map((r) => (
+            <option key={r} value={r}>{cap(r)}</option>
+            ))}
+            </select>
+            </label>
+            <label className={labelCls}>
+            Type
+            <select
+            value={type}
+            onChange={(e) => {
+            setType(e.target.value);
+            setResult(null);
+            }}
+            className={selectCls}
+            >
+            <option value="">Any</option>
+            {TYPES.map((t) => (
+            <option key={t} value={t}>{cap(t)}</option>
+            ))}
+            </select>
+            </label>
+
+
+          </div>
+        </div>
+        </div>
+      )}
+
+      {/* Status hint */}
+      <p className="mb-4 text-center text-xs text-poke-dim">
+        {!canGenerate
+          ? "Everything is locked — unlock a card to re-roll."
+          : result
+            ? `Re-rolls ${count - kept.length} unlocked slot(s)`
+            : kept.length > 0
+              ? `Will fill ${count - kept.length} slot(s) with balanced coverage`
+              : "Rolls a full balanced team"}
+      </p>
+
+
+
         {displayed.length > 0 ? (
+          <>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {displayed.map((p, idx) => {
               const reason = result ? result.reasons[p.dexNumber] : undefined;
@@ -286,127 +488,27 @@ export default function TeamCoach({
               );
             })}
           </div>
+          <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
+            <TeamShowdownExport team={displayed} />
+            <button
+              type="button"
+              onClick={addAllToTeam}
+              className="game-btn game-btn-primary px-5 py-2.5 font-semibold"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Add all to Team
+            </button>
+        </div>
+          </>
         ) : (
           <p className="py-6 text-center text-sm text-poke-dim">
             Add a pick or just generate a full team — the coach balances types and roles.
           </p>
         )}
       </div>
-
-      {/* Filters + generate */}
-      <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface p-5">
-        <div className="flex flex-wrap items-center gap-4">
-          <label className="text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Team size
-            <select
-              value={count}
-              onChange={(e) => {
-                setCount(Number(e.target.value));
-                setResult(null);
-              }}
-              className={"ml-2 " + selectCls}
-            >
-              {[3, 4, 5, 6].map((n) => (
-                <option key={n} value={n}>{n}</option>
-              ))}
-            </select>
-          </label>
-          <label className="text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Generation
-            <select
-              value={gen}
-              onChange={(e) => {
-                setGen(e.target.value);
-                setResult(null);
-              }}
-              className={"ml-2 " + selectCls}
-            >
-              <option value="">Any</option>
-              {GEN_OPTIONS.map((g) => (
-                <option key={g} value={g}>Gen {g}</option>
-              ))}
-            </select>
-          </label>
-          <label className="text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Region
-            <select
-              value={region}
-              onChange={(e) => {
-                setRegion(e.target.value);
-                setResult(null);
-              }}
-              className={"ml-2 " + selectCls}
-            >
-              <option value="">Any</option>
-              {REGIONS.map((r) => (
-                <option key={r} value={r}>{cap(r)}</option>
-              ))}
-            </select>
-          </label>
-          <label className="text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Type
-            <select
-              value={type}
-              onChange={(e) => {
-                setType(e.target.value);
-                setResult(null);
-              }}
-              className={"ml-2 " + selectCls}
-            >
-              <option value="">Any</option>
-              {TYPES.map((t) => (
-                <option key={t} value={t}>{cap(t)}</option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={generate}
-            disabled={!canGenerate || busy}
-            className="rounded-xl bg-poke-btn px-7 py-3 text-base font-extrabold text-white shadow-glow transition hover:bg-poke-btnHover disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {busy ? "Generating…" : result ? "Re-roll unlocked" : "Generate team"}
-          </button>
-          <span className="text-xs text-poke-dim">
-            {!canGenerate
-              ? "Everything is locked — unlock a card to re-roll."
-              : result
-                ? `Re-rolls ${count - kept.length} unlocked slot(s)`
-                : kept.length > 0
-                  ? `Will fill ${count - kept.length} slot(s) with balanced coverage`
-                  : "Rolls a full balanced team"}
-          </span>
-        </div>
-      </div>
-
-      {/* Actions */}
-      {displayed.length > 0 && (
-        <div className="mb-6 flex flex-wrap justify-center gap-3">
-          <button
-            type="button"
-            onClick={addAllToTeam}
-            className="rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
-          >
-            Add all to Team
-          </button>
-          {result && (
-            <ShareDialog
-              url={shareUrl}
-              text="I built a team with PokeRoll Team Coach — what do you think?"
-              label="Share team"
-              className="rounded-xl bg-amber-500 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-amber-600"
-            />
-          )}
-          <Link
-            href="/team" title="View your team"
-            className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
-          >
-            View my team
-          </Link>
-        </div>
-      )}
 
       {/* Picker modal: favorites / team */}
       {picker && (
@@ -462,4 +564,3 @@ export default function TeamCoach({
     </div>
   );
 }
-

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import TeamCoach from "@/components/TeamCoach";
 import RelatedTools from "@/components/RelatedTools";
-import GuideSteps from "@/components/GuideSteps";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { completeTeam } from "@/lib/teamCoach";
@@ -90,27 +89,14 @@ export default async function TeamCoachPage({
         title="Pokémon Team Coach"
         description="Lock the Pokémon you already picked, fill the rest with type coverage and balanced roles."
       />
-      <GuideSteps
-        className="mx-auto mb-6 max-w-[1100px] px-4"
-        steps={[
-          {
-            n: "1",
-            t: "Add picks (optional)",
-            d: "Search or import from Favorites / Your Team — or skip and let the coach roll all 6.",
-          },
-          {
-            n: "2",
-            t: "Generate the team",
-            d: "Team Coach fills the team with balanced types and roles.",
-          },
-          {
-            n: "3",
-            t: "Lock & re-roll",
-            d: "Lock Pokémon you like, re-roll the rest, then add all or share the link.",
-          },
-        ]}
-      />
+      
+
+
+
+
       <TeamCoach initial={initial} initialLocked={initialLocked} />
+
+
       <RelatedTools current="/team/coach" />
     </main>
   );
