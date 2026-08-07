@@ -5,7 +5,7 @@ import PageHeader from "@/components/PageHeader";
 export const metadata: Metadata = {
   title: "Disclaimer & Affiliate Notice — Fan-made Pokémon Tool",
   description:
-    "Fan-made, unofficial site. Not affiliated with Nintendo, Game Freak or The Pokémon Company. Affiliate disclosure included.",
+    "PokeRoll is a fan-made, unofficial site and is not affiliated with Nintendo, Game Freak or The Pokémon Company. Read the disclaimer and affiliate disclosure.",
   keywords: [
     "pokemon fan site disclaimer",
     "pokemon fan tool legal",

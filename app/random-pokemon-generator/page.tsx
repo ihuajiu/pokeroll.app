@@ -31,8 +31,12 @@ export async function generateMetadata({
       ? `${name} — Random Pokémon Generator`
       : "Random Pokémon Generator — PokeRoll",
     description: name
-      ? `I rolled ${name} on PokeRoll — copy its Showdown set, or roll your own random Pokémon in one tap.`
-      : "Roll a random Pokémon in one tap — every pull comes with its name, type, ability, base stats, generation and official artwork. Flip any card for its copy-ready Showdown set. Free fan-made tool.",
+      ? // Shared links: keep the meta description inside the 140–160 char SEO
+        // window whatever the Pokémon name length (3–32 chars).
+        name.length <= 16
+        ? `I rolled ${name} on PokeRoll — flip the card for its copy-ready Showdown set, or roll a random Pokémon of your own in one tap. Free fan-made tool.`
+        : `I rolled ${name} on PokeRoll — flip the card for its copy-ready Showdown set, or roll a random one of your own. Free fan-made tool.`
+      : "Roll a random Pokémon in one tap — name, type, ability, base stats and artwork included. Flip the card for a copy-ready Showdown set. Free fan-made tool.",
     keywords: [
       "random pokemon generator",
       "pokemon generator",

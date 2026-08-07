@@ -17,7 +17,7 @@ export async function generateMetadata({
   const gen = Number((await params).n);
   return {
     title: `Generation ${gen} Pokémon Generator — Random Gen ${gen} Pokémon`,
-    description: `Generate a random Generation ${gen} Pokémon instantly: name, type, ability, base stats and sprite — copy it to Showdown. Fan-made tool.`,
+    description: `Generate a random Generation ${gen} Pokémon from the ${GEN_REGION[gen]} region: name, type, ability, base stats and sprite — copy it to Showdown. Fan-made tool.`,
     keywords: [
       `random pokemon generator gen ${gen}`,
       `pokemon random generator gen ${gen}`,

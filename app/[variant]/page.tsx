@@ -30,7 +30,7 @@ const META: Record<
   type: {
     title: "Random Pokémon Type Generator — Fan-made Tool",
     description:
-      "Get a random Pokémon type and a matching Pokémon instantly. Fire, Water, Electric and all 18 types — copy your match to Showdown.",
+      "Get a random Pokémon type and a matching Pokémon instantly — Fire, Water, Electric and all 18 types. Roll again for another, or copy your match to Showdown.",
     keywords: [
       "random pokemon type generator",
       "pokemon type generator",
@@ -48,7 +48,7 @@ const META: Record<
   ability: {
     title: "Random Pokémon Ability Generator — Fan-made Tool",
     description:
-      "Roll a random Pokémon ability (like Static or Blaze) and see a Pokémon that has it — then copy it to Showdown.",
+      "Roll a random Pokémon ability like Static or Blaze and see a Pokémon that has it — check its full stats and typing, then copy the set to Showdown.",
     keywords: [
       "pokemon ability generator",
       "random pokemon ability generator",
@@ -58,13 +58,13 @@ const META: Record<
   move: {
     title: "Random Pokémon Move Generator — Fan-made Tool",
     description:
-      "Discover a random Pokémon move and a Pokémon that can learn it — then copy the set to Showdown.",
+      "Discover a random Pokémon move and a Pokémon that can learn it — check its power, accuracy and typing, then copy the set to Showdown. Fan-made tool.",
     keywords: ["random pokemon move generator", "pokemon move generator"],
   },
   bst: {
     title: "Random Pokémon BST Generator — Fan-made Tool",
     description:
-      "Generate a random Base Stat Total and the Pokémon it belongs to — then copy it to Showdown.",
+      "Generate a random Base Stat Total and reveal the Pokémon it belongs to — compare its six stats, roll again, then copy it to Showdown. Fan-made tool.",
     keywords: [
       "pokemon bst generator",
       "random pokemon stats generator",
@@ -77,7 +77,7 @@ const META: Record<
   },
   number: {
     title: "Random Pokémon Number Generator — Fan-made Tool",
-    description: "Roll a random Pokédex number and reveal which Pokémon it is — then copy it to Showdown.",
+    description: "Roll a random Pokédex number from 1 to 1025 and reveal which Pokémon it is — see its full card, then copy it to Showdown. Free fan-made tool.",
     keywords: [
       "pokemon number generator",
       "random pokemon number generator",
@@ -86,7 +86,7 @@ const META: Record<
   starter: {
     title: "Random Starter Pokémon Generator — Fan-made Tool",
     description:
-      "Pick a random starter Pokémon from the first partners of every generation — then copy it to Showdown.",
+      "Pick a random starter Pokémon from the first partners of every generation, from Kanto to Paldea — then copy it to Showdown. Free fan-made tool.",
     keywords: [
       "random starter pokemon generator",
       "pokemon starter generator",
@@ -96,7 +96,7 @@ const META: Record<
   "no-names": {
     title: "Pokémon Without Names — Guess the Pokémon",
     description:
-      "A mystery Pokémon with its name hidden. Can you guess which one it is? Flip it for the Showdown set.",
+      "A mystery Pokémon with its name hidden — can you guess which one it is from its artwork and stats? Flip the card to reveal the Showdown set.",
     keywords: [
       "pokemon without names",
       "guess the pokemon",
@@ -107,13 +107,13 @@ const META: Record<
   cute: {
     title: "Random Cute Pokémon Generator — Fan-made Tool",
     description:
-      "Get a random cute Pokémon — soft, fluffy and adorable picks from across the Pokédex — copy it to Showdown.",
+      "Get a random cute Pokémon — soft, fluffy and adorable picks from across the whole Pokédex. Roll again for another cutie, or copy it to Showdown.",
     keywords: ["cute pokemon generator", "random cute pokemon generator"],
   },
   mythical: {
     title: "Random Mythical Pokémon Generator — Fan-made Tool",
     description:
-      "Reveal a random Mythical Pokémon like Mew, Celebi, Jirachi and more — copy it to Showdown.",
+      "Reveal a random Mythical Pokémon like Mew, Celebi or Jirachi — rare picks from across every generation, ready to copy to Showdown. Fan-made tool.",
     keywords: [
       "random mythical pokemon generator",
       "mythical pokemon generator",
@@ -121,12 +121,12 @@ const META: Record<
   },
   mega: {
     title: "Random Mega Pokémon Generator — Fan-made Tool",
-    description: "Spin a random Mega Evolution or Primal Reversion Pokémon — copy it to Showdown.",
+    description: "Spin a random Mega Evolution or Primal Reversion Pokémon — see its boosted stats and ability, then copy the set to Showdown. Free fan-made tool.",
     keywords: ["random mega pokemon generator", "mega pokemon generator"],
   },
   nickname: {
     title: "Pokémon Nickname Generator — Fan-made Tool",
-    description: "Generate a random Pokémon paired with a fun, cute nickname — copy it to Showdown.",
+    description: "Generate a random Pokémon paired with a fun, cute nickname — perfect for your next playthrough or Nuzlocke. Copy the set to Showdown. Fan-made tool.",
     keywords: [
       "pokemon nickname generator",
       "random pokemon nickname generator",

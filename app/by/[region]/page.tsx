@@ -24,11 +24,14 @@ export async function generateMetadata({
       : region === "sinnoh"
         ? "Diamond, Pearl & Platinum"
         : game;
+  // Kalos titles ("X & Y") are short, so pad that variant with "instantly" to
+  // keep every region's description inside the 140–160 char SEO window.
+  const fill = gameDesc.length > 0 && gameDesc.length < 10 ? " instantly" : "";
   return {
     title: `${r} Pokémon Generator — Random ${r} Pokémon`,
-    description: `Generate a random ${r} Pokémon${
+    description: `Generate a random ${r} Pokémon${fill}${
       gameDesc ? ` from Pokémon ${gameDesc}` : ""
-    } instantly: name, type, ability, base stats, generation and sprite — copy it to Showdown. Fan-made tool.`,
+    }: name, type, ability, base stats and sprite — copy it to Showdown. Free fan-made tool.`,
     keywords: [
       `random ${region} pokemon generator`,
       `random pokemon generator ${region}`,

@@ -22,7 +22,7 @@ export async function generateMetadata({
   return {
     title: `Pokémon Adventure Generator${diffLabel}`,
     description:
-      "Roll a full Pokémon adventure in one tap — trainer, rival, region, starter, team of six, challenge, legendary encounter and goal. Share it, roll again, or copy any card to Showdown.",
+      "Roll a Pokémon adventure in one tap — trainer, rival, region, starter, team of six, challenge and legendary encounter. Share it or copy any card to Showdown.",
     keywords: [
       "pokemon adventure generator",
       "random pokemon adventure generator",

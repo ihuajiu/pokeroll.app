@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Pokémon Fusion Generator — Fan-made Tool",
   description:
-    "Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats — then copy the fusion to Showdown.",
+    "Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats — roll again for a stranger pair, then copy the fusion to Showdown.",
   keywords: [
     "pokemon fusion generator",
     "random pokemon fusion generator",
