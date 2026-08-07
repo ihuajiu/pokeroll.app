@@ -345,9 +345,10 @@ body {
 .stage {
   position: relative;
   isolation: isolate;
-  /* Decorative rings/ball bleed past the stage on purpose — clip them so
-     they never create horizontal page scroll on narrow screens. */
-  overflow: clip;
+  /* The card's 3D flip projects slightly outside its layout box; the stage
+     must NOT clip or the card's top/bottom border gets cut mid-flip. The
+     decorative rings/ball are clipped inside their own layers instead, so
+     they still never create horizontal page scroll on narrow screens. */
 }
 /* Cap the hero stage so the card keeps its natural ~square proportions.
    Below the xl two-column break the layout goes full-width, which would
@@ -369,6 +370,8 @@ body {
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  /* Clip the oversized ring pseudo-elements here instead of on .stage. */
+  overflow: hidden;
 }
 .stage .stage-rings::before,
 .stage .stage-rings::after {
@@ -399,12 +402,16 @@ body {
   inset: 0;
   margin: auto;
   width: min(520px, 122%);
+  /* Never wider than the stage, so the watermark can't create horizontal
+     page scroll once .stage no longer clips overflow. */
+  max-width: 100%;
   aspect-ratio: 1;
   z-index: -2;
   opacity: 0.10;
   color: rgb(var(--brand));
   animation: float 9s ease-in-out infinite;
   pointer-events: none;
+  overflow: hidden;
 }
 .dark .stage .stage-ball { opacity: 0.14; }
 /* hero card gets an extra brand glow */
@@ -2320,20 +2327,23 @@ body {
 }
 
 /* Card flip -> Showdown set back face.
-   The hero-card itself rotates (perspective in the transform). The front
-   content and the back face swap via visibility at mid-flip, so it works even
-   where container-type flattens the 3D context. The back face is an absolute
-   child with inset:0, so it always matches the card size exactly. */
+   The hero-card itself rotates (perspective in the transform), so it works
+   even where container-type flattens the 3D context. The flip is eased
+   slower and cross-faded: the front content fades out over the first half
+   while the back face fades in over the second half, so the swap never
+   snaps. The back face is an absolute child with inset:0, so it always
+   matches the card size exactly. */
 .hero-card {
-  transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1) !important;
+  transition: transform 0.75s cubic-bezier(0.65, 0, 0.35, 1) !important;
 }
 .hero-card.is-flipped {
   transform: perspective(1400px) rotateY(180deg) !important;
 }
 .hero-card > *:not(.hero-card-back) {
-  transition: visibility 0s linear 0.25s;
+  transition: opacity 0.36s ease 0s, visibility 0s linear 0.36s;
 }
 .hero-card.is-flipped > *:not(.hero-card-back) {
+  opacity: 0;
   visibility: hidden;
 }
 .hero-card-back {
@@ -2353,12 +2363,15 @@ body {
   border: 1px solid rgb(var(--border));
   box-shadow: 0 22px 50px -22px rgba(20, 12, 48, 0.45), var(--shadow);
   transform: rotateY(180deg);
+  opacity: 0;
   visibility: hidden;
   overflow: hidden;
-  transition: visibility 0s linear 0.25s;
+  transition: opacity 0.4s ease 0.34s, visibility 0s linear 0.74s;
 }
 .hero-card.is-flipped .hero-card-back {
+  opacity: 1;
   visibility: visible;
+  transition: opacity 0.4s ease 0.34s, visibility 0s linear 0s;
 }
 .hero-card-back .hcb-head {
   display: flex;
