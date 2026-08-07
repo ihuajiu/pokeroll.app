@@ -16,16 +16,13 @@ import { getAllPokemon } from "@/lib/pokedex";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Shiny Pokémon Generator — Shiny Hunt Challenge",
+  title: "Random Pokémon Generator Shiny Hunt | PokeRoll",
   description:
     "The shiny Pokémon generator with real hunt odds: click Encounter, find your shiny and share the card. Easy mode guarantees a shiny within 204 draws.",
   keywords: [
-    "shiny pokemon generator",
     "random pokemon generator shiny",
     "random pokemon generator shiny odds",
-    "random shiny pokemon",
-    "shiny hunt",
-    "shiny odds",
+    "shiny pokemon generator",
   ],
   alternates: { canonical: "/challenge/shiny" },
 };

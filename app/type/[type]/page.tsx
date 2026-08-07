@@ -17,13 +17,11 @@ export async function generateMetadata({
   const { type } = await params;
   const t = titleCase(type);
   return {
-    title: `${t} Pokémon Generator — Random ${t}-type Pokémon`,
+    title: `Random ${t}-type Pokémon Generator | PokeRoll`,
     description: `Generate a random ${t}-type Pokémon instantly: name, abilities, base stats, generation and sprite, ready to copy to Showdown. Free fan-made tool.`,
     keywords: [
-      `random ${type} pokemon generator`,
       `random ${type} type pokemon generator`,
-      `${type} pokemon generator`,
-      `random ${type} pokemon`,
+      `random ${type} pokemon generator`,
     ],
     alternates: { canonical: `/type/${type}` },
   };

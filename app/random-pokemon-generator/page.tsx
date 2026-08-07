@@ -29,7 +29,7 @@ export async function generateMetadata({
   return {
     title: name
       ? `${name} — Random Pokémon Generator`
-      : "Random Pokémon Generator — PokeRoll",
+      : "Random Pokémon Generator | PokeRoll",
     description: name
       ? // Shared links: keep the meta description inside the 140–160 char SEO
         // window whatever the Pokémon name length (3–32 chars).
@@ -40,17 +40,7 @@ export async function generateMetadata({
     keywords: [
       "random pokemon generator",
       "pokemon generator",
-      "pokemon random generator",
       "random pokemon",
-      "generate a random pokemon",
-      "generate random pokemon",
-      "generate me a random pokemon",
-      "create a random pokemon",
-      "creating a random pokemon for you",
-      "get a random pokemon",
-      "get random pokemon",
-      "random generator pokemon",
-      "pokemon random pokemon generator",
     ],
     alternates: { canonical: "/random-pokemon-generator" },
     openGraph: {

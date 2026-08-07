@@ -5,23 +5,13 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Random Pokémon — Roll One Now, Free Fan-made Tool",
+  title: "Random Pokémon — Roll One Now | PokeRoll",
   description:
     "Get a random Pokémon in one tap — every roll comes with name, type, ability, base stats and official artwork, ready to copy to Showdown. Free fan-made tool.",
   keywords: [
-    "random pokemon",
     "random pokemon generator",
-    "pokemon random",
-    "roll a random pokemon",
-    "generate a random pokemon",
-    "generate random pokemon",
-    "generate me a random pokemon",
-    "create a random pokemon",
-    "creating a random pokemon for you",
-    "get a random pokemon",
-    "get random pokemon",
-    "random generator pokemon",
-    "pokemon random pokemon generator",
+    "pokemon generator",
+    "random pokemon",
   ],
   alternates: { canonical: "/random-pokemon-generator" },
 };

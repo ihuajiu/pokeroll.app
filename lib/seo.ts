@@ -49,11 +49,7 @@ export const REGION_GAME: Record<string, string> = {
 export const REGION_EXTRA_KEYWORDS: Record<string, string[]> = {
   hoenn: ["pokemon emerald random pokemon generator"],
   sinnoh: ["pokemon platinum random pokemon generator"],
-  paldea: [
-    "pokemon scarlet random pokemon generator",
-    "pokemon violet random pokemon generator",
-    "pokemon sv random pokemon generator",
-  ],
+  paldea: ["pokemon scarlet random pokemon generator"],
   galar: ["pokemon sword random pokemon generator"],
 };
 

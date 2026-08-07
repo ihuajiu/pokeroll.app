@@ -6,7 +6,7 @@ import PageHeader from "@/components/PageHeader";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Your Pokémon Team — Fan-made Tool",
+  title: "Your Pokémon Team | PokeRoll",
   description: "Your saved squad of randomly generated Pokémon — share the link with friends, or copy every set to Showdown for battles. Free fan-made tool.",
   keywords: [
     "pokemon team builder",

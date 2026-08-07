@@ -9,7 +9,7 @@ import { getRandomPokemon } from "@/lib/pokeapi";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Pokémon Fusion Generator — Fan-made Tool",
+  title: "Pokémon Fusion Generator | PokeRoll",
   description:
     "Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats — roll again for a stranger pair, then copy the fusion to Showdown.",
   keywords: [

@@ -8,7 +8,7 @@ import type { Pokemon } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Your Pokémon Favorites — Fan-made Tool",
+  title: "Your Pokémon Favorites | PokeRoll",
   description: "Save the Pokémon you love and build your favorites collection — share the list with a link, and copy any card to Showdown. Free fan-made tool.",
   keywords: [
     "pokemon favorites",

@@ -9,18 +9,13 @@ import { getRandomPokemon } from "@/lib/pokeapi";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Pokémon Wheel Generator — Fan-made Tool",
+  title: "Random Pokémon Generator Wheel | PokeRoll",
   description:
     "Spin the wheel for a random Pokémon — a fun game-of-chance picker across the whole Pokédex. Watch it land, then copy your pick to Showdown. Free fan-made tool.",
   keywords: [
+    "random pokemon generator wheel",
     "pokemon wheel generator",
     "random pokemon wheel",
-    "pokemon spinner",
-    "pokemon picker wheel",
-    "random pokemon generator wheel",
-    "pokemon random generator wheel",
-    "random pokemon type generator wheel",
-    "random type generator wheel pokemon",
   ],
   alternates: { canonical: "/wheel" },
 };

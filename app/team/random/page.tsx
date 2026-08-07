@@ -8,28 +8,13 @@ import { getRandomTeam, type TeamRandomParams } from "@/lib/team";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Random Pokémon Team — Fan-made Tool",
+  title: "Random Pokémon Team Generator | PokeRoll",
   description:
     "Generate a random team of 6 Pokémon in one tap — lock favourites, re-roll the rest, then export every set to Showdown or share the link. Free fan-made tool.",
   keywords: [
     "random pokemon team generator",
     "pokemon team generator",
-    "pokemon team randomizer",
-    "pokemon team builder",
-    "generate a random pokemon team",
-    "generate random pokemon team",
-    "make a random pokemon team",
-    "random generator pokemon team",
-    "pokemon random generator team",
-    "random pokemon team generator showdown",
-    "pokemon showdown random pokemon generator",
-    "random pokemon team generator filter",
-    "random pokemon team generator with moves",
-    "random pokemon team generator scarlet and violet",
-    "random pokemon team generator sword and shield",
-    "random pokemon team generator game",
-    "random generator pokemon game",
-    "pokemon random generator game",
+    "random pokemon team",
   ],
   alternates: { canonical: "/team/random" },
 };

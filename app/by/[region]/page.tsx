@@ -28,15 +28,13 @@ export async function generateMetadata({
   // keep every region's description inside the 140–160 char SEO window.
   const fill = gameDesc.length > 0 && gameDesc.length < 10 ? " instantly" : "";
   return {
-    title: `${r} Pokémon Generator — Random ${r} Pokémon`,
+    title: `Random ${r} Pokémon Generator — ${gameDesc}`,
     description: `Generate a random ${r} Pokémon${fill}${
       gameDesc ? ` from Pokémon ${gameDesc}` : ""
     }: name, type, ability, base stats and sprite — copy it to Showdown. Free fan-made tool.`,
     keywords: [
       `random ${region} pokemon generator`,
-      `random pokemon generator ${region}`,
-      `${region} pokemon`,
-      ...(REGION_EXTRA_KEYWORDS[region] ?? []),
+      ...(REGION_EXTRA_KEYWORDS[region] ?? [`random pokemon generator ${region}`]),
     ],
     alternates: { canonical: `/by/${region}` },
   };

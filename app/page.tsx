@@ -5,7 +5,7 @@ import HomeFacts from "@/components/HomeFacts";
 import FaqSection, { type Faq } from "@/components/FaqSection";
 
 export const metadata: Metadata = {
-  title: "PokeRoll — Random Pokémon Tools, Teams & Adventures",
+  title: "Random Pokémon Generator — Team, Type & Wheel | PokeRoll",
   description:
     "PokeRoll is a free random Pokémon generator and toolbox — build a random team, take on challenges or roll a full adventure, and copy any card to Showdown.",
   keywords: [
@@ -141,7 +141,7 @@ export default function Page() {
     "@type": "WebPage",
     "@id": "https://pokeroll.app/#webpage",
     url: "https://pokeroll.app/",
-    name: "PokeRoll — Random Pokémon Tools, Teams & Adventures",
+    name: "Random Pokémon Generator — Team, Type & Wheel | PokeRoll",
     description:
       "PokeRoll is a free random Pokémon generator and toolbox — build a random team, take on challenges or roll a full adventure, and copy any card to Showdown.",
     isPartOf: { "@id": "https://pokeroll.app/#website" },

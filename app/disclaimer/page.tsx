@@ -8,7 +8,6 @@ export const metadata: Metadata = {
     "PokeRoll is a fan-made, unofficial site and is not affiliated with Nintendo, Game Freak or The Pokémon Company. Read the disclaimer and affiliate disclosure.",
   keywords: [
     "pokemon fan site disclaimer",
-    "pokemon fan tool legal",
     "pokemon affiliate disclosure",
     "unofficial pokemon site",
   ],
