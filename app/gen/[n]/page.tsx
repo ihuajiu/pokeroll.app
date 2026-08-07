@@ -20,6 +20,7 @@ export async function generateMetadata({
     description: `Generate a random Generation ${gen} Pokémon instantly: name, type, ability, base stats and sprite — copy it to Showdown. Fan-made tool.`,
     keywords: [
       `random pokemon generator gen ${gen}`,
+      `pokemon random generator gen ${gen}`,
       `random gen ${gen} pokemon`,
       `gen ${gen} pokemon generator`,
     ],

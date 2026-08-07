@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "random pokemon wheel",
     "pokemon spinner",
     "pokemon picker wheel",
+    "random pokemon generator wheel",
+    "pokemon random generator wheel",
+    "random pokemon type generator wheel",
+    "random type generator wheel pokemon",
   ],
   alternates: { canonical: "/wheel" },
 };

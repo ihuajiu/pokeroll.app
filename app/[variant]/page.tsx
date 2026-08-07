@@ -35,6 +35,14 @@ const META: Record<
       "random pokemon type generator",
       "pokemon type generator",
       "random pokemon generator by type",
+      "random pokemon generator with types",
+      "generate a random pokemon type",
+      "generate random pokemon type",
+      "random generator pokemon type",
+      "random type generator pokemon",
+      "pokemon random generator type",
+      "random pokemon single type generator",
+      "random pokemon type generator perchance",
     ],
   },
   ability: {
@@ -44,6 +52,7 @@ const META: Record<
     keywords: [
       "pokemon ability generator",
       "random pokemon ability generator",
+      "generate random pokemon ability",
     ],
   },
   move: {
@@ -56,7 +65,15 @@ const META: Record<
     title: "Random Pokémon BST Generator — Fan-made Tool",
     description:
       "Generate a random Base Stat Total and the Pokémon it belongs to — then copy it to Showdown.",
-    keywords: ["pokemon bst generator", "random pokemon stats generator"],
+    keywords: [
+      "pokemon bst generator",
+      "random pokemon stats generator",
+      "random pokemon generator with stats",
+      "generate random pokemon stats",
+      "pokemon random generator stats",
+      "build a random pokemon stats",
+      "pokemon random generator stat game",
+    ],
   },
   number: {
     title: "Random Pokémon Number Generator — Fan-made Tool",
@@ -84,6 +101,7 @@ const META: Record<
       "pokemon without names",
       "guess the pokemon",
       "pokemon mystery quiz",
+      "random pokemon generator without names",
     ],
   },
   cute: {
@@ -112,6 +130,8 @@ const META: Record<
     keywords: [
       "pokemon nickname generator",
       "random pokemon nickname generator",
+      "generate a random pokemon name",
+      "generate random pokemon name",
     ],
   },
 };

@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import RandomGenerator from "@/components/RandomGenerator";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
@@ -38,6 +38,15 @@ export async function generateMetadata({
       "pokemon generator",
       "pokemon random generator",
       "random pokemon",
+      "generate a random pokemon",
+      "generate random pokemon",
+      "generate me a random pokemon",
+      "create a random pokemon",
+      "creating a random pokemon for you",
+      "get a random pokemon",
+      "get random pokemon",
+      "random generator pokemon",
+      "pokemon random pokemon generator",
     ],
     alternates: { canonical: "/random-pokemon-generator" },
     openGraph: {

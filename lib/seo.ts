@@ -45,6 +45,18 @@ export const REGION_GAME: Record<string, string> = {
   paldea: "Scarlet & Violet",
 };
 
+// Extra verbatim search keywords per region, merged into /by/[region] metadata.
+export const REGION_EXTRA_KEYWORDS: Record<string, string[]> = {
+  hoenn: ["pokemon emerald random pokemon generator"],
+  sinnoh: ["pokemon platinum random pokemon generator"],
+  paldea: [
+    "pokemon scarlet random pokemon generator",
+    "pokemon violet random pokemon generator",
+    "pokemon sv random pokemon generator",
+  ],
+  galar: ["pokemon sword random pokemon generator"],
+};
+
 // Region ↔ generation correspondence (region debuted in that generation).
 export const REGION_GEN: Record<string, number> = {
   kanto: 1,

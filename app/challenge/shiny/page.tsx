@@ -21,6 +21,8 @@ export const metadata: Metadata = {
     "The shiny Pokémon generator with real hunt odds: click Encounter, find your shiny and share the card. Easy mode guarantees a shiny within 204 draws.",
   keywords: [
     "shiny pokemon generator",
+    "random pokemon generator shiny",
+    "random pokemon generator shiny odds",
     "random shiny pokemon",
     "shiny hunt",
     "shiny odds",

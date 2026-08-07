@@ -5,7 +5,7 @@ import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByRegion, getRandomPokemon } from "@/lib/pokeapi";
-import { REGION_GAME, REGION_GEN, titleCase } from "@/lib/seo";
+import { REGION_GAME, REGION_GEN, REGION_EXTRA_KEYWORDS, titleCase } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -17,15 +17,23 @@ export async function generateMetadata({
   const { region } = await params;
   const r = titleCase(region);
   const game = REGION_GAME[region] ?? "";
+  // Mention the third-version games that share these regions.
+  const gameDesc =
+    region === "hoenn"
+      ? "Ruby, Sapphire & Emerald"
+      : region === "sinnoh"
+        ? "Diamond, Pearl & Platinum"
+        : game;
   return {
     title: `${r} Pokémon Generator — Random ${r} Pokémon`,
     description: `Generate a random ${r} Pokémon${
-      game ? ` from Pokémon ${game}` : ""
+      gameDesc ? ` from Pokémon ${gameDesc}` : ""
     } instantly: name, type, ability, base stats, generation and sprite — copy it to Showdown. Fan-made tool.`,
     keywords: [
       `random ${region} pokemon generator`,
       `random pokemon generator ${region}`,
       `${region} pokemon`,
+      ...(REGION_EXTRA_KEYWORDS[region] ?? []),
     ],
     alternates: { canonical: `/by/${region}` },
   };
