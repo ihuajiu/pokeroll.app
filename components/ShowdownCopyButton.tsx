@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-/** Clipboard/copy icon for the Showdown set export action. */
+/** Crossed-swords battle icon (lucide "swords") for the Showdown export. */
 export function showdownIcon() {
   return (
     <svg
@@ -15,8 +15,13 @@ export function showdownIcon() {
       aria-hidden="true"
       className="h-5 w-5"
     >
-      <rect x="9" y="9" width="13" height="13" rx="2" />
-      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+      <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5" />
+      <line x1="13" y1="19" x2="19" y2="13" />
+      <line x1="16" y1="16" x2="20" y2="20" />
+      <line x1="19" y1="21" x2="21" y2="19" />
+      <polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5" />
+      <line x1="5" y1="14" x2="9" y2="18" />
+      <line x1="7" y1="17" x2="11" y2="21" />
     </svg>
   );
 }
