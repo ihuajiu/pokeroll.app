@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -472,7 +472,7 @@ export default function HeroCard({
 
       <div className="hero-card-info">
         <div className="dex">{dex}</div>
-        <h3 ref={nameRef}>{name}</h3>
+        <h2 ref={nameRef}>{name}</h2>
         {hideName ? <span className="section-chip">Mystery</span> : null}
 
         <div className="try-types" ref={tagRowRef}>

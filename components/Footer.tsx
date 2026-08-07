@@ -85,7 +85,11 @@ export default function Footer() {
         >
           PokéAPI
         </a>
-        . <Link href="/disclaimer" title="Disclaimer" className="underline">Disclaimer</Link>.
+        . <Link href="/disclaimer" title="Disclaimer" className="underline">Disclaimer</Link>
+        {" · "}
+        <Link href="/privacy" title="Privacy Policy" className="underline">Privacy</Link>
+        {" · "}
+        <Link href="/terms" title="Terms of Use" className="underline">Terms</Link>.
       </div>
     </footer>
   );

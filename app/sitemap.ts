@@ -34,6 +34,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     `${BASE}/challenge/guess`,
     `${BASE}/challenge/shiny`,
     `${BASE}/disclaimer`,
+    `${BASE}/privacy`,
+    `${BASE}/terms`,
   ].map((url) => ({ url, lastModified: today }));
 
   const variantPages = VARIANTS.map((v) => ({

@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import Script from "next/script";
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "https://pokeroll.app"),
   title: "PokeRoll — Random Pokémon Generator",
   description:
-    "Free fan-made Pokémon toolbox — roll a random Pokémon, build teams, export sets to Showdown, take challenges and spin the wheel. Fan-made, not affiliated with Nintendo.",
+    "Free fan-made Pokémon toolbox — roll a random Pokémon, build teams, export sets to Showdown and take challenges. Not affiliated with Nintendo.",
   keywords: [
     "random pokemon generator",
     "pokemon randomizer",
@@ -87,12 +87,28 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "PokeRoll",
-              url: "https://pokeroll.app",
-              description:
-                "Free fan-made Pokémon tools — random generator, team builder, Showdown export, challenges, wheel and more.",
-              inLanguage: "en",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": "https://pokeroll.app/#website",
+                  name: "PokeRoll",
+                  url: "https://pokeroll.app",
+                  description:
+                    "Free fan-made Pokémon tools — random generator, team builder, Showdown export, challenges, wheel and more.",
+                  inLanguage: "en",
+                  publisher: { "@id": "https://pokeroll.app/#org" },
+                },
+                {
+                  "@type": "Organization",
+                  "@id": "https://pokeroll.app/#org",
+                  name: "PokeRoll",
+                  url: "https://pokeroll.app",
+                  sameAs: [
+                    "https://github.com/ihuajiu/pokeroll.app",
+                    "https://x.com/JoeyChou2024",
+                  ],
+                },
+              ],
             }),
           }}
         />

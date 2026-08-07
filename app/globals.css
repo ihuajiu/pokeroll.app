@@ -1,4 +1,4 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -811,7 +811,7 @@ body {
   z-index: 1;
 }
 /* Top text clears the top-right sprite; the meta grid below spans full width.
-   The name (h3) is exempt: it may use the full width and wrap, floating under
+   The name (h2) is exempt: it may use the full width and wrap, floating under
    the sprite — overlap is intentional so long names stay fully visible. */
 .team-card.hero-card .dex,
 .team-card.hero-card .try-types {
@@ -831,7 +831,7 @@ body {
   color: color-mix(in srgb, var(--cc, rgb(var(--accent))) 80%, rgb(var(--text)));
   text-transform: uppercase;
 }
-.team-card.hero-card h3 {
+.team-card.hero-card h2 {
   margin: 0;
   font: 800 clamp(22px, 7cqi, 34px) / 1.05 var(--display);
   letter-spacing: -1px;
@@ -1266,12 +1266,12 @@ body {
   height: 224px;
 }
 .team-card--wide.hero-card .dex,
-.team-card--wide.hero-card h3,
+.team-card--wide.hero-card h2,
 .team-card--wide.hero-card .try-types,
 .team-card--wide.hero-card .hero-card-desc {
   max-width: calc(100% - 240px);
 }
-.team-card--wide.hero-card h3 {
+.team-card--wide.hero-card h2 {
   font: 800 clamp(30px, 8cqi, 46px) / 1.02 var(--display);
   min-height: 47px;
 }
@@ -1328,7 +1328,7 @@ body {
   .team-card--wide.hero-card .hero-card-desc {
     max-width: calc(100% - 120px);
   }
-  .team-card--wide.hero-card h3 {
+  .team-card--wide.hero-card h2 {
     max-width: calc(100% - 120px);
     font-size: clamp(22px, 7cqi, 34px);
     min-height: 36px;
@@ -1441,9 +1441,9 @@ body {
   .hero-visual .team-card--wide.hero-card .hero-card-desc {
     max-width: calc(100% - 144px);
   }
-  .random-stage .team-card--wide.hero-card h3,
-  .card-stage .team-card--wide.hero-card h3,
-  .hero-visual .team-card--wide.hero-card h3 {
+  .random-stage .team-card--wide.hero-card h2,
+  .card-stage .team-card--wide.hero-card h2,
+  .hero-visual .team-card--wide.hero-card h2 {
     max-width: calc(100% - 144px);
     font-size: clamp(22px, 7cqi, 34px);
     min-height: 36px;
@@ -1530,7 +1530,7 @@ body {
   color: rgb(var(--text-faint));
   text-transform: uppercase;
 }
-.hero-card h3 {
+.hero-card h2 {
   margin: 6px 0 10px;
   font: 800 clamp(18px, 5.5cqi, 31px)/1 var(--display);
   color: rgb(var(--text));
@@ -1674,7 +1674,7 @@ body {
   justify-content: center;
   gap: 6px;
 }
-.hero-card--mystery h3 {
+.hero-card--mystery h2 {
   margin: 8px 0 14px;
   font-size: 34px;
 }

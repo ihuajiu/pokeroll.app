@@ -1,0 +1,28 @@
+# PokeRoll
+
+> PokeRoll is a free, fan-made Pokémon toolbox: roll a random Pokémon with full stats and artwork, build random teams of six, take on challenges and adventures, and copy any set to Pokémon Showdown. Not affiliated with Nintendo, Game Freak or The Pokémon Company.
+
+## Main tools
+
+- [PokeRoll — Home](https://pokeroll.app/): Hub for every random Pokémon tool, team builder and challenge.
+- [Random Pokémon Generator](https://pokeroll.app/random-pokemon-generator): Roll a random Pokémon from 1,000+ species with stats, abilities and artwork.
+- [Random Team Generator](https://pokeroll.app/team/random): Roll a ready-made squad of six random Pokémon in one tap.
+- [Pokémon Wheel](https://pokeroll.app/wheel): Spin a wheel to pick a random Pokémon.
+- [Adventure Mode](https://pokeroll.app/adventure): Roll a full Pokémon adventure — trainer, starter, team, challenge and goal.
+- [Fusion Generator](https://pokeroll.app/fusion): Fuse two Pokémon into one hybrid creature.
+- [Type Filter Generator](https://pokeroll.app/type): Roll random Pokémon of a specific type (all 18 types).
+- [Shiny Hunt Challenge](https://pokeroll.app/challenge/shiny): Hunt the rare recolored form at the modern 1/4096 base rate.
+- [Guess the Pokémon](https://pokeroll.app/challenge/guess): Guess the Pokémon from its silhouette.
+- [Gen 1 Pokémon Generator](https://pokeroll.app/gen/1): Roll random Pokémon from Generation 1 (gens 1–9 supported).
+- [Kanto Pokémon Generator](https://pokeroll.app/by/kanto): Roll random Pokémon by region (Kanto through Paldea).
+- [Disclaimer & Affiliate Notice](https://pokeroll.app/disclaimer): Fan-made site notice and affiliate disclosure.
+- [Privacy Policy](https://pokeroll.app/privacy): How PokeRoll handles analytics and browser storage.
+- [Terms of Use](https://pokeroll.app/terms): Terms for using this fan-made toolbox.
+
+## Data sources
+
+All Pokémon names, types, stats, abilities and sprites are sourced from the public PokéAPI (https://pokeapi.co/), covering 1,000+ species across 9 generations. Shiny odds reference the official games: 1/4096 base rate since Generation VI (1/8192 in earlier games).
+
+## Contact
+
+smith.chou.2023@gmail.com

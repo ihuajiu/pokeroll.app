@@ -1,6 +1,8 @@
 export interface Faq {
   q: string;
-  a: string;
+  a: React.ReactNode;
+  /** Plain-text version of `a` for JSON-LD when `a` contains markup. */
+  aText?: string;
 }
 
 // FAQ block for core pages: h2 + h3 outline (heading structure), genuine
@@ -12,7 +14,10 @@ export default function FaqSection({ items }: { items: Faq[] }) {
     mainEntity: items.map((f) => ({
       "@type": "Question",
       name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: f.aText ?? (typeof f.a === "string" ? f.a : ""),
+      },
     })),
   };
 
