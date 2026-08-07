@@ -24,3 +24,5 @@ CLAUDE.md
 GEMINI.md
 .claude/settings.json
 .claude/
+# Product Hunt assets (local only)
+ph-assets/
