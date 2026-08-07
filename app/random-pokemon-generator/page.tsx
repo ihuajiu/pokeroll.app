@@ -41,6 +41,8 @@ export async function generateMetadata({
       "random pokemon generator",
       "pokemon generator",
       "random pokemon",
+      "generate random pokemon",
+      "get random pokemon",
     ],
     alternates: { canonical: "/random-pokemon-generator" },
     openGraph: {

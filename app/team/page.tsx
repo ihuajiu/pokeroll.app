@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   keywords: [
     "pokemon team builder",
     "random pokemon team builder",
+    "random pokemon team generator",
     "pokemon team planner",
   ],
   alternates: { canonical: "/team" },

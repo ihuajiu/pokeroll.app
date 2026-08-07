@@ -21,6 +21,7 @@ export async function generateMetadata({
     keywords: [
       `random pokemon generator gen ${gen}`,
       `gen ${gen} pokemon generator`,
+      `pokemon random generator gen ${gen}`,
     ],
     alternates: { canonical: `/gen/${gen}` },
   };

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     "random pokemon team generator",
     "pokemon team generator",
     "random pokemon team",
+    "make a random pokemon team",
   ],
   alternates: { canonical: "/team/random" },
 };

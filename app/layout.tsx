@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     "random pokemon generator",
     "pokemon randomizer",
     "random pokemon",
+    "random pokemon team generator",
   ],
   openGraph: {
     type: "website",

@@ -34,6 +34,7 @@ export async function generateMetadata({
     }: name, type, ability, base stats and sprite — copy it to Showdown. Free fan-made tool.`,
     keywords: [
       `random ${region} pokemon generator`,
+      `${region} pokemon`,
       ...(REGION_EXTRA_KEYWORDS[region] ?? [`random pokemon generator ${region}`]),
     ],
     alternates: { canonical: `/by/${region}` },

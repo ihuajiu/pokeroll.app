@@ -22,6 +22,7 @@ export async function generateMetadata({
     keywords: [
       `random ${type} type pokemon generator`,
       `random ${type} pokemon generator`,
+      `${type} pokemon generator`,
     ],
     alternates: { canonical: `/type/${type}` },
   };

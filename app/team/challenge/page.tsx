@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     "Roll a seeded team of 6 Pokémon, share the link, and challenge a friend — total BST picks the winner, then export either team to Showdown. Free fan-made tool.",
   keywords: [
     "pokemon team challenge",
+    "random pokemon team generator",
     "random pokemon team",
     "pokemon team generator",
   ],
