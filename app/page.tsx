@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import HomeTool from "@/components/HomeTool";
+import HomeFacts from "@/components/HomeFacts";
 import FaqSection, { type Faq } from "@/components/FaqSection";
 
 export const metadata: Metadata = {
@@ -153,6 +154,7 @@ export default function Page() {
   return (
     <main className="pt-1 pb-10">
       <HomeTool />
+      <HomeFacts />
       <FaqSection items={HOME_FAQS} />
       <p className="mt-6 text-xs text-poke-dim">
         By the PokeRoll Team · Last updated {dateModified}
