@@ -31,8 +31,8 @@ export async function generateMetadata({
       ? `${name} — Random Pokémon Generator`
       : "Random Pokémon Generator — PokeRoll",
     description: name
-      ? `I rolled ${name} on PokeRoll. Roll your own random Pokémon in one tap.`
-      : "Roll a random Pokémon in one tap — every pull comes with its name, type, ability, base stats, generation and official artwork. Free fan-made tool.",
+      ? `I rolled ${name} on PokeRoll — copy its Showdown set, or roll your own random Pokémon in one tap.`
+      : "Roll a random Pokémon in one tap — every pull comes with its name, type, ability, base stats, generation and official artwork. Flip any card for its copy-ready Showdown set. Free fan-made tool.",
     keywords: [
       "random pokemon generator",
       "pokemon generator",

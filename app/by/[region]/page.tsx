@@ -21,7 +21,7 @@ export async function generateMetadata({
     title: `${r} Pokémon Generator — Random ${r} Pokémon`,
     description: `Generate a random ${r} Pokémon${
       game ? ` from Pokémon ${game}` : ""
-    } instantly: name, type, ability, base stats, generation and sprite. Fan-made tool.`,
+    } instantly: name, type, ability, base stats, generation and sprite — copy it to Showdown. Fan-made tool.`,
     keywords: [
       `random ${region} pokemon generator`,
       `random pokemon generator ${region}`,

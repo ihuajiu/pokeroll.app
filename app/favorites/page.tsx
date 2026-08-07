@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Your Pokémon Favorites — Fan-made Tool",
-  description: "Save the Pokémon you love and share your favorites with a link.",
+  description: "Save the Pokémon you love, share your favorites with a link, and copy any card to Showdown.",
   keywords: [
     "pokemon favorites",
     "favorite pokemon list",

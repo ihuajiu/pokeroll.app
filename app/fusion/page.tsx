@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Pokémon Fusion Generator — Fan-made Tool",
   description:
-    "Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats.",
+    "Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats — then copy the fusion to Showdown.",
   keywords: [
     "pokemon fusion generator",
     "random pokemon fusion generator",
@@ -34,7 +34,7 @@ export default async function FusionPage() {
       />
       <PageHeader
         title="Pokémon Fusion Generator"
-        description="Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats."
+        description="Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats — then copy the fusion to Showdown."
       />
       <FusionGenerator initial={{ a, b }} />
       <FaqSection

@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Random Legendary Pokémon Generator — Fan-made Tool",
   description:
-    "Generate a random Legendary Pokémon instantly: name, type, ability, base stats and official artwork. Fan-made tool.",
+    "Generate a random Legendary Pokémon instantly: name, type, ability, base stats and official artwork — copy the set to Showdown. Fan-made tool.",
   keywords: [
     "random legendary pokemon generator",
     "legendary pokemon generator",

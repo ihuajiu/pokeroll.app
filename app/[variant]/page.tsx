@@ -30,7 +30,7 @@ const META: Record<
   type: {
     title: "Random Pokémon Type Generator — Fan-made Tool",
     description:
-      "Get a random Pokémon type and a matching Pokémon instantly. Fire, Water, Electric and all 18 types.",
+      "Get a random Pokémon type and a matching Pokémon instantly. Fire, Water, Electric and all 18 types — copy your match to Showdown.",
     keywords: [
       "random pokemon type generator",
       "pokemon type generator",
@@ -40,7 +40,7 @@ const META: Record<
   ability: {
     title: "Random Pokémon Ability Generator — Fan-made Tool",
     description:
-      "Roll a random Pokémon ability (like Static or Blaze) and see a Pokémon that has it.",
+      "Roll a random Pokémon ability (like Static or Blaze) and see a Pokémon that has it — then copy it to Showdown.",
     keywords: [
       "pokemon ability generator",
       "random pokemon ability generator",
@@ -49,18 +49,18 @@ const META: Record<
   move: {
     title: "Random Pokémon Move Generator — Fan-made Tool",
     description:
-      "Discover a random Pokémon move and a Pokémon that can learn it.",
+      "Discover a random Pokémon move and a Pokémon that can learn it — then copy the set to Showdown.",
     keywords: ["random pokemon move generator", "pokemon move generator"],
   },
   bst: {
     title: "Random Pokémon BST Generator — Fan-made Tool",
     description:
-      "Generate a random Base Stat Total and the Pokémon it belongs to.",
+      "Generate a random Base Stat Total and the Pokémon it belongs to — then copy it to Showdown.",
     keywords: ["pokemon bst generator", "random pokemon stats generator"],
   },
   number: {
     title: "Random Pokémon Number Generator — Fan-made Tool",
-    description: "Roll a random Pokédex number and reveal which Pokémon it is.",
+    description: "Roll a random Pokédex number and reveal which Pokémon it is — then copy it to Showdown.",
     keywords: [
       "pokemon number generator",
       "random pokemon number generator",
@@ -69,7 +69,7 @@ const META: Record<
   starter: {
     title: "Random Starter Pokémon Generator — Fan-made Tool",
     description:
-      "Pick a random starter Pokémon from the first partners of every generation.",
+      "Pick a random starter Pokémon from the first partners of every generation — then copy it to Showdown.",
     keywords: [
       "random starter pokemon generator",
       "pokemon starter generator",
@@ -79,7 +79,7 @@ const META: Record<
   "no-names": {
     title: "Pokémon Without Names — Guess the Pokémon",
     description:
-      "A mystery Pokémon with its name hidden. Can you guess which one it is?",
+      "A mystery Pokémon with its name hidden. Can you guess which one it is? Flip it for the Showdown set.",
     keywords: [
       "pokemon without names",
       "guess the pokemon",
@@ -89,13 +89,13 @@ const META: Record<
   cute: {
     title: "Random Cute Pokémon Generator — Fan-made Tool",
     description:
-      "Get a random cute Pokémon — soft, fluffy and adorable picks from across the Pokédex.",
+      "Get a random cute Pokémon — soft, fluffy and adorable picks from across the Pokédex — copy it to Showdown.",
     keywords: ["cute pokemon generator", "random cute pokemon generator"],
   },
   mythical: {
     title: "Random Mythical Pokémon Generator — Fan-made Tool",
     description:
-      "Reveal a random Mythical Pokémon like Mew, Celebi, Jirachi and more.",
+      "Reveal a random Mythical Pokémon like Mew, Celebi, Jirachi and more — copy it to Showdown.",
     keywords: [
       "random mythical pokemon generator",
       "mythical pokemon generator",
@@ -103,12 +103,12 @@ const META: Record<
   },
   mega: {
     title: "Random Mega Pokémon Generator — Fan-made Tool",
-    description: "Spin a random Mega Evolution or Primal Reversion Pokémon.",
+    description: "Spin a random Mega Evolution or Primal Reversion Pokémon — copy it to Showdown.",
     keywords: ["random mega pokemon generator", "mega pokemon generator"],
   },
   nickname: {
     title: "Pokémon Nickname Generator — Fan-made Tool",
-    description: "Generate a random Pokémon paired with a fun, cute nickname.",
+    description: "Generate a random Pokémon paired with a fun, cute nickname — copy it to Showdown.",
     keywords: [
       "pokemon nickname generator",
       "random pokemon nickname generator",

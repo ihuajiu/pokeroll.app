@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Pokémon Wheel Generator — Fan-made Tool",
   description:
-    "Spin the wheel for a random Pokémon — a fun game-of-chance picker across the Pokédex.",
+    "Spin the wheel for a random Pokémon — a fun game-of-chance picker across the Pokédex — copy your pick to Showdown.",
   keywords: [
     "pokemon wheel generator",
     "random pokemon wheel",
@@ -53,7 +53,7 @@ export default async function WheelPage({
       />
       <PageHeader
         title="Pokémon Wheel Generator"
-        description="Spin the wheel for a random Pokémon — a fun game-of-chance picker across the Pokédex."
+        description="Spin the wheel for a random Pokémon — a fun game-of-chance picker across the Pokédex — copy your pick to Showdown."
       />
       {!shared && (
   <GuideSteps

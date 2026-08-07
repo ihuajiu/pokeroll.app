@@ -4,7 +4,7 @@ import HomeTool from "@/components/HomeTool";
 export const metadata: Metadata = {
   title: "PokeRoll — Random Pokémon Tools, Teams & Adventures",
   description:
-    "PokeRoll is a free fan-made Pokémon toolbox — roll random Pokémon, build a random team of six, take on challenges or roll a full adventure in one tap.",
+    "PokeRoll is a free fan-made Pokémon toolbox — roll random Pokémon, build a random team of six, take on challenges or roll a full adventure in one tap, and copy any card to Showdown.",
   keywords: [
     "pokemon generator",
     "pokemon randomizer",

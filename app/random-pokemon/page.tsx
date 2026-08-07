@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Random Pokémon — Roll One Now, Free Fan-made Tool",
   description:
-    "Get a random Pokémon in one tap — every roll comes with its name, type, ability, base stats, generation and official artwork. Free fan-made tool.",
+    "Get a random Pokémon in one tap — every roll comes with its name, type, ability, base stats, generation and official artwork, ready to copy to Showdown. Free fan-made tool.",
   keywords: [
     "random pokemon",
     "random pokemon generator",

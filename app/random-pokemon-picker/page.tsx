@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Random Pokémon Picker — Fan-made Tool",
   description:
-    "Pick a random Pokémon in one tap — every pick comes with its name, type, ability, base stats, generation and official artwork. Free fan-made tool.",
+    "Pick a random Pokémon in one tap — every pick comes with its name, type, ability, base stats, generation and official artwork, ready to copy to Showdown. Free fan-made tool.",
   keywords: [
     "random pokemon picker",
     "pokemon picker",

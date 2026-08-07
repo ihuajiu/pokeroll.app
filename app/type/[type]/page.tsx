@@ -18,7 +18,7 @@ export async function generateMetadata({
   const t = titleCase(type);
   return {
     title: `${t} Pokémon Generator — Random ${t}-type Pokémon`,
-    description: `Generate a random ${t}-type Pokémon instantly: name, abilities, base stats, generation and sprite. Fan-made tool.`,
+    description: `Generate a random ${t}-type Pokémon instantly: name, abilities, base stats, generation and sprite — copy it to Showdown. Fan-made tool.`,
     keywords: [
       `random ${type} pokemon generator`,
       `${type} pokemon generator`,
