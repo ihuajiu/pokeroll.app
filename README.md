@@ -1,6 +1,6 @@
 # PokeRoll — Random Pokémon Generator & Adventure Platform
 
-**Live site: [pokeroll.app](https://pokeroll.app)**
+**Live site: [PokeRoll — Random Pokémon Generator](https://pokeroll.app)**
 
 PokeRoll is a fan-made Pokémon toolbox. One tap rolls a random Pokémon with full
 stats and official artwork — or a whole team of six, a challenge run, even an
