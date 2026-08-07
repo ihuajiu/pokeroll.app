@@ -1,19 +1,58 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { TOOLS, RELATED_TOOLS } from "@/lib/tools";
 
-// "Related tools" module for internal linking — renders the curated set from
-// RELATED_TOOLS (lib/tools.ts) as compact cards. Placed after the main
-// content on every tool page so each page passes contextual links to its
-// closest siblings instead of relying on header/footer alone.
-// Card titles are h3s under the "Related tools" h2, giving every page a
-// proper h2 → h3 outline.
+// Group accent colors mirror the homepage jump cards, so related tools
+// keep the same color language across the site.
+const GROUP_COLOR: Record<string, string> = {
+  adventure: "#ee3b3b",
+  generator: "#16c79a",
+  challenge: "#3aa0ff",
+  tool: "#a855f7",
+  team: "#f5a524",
+};
+
+// Representative artwork per tool (display-layer data, kept out of
+// lib/tools.ts so the catalog stays purely navigational).
+const TOOL_SPRITE: Record<string, number> = {
+  "/adventure": 4,
+  "/random-pokemon-generator": 25,
+  "/type": 37,
+  "/ability": 132,
+  "/move": 143,
+  "/bst": 149,
+  "/number": 152,
+  "/starter": 1,
+  "/cute": 175,
+  "/mythical": 151,
+  "/legendary": 150,
+  "/mega": 448,
+  "/nickname": 133,
+  "/challenge/guess": 68,
+  "/challenge/shiny": 6,
+  "/no-names": 492,
+  "/wheel": 35,
+  "/fusion": 94,
+  "/team/random": 196,
+  "/team/challenge": 248,
+  "/team/coach": 65,
+  "/team": 445,
+  "/favorites": 133,
+};
+
+// "Related tools" module for internal linking ? renders the curated set from
+// RELATED_TOOLS (lib/tools.ts) as compact mini-tool cards with a Pok?mon
+// artwork tile. Placed after the main content on every tool page so each
+// page passes contextual links to its closest siblings instead of relying on
+// header/footer alone. Card titles are h3s under the "Related tools" h2,
+// giving every page a proper h2 ? h3 outline.
 export default function RelatedTools({
   current,
   hrefs,
 }: {
   /** Key into RELATED_TOOLS (tool page href). Ignored when hrefs is given. */
   current?: string;
-  /** Explicit tool hrefs — for pages without a RELATED_TOOLS entry. */
+  /** Explicit tool hrefs ? for pages without a RELATED_TOOLS entry. */
   hrefs?: string[];
 }) {
   const list = hrefs ?? (current ? RELATED_TOOLS[current] : undefined);
@@ -25,27 +64,36 @@ export default function RelatedTools({
 
   return (
     <nav aria-label="Related tools" className="mt-10">
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
+      <h2 className="rt-head">
+        <span className="rt-head-dot" aria-hidden="true" />
         Related tools
       </h2>
-      <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {tools.map((t) => (
-          <Link
-            key={t.href}
-            href={t.href} title={t.label}
-            className="group flex flex-col gap-1 rounded-xl border border-poke-border bg-poke-surface p-3 transition hover:border-poke-violet"
-          >
-            <span className="text-lg" aria-hidden="true">
-              {t.icon}
-            </span>
-            <h3 className="text-sm font-semibold text-poke-ink group-hover:text-poke-violet">
-              {t.label}
-            </h3>
-            <span className="text-xs leading-snug text-poke-dim">
-              {t.desc}
-            </span>
-          </Link>
-        ))}
+      <div className="rt-grid">
+        {tools.map((t) => {
+          const sprite = TOOL_SPRITE[t.href] ?? 25;
+          return (
+            <Link
+              key={t.href}
+              href={t.href}
+              title={t.label}
+              className="rt-card"
+              style={{ "--cc": GROUP_COLOR[t.group] ?? "#a855f7" } as CSSProperties}
+            >
+              <span className="rt-art" aria-hidden="true">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`/pokemon/artwork/${sprite}.webp`}
+                  alt=""
+                  loading="lazy"
+                  width={54}
+                  height={54}
+                />
+              </span>
+              <h3 className="rt-title">{t.label}</h3>
+              <span className="rt-desc">{t.desc}</span>
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );

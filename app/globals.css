@@ -1994,6 +1994,113 @@ body {
 }
 
 /* ============================================================
+   Related tools (.rt-*) ? compact contextual cards at the foot
+   of every tool page. Group-tinted like the homepage jump cards,
+   but lighter so they never compete with the main card.
+   ============================================================ */
+.rt-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgb(var(--text-dim));
+}
+.rt-head .rt-head-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+}
+.rt-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.rt-card {
+  --cc: rgb(var(--brand));
+  flex: 0 1 calc(20% - 9.6px);
+  min-width: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 7px;
+  padding: 16px 10px 14px;
+  border: 1px solid rgb(var(--border));
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(120% 100% at 50% 0%, color-mix(in srgb, var(--cc) 10%, transparent), transparent 62%),
+    rgb(var(--surface));
+  color: rgb(var(--text));
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s, box-shadow 0.2s;
+}
+.rt-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--cc) 50%, rgb(var(--border)));
+  box-shadow: 0 18px 36px -26px var(--cc);
+}
+.rt-card .rt-art {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--cc) 30%, transparent), transparent 72%);
+}
+.rt-card .rt-art img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(15, 12, 40, 0.28));
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.rt-card:hover .rt-art img {
+  transform: scale(1.08) translateY(-2px);
+}
+.rt-card .rt-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: -0.15px;
+  line-height: 1.25;
+  color: rgb(var(--text));
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.15s;
+}
+.rt-card:hover .rt-title {
+  color: var(--cc);
+}
+.rt-card .rt-desc {
+  color: rgb(var(--text-dim));
+  font-size: 11.5px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (max-width: 1000px) {
+  .rt-card { flex-basis: calc(25% - 9px); }
+}
+@media (max-width: 900px) {
+  .rt-card { flex-basis: calc(50% - 6px); }
+}
+@media (max-width: 560px) {
+  .rt-card { flex-basis: 100%; }
+}
+
+/* ============================================================
    Footer (prototype footer)
    ============================================================ */
 .foot {
