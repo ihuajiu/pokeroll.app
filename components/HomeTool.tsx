@@ -147,7 +147,7 @@ export default async function Home() {
                   <circle cx="50" cy="50" r="6" fill="currentColor" />
                 </svg>
               </div>
-              <HeroCard pokemon={initial} variant="wide" favoritable />
+              <HeroCard pokemon={initial} variant="wide" favoritable flipHint />
             </div>
           </div>
         </div>
