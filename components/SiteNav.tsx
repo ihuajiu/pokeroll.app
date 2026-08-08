@@ -19,7 +19,7 @@ const MAIN: {
   dropdownGroup?: ToolMeta["group"];
 }[] = [
   { href: "/adventure", label: "Adventure" },
-  { href: "/random-pokemon-generator", label: "Generators" },
+  { href: "/random-pokemon-generator", label: "Generators", dropdownGroup: "generator" },
   { href: "/team/random", label: "Team", dropdownGroup: "team" },
   { href: "/challenge/guess", label: "Challenges", dropdownGroup: "challenge" },
   { href: "/fusion", label: "Tools", dropdownGroup: "tool" },
@@ -52,6 +52,8 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
             const items = m.dropdownGroup
               ? TOOLS.filter((t) => t.group === m.dropdownGroup)
               : [];
+            // 大分组（Generators 有 13 项）用双列紧凑布局，避免下拉超出视口。
+            const wide = items.length >= 8;
             return items.length >= 2 ? (
               <div key={m.href} className="group relative">
                 <Link
@@ -76,15 +78,21 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                   </svg>
                 </Link>
                 <div className="invisible absolute left-0 top-full z-40 pt-2 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                  <div className="w-64 rounded-2xl border border-poke-border bg-poke-surface p-1.5 shadow-xl">
+                  <div
+                    className={`rounded-2xl border border-poke-border bg-poke-surface p-1.5 shadow-xl ${
+                      wide ? "grid w-[30rem] grid-cols-2 gap-0.5" : "w-64"
+                    }`}
+                  >
                     {items.map((l) => {
                       const active = isActive(l.href);
                       return (
                         <Link
                           key={l.href}
                           href={l.href}
-                          title={l.label}
-                          className={`flex items-center gap-3 rounded-xl px-3 py-2 transition ${
+                          title={wide ? `${l.label} — ${l.desc}` : l.label}
+                          className={`flex items-center rounded-xl transition ${
+                            wide ? "gap-2 px-2.5 py-1.5" : "gap-3 px-3 py-2"
+                          } ${
                             active
                               ? "bg-[#ee3b3b]/10"
                               : "hover:bg-poke-chip"
@@ -92,21 +100,29 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                         >
                           <span
                             aria-hidden="true"
-                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-poke-chip text-base"
+                            className={`flex shrink-0 items-center justify-center rounded-lg bg-poke-chip ${
+                              wide ? "h-6 w-6 text-sm" : "h-8 w-8 text-base"
+                            }`}
                           >
                             {l.icon}
                           </span>
                           <span className="flex min-w-0 flex-col">
                             <span
-                              className={`text-sm font-bold ${
+                              className={`font-bold ${
+                                wide
+                                  ? "truncate text-[13px]"
+                                  : "text-sm"
+                              } ${
                                 active ? "text-[#ee3b3b]" : "text-poke-ink"
                               }`}
                             >
                               {l.label}
                             </span>
-                            <span className="truncate text-xs font-normal text-poke-dim">
-                              {l.desc}
-                            </span>
+                            {!wide && (
+                              <span className="truncate text-xs font-normal text-poke-dim">
+                                {l.desc}
+                              </span>
+                            )}
                           </span>
                         </Link>
                       );
