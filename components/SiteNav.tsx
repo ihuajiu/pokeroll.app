@@ -23,6 +23,7 @@ const MAIN: {
   { href: "/team/random", label: "Team", dropdownGroup: "team" },
   { href: "/challenge/guess", label: "Challenges", dropdownGroup: "challenge" },
   { href: "/fusion", label: "Tools", dropdownGroup: "tool" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function SiteNav({ currentPath = "" }: { currentPath?: string }) {

@@ -2219,13 +2219,17 @@ body {
 .foot-contact:hover {
   color: rgb(var(--brand));
 }
-/* Third-party launch badges (Fazier, TinyLaunch etc.) — a quiet row in the footer. */
+/* Third-party launch badges (Fazier, TinyLaunch etc.) — one quiet horizontal
+   row at the very bottom of the footer. */
 .foot-badges {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-top: 1rem;
+  justify-content: center;
+  gap: 12px 20px;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgb(var(--border));
 }
 .foot-badge {
   display: inline-block;
@@ -2237,21 +2241,13 @@ body {
 }
 .foot-badge img {
   display: block;
-  height: auto;
 }
-.foot-badge img[height] {
-  width: auto;
-}
-/* Social icon row (mail/X/GitHub) + Contact text link in the brand column. */
+/* Social icon row (mail/X/GitHub) in the brand column. */
 .foot-social {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-top: 0.75rem;
-}
-.foot-social .foot-contact {
-  margin-top: 0;
-  margin-left: 4px;
 }
 .foot-social-btn {
   display: inline-flex;
