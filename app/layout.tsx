@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
-import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ogImageUrl } from "@/lib/og-meta";
+import Analytics from "@/components/Analytics";
 import SiteNav from "@/components/SiteNav";
 import Footer from "@/components/Footer";
 
@@ -113,17 +113,8 @@ export default async function RootLayout({
             }),
           }}
         />
-        {/* Google Analytics 4 — loads after hydration so it never blocks first paint. */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-M74KET4Y45"
-          strategy="afterInteractive"
-        />
-        <Script id="ga4" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-M74KET4Y45');`}
-        </Script>
+        {/* Google Analytics 4 — client component, only fires on production domains. */}
+        <Analytics />
         <div className="bg-decor" aria-hidden="true">
           <div className="dots" />
           <div className="scan" />
