@@ -1,4 +1,4 @@
-﻿import type { Pokemon } from "./types";
+import type { Pokemon } from "./types";
 import movesData from "@/data/moves.json";
 import itemsData from "@/data/items.json";
 import naturesData from "@/data/natures.json";
@@ -304,15 +304,22 @@ export function pickEVs(pokemon: Pokemon): Record<keyof Pokemon["stats"], number
   const s = pokemon.stats ?? { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
   const evs: Record<keyof Pokemon["stats"], number> = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 
-  // Rank all stats, excluding HP from the 252s (HP rarely gets a full dump).
+  // Standard competitive 252/252/4 spread. HP is normally excluded from the
+  // 252s and just takes the leftover 4 — but when HP is the Pokémon's highest
+  // base stat (Blissey, Chansey, Wobbuffet, Snorlax…), the community-standard
+  // spread invests 252 HP instead.
   const ranked = (Object.keys(s) as (keyof Pokemon["stats"])[]).sort((a, b) => s[b] - s[a]);
-  const candidates = ranked.filter((r) => r !== "hp");
-  const first = candidates[0];
-  const second = candidates[1];
-  evs[first] = 252;
-  evs[second] = 252;
-  // Leftover 4 EVs go to HP (standard 252/252/4 spread).
-  evs.hp = 4;
+  if (ranked[0] === "hp") {
+    evs.hp = 252;
+    evs[ranked[1]] = 252;
+    evs[ranked[2]] = 4;
+  } else {
+    const candidates = ranked.filter((r) => r !== "hp");
+    evs[candidates[0]] = 252;
+    evs[candidates[1]] = 252;
+    // Leftover 4 EVs go to HP.
+    evs.hp = 4;
+  }
 
   return evs;
 }
