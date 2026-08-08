@@ -1,4 +1,4 @@
-﻿import { ImageResponse } from "next/og";
+import { ImageResponse } from "next/og";
 import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
@@ -174,13 +174,13 @@ export async function buildOgImage(p?: string, origin?: string): Promise<ImageRe
             </div>
             <div
               style={{
-                fontSize: 46,
+                fontSize: 38,
                 fontWeight: 800,
                 marginTop: 18,
                 fontFamily: "Sora",
               }}
             >
-              Random Pokémon, Teams &amp; Challenges
+              Random Pokémon Generator — Team, Type, Wheel &amp; Showdown
             </div>
           </div>
           {/* Middle: five iconic Pokémon in circular badges */}
