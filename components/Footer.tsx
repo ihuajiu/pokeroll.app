@@ -161,6 +161,7 @@ export default function Footer() {
             style={{ height: "37px", width: "auto" }}
           />
         </a>
+        {/* StartupBase 徽章暂时下线：产品页未上线（404），上线后恢复
         <a
           href="https://startupbase.io/products/pokeroll?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-neutral"
           target="_blank"
@@ -168,13 +169,13 @@ export default function Footer() {
           className="foot-badge"
           title="Launched on StartupBase"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://statics.startupbase.io/site/badges/launched-on-sb-neutral.svg"
             alt="Launched on StartupBase"
             style={{ height: "37px", width: "auto" }}
           />
         </a>
+        */}
         <a
           href="https://findly.tools/pokeroll-random-pok-mon-generato-team-type-wheel-showdown?utm_source=pokeroll-random-pok-mon-generato-team-type-wheel-showdown"
           target="_blank"
