@@ -36,6 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     `${BASE}/disclaimer`,
     `${BASE}/privacy`,
     `${BASE}/terms`,
+    `${BASE}/contact`,
   ].map((url) => ({ url, lastModified: today }));
 
   const variantPages = VARIANTS.map((v) => ({

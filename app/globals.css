@@ -2219,10 +2219,16 @@ body {
 .foot-contact:hover {
   color: rgb(var(--brand));
 }
-/* Third-party launch badges (Fazier etc.) — small and quiet in the footer. */
+/* Third-party launch badges (Fazier, TinyLaunch etc.) — a quiet row in the footer. */
+.foot-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 1rem;
+}
 .foot-badge {
   display: inline-block;
-  margin-top: 1rem;
   opacity: 0.85;
   transition: opacity 0.15s ease;
 }
@@ -2232,6 +2238,36 @@ body {
 .foot-badge img {
   display: block;
   height: auto;
+}
+.foot-badge img[height] {
+  width: auto;
+}
+/* Social icon row (mail/X/GitHub) + Contact text link in the brand column. */
+.foot-social {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0.75rem;
+}
+.foot-social .foot-contact {
+  margin-top: 0;
+  margin-left: 4px;
+}
+.foot-social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1.5px solid rgb(var(--border));
+  color: rgb(var(--text-faint));
+  transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.foot-social-btn:hover {
+  color: rgb(var(--brand));
+  border-color: color-mix(in srgb, rgb(var(--brand)) 55%, rgb(var(--border)));
+  transform: scale(1.08);
 }
 .foot-col h4 {
   margin-bottom: 0.6rem;

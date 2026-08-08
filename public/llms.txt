@@ -25,4 +25,4 @@ All Pokémon names, types, stats, abilities and sprites are sourced from the pub
 
 ## Contact
 
-smith.chou.2023@gmail.com
+hello@pokeroll.app

@@ -67,10 +67,10 @@ export default function TermsPage() {
         <p>
           <strong>Contact:</strong> Questions about these terms? Email{" "}
           <a
-            href="mailto:smith.chou.2023@gmail.com"
+            href="mailto:hello@pokeroll.app"
             className="underline text-poke-red"
           >
-            smith.chou.2023@gmail.com
+            hello@pokeroll.app
           </a>
           .
         </p>
