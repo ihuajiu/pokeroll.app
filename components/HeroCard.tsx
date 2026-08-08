@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Pokemon } from "@/lib/types";
 import { TYPE_HEX } from "@/lib/typeColors";
+import { typeName, localizedDisplayName } from "@/lib/i18n/names";
+import { useI18n } from "@/components/I18nProvider";
 import { useFavorites } from "@/components/useFavorites";
 import ShowdownCopyButton from "@/components/ShowdownCopyButton";
 import LogoMark from "@/components/LogoMark";
@@ -12,14 +14,8 @@ import {
   sharePokemonLink,
 } from "@/lib/shareCard";
 
-const STAT_ROWS: { key: keyof Pokemon["stats"]; label: string }[] = [
-  { key: "hp", label: "HP" },
-  { key: "atk", label: "ATK" },
-  { key: "def", label: "DEF" },
-  { key: "spa", label: "SPA" },
-  { key: "spd", label: "SPD" },
-  { key: "spe", label: "SPE" },
-];
+// Stat row keys — display labels come from the dictionary (heroCard.stats).
+const STAT_KEYS: (keyof Pokemon["stats"])[] = ["hp", "atk", "def", "spa", "spd", "spe"];
 
 // Pokémon-style per-stat colors (the canonical stat-bar palette).
 const STAT_COLORS: Record<keyof Pokemon["stats"], string> = {
@@ -31,15 +27,8 @@ const STAT_COLORS: Record<keyof Pokemon["stats"], string> = {
   spe: "#F8D030",  // 黄 yellow
 };
 
-// Alternate-form tags shown as a small chip next to the name.
-const FORM_LABELS: Record<string, string> = {
-  mega: "Mega",
-  alolan: "Alolan",
-  galarian: "Galarian",
-  hisuian: "Hisuian",
-  paldean: "Paldean",
-  gigantamax: "Gigantamax",
-};
+// Alternate-form tags shown as a small chip next to the name — labels come
+// from the dictionary (heroCard.forms).
 
 export default function HeroCard({
   pokemon,
@@ -119,6 +108,8 @@ export default function HeroCard({
 }) {
   const [internal, setInternal] = useState<Pokemon>(pokemon);
   const [internalLoading, setInternalLoading] = useState(false);
+  const { locale, dict } = useI18n();
+  const h = dict.heroCard;
   const [shareDone, setShareDone] = useState<"shared" | "copied" | null>(null);
   const [dlDone, setDlDone] = useState(false);
   const [favMsg, setFavMsg] = useState<string | null>(null);
@@ -210,7 +201,7 @@ export default function HeroCard({
     shiny && data.shinySprite ? data.shinySprite : data.artwork || data.sprite;
   const dex = `#${String(data.dexNumber).padStart(4, "0")}`;
   const ability = data.abilities?.[0] ?? "—";
-  const name = hideName ? "Mystery" : data.displayName;
+  const name = hideName ? h.mystery : localizedDisplayName(data, locale);
   const cc = TYPE_HEX[data.types[0]] ?? TYPE_HEX.normal;
   const { has: isFavorited, toggle: toggleFavorite } = useFavorites();
   const favorited = favoritable ? isFavorited(data.dexNumber) : false;
@@ -218,7 +209,7 @@ export default function HeroCard({
   function handleFavorite() {
     const r = toggleFavorite(data);
     if (r === "limit") {
-      setFavMsg("Max 15 favorites — remove one to add another.");
+      setFavMsg(h.favLimit);
       setTimeout(() => setFavMsg(null), 2600);
     }
   }
@@ -406,8 +397,8 @@ export default function HeroCard({
             onToggleLock?.();
           }}
           aria-pressed={locked}
-          aria-label={locked ? "Unlock — allow re-roll" : "Lock — keep on re-roll"}
-          title={locked ? "Unlock — allow re-roll" : "Lock — keep on re-roll"}
+          aria-label={locked ? h.unlock : h.lock}
+          title={locked ? h.unlock : h.lock}
           className={`lock-toggle${locked ? " is-on" : ""}`}
         >
           {locked ? (
@@ -449,8 +440,8 @@ export default function HeroCard({
             handleFavorite();
           }}
           aria-pressed={favorited}
-          aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
-          title={favorited ? "Remove from favorites" : "Add to favorites"}
+          aria-label={favorited ? h.removeFromFavorites : h.addToFavorites}
+          title={favorited ? h.removeFromFavorites : h.addToFavorites}
           className={`fav-toggle${favorited ? " is-on" : ""}`}
         >
           <svg
@@ -469,7 +460,7 @@ export default function HeroCard({
       )}
       {flipHint && !flipHintSeen && !flipped && !hideName && (
         <span className="flip-hint" aria-hidden="true">
-          Tap card to flip — Showdown set
+          {h.flipHint}
         </span>
       )}
       <div className="hero-card-art">
@@ -508,12 +499,12 @@ export default function HeroCard({
       <div className="hero-card-info">
         <div className="dex">{dex}</div>
         <h2 ref={nameRef}>{name}</h2>
-        {hideName ? <span className="section-chip">Mystery</span> : null}
+        {hideName ? <span className="section-chip">{h.mystery}</span> : null}
 
         <div className="try-types" ref={tagRowRef}>
           {!hideName && data.form ? (
             <span className={`form-chip form-chip--${data.form}`}>
-              {FORM_LABELS[data.form] ?? data.form}
+              {(h.forms as Record<string, string>)[data.form] ?? data.form}
             </span>
           ) : null}
           {data.types.map((t) => (
@@ -522,7 +513,7 @@ export default function HeroCard({
               className="type-chip"
               style={{ background: TYPE_HEX[t] ?? TYPE_HEX.normal }}
             >
-              {t}
+              {typeName(t, locale)}
             </span>
           ))}
         </div>
@@ -535,38 +526,39 @@ export default function HeroCard({
 
         <div className="statgrid" ref={statRef}>
           <div className="row row-text">
-            <span className="sl">Ability</span>
+            <span className="sl">{h.ability}</span>
             <span className="sv">{ability}</span>
           </div>
           <div className="row row-text">
-            <span className="sl">Region</span>
+            <span className="sl">{h.region}</span>
             <span className="sv">{data.region}</span>
           </div>
           <div className="row row-text">
-            <span className="sl">BST</span>
+            <span className="sl">{h.bst}</span>
             <span className="sv">{data.bst}</span>
           </div>
           <div className="row row-text">
-            <span className="sl">Gen</span>
+            <span className="sl">{h.gen}</span>
             <span className="sv">{data.generation}</span>
           </div>
           {data.height != null ? (
             <div className="row row-text">
-              <span className="sl">Height</span>
-              <span className="sv">{data.height} m</span>
+              <span className="sl">{h.height}</span>
+              <span className="sv">{data.height} {h.heightUnit}</span>
             </div>
           ) : null}
           {data.weight != null ? (
             <div className="row row-text">
-              <span className="sl">Weight</span>
-              <span className="sv">{data.weight} kg</span>
+              <span className="sl">{h.weight}</span>
+              <span className="sv">{data.weight} {h.weightUnit}</span>
             </div>
           ) : null}
         </div>
 
         {!hideName ? (
           <div className="bars">
-            {STAT_ROWS.map(({ key, label }) => {
+            {STAT_KEYS.map((key) => {
+              const label = h.stats[key];
               const v = data.stats[key];
               const pct = Math.min(100, Math.max(0, (v / 200) * 100));
               const c = STAT_COLORS[key];
@@ -598,8 +590,8 @@ export default function HeroCard({
               type="button"
               className={`act-icon act-fav${favorited ? " is-on" : ""}`}
               aria-pressed={favorited}
-              aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
-              title={favorited ? "Remove from favorites" : "Add to favorites"}
+              aria-label={favorited ? h.removeFromFavorites : h.addToFavorites}
+              title={favorited ? h.removeFromFavorites : h.addToFavorites}
               onClick={handleFavorite}
             >
               <svg
@@ -617,13 +609,13 @@ export default function HeroCard({
           <button
             type="button"
             className="act-icon"
-            aria-label={shareDone ? "Link shared" : "Share link"}
+            aria-label={shareDone ? h.linkShared : h.shareLink}
             title={
               shareDone === "copied"
-                ? "Link copied!"
+                ? h.linkCopied
                 : shareDone === "shared"
-                  ? "Shared!"
-                  : "Share link"
+                  ? h.shared
+                  : h.shareLink
             }
             onClick={handleShareLink}
           >
@@ -659,8 +651,8 @@ export default function HeroCard({
             <button
               type="button"
               className="act-icon"
-              aria-label={dlDone ? "Image saved" : "Download card"}
-              title={dlDone ? "Image saved!" : "Download card"}
+              aria-label={dlDone ? h.imageSaved : h.downloadCard}
+              title={dlDone ? h.imageSavedBang : h.downloadCard}
               onClick={handleDownload}
             >
               {dlDone ? (
@@ -714,7 +706,7 @@ export default function HeroCard({
               iconOnly
               className="act-icon"
               getText={loadShowdownSet}
-              title="Copy Showdown set"
+              title={dict.common.copyShowdownSet}
             />
           </div>
           {sdPreview && sdPreviewPos && typeof document !== "undefined"
@@ -726,8 +718,8 @@ export default function HeroCard({
                   onMouseEnter={() => setSdPreview(true)}
                   onMouseLeave={() => setSdPreview(false)}
                 >
-                  <span className="sd-preview-title">Showdown Set</span>
-                  <pre className="sd-preview-text">{showdownText ?? "Loading…"}</pre>
+                  <span className="sd-preview-title">{h.showdownSet}</span>
+                  <pre className="sd-preview-text">{showdownText ?? h.loading}</pre>
                 </div>,
                 document.body,
               )
@@ -751,7 +743,7 @@ export default function HeroCard({
               <polyline points="23 4 23 10 17 10" />
               <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
             </svg>
-            {isLoading ? "Rolling…" : "New roll"}
+            {isLoading ? h.rolling : h.newRoll}
           </button>
           )}
         </div>
@@ -768,25 +760,25 @@ export default function HeroCard({
           <div className="hcb-head">
             <div className="hcb-brand">
               <LogoMark className="h-5 w-5" />
-              <span className="hcb-title">Showdown Set</span>
+              <span className="hcb-title">{h.showdownSet}</span>
             </div>
             <button
               type="button"
               className="hcb-close"
               onClick={() => setFlipped(false)}
-              aria-label="Close Showdown set"
-              title="Back to card"
+              aria-label={h.closeShowdown}
+              title={h.backToCard}
             >
               ✕
             </button>
           </div>
           <div className="hcb-name">{data.displayName}</div>
-          <pre className="hcb-text">{showdownText ?? "Generating set…"}</pre>
+          <pre className="hcb-text">{showdownText ?? h.generatingSet}</pre>
           <div className="hcb-actions">
             <ShowdownCopyButton
               text={showdownText ?? ""}
-              label="Copy"
-              copiedLabel="Copied!"
+              label={dict.common.copy}
+              copiedLabel={dict.common.copied}
               className="game-btn game-btn-primary px-4 py-2 text-sm font-semibold"
             />
             <button
@@ -794,7 +786,7 @@ export default function HeroCard({
               className="game-btn game-btn-ghost px-4 py-2 text-sm font-semibold"
               onClick={() => setFlipped(false)}
             >
-              Back
+              {dict.common.back}
             </button>
           </div>
         </div>

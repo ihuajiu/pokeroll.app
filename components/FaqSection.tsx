@@ -1,3 +1,6 @@
+import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+
 export interface Faq {
   q: string;
   a: React.ReactNode;
@@ -7,7 +10,14 @@ export interface Faq {
 
 // FAQ block for core pages: h2 + h3 outline (heading structure), genuine
 // feature copy, and FAQPage JSON-LD for rich-result eligibility.
-export default function FaqSection({ items }: { items: Faq[] }) {
+export default async function FaqSection({
+  items,
+  locale = "en",
+}: {
+  items: Faq[];
+  locale?: Locale;
+}) {
+  const dict = await getDictionary(locale);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -24,7 +34,7 @@ export default function FaqSection({ items }: { items: Faq[] }) {
   return (
     <section className="mt-10">
       <h2 className="text-xs font-semibold uppercase tracking-wide text-poke-dim">
-        FAQ
+        {dict.faq.heading}
       </h2>
       <div className="mt-3 space-y-3">
         {items.map((f) => (

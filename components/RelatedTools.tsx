@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { TOOLS, RELATED_TOOLS } from "@/lib/tools";
+import { localizeTools, RELATED_TOOLS } from "@/lib/tools";
+import { pageHref, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 // Group accent colors mirror the homepage jump cards, so related tools
 // keep the same color language across the site.
@@ -46,27 +48,31 @@ const TOOL_SPRITE: Record<string, number> = {
 // page passes contextual links to its closest siblings instead of relying on
 // header/footer alone. Card titles are h3s under the "Related tools" h2,
 // giving every page a proper h2 ? h3 outline.
-export default function RelatedTools({
+export default async function RelatedTools({
   current,
   hrefs,
+  locale = "en",
 }: {
   /** Key into RELATED_TOOLS (tool page href). Ignored when hrefs is given. */
   current?: string;
   /** Explicit tool hrefs ? for pages without a RELATED_TOOLS entry. */
   hrefs?: string[];
+  locale?: Locale;
 }) {
   const list = hrefs ?? (current ? RELATED_TOOLS[current] : undefined);
   if (!list?.length) return null;
 
+  const dict = await getDictionary(locale);
+  const TOOLS = localizeTools(dict);
   const tools = list
     .map((h) => TOOLS.find((t) => t.href === h))
     .filter((t): t is (typeof TOOLS)[number] => Boolean(t));
 
   return (
-    <nav aria-label="Related tools" className="mt-10">
+    <nav aria-label={dict.relatedTools.heading} className="mt-10">
       <h2 className="rt-head">
         <span className="rt-head-dot" aria-hidden="true" />
-        Related tools
+        {dict.relatedTools.heading}
       </h2>
       <div className="rt-grid">
         {tools.map((t) => {
@@ -74,7 +80,7 @@ export default function RelatedTools({
           return (
             <Link
               key={t.href}
-              href={t.href}
+              href={pageHref(locale, t.href)}
               title={t.label}
               className="rt-card"
               style={{ "--cc": GROUP_COLOR[t.group] ?? "#a855f7" } as CSSProperties}

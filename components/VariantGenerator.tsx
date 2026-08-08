@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
+import { useI18n } from "@/components/I18nProvider";
+import LocalizedLink from "@/components/LocalizedLink";
 import HeroCard from "./HeroCard";
 import AddToTeamButton from "./AddToTeamButton";
 
@@ -10,21 +11,6 @@ export type VariantPayload = {
   kind: string;
   value?: string | number;
   pokemon: Pokemon;
-};
-
-const KIND_LABEL: Record<string, string> = {
-  type: "Type",
-  ability: "Ability",
-  move: "Move",
-  bst: "Base Stat Total",
-  number: "Pokédex Number",
-  starter: "Starter Pokémon",
-  shiny: "Shiny Pokémon",
-  "no-names": "Mystery Pokémon",
-  cute: "Cute Pokémon",
-  mythical: "Mythical Pokémon",
-  mega: "Mega Pokémon",
-  nickname: "Nickname",
 };
 
 const VALUE_KINDS = new Set(["type", "ability", "move", "bst", "number", "nickname"]);
@@ -40,6 +26,11 @@ export default function VariantGenerator({
 }) {
   const [data, setData] = useState<VariantPayload>(initial);
   const [loading, setLoading] = useState(false);
+  const { dict } = useI18n();
+  const v = dict.variantGenerator;
+  const kindKey = data.kind === "no-names" ? "noNames" : data.kind;
+  const kindLabel =
+    (v.kinds as Record<string, string>)[kindKey] ?? data.kind;
 
   const showValue = data.value !== undefined && VALUE_KINDS.has(data.kind);
   const valueText = data.kind === "number" ? `#${data.value}` : String(data.value);
@@ -60,9 +51,9 @@ export default function VariantGenerator({
   return (
     <div className="mx-auto max-w-[640px]">
       <div className="mb-4 text-center">
-        <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
+        <p className="text-lg font-semibold text-poke-ink">{v.welcome}</p>
         <p className="text-sm text-poke-dim">
-          Your random {KIND_LABEL[data.kind] ?? data.kind} is…
+          {v.yourRandom.replace("{kind}", kindLabel)}
         </p>
         {showValue && (
           <p className="mt-1 text-2xl font-bold capitalize text-poke-red">
@@ -82,12 +73,12 @@ export default function VariantGenerator({
       </div>
       <div className="mt-4 flex flex-wrap justify-center gap-3">
         <AddToTeamButton pokemon={data.pokemon} />
-        <Link
-          href="/team" title="View your team"
+        <LocalizedLink
+          href="/team" title={dict.common.viewYourTeam}
           className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
         >
-          Build Team
-        </Link>
+          {v.buildTeam}
+        </LocalizedLink>
       </div>
     </div>
   );

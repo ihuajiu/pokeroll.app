@@ -1,200 +1,95 @@
-﻿export interface ToolMeta {
+import en from "@/lib/i18n/dict/en";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+
+export type ToolId = keyof Dictionary["tools"]["items"];
+export type ToolGroupId = keyof Dictionary["tools"]["groups"];
+
+export interface ToolMeta {
+  id: ToolId;
   href: string;
   label: string;
   desc: string;
-  group: "adventure" | "generator" | "challenge" | "tool" | "team";
+  group: ToolGroupId;
   /** Emoji icon, used by header dropdowns. */
   icon: string;
 }
 
-export const TOOLS: ToolMeta[] = [
-  {
-    href: "/adventure",
-    label: "Pokémon Adventure",
-    desc: "Roll a full adventure — trainer, starter, team, challenge & goal.",
-    group: "adventure",
-    icon: "🗺️",
-  },
-  {
-    href: "/random-pokemon-generator",
-    label: "Random Pokémon",
-    desc: "A fully random Pokémon with stats, type and sprite.",
-    group: "generator",
-    icon: "🎲",
-  },
-  {
-    href: "/type",
-    label: "Type Generator",
-    desc: "Roll a random type and a matching Pokémon.",
-    group: "generator",
-    icon: "🌀",
-  },
-  {
-    href: "/ability",
-    label: "Ability Generator",
-    desc: "Roll a random ability, see who has it.",
-    group: "generator",
-    icon: "⚡",
-  },
-  {
-    href: "/move",
-    label: "Move Generator",
-    desc: "Discover a random move and one of its users.",
-    group: "generator",
-    icon: "🥊",
-  },
-  {
-    href: "/bst",
-    label: "BST Generator",
-    desc: "Random base stat total, then reveal the Pokémon.",
-    group: "generator",
-    icon: "📊",
-  },
-  {
-    href: "/number",
-    label: "Number Generator",
-    desc: "Roll a Pokédex number and reveal which Pokémon.",
-    group: "generator",
-    icon: "🔢",
-  },
-  {
-    href: "/starter",
-    label: "Starter Generator",
-    desc: "A random partner from every generation.",
-    group: "generator",
-    icon: "🌱",
-  },
-  {
-    href: "/cute",
-    label: "Cute Generator",
-    desc: "Soft, fluffy and adorable picks.",
-    group: "generator",
-    icon: "🧸",
-  },
-  {
-    href: "/mythical",
-    label: "Mythical Generator",
-    desc: "Mew, Celebi, Arceus and friends.",
-    group: "generator",
-    icon: "🌟",
-  },
-  {
-    href: "/legendary",
-    label: "Legendary Generator",
-    desc: "Roll only Legendary Pokémon.",
-    group: "generator",
-    icon: "👑",
-  },
-  {
-    href: "/mega",
-    label: "Mega Generator",
-    desc: "Mega Evolutions and Primal Reversions.",
-    group: "generator",
-    icon: "🔷",
-  },
-  {
-    href: "/nickname",
-    label: "Nickname Generator",
-    desc: "A Pokémon paired with a fun cute nickname.",
-    group: "generator",
-    icon: "🏷️",
-  },
-  {
-    href: "/challenge/guess",
-    label: "Guess the Pokémon",
-    desc: "Names hidden — guess from the silhouette, reveal to check.",
-    group: "challenge",
-    icon: "🎯",
-  },
-  {
-    href: "/challenge/shiny",
-    label: "Shiny Hunt",
-    desc: "How many encounters until your next shiny?",
-    group: "challenge",
-    icon: "✨",
-  },
-  {
-    href: "/no-names",
-    label: "Mystery Pokémon",
-    desc: "One mystery card — artwork shown, name hidden.",
-    group: "generator",
-    icon: "❓",
-  },
-  {
-    href: "/wheel",
-    label: "Wheel Battle",
-    desc: "Multiplayer wheel — 2-6 players spin, highest BST wins.",
-    group: "challenge",
-    icon: "🎡",
-  },
-  {
-    href: "/fusion",
-    label: "Fusion Tool",
-    desc: "Fuse two Pokémon into one new creature.",
-    group: "tool",
-    icon: "🧬",
-  },
-  {
-    href: "/team/random",
-    label: "Random Team",
-    desc: "Roll a ready-made squad of six random Pokémon.",
-    group: "team",
-    icon: "🤝",
-  },
-  {
-    href: "/team/challenge",
-    label: "Team Challenge",
-    desc: "Roll a seeded team and challenge a friend to beat it.",
-    group: "team",
-    icon: "⚔️",
-  },
-  {
-    href: "/team/coach",
-    label: "Team Coach",
-    desc: "Lock your picks, fill the rest with smart coverage.",
-    group: "team",
-    icon: "🧠",
-  },
-  {
-    href: "/team",
-    label: "My Team",
-    desc: "Collect favourites into a themed squad.",
-    group: "team",
-    icon: "🧰",
-  },
-];
-
-export const TOOL_GROUPS: {
-  id: ToolMeta["group"];
+export interface ToolGroupMeta {
+  id: ToolGroupId;
   title: string;
   desc: string;
+}
+
+/* Structural catalog (id / href / group / icon). The user-facing label and
+ * desc live in the dictionary (lib/i18n/dict/*) — TOOLS below merges the
+ * English defaults so existing call sites keep working; localized consumers
+ * use localizeTools()/localizeToolGroups() with their locale's dictionary. */
+const TOOL_DEFS: {
+  id: ToolId;
+  href: string;
+  group: ToolGroupId;
+  icon: string;
 }[] = [
-  {
-    id: "adventure",
-    title: "Adventure",
-    desc: "Roll your trainer, region, starter, team, challenge and goal in one tap.",
-  },
-  {
-    id: "generator",
-    title: "Generators",
-    desc: "Random Pokémon pulls by type, ability, move, stat, number and more.",
-  },
-  {
-    id: "challenge",
-    title: "Challenges",
-    desc: "Guess, hunt or spin — shareable challenges for you and your friends.",
-  },
-  {
-    id: "tool",
-    title: "Tools",
-    desc: "Handy utilities built on top of the random rolls.",
-  },
-  {
-    id: "team",
-    title: "Team",
-    desc: "Build your squad or roll a ready-made team of six.",
-  },
+  { id: "adventure", href: "/adventure", group: "adventure", icon: "🗺️" },
+  { id: "randomPokemon", href: "/random-pokemon-generator", group: "generator", icon: "🎲" },
+  { id: "type", href: "/type", group: "generator", icon: "🌀" },
+  { id: "ability", href: "/ability", group: "generator", icon: "⚡" },
+  { id: "move", href: "/move", group: "generator", icon: "🥊" },
+  { id: "bst", href: "/bst", group: "generator", icon: "📊" },
+  { id: "number", href: "/number", group: "generator", icon: "🔢" },
+  { id: "starter", href: "/starter", group: "generator", icon: "🌱" },
+  { id: "cute", href: "/cute", group: "generator", icon: "🧸" },
+  { id: "mythical", href: "/mythical", group: "generator", icon: "🌟" },
+  { id: "legendary", href: "/legendary", group: "generator", icon: "👑" },
+  { id: "mega", href: "/mega", group: "generator", icon: "🔷" },
+  { id: "nickname", href: "/nickname", group: "generator", icon: "🏷️" },
+  { id: "guess", href: "/challenge/guess", group: "challenge", icon: "🎯" },
+  { id: "shiny", href: "/challenge/shiny", group: "challenge", icon: "✨" },
+  { id: "mystery", href: "/no-names", group: "generator", icon: "❓" },
+  { id: "wheel", href: "/wheel", group: "challenge", icon: "🎡" },
+  { id: "fusion", href: "/fusion", group: "tool", icon: "🧬" },
+  { id: "randomTeam", href: "/team/random", group: "team", icon: "🤝" },
+  { id: "teamChallenge", href: "/team/challenge", group: "team", icon: "⚔️" },
+  { id: "teamCoach", href: "/team/coach", group: "team", icon: "🧠" },
+  { id: "myTeam", href: "/team", group: "team", icon: "🧰" },
 ];
+
+const GROUP_DEFS: ToolGroupId[] = [
+  "adventure",
+  "generator",
+  "challenge",
+  "tool",
+  "team",
+];
+
+function mergeTools(dict: Dictionary): ToolMeta[] {
+  return TOOL_DEFS.map((d) => ({
+    ...d,
+    ...(dict.tools.items[d.id] ?? en.tools.items[d.id]),
+  }));
+}
+
+function mergeGroups(dict: Dictionary): ToolGroupMeta[] {
+  return GROUP_DEFS.map((id) => ({
+    id,
+    ...(dict.tools.groups[id] ?? en.tools.groups[id]),
+  }));
+}
+
+/** English catalog — same shape/values as before the i18n refactor. */
+export const TOOLS: ToolMeta[] = mergeTools(en);
+
+export const TOOL_GROUPS: ToolGroupMeta[] = mergeGroups(en);
+
+/** Tool catalog with labels/descs from the given dictionary. */
+export function localizeTools(dict: Dictionary): ToolMeta[] {
+  return mergeTools(dict);
+}
+
+/** Group titles/descs from the given dictionary. */
+export function localizeToolGroups(dict: Dictionary): ToolGroupMeta[] {
+  return mergeGroups(dict);
+}
 
 // Curated internal-link graph: for each tool page (key = href), the 4-5 most
 // relevant other tools. Powers the RelatedTools module on every tool page.

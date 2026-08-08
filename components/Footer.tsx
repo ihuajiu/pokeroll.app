@@ -1,10 +1,18 @@
 import Link from "next/link";
 import { REGIONS, TYPES, GENS, titleCase } from "@/lib/seo";
-import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
+import { localizeTools, localizeToolGroups } from "@/lib/tools";
+import { pageHref, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { typeName } from "@/lib/i18n/names";
 
+import LanguageSwitcher from "./LanguageSwitcher";
 import LogoMark from "./LogoMark";
 
-export default function Footer() {
+export default async function Footer({ locale = "en" }: { locale?: Locale }) {
+  const dict = await getDictionary(locale);
+  const TOOLS = localizeTools(dict);
+  const TOOL_GROUPS = localizeToolGroups(dict);
+  const f = dict.footer;
   return (
     <footer className="foot">
       <div className="foot-grid">
@@ -13,14 +21,12 @@ export default function Footer() {
             <LogoMark className="ball" />
             <span>Poke<span className="red">Roll</span></span>
           </div>
-          <p>
-            Roll a random Pokémon — names, types, stats and shinies in one tap.
-          </p>
+          <p>{f.tagline}</p>
           <div className="foot-social">
             <Link
-              href="/contact"
-              aria-label="Contact us"
-              title="Contact us"
+              href={pageHref(locale, "/contact")}
+              aria-label={f.contactUs}
+              title={f.contactUs}
               className="foot-social-btn"
             >
               <svg
@@ -41,8 +47,8 @@ export default function Footer() {
               href="https://x.com/JoeyChou2024"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="PokeRoll on X"
-              title="@JoeyChou2024 on X"
+              aria-label={f.onX}
+              title={f.xTitle}
               className="foot-social-btn"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-4" aria-hidden="true">
@@ -53,8 +59,8 @@ export default function Footer() {
               href="https://github.com/ihuajiu/pokeroll.app"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="PokeRoll on GitHub"
-              title="ihuajiu/pokeroll.app on GitHub"
+              aria-label={f.onGithub}
+              title={f.githubTitle}
               className="foot-social-btn"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden="true">
@@ -72,7 +78,7 @@ export default function Footer() {
             >
               <h4>{g.title}</h4>
               {links.map((t) => (
-                <Link key={t.href} href={t.href} title={t.label}>
+                <Link key={t.href} href={pageHref(locale, t.href)} title={t.label}>
                   {t.label}
                 </Link>
               ))}
@@ -83,31 +89,35 @@ export default function Footer() {
 
       <div className="foot-browse">
         <div className="fb-block">
-          <h4>By Region</h4>
+          <h4>{f.byRegion}</h4>
           <div className="fb-chips">
             {REGIONS.map((r) => (
-              <Link key={r} href={`/by/${r}`} title={titleCase(r)}>
+              <Link key={r} href={pageHref(locale, `/by/${r}`)} title={titleCase(r)}>
                 {titleCase(r)}
               </Link>
             ))}
           </div>
         </div>
         <div className="fb-block">
-          <h4>By Type</h4>
+          <h4>{f.byType}</h4>
           <div className="fb-chips">
             {TYPES.map((t) => (
-              <Link key={t} href={`/type/${t}`} title={titleCase(t)}>
-                {titleCase(t)}
+              <Link key={t} href={pageHref(locale, `/type/${t}`)} title={typeName(t, locale)}>
+                {typeName(t, locale)}
               </Link>
             ))}
           </div>
         </div>
         <div className="fb-block">
-          <h4>By Generation</h4>
+          <h4>{f.byGeneration}</h4>
           <div className="fb-chips">
             {GENS.map((g) => (
-              <Link key={g} href={`/gen/${g}`} title={`Gen ${g}`}>
-                Gen {g}
+              <Link
+                key={g}
+                href={pageHref(locale, `/gen/${g}`)}
+                title={dict.common.genShort.replace("{n}", String(g))}
+              >
+                {dict.common.genShort.replace("{n}", String(g))}
               </Link>
             ))}
           </div>
@@ -115,22 +125,23 @@ export default function Footer() {
       </div>
 
       <div className="foot-disclaim">
-        This is a fan-made tool. Not affiliated with Nintendo, Game Freak or The
-        Pokémon Company. Pokémon data provided by{" "}
+        {f.disclaimer}{" "}
         <a
           href="https://pokeapi.co/"
           target="_blank"
           rel="noopener noreferrer"
           className="underline"
         >
-          PokéAPI
+          {f.pokeApi}
         </a>
-        . <Link href="/disclaimer" title="Disclaimer" className="underline">Disclaimer</Link>
+        . <Link href={pageHref(locale, "/disclaimer")} title={f.disclaimerTitle} className="underline">{f.disclaimerLink}</Link>
         {" · "}
-        <Link href="/privacy" title="Privacy Policy" className="underline">Privacy</Link>
+        <Link href={pageHref(locale, "/privacy")} title={f.privacyTitle} className="underline">{f.privacy}</Link>
         {" · "}
-        <Link href="/terms" title="Terms of Use" className="underline">Terms</Link>.
+        <Link href={pageHref(locale, "/terms")} title={f.termsTitle} className="underline">{f.terms}</Link>.
       </div>
+
+      <LanguageSwitcher />
 
       <div className="foot-badges">
         <a
@@ -138,12 +149,12 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
           className="foot-badge"
-          title="Featured on Fazier"
+          title={f.badges.fazierTitle}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=featured&theme=neutral"
-            alt="Featured on Fazier badge"
+            alt={f.badges.fazierAlt}
             style={{ height: "37px", width: "auto" }}
           />
         </a>
@@ -152,12 +163,12 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
           className="foot-badge"
-          title="Featured on TinyLaunch"
+          title={f.badges.tinyTitle}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://tinylaunch.com/tinylaunch_badge_featured_on.svg"
-            alt="TinyLaunch Badge"
+            alt={f.badges.tinyAlt}
             style={{ height: "37px", width: "auto" }}
           />
         </a>
@@ -181,12 +192,12 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
           className="foot-badge"
-          title="Featured on Findly.tools"
+          title={f.badges.findlyTitle}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://findly.tools/badges/findly-tools-badge-light.svg"
-            alt="Featured on Findly.tools"
+            alt={f.badges.findlyAlt}
             style={{ height: "37px", width: "auto" }}
           />
         </a>

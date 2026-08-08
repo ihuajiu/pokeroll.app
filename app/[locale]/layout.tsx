@@ -1,43 +1,60 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ogImageUrl } from "@/lib/og-meta";
+import { isLocale, OG_LOCALE, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import Analytics from "@/components/Analytics";
+import I18nProvider from "@/components/I18nProvider";
 import SiteNav from "@/components/SiteNav";
 import Footer from "@/components/Footer";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.SITE_URL ?? "https://pokeroll.app"),
-  title: "PokeRoll — Random Pokémon Generator",
-  description:
-    "Free fan-made Pokémon toolbox — roll a random Pokémon, build teams, export sets to Showdown and take challenges. Not affiliated with Nintendo.",
-  keywords: [
-    "random pokemon generator",
-    "pokemon randomizer",
-    "random pokemon",
-    "random pokemon team generator",
-  ],
-  openGraph: {
-    type: "website",
-    siteName: "PokeRoll",
-    locale: "en_US",
-    url: "/",
-    images: [{ url: ogImageUrl(), width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@JoeyChou2024",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const l = (isLocale(locale) ? locale : "en") as Locale;
+  return {
+    metadataBase: new URL(process.env.SITE_URL ?? "https://pokeroll.app"),
+    title: "PokeRoll — Random Pokémon Generator",
+    description:
+      "Free fan-made Pokémon toolbox — roll a random Pokémon, build teams, export sets to Showdown and take challenges. Not affiliated with Nintendo.",
+    keywords: [
+      "random pokemon generator",
+      "pokemon randomizer",
+      "random pokemon",
+      "random pokemon team generator",
+    ],
+    openGraph: {
+      type: "website",
+      siteName: "PokeRoll",
+      locale: OG_LOCALE[l],
+      url: "/",
+      images: [{ url: ogImageUrl(), width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@JoeyChou2024",
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const dict = await getDictionary(locale);
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         {/* 预加载首屏两个字体,避免 swap 造成的布局偏移(CLS) */}
         <link
@@ -96,7 +113,7 @@ export default async function RootLayout({
                   url: "https://pokeroll.app",
                   description:
                     "Free fan-made Pokémon tools — random generator, team builder, Showdown export, challenges, wheel and more.",
-                  inLanguage: "en",
+                  inLanguage: locale,
                   publisher: { "@id": "https://pokeroll.app/#org" },
                 },
                 {
@@ -119,12 +136,14 @@ export default async function RootLayout({
           <div className="dots" />
           <div className="scan" />
         </div>
-        <SiteNav />
+        <I18nProvider locale={locale} dict={dict}>
+          <SiteNav />
 
-        <div className="mx-auto max-w-[1240px] px-6 pb-10">
-          {children}
-        </div>
-        <Footer />
+          <div className="mx-auto max-w-[1240px] px-6 pb-10">
+            {children}
+          </div>
+          <Footer locale={locale} />
+        </I18nProvider>
         <SpeedInsights />
       </body>
     </html>

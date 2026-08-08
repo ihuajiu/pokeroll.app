@@ -3,6 +3,8 @@
 import { useState } from "react";
 import HeroCard from "@/components/HeroCard";
 import { TYPES } from "@/lib/seo";
+import { typeName } from "@/lib/i18n/names";
+import { useI18n } from "@/components/I18nProvider";
 import { useFavorites } from "@/components/useFavorites";
 import type { Pokemon } from "@/lib/types";
 
@@ -59,6 +61,8 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
   const [excludeFav, setExcludeFav] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const { favorites } = useFavorites();
+  const { locale, dict } = useI18n();
+  const r = dict.randomGenerator;
 
   function flash(msg: string) {
     setNotice(msg);
@@ -82,7 +86,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
         cache: "no-store",
       });
       if (res.status === 404) {
-        flash("No Pokémon match those filters — try widening them.");
+        flash(r.noMatch);
         return;
       }
       if (!res.ok) throw new Error("roll failed");
@@ -116,7 +120,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
   const selects = (
     <>
       <label className={labelCls}>
-        Generation
+        {r.generation}
         <select
           value={gen}
           onChange={(e) => {
@@ -126,16 +130,16 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
           }}
           className={selectCls}
         >
-          <option value="">All</option>
+          <option value="">{r.all}</option>
           {GENERATIONS.map((g) => (
             <option key={g} value={String(g)}>
-              Gen {g}
+              {dict.common.genShort.replace("{n}", String(g))}
             </option>
           ))}
         </select>
       </label>
       <label className={labelCls}>
-        Region
+        {r.region}
         <select
           value={region}
           onChange={(e) => {
@@ -145,61 +149,61 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
           }}
           className={selectCls}
         >
-          <option value="">All</option>
-          {REGIONS.map((r) => (
-            <option key={r} value={r}>
-              {r.charAt(0).toUpperCase() + r.slice(1)}
+          <option value="">{r.all}</option>
+          {REGIONS.map((reg) => (
+            <option key={reg} value={reg}>
+              {reg.charAt(0).toUpperCase() + reg.slice(1)}
             </option>
           ))}
         </select>
       </label>
       <label className={labelCls}>
-        Type
+        {r.type}
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
           className={selectCls}
         >
-          <option value="">All</option>
+          <option value="">{r.all}</option>
           {TYPES.map((t) => (
             <option key={t} value={t}>
-              {t.charAt(0).toUpperCase() + t.slice(1)}
+              {typeName(t, locale)}
             </option>
           ))}
         </select>
       </label>
       <label className={labelCls}>
-        Legendary
+        {r.legendary}
         <select
           value={legendary}
           onChange={(e) => setLegendary(e.target.value)}
           className={selectCls}
         >
-          <option value="">Any</option>
-          <option value="1">Only</option>
-          <option value="0">Exclude</option>
+          <option value="">{r.any}</option>
+          <option value="1">{r.only}</option>
+          <option value="0">{r.exclude}</option>
         </select>
       </label>
       <label className={labelCls}>
-        Starter
+        {r.starter}
         <select
           value={starter}
           onChange={(e) => setStarter(e.target.value)}
           className={selectCls}
         >
-          <option value="">Any</option>
-          <option value="1">Only</option>
+          <option value="">{r.any}</option>
+          <option value="1">{r.only}</option>
         </select>
       </label>
-      <label className={labelCls} title="Skip Pokémon you have favorited">
-        Favorites
+      <label className={labelCls} title={r.favoritesTitle}>
+        {r.favorites}
         <select
           value={excludeFav ? "exclude" : ""}
           onChange={(e) => setExcludeFav(e.target.value === "exclude")}
           className={selectCls}
         >
-          <option value="">Any</option>
-          <option value="exclude">Exclude</option>
+          <option value="">{r.any}</option>
+          <option value="exclude">{r.exclude}</option>
         </select>
       </label>
     </>
@@ -224,8 +228,8 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-expanded={open}
-                aria-label="Collapse advanced filters"
-                title="Collapse filters"
+                aria-label={r.collapseAria}
+                title={r.collapseTitle}
                 className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center self-end"
               >
                 {gearIcon}
@@ -239,8 +243,8 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
               type="button"
               onClick={() => setOpen(true)}
               aria-expanded={open}
-              aria-label="Advanced filters"
-              title="Advanced filters"
+              aria-label={r.advancedFilters}
+              title={r.advancedFilters}
               className="flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red"
             >
               {gearIcon}

@@ -214,6 +214,6 @@ Normal, Fire, Water, Electric, Grass, Ice, Fighting, Poison, Ground, Flying, Psy
 ## 14. 待确认
 1. 视觉风格/配色（需 UI 设计）。
 2. 移动端适配优先级确认。
-3. 仅英文 or 多语言。
+3. ~~仅英文 or 多语言~~（已决策 2026-08：多语言 es/pt/de/fr 子目录，英文 URL 零前缀；M1/M2 已上线，M3 工具页+legal 页翻译单独立项）。
 4. Team/收藏是否需要账号（暂定 localStorage）。
 5. 联盟具体用哪个平台（Amazon Associates / 其它）。

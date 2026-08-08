@@ -1,16 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import type { CSSProperties } from "react";
-import Link from "next/link";
 import HeroCard from "@/components/HeroCard";
+import LocalizedLink from "@/components/LocalizedLink";
 import { getRandomPokemon } from "@/lib/pokeapi";
-import { TOOLS, TOOL_GROUPS } from "@/lib/tools";
+import { localizeTools, localizeToolGroups, type ToolId } from "@/lib/tools";
+import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 const SPRITE = (id: number) => `/pokemon/artwork/${id}.webp`;
 
 type JumpTool = {
+  id: ToolId;
   href: string;
-  label: string;
-  desc: string;
   color: string;
   p: number;
   count: string;
@@ -23,34 +24,36 @@ const SvgIcon = ({ children }: { children: React.ReactNode }) => (
   </svg>
 );
 
+// Display-layer data for the "Jump straight in" cards; label/desc come from
+// the dictionary (tools.jump, keyed by the same tool id).
 const JUMP_TOOLS: JumpTool[] = [
   {
-    href: "/random-pokemon-generator", label: "Random Generator", desc: "Summon a random Pokémon with full stats & artwork.",
+    id: "randomPokemon", href: "/random-pokemon-generator",
     color: "#16c79a", p: 25, count: "MAIN",
     icon: <SvgIcon><rect x="4" y="4" width="16" height="16" rx="3" /><circle cx="9" cy="9" r="1.1" fill="currentColor" /><circle cx="15" cy="15" r="1.1" fill="currentColor" /><circle cx="15" cy="9" r="1.1" fill="currentColor" /><circle cx="9" cy="15" r="1.1" fill="currentColor" /></SvgIcon>,
   },
   {
-    href: "/adventure", label: "Adventure Mode", desc: "Roll a full Pokémon adventure — trainer, starter, team, challenge & goal.",
+    id: "adventure", href: "/adventure",
     color: "#ee3b3b", p: 4, count: "ADV",
     icon: <SvgIcon><path d="M5 8h14M5 12h14M5 16h8" /></SvgIcon>,
   },
   {
-    href: "/team/random", label: "Random Team", desc: "Roll a ready-made squad of six random Pokémon.",
+    id: "randomTeam", href: "/team/random",
     color: "#f5a524", p: 196, count: "SQUAD",
     icon: <SvgIcon><circle cx="8" cy="8" r="2.4" /><circle cx="16" cy="8" r="2.4" /><circle cx="8" cy="16" r="2.4" /><circle cx="16" cy="16" r="2.4" /></SvgIcon>,
   },
   {
-    href: "/fusion", label: "Fusion Generator", desc: "Fuse two Pokémon into one hybrid creature.",
+    id: "fusion", href: "/fusion",
     color: "#a855f7", p: 94, count: "FUSION",
     icon: <SvgIcon><circle cx="8.5" cy="9.5" r="4" /><circle cx="15" cy="14" r="4" /><path d="M11.5 12.5l4-4" strokeWidth="1.8" /></SvgIcon>,
   },
   {
-    href: "/challenge/shiny", label: "Shiny Hunt", desc: "Hunt the rare recolored form.",
+    id: "shiny", href: "/challenge/shiny",
     color: "#fbbf24", p: 6, count: "SHINY",
     icon: <SvgIcon><path d="M12 2l2.4 5 5.6.8-4 4 1 5.6L12 20l-5 2.4 1-5.6-4-4 5.6-.8z" /></SvgIcon>,
   },
   {
-    href: "/challenge/guess", label: "Guess the Pokémon", desc: "Names hidden — guess from the silhouette, reveal to check.",
+    id: "guess", href: "/challenge/guess",
     color: "#8b5cf6", p: 68, count: "GUESS",
     icon: <SvgIcon><path d="M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4" /><circle cx="12" cy="18" r="1" fill="currentColor" /></SvgIcon>,
   },
@@ -87,44 +90,47 @@ const TOOL_SPRITE: Record<string, number> = {
   "/team/random": 196,
 };
 
-export default async function Home() {
+export default async function Home({ locale = "en" }: { locale?: Locale }) {
   // Build-time random showcase card — visitors can re-roll it client-side
   // right in the hero (writes ?p= so the pull is shareable).
   const initial = await getRandomPokemon();
+  const dict = await getDictionary(locale);
+  const d = dict.homeTool;
+  const TOOLS = localizeTools(dict);
+  const TOOL_GROUPS = localizeToolGroups(dict);
+  const artworkAlt = (label: string) =>
+    dict.common.toolArtworkAlt.replace("{label}", label);
   return (
     <>
       {/* Hero */}
       <section className="relative pt-10">
         <div className="grid items-center gap-10 xl:grid-cols-2">
           <div className="hero-copy">
-            <span className="eyebrow">Random Pokémon Generator &amp; Tools</span>
+            <span className="eyebrow">{d.eyebrow}</span>
             <h1 className="font-display font-extrabold">
-              Random Pokémon <span className="accent">Generator</span>.
+              {d.title}{" "}
+              <span className="accent">{d.titleAccent}</span>.
             </h1>
-            <p className="lead">
-              Roll a random Pokémon in one tap — 1,000+ species with full
-              stats and artwork. Or roll a random Pokémon team, a challenge
-              run, even a full Pokémon adventure. Free, instant and shareable.
-            </p>
+            <p className="lead">{d.lead}</p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/random-pokemon-generator" title="Random Pokémon Generator" className="btn-primary">
-                Roll a Pokémon
+              <LocalizedLink href="/random-pokemon-generator" title={d.randomGeneratorTitle} className="btn-primary">
+                {d.rollPokemon}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-              </Link>
-              <Link href="/adventure" title="Roll Adventure" className="btn-ghost">Roll Adventure</Link>
+              </LocalizedLink>
+              <LocalizedLink href="/adventure" title={dict.common.rollAdventure} className="btn-ghost">{dict.common.rollAdventure}</LocalizedLink>
             </div>
             <div className="hero-meta">
               <div>
                 <div className="num">1000+</div>
-                <div className="lbl">Species</div>
+                <div className="lbl">{d.stats.species}</div>
               </div>
               <div>
                 <div className="num">18</div>
-                <div className="lbl">Types</div>
+                <div className="lbl">{d.stats.types}</div>
               </div>
               <div>
                 <div className="num">9</div>
-                <div className="lbl">Generations</div>
+                <div className="lbl">{d.stats.generations}</div>
               </div>
             </div>
           </div>
@@ -158,36 +164,40 @@ export default async function Home() {
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="sec-head">
             <div>
-              <span className="eyebrow">Jump straight in</span>
-              <h2>Pick a tool, start playing</h2>
+              <span className="eyebrow">{d.jumpEyebrow}</span>
+              <h2>{d.jumpTitle}</h2>
             </div>
-            <p>The most popular generators — one tap, instant fun.</p>
+            <p>{d.jumpDesc}</p>
           </div>
           <div className="cat-grid">
-            {JUMP_TOOLS.map((t) => (
-              <Link
-                key={t.label}
-                href={t.href} title={t.label}
+            {JUMP_TOOLS.map((t) => {
+              const label = dict.tools.jump[t.id as keyof typeof dict.tools.jump].label;
+              const desc = dict.tools.jump[t.id as keyof typeof dict.tools.jump].desc;
+              return (
+              <LocalizedLink
+                key={label}
+                href={t.href} title={label}
                 className="cat-card"
                 style={{ "--cc": t.color } as CSSProperties}
               >
                 <div className="cc-top">
                   <span className="cc-em">{t.icon}</span>
-                  <span className="cc-title">{t.label}</span>
+                  <span className="cc-title">{label}</span>
                   <span className="cc-count">{t.count}</span>
                 </div>
-                <p>{t.desc}</p>
+                <p>{desc}</p>
                 <span className="cc-go">
-                  Explore <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                  {d.explore} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                 </span>
                 <img
                   className="cc-mon"
                   src={SPRITE(t.p)}
-                  alt={`${t.label} example Pokémon artwork`}
+                  alt={artworkAlt(label)}
                   loading="lazy"
                 />
-              </Link>
-            ))}
+              </LocalizedLink>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -197,10 +207,10 @@ export default async function Home() {
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="sec-head">
             <div>
-              <span className="eyebrow">Tool matrix</span>
-              <h2>Every way to roll</h2>
+              <span className="eyebrow">{d.browseEyebrow}</span>
+              <h2>{d.browseTitle}</h2>
             </div>
-            <p>The complete tool catalog — every way to roll a Pokémon.</p>
+            <p>{d.browseDesc}</p>
           </div>
           {TOOL_GROUPS.filter((g) => g.id !== "adventure").map((g) => (
             <div key={g.id} className="mb-10 last:mb-0">
@@ -212,7 +222,7 @@ export default async function Home() {
               </div>
               <div className="browse-grid">
                 {TOOLS.filter((t) => t.group === g.id).map((t) => (
-                  <Link
+                  <LocalizedLink
                     key={t.href}
                     href={t.href} title={t.label}
                     className="browse-card"
@@ -221,7 +231,7 @@ export default async function Home() {
                     <div className="art">
                       <img
                         src={SPRITE(TOOL_SPRITE[t.href] ?? 25)}
-                        alt={`${t.label} example Pokémon artwork`}
+                        alt={artworkAlt(t.label)}
                         loading="lazy"
                       />
                     </div>
@@ -239,7 +249,7 @@ export default async function Home() {
                         </span>
                       </div>
                     </div>
-                  </Link>
+                  </LocalizedLink>
                 ))}
               </div>
             </div>

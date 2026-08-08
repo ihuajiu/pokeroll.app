@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { TOOLS, TOOL_GROUPS, type ToolMeta } from "@/lib/tools";
+import { localizeTools, localizeToolGroups, type ToolMeta } from "@/lib/tools";
+import { DEFAULT_LOCALE, isLocale } from "@/lib/i18n/config";
+import { useI18n } from "@/components/I18nProvider";
+import LocalizedLink from "@/components/LocalizedLink";
 import { GroupIcon } from "./ToolIcons";
 import LogoMark from "./LogoMark";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -15,23 +17,38 @@ import { useFavorites } from "@/components/useFavorites";
 // 页面时自动渲染为下拉（加新工具页只需登记 TOOLS），否则退化为直链。
 const MAIN: {
   href: string;
-  label: string;
+  labelKey: "adventure" | "generators" | "team" | "challenges" | "tools" | "contact";
   dropdownGroup?: ToolMeta["group"];
 }[] = [
-  { href: "/adventure", label: "Adventure" },
-  { href: "/random-pokemon-generator", label: "Generators", dropdownGroup: "generator" },
-  { href: "/team/random", label: "Team", dropdownGroup: "team" },
-  { href: "/challenge/guess", label: "Challenges", dropdownGroup: "challenge" },
-  { href: "/fusion", label: "Tools", dropdownGroup: "tool" },
-  { href: "/contact", label: "Contact" },
+  { href: "/adventure", labelKey: "adventure" },
+  { href: "/random-pokemon-generator", labelKey: "generators", dropdownGroup: "generator" },
+  { href: "/team/random", labelKey: "team", dropdownGroup: "team" },
+  { href: "/challenge/guess", labelKey: "challenges", dropdownGroup: "challenge" },
+  { href: "/fusion", labelKey: "tools", dropdownGroup: "tool" },
+  { href: "/contact", labelKey: "contact" },
 ];
 
 export default function SiteNav({ currentPath = "" }: { currentPath?: string }) {
   const [mobile, setMobile] = useState(false);
   const pathname = usePathname();
   const activePath = pathname || currentPath;
-  const isActive = (href: string) => activePath === href || activePath === href + "/";
+  // Compare locale-neutral paths: links stay unprefixed in MAIN/TOOLS and
+  // get prefixed by LocalizedLink at render, so strip the locale segment
+  // from the current pathname before matching.
+  const seg = activePath.split("/")[1] ?? "";
+  const basePath =
+    isLocale(seg) && seg !== DEFAULT_LOCALE
+      ? activePath.slice(seg.length + 1) || "/"
+      : activePath;
+  const isActive = (href: string) => basePath === href || basePath === href + "/";
   const { favorites } = useFavorites();
+  const { dict } = useI18n();
+  const TOOLS = localizeTools(dict);
+  const TOOL_GROUPS = localizeToolGroups(dict);
+  const favoritesLabel = dict.nav.favoritesAria.replace(
+    "{count}",
+    String(favorites.length),
+  );
 
   return (
     <header
@@ -39,17 +56,18 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
       style={{ background: "var(--header-bg)" }}
     >
       <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-2 px-4 py-3 md:gap-4 md:px-6">
-        <Link
+        <LocalizedLink
           href="/"
-          title="PokeRoll home"
+          title={dict.nav.homeTitle}
           className="brand"
         >
           <LogoMark className="ball" />
           <span>Poke<span className="red">Roll</span></span>
-        </Link>
+        </LocalizedLink>
 
         <nav className="hidden items-center gap-6 text-sm font-semibold text-poke-dim md:flex">
           {MAIN.map((m) => {
+            const label = dict.nav.main[m.labelKey];
             const items = m.dropdownGroup
               ? TOOLS.filter((t) => t.group === m.dropdownGroup)
               : [];
@@ -57,16 +75,16 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
             const wide = items.length >= 8;
             return items.length >= 2 ? (
               <div key={m.href} className="group relative">
-                <Link
+                <LocalizedLink
                   href={m.href}
-                  title={m.label}
+                  title={label}
                   className={`flex items-center gap-1 transition ${
                     items.some((l) => isActive(l.href))
                       ? "text-[#ee3b3b]"
                       : "text-poke-dim hover:text-[#ee3b3b]"
                   }`}
                 >
-                  {m.label}
+                  {label}
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -77,7 +95,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                   >
                     <path d="M6 9l6 6 6-6" />
                   </svg>
-                </Link>
+                </LocalizedLink>
                 <div className="invisible absolute left-0 top-full z-40 pt-2 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                   <div
                     className={`rounded-2xl border border-poke-border bg-poke-surface p-1.5 shadow-xl ${
@@ -87,7 +105,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                     {items.map((l) => {
                       const active = isActive(l.href);
                       return (
-                        <Link
+                        <LocalizedLink
                           key={l.href}
                           href={l.href}
                           title={wide ? `${l.label} — ${l.desc}` : l.label}
@@ -125,34 +143,34 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                               </span>
                             )}
                           </span>
-                        </Link>
+                        </LocalizedLink>
                       );
                     })}
                   </div>
                 </div>
               </div>
             ) : (
-              <Link
+              <LocalizedLink
                 key={m.href}
                 href={m.href}
-                title={m.label}
+                title={label}
                 className={`flex items-center gap-1.5 transition ${
                   isActive(m.href)
                     ? "text-[#ee3b3b]"
                     : "text-poke-dim hover:text-[#ee3b3b]"
                 }`}
               >
-                {m.label}
-              </Link>
+                {label}
+              </LocalizedLink>
             );
           })}
         </nav>
 
         <div className="flex items-center gap-1.5 md:gap-2">
-          <Link
+          <LocalizedLink
             href="/favorites"
-            aria-label={`Favorites (${favorites.length})`}
-            title={`Favorites (${favorites.length})`}
+            aria-label={favoritesLabel}
+            title={favoritesLabel}
             className="game-btn game-btn-ghost fav-entry inline-flex h-9 w-9 items-center justify-center"
           >
             <span className="relative inline-flex">
@@ -174,22 +192,22 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                 </span>
               )}
             </span>
-          </Link>
+          </LocalizedLink>
           <TeamTray />
           <ThemeToggle />
 
-          <Link
+          <LocalizedLink
             href="/adventure"
-            title="Roll Adventure"
+            title={dict.common.rollAdventure}
             className="hdr-cta hidden game-btn game-btn-primary px-4 py-2 text-sm sm:inline-flex"
           >
-            Roll Adventure
-          </Link>
+            {dict.common.rollAdventure}
+          </LocalizedLink>
 
           <button
             type="button"
             onClick={() => setMobile((v) => !v)}
-            aria-label="Menu"
+            aria-label={dict.nav.menuAria}
             aria-expanded={mobile}
             className="hdr-burger game-btn game-btn-ghost inline-flex h-9 w-9 items-center justify-center md:hidden"
           >
@@ -214,7 +232,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
               const active = first ? isActive(first.href) : false;
               return (
                 <div key={g.id}>
-                  <Link
+                  <LocalizedLink
                     href={first?.href ?? "/"}
                     onClick={() => setMobile(false)}
                     title={g.title}
@@ -224,10 +242,10 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                   >
                     <GroupIcon group={g.id} className="h-4 w-4" />
                     {g.title}
-                  </Link>
+                  </LocalizedLink>
                   <div className="flex flex-wrap gap-2">
                     {TOOLS.filter((t) => t.group === g.id).map((t) => (
-                      <Link
+                      <LocalizedLink
                         key={t.href}
                         href={t.href}
                         onClick={() => setMobile(false)}
@@ -239,21 +257,21 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
                         }`}
                       >
                         {t.label}
-                      </Link>
+                      </LocalizedLink>
                     ))}
                   </div>
                 </div>
               );
             })}
           </div>
-          <Link
+          <LocalizedLink
             href="/adventure"
             onClick={() => setMobile(false)}
-            title="Roll Adventure"
+            title={dict.common.rollAdventure}
             className="game-btn game-btn-primary mt-4 w-full px-4 py-2 text-center text-sm"
           >
-            Roll Adventure
-          </Link>
+            {dict.common.rollAdventure}
+          </LocalizedLink>
         </div>
       )}
     </header>

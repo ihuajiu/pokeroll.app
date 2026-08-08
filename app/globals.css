@@ -2156,7 +2156,8 @@ body {
 }
 .foot-col--wide a {
   break-inside: avoid;
-  white-space: nowrap;
+  /* Long localized labels (es/de) wrap within their column instead of
+     bleeding into the next one. */
 }
 @media (max-width: 980px) {
   .foot-grid { grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr)); }
@@ -2291,6 +2292,28 @@ body {
   text-align: center;
   font-size: 0.8rem;
   color: rgb(var(--text-faint));
+}
+
+/* Language switcher — quiet centered row of locale links above the badges. */
+.foot-lang {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgb(var(--text-faint));
+}
+.foot-lang a {
+  color: rgb(var(--text-dim));
+  transition: color 0.15s ease;
+}
+.foot-lang a:hover {
+  color: rgb(var(--brand));
+}
+.foot-lang-dot {
+  margin: 0 0.45rem;
+}
+.foot-lang-active {
+  font-weight: 600;
+  color: rgb(var(--text)) !important;
 }
 
 .foot-browse {

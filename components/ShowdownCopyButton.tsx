@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
+import { useI18n } from "@/components/I18nProvider";
 
 /** Crossed-swords battle icon (lucide "swords") for the Showdown export. */
 export function showdownIcon() {
@@ -77,10 +78,10 @@ export default function ShowdownCopyButton({
   text,
   getText,
   iconOnly = false,
-  label = "Copy Set",
-  copiedLabel = "Copied!",
+  label,
+  copiedLabel,
   className = "",
-  title = "Copy Showdown set",
+  title,
   badge,
 }: {
   text?: string;
@@ -94,6 +95,10 @@ export default function ShowdownCopyButton({
   badge?: string;
 }) {
   const [done, setDone] = useState(false);
+  const { dict } = useI18n();
+  const labelText = label ?? dict.common.copySet;
+  const copiedText = copiedLabel ?? dict.common.copied;
+  const titleText = title ?? dict.common.copyShowdownSet;
 
   async function handleCopy() {
     const resolved = text ?? (await getText?.());
@@ -110,8 +115,8 @@ export default function ShowdownCopyButton({
       <button
         type="button"
         className={className}
-        aria-label={done ? "Showdown set copied" : title}
-        title={done ? "Showdown set copied!" : title}
+        aria-label={done ? dict.common.showdownSetCopied : titleText}
+        title={done ? dict.common.showdownSetCopiedBang : titleText}
         onClick={handleCopy}
       >
         {done ? checkIcon() : showdownIcon()}
@@ -122,7 +127,7 @@ export default function ShowdownCopyButton({
   return (
     <button type="button" className={className} onClick={handleCopy}>
       {done ? checkIcon() : showdownIcon()}
-      <span>{done ? copiedLabel : label}</span>
+      <span>{done ? copiedText : labelText}</span>
       {badge && !done && (
         <span className="rounded-full bg-current/15 px-1.5 py-0.5 text-[10px] font-bold leading-none">
           {badge}
