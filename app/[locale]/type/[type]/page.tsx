@@ -5,7 +5,8 @@ import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByType, getRandomPokemon } from "@/lib/pokeapi";
-import { GEN_REGION, TYPE_GEN, titleCase } from "@/lib/seo";
+import { GEN_REGION, TYPES, TYPE_GEN, titleCase } from "@/lib/seo";
+import { notFound } from "next/navigation";
 import {
   isLocale,
   languageAlternates,
@@ -25,6 +26,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale, type } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  // Reject unknown types before anything renders — otherwise /type/notatype
+  // would serve a junk 200 page (soft 404).
+  if (!(TYPES as readonly string[]).includes(type)) notFound();
   const dict = await getDictionary(locale);
   const d = dict.pages.type;
   const t = typeName(type, locale);
@@ -49,6 +53,7 @@ export default async function TypePage({
 }) {
   const { locale: rawLocale, type } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  if (!(TYPES as readonly string[]).includes(type)) notFound();
   const dict = await getDictionary(locale);
   const d = dict.pages.type;
   const t = typeName(type, locale);

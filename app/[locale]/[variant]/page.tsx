@@ -40,7 +40,11 @@ export async function generateMetadata({
   const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
   const dict = await getDictionary(locale);
   const META = dict.pages.variants;
-  const m = META[variant as VariantKey] ?? META.type;
+  // Validate here too: notFound() from generateMetadata runs before streaming
+  // starts, so it yields a real 404 status — thrown mid-render under
+  // loading.tsx it would stream a 200 (soft 404).
+  if (!(variant in META) || variant === "noNamesPromo") notFound();
+  const m = META[variant as VariantKey];
   const path = `/${variant}`;
   return {
     title: m.title,

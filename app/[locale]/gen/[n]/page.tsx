@@ -5,7 +5,8 @@ import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByGeneration, getRandomPokemon } from "@/lib/pokeapi";
-import { GEN_REGION, REGION_GAME, titleCase } from "@/lib/seo";
+import { GEN_REGION, GENS, REGION_GAME, titleCase } from "@/lib/seo";
+import { notFound } from "next/navigation";
 import {
   isLocale,
   languageAlternates,
@@ -25,9 +26,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale, n } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  // Reject non-canonical gens (99, 01, abc…) before anything renders —
+  // otherwise they'd serve junk 200 pages (soft 404).
+  const gen = Number(n);
+  if (!Number.isInteger(gen) || String(gen) !== n || !(GENS as readonly number[]).includes(gen))
+    notFound();
   const dict = await getDictionary(locale);
   const d = dict.pages.gen;
-  const gen = Number(n);
   const path = `/gen/${gen}`;
   return {
     title: d.metaTitle.replace("{gen}", String(gen)),
@@ -49,9 +54,11 @@ export default async function GenPage({
 }) {
   const { locale: rawLocale, n } = await params;
   const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const gen = Number(n);
+  if (!Number.isInteger(gen) || String(gen) !== n || !(GENS as readonly number[]).includes(gen))
+    notFound();
   const dict = await getDictionary(locale);
   const d = dict.pages.gen;
-  const gen = Number(n);
   const gl = genLabel(gen, locale);
   const pool = await getPoolByGeneration(gen);
   const initial = pool.length ? await getRandomPokemon(pool) : await getRandomPokemon();

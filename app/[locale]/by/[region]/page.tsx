@@ -5,7 +5,8 @@ import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPoolByRegion, getRandomPokemon } from "@/lib/pokeapi";
-import { REGION_GAME, REGION_GEN, REGION_EXTRA_KEYWORDS, titleCase } from "@/lib/seo";
+import { REGION_GAME, REGION_GEN, REGIONS, REGION_EXTRA_KEYWORDS, titleCase } from "@/lib/seo";
+import { notFound } from "next/navigation";
 import {
   isLocale,
   languageAlternates,
@@ -27,6 +28,9 @@ export async function generateMetadata({
   const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
   const dict = await getDictionary(locale);
   const d = dict.pages.region;
+  // Reject unknown regions before anything renders — otherwise /by/nowhere
+  // would serve a junk 200 page (soft 404).
+  if (!(REGIONS as readonly string[]).includes(region)) notFound();
   const r = titleCase(region);
   const game = REGION_GAME[region] ?? "";
   // Mention the third-version games that share these regions.
@@ -72,6 +76,9 @@ export default async function RegionPage({
   const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
   const dict = await getDictionary(locale);
   const d = dict.pages.region;
+  // Reject unknown regions before anything renders — otherwise /by/nowhere
+  // would serve a junk 200 page (soft 404).
+  if (!(REGIONS as readonly string[]).includes(region)) notFound();
   const r = titleCase(region);
   const game = REGION_GAME[region] ?? "";
   const pool = await getPoolByRegion(region);
