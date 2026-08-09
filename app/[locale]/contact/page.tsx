@@ -1,33 +1,43 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  pageHref,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
-export const metadata: Metadata = {
-  title: "Contact Us | PokeRoll",
-  description:
-    "Contact the PokeRoll team — email hello@pokeroll.app for feedback and bug reports, say hi on X @JoeyChou2024, or open an issue on GitHub. We reply fast.",
-  keywords: [
-    "contact pokeroll",
-    "pokemon generator feedback",
-    "pokeroll support",
-  ],
-  alternates: { canonical: "/contact" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.contact;
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, "/contact"),
+      languages: languageAlternates("/contact"),
+    },
+  };
+}
 
-const CHANNELS: {
-  title: string;
-  handle: string;
-  desc: string;
-  action: string;
+// Non-translatable channel metadata (href / external / icon), indexed to
+// match dict.pages.contact.channels.
+const CHANNEL_META: {
   href: string;
   external?: boolean;
   icon: React.ReactNode;
 }[] = [
   {
-    title: "Email",
-    handle: "hello@pokeroll.app",
-    desc: "Feedback, bug reports or business inquiries — we read everything.",
-    action: "Send email",
     href: "mailto:hello@pokeroll.app?subject=PokeRoll%20Feedback",
     icon: (
       <svg
@@ -46,10 +56,6 @@ const CHANNELS: {
     ),
   },
   {
-    title: "X (Twitter)",
-    handle: "@JoeyChou2024",
-    desc: "Fastest replies. Daily build-in-public updates on what's next.",
-    action: "Follow on X",
     href: "https://x.com/JoeyChou2024",
     external: true,
     icon: (
@@ -59,10 +65,6 @@ const CHANNELS: {
     ),
   },
   {
-    title: "GitHub",
-    handle: "ihuajiu/pokeroll.app",
-    desc: "Open source. Found a bug? Open an issue and it gets tracked.",
-    action: "Open an issue",
     href: "https://github.com/ihuajiu/pokeroll.app/issues",
     external: true,
     icon: (
@@ -73,56 +75,64 @@ const CHANNELS: {
   },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.contact;
+
   return (
     <main className="mx-auto max-w-4xl py-10">
-      <PageHeader
-        title="Contact Us"
-        description="Questions, ideas or a bug to report? Pick whichever channel suits you — every message reaches the maker directly."
-      />
+      <PageHeader title={d.headerTitle} description={d.headerDesc} />
 
       <div className="grid gap-4 sm:grid-cols-3">
-        {CHANNELS.map((c) => (
-          <div
-            key={c.title}
-            className="flex flex-col rounded-2xl border border-poke-border bg-poke-surface p-6"
-          >
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-poke-chip text-poke-red">
-              {c.icon}
-            </span>
-            <h2 className="mt-4 text-base font-extrabold text-poke-ink">
-              {c.title}
-            </h2>
-            <p className="mt-0.5 text-sm font-semibold text-poke-red">
-              {c.handle}
-            </p>
-            <p className="mt-2 flex-1 text-sm leading-relaxed text-poke-dim">
-              {c.desc}
-            </p>
-            <a
-              href={c.href}
-              {...(c.external
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-              className="game-btn game-btn-primary mt-4 inline-flex items-center justify-center px-4 py-2 text-sm font-semibold"
+        {d.channels.map((c, i) => {
+          const meta = CHANNEL_META[i];
+          return (
+            <div
+              key={c.title}
+              className="flex flex-col rounded-2xl border border-poke-border bg-poke-surface p-6"
             >
-              {c.action}
-            </a>
-          </div>
-        ))}
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-poke-chip text-poke-red">
+                {meta.icon}
+              </span>
+              <h2 className="mt-4 text-base font-extrabold text-poke-ink">
+                {c.title}
+              </h2>
+              <p className="mt-0.5 text-sm font-semibold text-poke-red">
+                {c.handle}
+              </p>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-poke-dim">
+                {c.desc}
+              </p>
+              <a
+                href={meta.href}
+                {...(meta.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="game-btn game-btn-primary mt-4 inline-flex items-center justify-center px-4 py-2 text-sm font-semibold"
+              >
+                {c.action}
+              </a>
+            </div>
+          );
+        })}
       </div>
 
       <p className="mt-8 text-center text-sm leading-relaxed text-poke-dim">
-        PokeRoll is a solo fan-made project — not affiliated with Nintendo or
-        The Pokémon Company. Replies usually land within 48 hours.
+        {d.soloNote}
       </p>
       <p className="mt-4 text-center text-sm">
         <Link
-          href="/"
-          title="PokeRoll home"
+          href={pageHref(locale, "/")}
+          title={dict.nav.homeTitle}
           className="font-semibold text-poke-red underline"
         >
-          ← Back to the generator
+          {d.backLink}
         </Link>
       </p>
     </main>

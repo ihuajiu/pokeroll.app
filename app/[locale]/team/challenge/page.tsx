@@ -4,25 +4,44 @@ import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getRandomTeam } from "@/lib/team";
+import { localizeTools } from "@/lib/tools";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  pageHref,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Pokémon Team Challenge — Roll a Team, Challenge a Friend",
-  description:
-    "Roll a seeded team of 6 Pokémon, share the link, and challenge a friend — total BST picks the winner, then export either team to Showdown. Free fan-made tool.",
-  keywords: [
-    "pokemon team challenge",
-    "random pokemon team generator",
-    "random pokemon team",
-    "pokemon team generator",
-  ],
-  alternates: { canonical: "/team/challenge" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.teamChallenge;
+  const path = "/team/challenge";
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, path),
+      languages: languageAlternates(path),
+    },
+  };
+}
 
 export default async function TeamChallengePage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{
     seed?: string | string[];
     mine?: string | string[];
@@ -31,6 +50,10 @@ export default async function TeamChallengePage({
     owner?: string | string[];
   }>;
 }) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.teamChallenge;
   const sp = await searchParams;
   const seed = typeof sp.seed === "string" ? sp.seed : undefined;
   const mine = typeof sp.mine === "string" ? sp.mine : undefined;
@@ -46,17 +69,19 @@ export default async function TeamChallengePage({
     : null;
   const yours = seed && mine ? (await getRandomTeam({ seed: mine, count })).pokemon : null;
 
+  const tool = localizeTools(dict).find((t) => t.href === "/team/challenge");
+
   return (
     <main className="pt-6 pb-10">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
-          { label: "Team Challenge" },
+          { label: dict.common.home, href: pageHref(locale, "/") },
+          { label: tool?.label ?? d.breadcrumbLabel },
         ]}
       />
       <PageHeader
-        title="Pokémon Team Challenge"
-        description="Roll a 6-Pokémon challenge team, share the link, and let total BST pick a winner against your friends."
+        title={d.headerTitle}
+        description={d.headerDesc}
       />
       <TeamChallenge
         challenger={challenger}
@@ -66,7 +91,7 @@ export default async function TeamChallengePage({
         resultView={resultView}
         isOwner={isOwner}
       />
-      <RelatedTools current="/team/challenge" />
+      <RelatedTools current="/team/challenge" locale={locale} />
     </main>
   );
 }

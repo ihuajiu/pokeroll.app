@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Pokemon } from "@/lib/types";
 import { TYPE_HEX } from "@/lib/typeColors";
-import { typeName, localizedDisplayName } from "@/lib/i18n/names";
+import { typeName, localizedDisplayName, localizedAbility } from "@/lib/i18n/names";
 import { useI18n } from "@/components/I18nProvider";
 import { useFavorites } from "@/components/useFavorites";
 import ShowdownCopyButton from "@/components/ShowdownCopyButton";
@@ -200,7 +200,7 @@ export default function HeroCard({
   const spriteUrl =
     shiny && data.shinySprite ? data.shinySprite : data.artwork || data.sprite;
   const dex = `#${String(data.dexNumber).padStart(4, "0")}`;
-  const ability = data.abilities?.[0] ?? "—";
+  const ability = localizedAbility(data.abilities?.[0] ?? "—", locale);
   const name = hideName ? h.mystery : localizedDisplayName(data, locale);
   const cc = TYPE_HEX[data.types[0]] ?? TYPE_HEX.normal;
   const { has: isFavorited, toggle: toggleFavorite } = useFavorites();

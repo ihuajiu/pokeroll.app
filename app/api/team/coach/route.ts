@@ -1,4 +1,6 @@
 import { completeTeam } from "@/lib/teamCoach";
+import { isLocale, type Locale } from "@/lib/i18n/config";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
@@ -19,10 +21,15 @@ export async function GET(req: Request) {
   const region = url.searchParams.get("region") || undefined;
   const type = url.searchParams.get("type") || undefined;
   const seed = url.searchParams.get("seed") || undefined;
+  const localeRaw = url.searchParams.get("locale");
+  const locale: Locale = localeRaw && isLocale(localeRaw) ? localeRaw : "en";
 
   try {
     const result = await completeTeam({ locked, keep, count, gen, region, type, seed });
-    return Response.json(result);
+    return Response.json({
+      ...result,
+      team: result.team.map((p) => withLocalizedFlavor(p, locale)),
+    });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "failed";
     return Response.json({ error: msg }, { status: 400 });

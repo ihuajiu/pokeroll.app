@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Pokemon } from "@/lib/types";
 import { useI18n } from "@/components/I18nProvider";
+import { localizedAbility, typeName } from "@/lib/i18n/names";
 import LocalizedLink from "@/components/LocalizedLink";
 import HeroCard from "./HeroCard";
 import AddToTeamButton from "./AddToTeamButton";
@@ -26,19 +27,26 @@ export default function VariantGenerator({
 }) {
   const [data, setData] = useState<VariantPayload>(initial);
   const [loading, setLoading] = useState(false);
-  const { dict } = useI18n();
+  const { dict, locale } = useI18n();
   const v = dict.variantGenerator;
   const kindKey = data.kind === "no-names" ? "noNames" : data.kind;
   const kindLabel =
     (v.kinds as Record<string, string>)[kindKey] ?? data.kind;
 
   const showValue = data.value !== undefined && VALUE_KINDS.has(data.kind);
-  const valueText = data.kind === "number" ? `#${data.value}` : String(data.value);
+  const valueText =
+    data.kind === "number"
+      ? `#${data.value}`
+      : data.kind === "ability"
+        ? localizedAbility(String(data.value), locale)
+        : data.kind === "type"
+          ? typeName(String(data.value), locale)
+          : String(data.value);
 
   async function regenerate() {
     setLoading(true);
     try {
-      const res = await fetch(`/api/variant?kind=${kind}`);
+      const res = await fetch(`/api/variant?kind=${kind}&locale=${locale}`);
       if (!res.ok) throw new Error("failed");
       setData(await res.json());
     } catch {

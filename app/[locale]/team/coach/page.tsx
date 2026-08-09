@@ -6,31 +6,55 @@ import PageHeader from "@/components/PageHeader";
 import { completeTeam } from "@/lib/teamCoach";
 import { getPokemonByIdLocal } from "@/lib/pokedex";
 import type { Pokemon } from "@/lib/types";
+import { localizeToolGroups, localizeTools } from "@/lib/tools";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  pageHref,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Pokémon Team Coach — Fill the Rest of Your Team",
-  description:
-    "Lock the Pokémon you already picked and let Team Coach fill the rest with type coverage and balanced roles — then copy the team to Showdown. Free fan-made tool.",
-  keywords: [
-    "pokemon team builder",
-    "pokemon team filler",
-    "pokemon team coach",
-    "auto team builder pokemon",
-  ],
-  alternates: { canonical: "/team/coach" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.teamCoach;
+  const path = "/team/coach";
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, path),
+      languages: languageAlternates(path),
+    },
+  };
+}
 
 type SP = Record<string, string | string[] | undefined>;
 const get = (sp: SP, k: string) =>
   Array.isArray(sp[k]) ? (sp[k] as string[])[0] : (sp[k] as string | undefined);
 
 export default async function TeamCoachPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<SP>;
 }) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.teamCoach;
   const sp = await searchParams;
   const lockedRaw = get(sp, "locked") || "";
   const locked = lockedRaw
@@ -45,7 +69,8 @@ export default async function TeamCoachPage({
 
   const initialLocked = locked
     .map((d) => getPokemonByIdLocal(d))
-    .filter((p): p is Pokemon => !!p);
+    .filter((p): p is Pokemon => !!p)
+    .map((p) => withLocalizedFlavor(p, locale));
 
   // Shared link carries the full result (picks + reasons), so the viewer
   // sees exactly what the sharer saw — no recompute drift after re-rolls.
@@ -64,7 +89,8 @@ export default async function TeamCoachPage({
     });
     const pickPokes = picks
       .map((d) => getPokemonByIdLocal(d))
-      .filter((p): p is Pokemon => !!p);
+      .filter((p): p is Pokemon => !!p)
+      .map((p) => withLocalizedFlavor(p, locale));
     if (pickPokes.length > 0) {
       initial = { seed: seed || "", team: [...initialLocked, ...pickPokes], reasons };
     }
@@ -75,29 +101,38 @@ export default async function TeamCoachPage({
       initial = null;
     }
   }
+  if (initial) {
+    initial = {
+      ...initial,
+      team: initial.team.map((p) => withLocalizedFlavor(p, locale)),
+    };
+  }
+
+  const TOOLS = localizeTools(dict);
+  const TOOL_GROUPS = localizeToolGroups(dict);
+  const tool = TOOLS.find((t) => t.href === "/team/coach");
+  const group = TOOL_GROUPS.find((g) => g.id === tool?.group);
 
   return (
     <main className="pt-6 pb-10">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
-          { label: "Team", href: "/team" },
-          { label: "Team Coach" },
+          { label: dict.common.home, href: pageHref(locale, "/") },
+          ...(group
+            ? [{ label: group.title, href: pageHref(locale, "/team") }]
+            : []),
+          { label: tool?.label ?? d.breadcrumbLabel },
         ]}
       />
       <PageHeader
-        title="Pokémon Team Coach"
-        description="Lock the Pokémon you already picked, fill the rest with type coverage and balanced roles."
+        title={d.headerTitle}
+        description={d.headerDesc}
       />
-      
-
-
-
 
       <TeamCoach initial={initial} initialLocked={initialLocked} />
 
 
-      <RelatedTools current="/team/coach" />
+      <RelatedTools current="/team/coach" locale={locale} />
     </main>
   );
 }

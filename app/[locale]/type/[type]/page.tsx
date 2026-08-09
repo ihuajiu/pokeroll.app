@@ -16,6 +16,7 @@ import {
 } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { genLabel, typeName } from "@/lib/i18n/names";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +59,10 @@ export default async function TypePage({
   const d = dict.pages.type;
   const t = typeName(type, locale);
   const pool = await getPoolByType(type);
-  const initial = pool.length ? await getRandomPokemon(pool) : await getRandomPokemon();
+  const initial = withLocalizedFlavor(
+    pool.length ? await getRandomPokemon(pool) : await getRandomPokemon(),
+    locale,
+  );
   const gen = TYPE_GEN[type] ?? 1;
   const region = GEN_REGION[gen];
   const linkCls =

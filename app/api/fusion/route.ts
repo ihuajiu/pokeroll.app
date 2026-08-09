@@ -1,11 +1,18 @@
 import { getRandomPokemon } from "@/lib/pokeapi";
+import { isLocale, type Locale } from "@/lib/i18n/config";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const localeRaw = new URL(req.url).searchParams.get("locale");
+  const locale: Locale = localeRaw && isLocale(localeRaw) ? localeRaw : "en";
   try {
     const [a, b] = await Promise.all([getRandomPokemon(), getRandomPokemon()]);
-    return Response.json({ a, b });
+    return Response.json({
+      a: withLocalizedFlavor(a, locale),
+      b: withLocalizedFlavor(b, locale),
+    });
   } catch {
     return Response.json({ error: "Failed to generate fusion" }, { status: 500 });
   }

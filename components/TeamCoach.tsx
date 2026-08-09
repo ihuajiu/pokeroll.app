@@ -1,7 +1,6 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
 import HeroCard from "./HeroCard";
 import { useFavorites } from "./useFavorites";
@@ -9,6 +8,8 @@ import { useTeam } from "./useTeam";
 import ShareDialog from "./ShareDialog";
 import GuideSteps from "./GuideSteps";
 import TeamShowdownExport from "./TeamShowdownExport";
+import LocalizedLink from "./LocalizedLink";
+import { useI18n } from "./I18nProvider";
 
 interface CoachResult {
   seed: string;
@@ -46,6 +47,8 @@ export default function TeamCoach({
 }) {
   const { favorites } = useFavorites();
   const { team, add } = useTeam();
+  const { dict, locale } = useI18n();
+  const t = dict.teamCoachUi;
   // "kept" = Pokémon locked in place (your picks + cards you lock).
   const [kept, setKept] = useState<Pokemon[]>(initialLocked);
   const [result, setResult] = useState<CoachResult | null>(initial);
@@ -80,7 +83,7 @@ export default function TeamCoach({
   function addPick(p: Pokemon) {
     if (kept.some((x) => x.dexNumber === p.dexNumber)) return;
     if (kept.length >= count - 1) {
-      flash(`Keep at most ${count - 1} — leave at least 1 slot for the coach.`);
+      flash(t.keepLimit.replace("{max}", String(count - 1)));
       return;
     }
     setKept((prev) => [...prev, p]);
@@ -120,13 +123,14 @@ export default function TeamCoach({
     setSuggestions([]);
     setSearchOpen(false);
     try {
-      const res = await fetch(`/api/pokemon/${dex}`);
+      const res = await fetch(`/api/pokemon/${dex}?locale=${locale}`);
       if (res.ok) addPick((await res.json()) as Pokemon);
     } catch {}
   }
 
   function buildUrl() {
     const p = new URLSearchParams();
+    p.set("locale", locale);
     if (kept.length) p.set("locked", kept.map((x) => x.dexNumber).join(","));
     p.set("count", String(count));
     if (gen) p.set("gen", gen);
@@ -146,7 +150,7 @@ export default function TeamCoach({
       setResult(data);
       syncUrl(data.seed, data);
     } catch {
-      flash("Generation failed — try again.");
+      flash(t.generateFailed);
     } finally {
       setBusy(false);
     }
@@ -188,7 +192,7 @@ export default function TeamCoach({
         added++;
       }
     });
-    flash(added > 0 ? `Added ${added} to your team.` : "These Pokémon are already in your team.");
+    flash(added > 0 ? t.addedToTeam.replace("{count}", String(added)) : t.alreadyInTeam);
   }
   const shareUrl = result
     ? (() => {
@@ -229,9 +233,9 @@ export default function TeamCoach({
 
       {/* CTA hero — like the challenge page's "ready" panel */}
       <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
-        <h2 className="text-xl font-extrabold text-poke-ink">Your balanced team is ready</h2>
+        <h2 className="text-xl font-extrabold text-poke-ink">{t.readyTitle}</h2>
         <p className="mt-1 text-sm text-poke-dim">
-          Lock the Pokémon you already picked, fill the rest with type coverage — then add them to your team or export to Showdown.
+          {t.readyDesc}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
@@ -250,7 +254,7 @@ export default function TeamCoach({
                 <circle cx="15.5" cy="15.5" r="1.4" />
               </g>
             </svg>
-            {busy ? "Generating…" : result ? "Re-roll unlocked" : "Generate team"}
+            {busy ? dict.common.generating : result ? t.rerollUnlocked : t.generateTeam}
           </button>
           {result && (
             <ShareDialog
@@ -260,47 +264,38 @@ export default function TeamCoach({
               className="game-btn game-btn-primary px-6 py-3.5 text-sm font-bold"
             />
           )}
-          <Link
-            href="/team" title="View your team"
+          <LocalizedLink
+            href="/team" title={dict.common.viewYourTeam}
             className="game-btn game-btn-ghost px-6 py-3.5 text-sm font-bold"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg>
-            View my team
-          </Link>
+            {t.viewMyTeam}
+          </LocalizedLink>
         </div>
       </div>
 
       {/* How to play */}
       <GuideSteps
         className="mx-auto mb-6 max-w-[1100px] px-4"
+        title={t.guideTitle}
         steps={[
-          {
-            n: "1",
-            t: "Add picks (optional)",
-            d: "Search or import from Favorites / Your Team — or skip and let the coach roll all 6.",
-          },
-          {
-            n: "2",
-            t: "Generate the team",
-            d: "Team Coach fills the team with balanced types and roles.",
-          },
-          {
-            n: "3",
-            t: "Lock & re-roll",
-            d: "Lock Pokémon you like, re-roll the rest, then add all, share the link or copy the sets to Showdown.",
-          },
+          { n: "1", t: t.guide1T, d: t.guide1D },
+          { n: "2", t: t.guide2T, d: t.guide2D },
+          { n: "3", t: t.guide3T, d: t.guide3D },
         ]}
       />
 
       {/* Team Coach — picks + filters + generate + team in one panel */}
       <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-sm font-extrabold text-poke-ink">Your team</h2>
+          <h2 className="text-sm font-extrabold text-poke-ink">{t.yourTeamHeading}</h2>
           <span className="text-xs text-poke-dim">
-            {kept.length} locked · target {count}
+            {t.lockedTarget
+              .replace("{kept}", String(kept.length))
+              .replace("{count}", String(count))}
           </span>
         </div>
 
@@ -310,7 +305,7 @@ export default function TeamCoach({
               value={q}
               onChange={(e) => onSearch(e.target.value)}
               onFocus={() => suggestions.length > 0 && setSearchOpen(true)}
-              placeholder="Search Pokémon (optional)…"
+              placeholder={t.searchPlaceholder}
               className={selectCls + " w-full"}
             />
             {searchOpen && suggestions.length > 0 && (
@@ -340,7 +335,7 @@ export default function TeamCoach({
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
-            Import Favorites
+            {t.importFavorites}
           </button>
           <button
             type="button"
@@ -353,14 +348,14 @@ export default function TeamCoach({
               <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-            Import Team
+            {t.importTeam}
           </button>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
-            aria-label={open ? "Collapse filters" : "Filters"}
-            title={open ? "Collapse filters" : "Filters"}
+            aria-label={open ? t.collapseFilters : t.filtersAria}
+            title={open ? t.collapseFilters : t.filtersAria}
             className={`flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red ${open ? "" : "breathe"}`}
           >
             {gearIcon}
@@ -377,7 +372,7 @@ export default function TeamCoach({
 
 
             <label className={labelCls}>
-            Team size
+            {t.teamSizeLabel}
             <select
             value={count}
             onChange={(e) => {
@@ -392,7 +387,7 @@ export default function TeamCoach({
             </select>
             </label>
             <label className={labelCls}>
-            Generation
+            {t.generationLabel}
             <select
             value={gen}
             onChange={(e) => {
@@ -401,14 +396,14 @@ export default function TeamCoach({
             }}
             className={selectCls}
             >
-            <option value="">Any</option>
+            <option value="">{t.optionAny}</option>
             {GEN_OPTIONS.map((g) => (
-            <option key={g} value={g}>Gen {g}</option>
+            <option key={g} value={g}>{dict.common.genShort.replace("{n}", g)}</option>
             ))}
             </select>
             </label>
             <label className={labelCls}>
-            Region
+            {t.regionLabel}
             <select
             value={region}
             onChange={(e) => {
@@ -417,14 +412,14 @@ export default function TeamCoach({
             }}
             className={selectCls}
             >
-            <option value="">Any</option>
+            <option value="">{t.optionAny}</option>
             {REGIONS.map((r) => (
             <option key={r} value={r}>{cap(r)}</option>
             ))}
             </select>
             </label>
             <label className={labelCls}>
-            Type
+            {t.typeLabel}
             <select
             value={type}
             onChange={(e) => {
@@ -433,9 +428,9 @@ export default function TeamCoach({
             }}
             className={selectCls}
             >
-            <option value="">Any</option>
-            {TYPES.map((t) => (
-            <option key={t} value={t}>{cap(t)}</option>
+            <option value="">{t.optionAny}</option>
+            {TYPES.map((ty) => (
+            <option key={ty} value={ty}>{cap(ty)}</option>
             ))}
             </select>
             </label>
@@ -449,12 +444,12 @@ export default function TeamCoach({
       {/* Status hint */}
       <p className="mb-4 text-center text-xs text-poke-dim">
         {!canGenerate
-          ? "Everything is locked — unlock a card to re-roll."
+          ? t.allLockedHint
           : result
-            ? `Re-rolls ${count - kept.length} unlocked slot(s)`
+            ? t.rerollHint.replace("{count}", String(count - kept.length))
             : kept.length > 0
-              ? `Will fill ${count - kept.length} slot(s) with balanced coverage`
-              : "Rolls a full balanced team"}
+              ? t.fillHint.replace("{count}", String(count - kept.length))
+              : t.fullRollHint}
       </p>
 
 
@@ -499,13 +494,13 @@ export default function TeamCoach({
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
-              Add all to Team
+              {t.addAllToTeam}
             </button>
         </div>
           </>
         ) : (
           <p className="py-6 text-center text-sm text-poke-dim">
-            Add a pick or just generate a full team — the coach balances types and roles.
+            {t.emptyHint}
           </p>
         )}
       </div>
@@ -522,7 +517,7 @@ export default function TeamCoach({
           >
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-sm font-extrabold text-poke-ink">
-                {picker === "fav" ? "From Favorites" : "From Your Team"}
+                {picker === "fav" ? t.pickerFavTitle : t.pickerTeamTitle}
               </h3>
               <button
                 type="button"
@@ -534,9 +529,7 @@ export default function TeamCoach({
             </div>
             {(picker === "fav" ? favorites : team).length === 0 ? (
               <p className="py-6 text-center text-sm text-poke-dim">
-                {picker === "fav"
-                  ? "No favorites yet — tap the heart on any generator first."
-                  : "Your team is empty — add Pokémon on any generator first."}
+                {picker === "fav" ? t.favEmpty : t.teamEmpty}
               </p>
             ) : (
               <div className="space-y-1">

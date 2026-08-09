@@ -2,15 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Challenge, ChallengeMode } from "@/lib/challenge";
+import type { Challenge } from "@/lib/challenge";
 import { DIFFICULTIES } from "@/lib/adventure-types";
 import { TYPES, REGIONS, titleCase } from "@/lib/seo";
 import ShinyHunt, { type WildMon } from "./ShinyHunt";
-
-const HINTS: Record<ChallengeMode, string> = {
-  guess: "Names hidden — reveal to check",
-  shiny: "How many encounters to a shiny?",
-};
+import { useI18n } from "@/components/I18nProvider";
 
 const selectClass =
   "rounded-lg border border-poke-border bg-poke-surface px-3.5 py-2.5 text-sm text-poke-ink focus:border-poke-red focus:outline-none";
@@ -43,6 +39,8 @@ export default function ChallengeGenerator({
   startFound?: boolean;
 }) {
   const router = useRouter();
+  const { dict } = useI18n();
+  const c = dict.challengeGenerator;
   const { config } = challenge;
   const mode = config.mode;
 
@@ -166,7 +164,7 @@ export default function ChallengeGenerator({
       <div className="mb-8 rounded-2xl border border-poke-border bg-poke-surface px-5 py-6 sm:px-8">
         {/* Row 1: mode hint (left) + actions (right) */}
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
-          <span className="text-sm text-poke-dim">{HINTS[mode]}</span>
+          <span className="text-sm text-poke-dim">{c.hints[mode]}</span>
           <div className="flex items-center gap-3">
             <button
               onClick={generate}
@@ -189,13 +187,13 @@ export default function ChallengeGenerator({
                   <circle cx="15.5" cy="15.5" r="1.3" />
                 </g>
               </svg>
-              Create Challenge
+              {c.createChallenge}
             </button>
             <button
               onClick={share}
               className="rounded-xl border border-poke-border bg-poke-surface px-4 py-2.5 text-sm font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
             >
-              {copied ? "Link copied!" : "Share challenge"}
+              {copied ? dict.heroCard.linkCopied : c.shareChallenge}
             </button>
           </div>
         </div>
@@ -208,21 +206,21 @@ export default function ChallengeGenerator({
                 type="button"
                 onClick={() => setFilterOpen(false)}
                 aria-expanded={filterOpen}
-                aria-label="Collapse filters"
-                title="Collapse filters"
+                aria-label={c.collapseAria}
+                title={c.collapseTitle}
                 className="game-btn game-btn-ghost flex h-9 w-9 shrink-0 items-center justify-center self-end"
               >
                 {gearIcon}
               </button>
               <div className="flex flex-wrap items-start gap-x-6 gap-y-3">
                 <label className="flex w-36 flex-col gap-1">
-                  <span className="text-xs font-semibold text-poke-dim">Difficulty</span>
+                  <span className="text-xs font-semibold text-poke-dim">{c.difficulty}</span>
                   <select
                     className={selectClass}
                     value={difficulty}
                     onChange={(e) => setDifficulty(e.target.value)}
                   >
-                    <option value="">Random</option>
+                    <option value="">{c.random}</option>
                     {DIFFICULTIES.map((d) => (
                       <option key={d} value={d}>
                         {d}
@@ -235,14 +233,14 @@ export default function ChallengeGenerator({
                   <>
                     <label className="flex w-36 flex-col gap-1">
                       <span className="text-xs font-semibold text-poke-dim">
-                        Count (max 12)
+                        {c.countMax.replace("{max}", "12")}
                       </span>
                       <select
                         className={selectClass}
                         value={count}
                         onChange={(e) => setCount(e.target.value)}
                       >
-                        <option value="">Random</option>
+                        <option value="">{c.random}</option>
                         {COUNTS.map((c) => (
                           <option key={c} value={String(c)}>
                             {c}
@@ -252,14 +250,14 @@ export default function ChallengeGenerator({
                     </label>
                     <label className="flex w-36 flex-col gap-1">
                       <span className="text-xs font-semibold text-poke-dim">
-                        Type filter
+                        {c.typeFilter}
                       </span>
                       <select
                         className={selectClass}
                         value={type}
                         onChange={(e) => setType(e.target.value)}
                       >
-                        <option value="">Random</option>
+                        <option value="">{c.random}</option>
                         {TYPES.map((t) => (
                           <option key={t} value={t}>
                             {titleCase(t)}
@@ -269,14 +267,14 @@ export default function ChallengeGenerator({
                     </label>
                     <label className="flex w-36 flex-col gap-1">
                       <span className="text-xs font-semibold text-poke-dim">
-                        Region filter
+                        {c.regionFilter}
                       </span>
                       <select
                         className={selectClass}
                         value={region}
                         onChange={(e) => setRegion(e.target.value)}
                       >
-                        <option value="">Random</option>
+                        <option value="">{c.random}</option>
                         {REGIONS.map((r) => (
                           <option key={r} value={r}>
                             {titleCase(r)}
@@ -293,8 +291,8 @@ export default function ChallengeGenerator({
               type="button"
               onClick={() => setFilterOpen(true)}
               aria-expanded={filterOpen}
-              aria-label="Filters"
-              title="Filters"
+              aria-label={c.filtersAria}
+              title={c.filtersTitle}
               className="breathe flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red"
             >
               {gearIcon}
@@ -329,7 +327,9 @@ export default function ChallengeGenerator({
           <div className="mb-4 flex flex-col items-center gap-2">
             <div className="flex items-center gap-3 text-sm text-poke-dim">
               <span>
-                Revealed {revealed.size} / {challenge.pokemon.length}
+                {c.revealedProgress
+                  .replace("{revealed}", String(revealed.size))
+                  .replace("{total}", String(challenge.pokemon.length))}
               </span>
               <button
                 onClick={() =>
@@ -341,7 +341,7 @@ export default function ChallengeGenerator({
                 }
                 className="underline hover:text-poke-red"
               >
-                {allRevealed ? "Hide all" : "Reveal all"}
+                {allRevealed ? c.hideAll : c.revealAll}
               </button>
             </div>
             <div className="h-1.5 w-48 overflow-hidden rounded-full bg-poke-chip">
@@ -369,18 +369,21 @@ export default function ChallengeGenerator({
                       <div className="flex h-40 w-full items-center justify-center overflow-hidden">
                         <img
                           src={p.artwork || p.sprite}
-                          alt="Hidden Pokémon silhouette"
+                          alt={c.silhouetteAlt}
                           className={`silhouette h-36 w-36 object-contain ${silhouetteZoom}`}
                           loading="lazy"
                         />
                       </div>
                       {showTypeHint && (
                         <span className="mt-2 text-xs font-semibold text-poke-dim">
-                          Hint: {p.types.map((t) => titleCase(t)).join(" · ")}
+                          {c.typeHint.replace(
+                            "{types}",
+                            p.types.map((t) => titleCase(t)).join(" · "),
+                          )}
                         </span>
                       )}
                       <span className="mt-3 text-base font-semibold text-poke-dim">
-                        Who&apos;s that Pokémon?
+                        {c.whosThat}
                       </span>
                     </div>
                     {/* Back — revealed */}

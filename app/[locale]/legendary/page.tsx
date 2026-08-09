@@ -11,6 +11,7 @@ import {
   type Locale,
 } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
@@ -46,7 +47,7 @@ export default async function LegendaryPage({
   const pool = getAllPokemon()
     .filter((p) => p.isLegendary)
     .map((p) => p.dexNumber);
-  const initial = await getRandomPokemon(pool);
+  const initial = withLocalizedFlavor(await getRandomPokemon(pool), locale);
 
   return (
     <main className="pt-6 pb-10">

@@ -21,19 +21,27 @@ const VARIANTS = [
   "wheel",
 ];
 
-// /wheel and /fusion are English-only tool pages (locale URLs 308 to the
-// English one), so they're excluded from the translated set even though they
-// share the [variant] route.
-const TRANSLATED_VARIANTS = VARIANTS.filter(
-  (v) => v !== "fusion" && v !== "wheel",
-);
+// All variant pages exist in every locale (M3 localized wheel/fusion too).
+const TRANSLATED_VARIANTS = VARIANTS;
 
-// Page groups that exist in every locale. Everything else (team/challenge/
-// legal/adventure …) is English-only for now and stays a single entry with
-// no alternates.
+// Page groups that exist in every locale. Only the English-only synonym
+// landers (/random-pokemon, /random-pokemon-picker, /pokemon-randomizer)
+// stay single entries with no alternates.
 const TRANSLATED_PATHS = [
   "/",
   "/random-pokemon-generator",
+  "/adventure",
+  "/team",
+  "/team/random",
+  "/team/coach",
+  "/team/challenge",
+  "/challenge/guess",
+  "/challenge/shiny",
+  "/favorites",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/disclaimer",
   ...TRANSLATED_VARIANTS.map((v) => `/${v}`),
   ...REGIONS.map((r) => `/by/${r}`),
   ...TYPES.map((t) => `/type/${t}`),
@@ -60,17 +68,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     entry("/", true),
     entry("/random-pokemon-generator", true),
-    entry("/adventure", false),
-    entry("/team", false),
-    entry("/team/random", false),
-    entry("/team/coach", false),
-    entry("/team/challenge", false),
-    entry("/challenge/guess", false),
-    entry("/challenge/shiny", false),
-    entry("/disclaimer", false),
-    entry("/privacy", false),
-    entry("/terms", false),
-    entry("/contact", false),
+    entry("/adventure", true),
+    entry("/team", true),
+    entry("/team/random", true),
+    entry("/team/coach", true),
+    entry("/team/challenge", true),
+    entry("/challenge/guess", true),
+    entry("/challenge/shiny", true),
+    entry("/favorites", true),
+    entry("/disclaimer", true),
+    entry("/privacy", true),
+    entry("/terms", true),
+    entry("/contact", true),
+    // English-only synonym landers — no locale copies, no alternates.
+    entry("/random-pokemon", false),
+    entry("/random-pokemon-picker", false),
+    entry("/pokemon-randomizer", false),
   ];
 
   const variantPages = VARIANTS.map((v) =>

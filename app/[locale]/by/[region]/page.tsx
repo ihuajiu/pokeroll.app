@@ -15,6 +15,7 @@ import {
   type Locale,
 } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 import { genLabel } from "@/lib/i18n/names";
 
 export const dynamic = "force-dynamic";
@@ -82,7 +83,10 @@ export default async function RegionPage({
   const r = titleCase(region);
   const game = REGION_GAME[region] ?? "";
   const pool = await getPoolByRegion(region);
-  const initial = pool.length ? await getRandomPokemon(pool) : await getRandomPokemon();
+  const initial = withLocalizedFlavor(
+    pool.length ? await getRandomPokemon(pool) : await getRandomPokemon(),
+    locale,
+  );
   const gen = REGION_GEN[region] ?? 1;
   const linkCls =
     "font-medium text-poke-violet underline underline-offset-2";

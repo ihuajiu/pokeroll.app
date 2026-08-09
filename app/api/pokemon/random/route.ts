@@ -7,11 +7,15 @@ import {
   getPoolByRegion,
   getPoolByType,
 } from "@/lib/pokeapi";
+import { isLocale, type Locale } from "@/lib/i18n/config";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
+  const localeRaw = searchParams.get("locale");
+  const locale: Locale = localeRaw && isLocale(localeRaw) ? localeRaw : "en";
   const gen = searchParams.get("gen");
   const region = searchParams.get("region");
   const type = searchParams.get("type");
@@ -58,7 +62,7 @@ export async function GET(req: NextRequest) {
       );
     }
     const pokemon = await getRandomPokemon(pool ?? undefined);
-    return Response.json(pokemon);
+    return Response.json(withLocalizedFlavor(pokemon, locale));
   } catch {
     return Response.json({ error: "Failed to generate" }, { status: 500 });
   }

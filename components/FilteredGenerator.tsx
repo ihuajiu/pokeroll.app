@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Pokemon } from "@/lib/types";
+import { useI18n } from "@/components/I18nProvider";
 import HeroCard from "./HeroCard";
 import AddToTeamButton from "./AddToTeamButton";
 
@@ -14,11 +15,12 @@ export default function FilteredGenerator({
 }) {
   const [pokemon, setPokemon] = useState<Pokemon>(initial);
   const [loading, setLoading] = useState(false);
+  const { locale } = useI18n();
 
   async function regenerate() {
     setLoading(true);
     try {
-      const res = await fetch(`/api/pokemon/random?${query}`);
+      const res = await fetch(`/api/pokemon/random?${query}&locale=${locale}`);
       if (!res.ok) throw new Error("failed");
       setPokemon(await res.json());
     } catch {

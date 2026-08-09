@@ -1,72 +1,85 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  pageHref,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy — PokeRoll",
-  description:
-    "PokeRoll privacy policy — we use anonymous Google Analytics, store favorites and theme in your browser's localStorage only, and never collect personal data.",
-  keywords: [
-    "pokeroll privacy policy",
-    "pokemon tool privacy",
-    "fan site privacy",
-  ],
-  alternates: { canonical: "/privacy" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.privacy;
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, "/privacy"),
+      languages: languageAlternates("/privacy"),
+    },
+  };
+}
 
-export default function PrivacyPage() {
+export default async function PrivacyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.privacy;
+  const linkCls = "underline text-poke-red";
+
   return (
     <main className="mx-auto max-w-2xl py-10">
-      <PageHeader title="Privacy Policy" />
+      <PageHeader title={d.headerTitle} />
       <div className="space-y-4 text-sm leading-relaxed text-poke-dim">
+        <p>{d.intro}</p>
         <p>
-          PokeRoll is a free fan-made Pokémon toolbox. We keep data collection
-          to an absolute minimum — you can use every tool without an account,
-          and we never ask for personal information.
+          <strong>{d.analytics.h}</strong> {d.analytics.p}
         </p>
         <p>
-          <strong>Analytics:</strong> We use Google Analytics to understand
-          overall traffic (which pages are visited, roughly how many visitors).
-          This data is aggregated and anonymous — we do not use it to identify
-          individual users.
+          <strong>{d.storage.h}</strong> {d.storage.p}
         </p>
         <p>
-          <strong>Browser storage:</strong> Your favorites, team picks and
-          theme preferences are stored in your browser&apos;s localStorage
-          only. This data never leaves your device and is never uploaded to
-          our servers.
+          <strong>{d.personal.h}</strong> {d.personal.p}
         </p>
         <p>
-          <strong>Personal data:</strong> We do not collect names, email
-          addresses or any other personal data. There is no sign-up and no
-          tracking beyond the anonymous analytics described above.
-        </p>
-        <p>
-          <strong>Affiliate links:</strong> Some shopping links on this site
-          are affiliate links — see the{" "}
+          <strong>{d.affiliate.h}</strong> {d.affiliate.s1}
           <Link
-            href="/disclaimer"
-            title="Disclaimer"
-            className="underline text-poke-red"
+            href={pageHref(locale, "/disclaimer")}
+            title={dict.footer.disclaimerTitle}
+            className={linkCls}
           >
-            disclaimer
-          </Link>{" "}
-          for details. Affiliate partners may use their own cookies per their
-          own privacy policies.
+            {d.affiliate.l1}
+          </Link>
+          {d.affiliate.s2}
         </p>
         <p>
-          <strong>Contact:</strong> Questions about this policy? Email{" "}
-          <a
-            href="mailto:hello@pokeroll.app"
-            className="underline text-poke-red"
-          >
-            hello@pokeroll.app
+          <strong>{d.contact.h}</strong> {d.contact.s1}
+          <a href="mailto:hello@pokeroll.app" className={linkCls}>
+            {d.contact.l1}
           </a>
-          .
+          {d.contact.s2}
         </p>
         <p>
-          <Link href="/" title="PokeRoll home" className="font-semibold text-poke-red underline">
-            ← Back to the generator
+          <Link
+            href={pageHref(locale, "/")}
+            title={dict.nav.homeTitle}
+            className="font-semibold text-poke-red underline"
+          >
+            {d.backLink}
           </Link>
         </p>
       </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import HeroCard from "@/components/HeroCard";
 import { useTeam } from "@/components/useTeam";
+import { useI18n } from "@/components/I18nProvider";
 import { titleCase, REGION_GAME } from "@/lib/seo";
 import { TYPE_HEX } from "@/lib/typeColors";
 import {
@@ -18,6 +19,8 @@ export default function AdventureView({
   initial: Adventure;
 }) {
   const { add, team, max } = useTeam();
+  const { dict, locale } = useI18n();
+  const v = dict.adventureView;
   const [adventure, setAdventure] = useState<Adventure>(initial);
   const [difficulty, setDifficulty] = useState<string>(initial.difficulty);
   const [rolling, setRolling] = useState(false);
@@ -50,7 +53,7 @@ export default function AdventureView({
     setRolling(true);
     const seed = randomSeed();
     try {
-      const params = new URLSearchParams({ seed, difficulty: nextDifficulty });
+      const params = new URLSearchParams({ seed, difficulty: nextDifficulty, locale });
       const res = await fetch(`/api/adventure?${params.toString()}`);
       if (!res.ok) throw new Error("roll failed");
       const next = (await res.json()) as Adventure;
@@ -104,11 +107,15 @@ export default function AdventureView({
     const slots = max - team.length;
 
     if (slots <= 0) {
-      flash(`Team is full (${team.length}/${max}). Remove some to add new Pokémon.`);
+      flash(
+        v.teamFull
+          .replace("{count}", String(team.length))
+          .replace("{max}", String(max)),
+      );
       return;
     }
     if (fresh.length === 0) {
-      flash("All these Pokémon are already in your team.");
+      flash(v.alreadyInTeam);
       return;
     }
     // Only add up to the available slots — never overflow, which would
@@ -117,9 +124,18 @@ export default function AdventureView({
     toAdd.forEach((p) => add(p));
     const added = toAdd.length;
     if (added < fresh.length) {
-      flash(`Added ${added} — team is now full (${max}/${max}).`);
+      flash(
+        v.addedFull
+          .replace("{added}", String(added))
+          .replace("{max}", String(max)),
+      );
     } else {
-      flash(`Added ${added} to your team (${team.length + added}/${max}).`);
+      flash(
+        v.addedToTeam
+          .replace("{added}", String(added))
+          .replace("{count}", String(team.length + added))
+          .replace("{max}", String(max)),
+      );
     }
   }
 
@@ -128,12 +144,13 @@ export default function AdventureView({
       {/* Action bar */}
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-poke-dim">
-          Seed <span className="font-mono">{a.seed}</span> — share this link to
-          replay the exact same adventure.
+          {v.seedLine.split("{seed}")[0]}
+          <span className="font-mono">{a.seed}</span>
+          {v.seedLine.split("{seed}")[1]}
         </p>
         <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
           <label className="flex items-center gap-2 text-sm text-poke-dim">
-            Difficulty
+            {v.difficultyLabel}
             <select
               value={difficulty}
               onChange={(e) => {
@@ -157,7 +174,7 @@ export default function AdventureView({
             onClick={addAll}
             className="rounded-xl bg-poke-btn px-4 py-2 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
           >
-            Add all to Team
+            {v.addAllToTeam}
             <span className="ml-1.5 rounded-full bg-white/20 px-1.5 text-xs leading-5">
               {team.length}/{max}
             </span>
@@ -167,7 +184,7 @@ export default function AdventureView({
             onClick={share}
             className="rounded-xl border border-poke-border bg-poke-surface px-4 py-2 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
           >
-            {copied ? "Copied!" : "Share Adventure"}
+            {copied ? dict.common.copied : v.shareAdventure}
           </button>
           <button
             type="button"
@@ -175,7 +192,7 @@ export default function AdventureView({
             disabled={rolling}
             className="rounded-xl bg-poke-red px-4 py-2 font-semibold text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {rolling ? "Rolling…" : "Roll Again"}
+            {rolling ? dict.heroCard.rolling : v.rollAgain}
           </button>
         </div>
       </div>
@@ -201,43 +218,43 @@ export default function AdventureView({
         <div className="am-meta">
           <span>
             <span className="am-dot" />
-            Adventure Manifest
+            {v.manifest}
           </span>
-          <span>Difficulty · {a.difficulty}</span>
-          <span>Seed · {a.seed}</span>
+          <span>{v.manifestDifficulty.replace("{difficulty}", a.difficulty)}</span>
+          <span>{v.manifestSeed.replace("{seed}", a.seed)}</span>
         </div>
 
         <div className="am-hero">
-          <div className="am-kicker">Trainer Profile</div>
+          <div className="am-kicker">{v.trainerProfile}</div>
           <h2 className="am-name">{a.trainer.name}</h2>
           <p className="am-role">
             <b>{a.trainer.role}</b>
             <span className="am-sep">/</span>
             <i>{a.trainer.style}</i>
           </p>
-          <span className="am-style">Style · {a.trainer.style}</span>
+          <span className="am-style">{v.styleLine.replace("{style}", a.trainer.style)}</span>
         </div>
 
         <div className="am-grid">
           <div className="am-cell region">
-            <div className="am-k">Region</div>
+            <div className="am-k">{dict.heroCard.region}</div>
             <div className="am-v">
               {titleCase(a.region)}
               <small>{REGION_GAME[a.region] ?? "—"}</small>
             </div>
           </div>
           <div className="am-cell">
-            <div className="am-k">Challenge</div>
+            <div className="am-k">{v.challenge}</div>
             <div className="am-v">{a.challenge}</div>
           </div>
           <div className="am-cell">
-            <div className="am-k">Goal</div>
+            <div className="am-k">{v.goal}</div>
             <div className="am-v">{a.goal}</div>
           </div>
         </div>
 
         <div className="am-foot">
-          <span>Team · {a.team.length} unknown companions</span>
+          <span>{v.teamCompanions.replace("{n}", String(a.team.length))}</span>
           <span className="am-team-dots" aria-hidden="true">
             {Array.from({ length: 6 }).map((_, i) => (
               <i key={i} className={i < a.team.length ? "on" : ""} />
@@ -250,7 +267,7 @@ export default function AdventureView({
       {a.starter && (
         <div className="mb-8">
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Your Starter
+            {v.yourStarter}
           </h2>
           <div className="card-stage mx-auto flex max-w-[640px] justify-center">
             <HeroCard pokemon={a.starter} showActions variant="wide" favoritable />
@@ -262,15 +279,16 @@ export default function AdventureView({
       {a.rival && (
         <div className="mb-8">
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Your Rival
+            {v.yourRival}
           </h2>
           <div className="mx-auto mb-4 max-w-[640px] rounded-2xl border border-poke-border bg-poke-surface p-4 text-center shadow-sm">
             <p className="text-lg font-bold text-poke-ink">
               {a.rival.name} — {a.rival.title}
             </p>
             <p className="text-sm text-poke-dim">
-              {a.rival.name} chose a {titleCase(a.rival.starter.types[0])}-type
-              starter to counter yours.
+              {v.rivalCounter
+                .replace("{name}", a.rival.name)
+                .replace("{type}", titleCase(a.rival.starter.types[0]))}
             </p>
           </div>
           <div className="card-stage mx-auto flex max-w-[640px] justify-center">
@@ -287,7 +305,7 @@ export default function AdventureView({
       {a.team.length > 0 && (
         <div>
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Your Team ({a.team.length})
+            {v.yourTeam.replace("{n}", String(a.team.length))}
           </h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {a.team.map((p) => (
@@ -307,7 +325,7 @@ export default function AdventureView({
       {a.gymJourney && a.gymJourney.length > 0 && (
         <div className="mt-8">
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Gym Journey
+            {v.gymJourney}
           </h2>
           <div className="rounded-2xl border border-poke-border bg-poke-surface p-4 shadow-sm">
             <ol className="grid grid-cols-4 gap-x-1 gap-y-6 sm:grid-cols-8 sm:gap-x-0">
@@ -356,7 +374,7 @@ export default function AdventureView({
       {a.legendary && (
         <div className="mt-8">
           <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-            Legendary Encounter
+            {v.legendaryEncounter}
           </h2>
           <div className="mx-auto mb-4 max-w-[640px] rounded-2xl border border-poke-border bg-poke-surface p-4 text-center shadow-sm">
             <p className="text-sm font-semibold uppercase tracking-wide text-poke-dim">

@@ -6,6 +6,7 @@ import { getRandomPokemon } from "@/lib/pokeapi";
 import { localizeTools, localizeToolGroups, type ToolId } from "@/lib/tools";
 import type { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 const SPRITE = (id: number) => `/pokemon/artwork/${id}.webp`;
 
@@ -93,7 +94,7 @@ const TOOL_SPRITE: Record<string, number> = {
 export default async function Home({ locale = "en" }: { locale?: Locale }) {
   // Build-time random showcase card — visitors can re-roll it client-side
   // right in the hero (writes ?p= so the pull is shareable).
-  const initial = await getRandomPokemon();
+  const initial = withLocalizedFlavor(await getRandomPokemon(), locale);
   const dict = await getDictionary(locale);
   const d = dict.homeTool;
   const TOOLS = localizeTools(dict);

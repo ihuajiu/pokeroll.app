@@ -30,3 +30,5 @@ docs/solutions/
 docs/plans/
 docs/superpowers/
 docs/keywords.txt
+# PokéAPI fetch caches (resumable intermediate results)
+scripts/.cache/

@@ -5,33 +5,57 @@ import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getRandomPokemon } from "@/lib/pokeapi";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  pageHref,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Random Pokémon Generator Wheel | PokeRoll",
-  description:
-    "Spin the wheel for a random Pokémon — a fun game-of-chance picker across the whole Pokédex. Watch it land, then copy your pick to Showdown. Free fan-made tool.",
-  keywords: [
-    "random pokemon generator wheel",
-    "pokemon wheel generator",
-    "random pokemon wheel",
-    "pokemon picker wheel",
-  ],
-  alternates: { canonical: "/wheel" },
-};
+const PATH = "/wheel";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.wheel;
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, PATH),
+      languages: languageAlternates(PATH),
+    },
+  };
+}
 
 export default async function WheelPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ result?: string; players?: string; dex?: string }>;
 }) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.wheel;
   const sp = await searchParams;
   const resultView = sp.result === "1";
   const players = Number(sp.players);
   const dexes = (sp.dex || "")
     .split(",")
-    .map((d) => Number(d.trim()))
+    .map((d2) => Number(d2.trim()))
     .filter((n) => !Number.isNaN(n) && n > 0);
   // result=1 & players & dex → a shared round: show the PK results,
   // not a fresh wheel to spin.
@@ -41,44 +65,29 @@ export default async function WheelPage({
       : null;
   const items = await Promise.all(
     Array.from({ length: 8 }, () => getRandomPokemon()),
-  );
+  ).then((ps) => ps.map((p) => withLocalizedFlavor(p, locale)));
   return (
     <main className="pt-6 pb-10">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
-          { label: "Generators", href: "/#browse" },
-          { label: "Spin the Wheel" },
+          { label: dict.common.home, href: pageHref(locale, "/") },
+          { label: dict.tools.groups.generator.title, href: pageHref(locale, "/#browse") },
+          { label: d.breadcrumbLabel },
         ]}
       />
       <PageHeader
-        title="Pokémon Wheel Generator"
-        description="Spin the wheel for a random Pokémon — a fun game-of-chance picker across the Pokédex — copy your pick to Showdown."
+        title={d.headerTitle}
+        description={d.headerDesc}
       />
       {!shared && (
   <GuideSteps
     className="mx-auto mb-6 max-w-[1100px] px-4"
-    steps={[
-      {
-        n: "1",
-        t: "Pick your players",
-        d: "Choose 2-6 players — each one takes a turn spinning the wheel.",
-      },
-      {
-        n: "2",
-        t: "Spin & land",
-        d: "Every spin lands on a Pokémon and stacks into the round results below.",
-      },
-      {
-        n: "3",
-        t: "Battle & share",
-        d: "Highest BST wins the round — share the result to challenge friends.",
-      },
-    ]}
+    title={d.guideTitle}
+    steps={d.steps}
   />
 )}
 <WheelGenerator initial={{ items }} shared={shared} />
-      <RelatedTools current="/wheel" />
+      <RelatedTools current="/wheel" locale={locale} />
     </main>
   );
 }

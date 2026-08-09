@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import HeroCard from "@/components/HeroCard";
 import { useTeam } from "./useTeam";
+import { useI18n } from "./I18nProvider";
 import type { Pokemon } from "@/lib/types";
 import { downloadTeamResult, type TeamResultCardData } from "@/lib/shareCard";
 import TeamShowdownExport from "./TeamShowdownExport";
@@ -15,41 +16,34 @@ function bstTotal(list: Pokemon[]) {
 }
 
 function DetailedHowTo() {
+  const { dict } = useI18n();
+  const t = dict.teamChallengeUi;
   return (
     <div className="mt-12 rounded-2xl border border-poke-border bg-poke-surface p-6">
-      <h2 className="text-base font-extrabold text-poke-ink">How to use the Team Challenge</h2>
+      <h2 className="text-base font-extrabold text-poke-ink">{t.howToTitle}</h2>
       <ol className="mt-3 space-y-2 text-sm leading-relaxed text-poke-dim">
         <li>
-          <strong className="text-poke-ink">1. The challenge team.</strong>{" "}
-          This page always shows a seeded 6-Pokémon squad — everyone who opens the
-          same link sees the exact same lineup (that's the "challenge").
+          <strong className="text-poke-ink">{t.howTo1T}</strong>{" "}
+          {t.howTo1D}
         </li>
         <li>
-          <strong className="text-poke-ink">2. Roll yours.</strong> Tap{" "}
-          <em>Roll my team</em> to generate your own 6-Pokémon squad — one roll
-          per challenge, so no retrying until you win.
+          <strong className="text-poke-ink">{t.howTo2T}</strong> {t.howTo2S1}{" "}
+          <em>{t.howTo2Em}</em> {t.howTo2S2}
         </li>
         <li>
-          <strong className="text-poke-ink">3. Compare.</strong> Both teams are
-          shown with their total base stats (BST) — the higher total wins, and
-          ties are possible.
+          <strong className="text-poke-ink">{t.howTo3T}</strong> {t.howTo3D}
         </li>
         <li>
-          <strong className="text-poke-ink">4. Share.</strong>{" "}
-          <em>Challenge a friend</em> copies a link with the same challenge team,
-          so a friend gets the identical lineup to try to beat.
+          <strong className="text-poke-ink">{t.howTo4T}</strong>{" "}
+          <em>{t.howTo4Em}</em> {t.howTo4D}
         </li>
         <li>
-          <strong className="text-poke-ink">5. Export the result.</strong>{" "}
-          <em>Share the result card</em> or <em>Download card</em> creates an
-          image of the matchup (with a QR code) — great for posting in your
-          community.
+          <strong className="text-poke-ink">{t.howTo5T}</strong>{" "}
+          <em>{t.howTo5Em1}</em> {t.howTo5S} <em>{t.howTo5Em2}</em> {t.howTo5D}
         </li>
         <li>
-          <strong className="text-poke-ink">6. Start your own.</strong>{" "}
-          <em>Start your own challenge</em> makes you the host — you re-roll the
-          challenge team and share it with a friend, instead of rolling against
-          your own squad again.
+          <strong className="text-poke-ink">{t.howTo6T}</strong>{" "}
+          <em>{t.howTo6Em}</em> {t.howTo6D}
         </li>
       </ol>
     </div>
@@ -86,6 +80,8 @@ export default function TeamChallenge({
   const [cardBusy, setCardBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const { add, team: savedTeam, max } = useTeam();
+  const { dict } = useI18n();
+  const t = dict.teamChallengeUi;
 
   function flash(msg: string) {
     setNotice(msg);
@@ -98,15 +94,19 @@ export default function TeamChallenge({
     const fresh = squad.filter((p) => !inTeam.has(p.dexNumber));
     const slots = max - savedTeam.length;
     if (slots <= 0) {
-      flash(`Team is full (${savedTeam.length}/${max}). Remove some first.`);
+      flash(
+        t.teamFull
+          .replace("{count}", String(savedTeam.length))
+          .replace("{max}", String(max)),
+      );
       return;
     }
     if (fresh.length === 0) {
-      flash("All these Pokémon are already in your team.");
+      flash(t.alreadyInTeam);
       return;
     }
     fresh.slice(0, slots).forEach((p) => add(p));
-    flash(`Added ${Math.min(fresh.length, slots)} to your team.`);
+    flash(t.addedToTeam.replace("{count}", String(Math.min(fresh.length, slots))));
   }
 
   // No seed yet = idle state: nothing is generated until the user clicks.
@@ -119,11 +119,10 @@ export default function TeamChallenge({
             ⚔️
           </div>
           <h2 className="mt-4 text-2xl font-extrabold text-poke-ink">
-            Ready to start a Team Challenge?
+            {t.idleTitle}
           </h2>
           <p className="mx-auto mt-2 max-w-lg text-sm text-poke-dim">
-            Click below to generate a random 6-Pokémon challenge team — then roll
-            your own squad and see whose total base stats are higher.
+            {t.idleDesc}
           </p>
           <button
             onClick={() =>
@@ -143,7 +142,7 @@ export default function TeamChallenge({
                 <circle cx="15.5" cy="15.5" r="1.4" />
               </g>
             </svg>
-            Generate the challenge
+            {t.generateChallenge}
           </button>
         </div>
         <DetailedHowTo />
@@ -166,16 +165,16 @@ export default function TeamChallenge({
   // Neutral labels so the winner is clear in every context: the "challenge"
   // is the team in the shared link, the "challenger" is the one that rolled
   // against it (whoever is viewing, the wording stays the same).
-  const mineLabel = resultView ? "Their team" : "Your team";
+  const mineLabel = resultView ? t.theirTeamLabel : t.yourTeamLabel;
   const result =
     yours && myBst != null
       ? myBst > chBst
         ? resultView
-          ? "Their team wins!"
-          : "You win!"
+          ? t.theirWin
+          : t.youWin
         : myBst < chBst
-          ? "The challenge wins!"
-          : "It's a tie!"
+          ? t.challengeWins
+          : t.tie
       : null;
 
   const params = count !== 6 ? `&count=${count}` : "";
@@ -279,9 +278,9 @@ export default function TeamChallenge({
   }
 
   const steps = [
-    { n: "1", t: "Roll a team", d: "That's the lineup you'll challenge with." },
-    { n: "2", t: "Share the link", d: "A friend opens the exact same team." },
-    { n: "3", t: "They roll & compare", d: "Total BST decides who wins — export either team to Showdown." },
+    { n: "1", t: t.step1T, d: t.step1D },
+    { n: "2", t: t.step2T, d: t.step2D },
+    { n: "3", t: t.step3T, d: t.step3D },
   ];
 
   return (
@@ -295,17 +294,17 @@ export default function TeamChallenge({
       <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
         <h2 className="text-xl font-extrabold text-poke-ink">
           {isOwner
-            ? "Your challenge team is ready"
+            ? t.ownerHeading
             : yours
-              ? "Here's your shot — try to beat it!"
-              : "Take the challenge — roll your team"}
+              ? t.yoursHeading
+              : t.takeHeading}
         </h2>
         <p className="mt-1 text-sm text-poke-dim">
           {isOwner
-            ? "Share the link — a friend rolls their own team to try to beat this one."
+            ? t.ownerDesc
             : yours
-              ? "One roll per challenge — start your own challenge to share with a friend."
-              : "You get 6 random Pokémon — higher total base stats than the challenge team wins."}
+              ? t.yoursDesc
+              : t.takeDesc}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
@@ -323,10 +322,10 @@ export default function TeamChallenge({
               </g>
             </svg>
             {isOwner
-              ? "Re-roll challenge"
+              ? t.rerollChallenge
               : yours
-                ? "Start your own challenge"
-                : "Roll my team"}
+                ? t.startOwn
+                : t.rollMine}
           </button>
           <button
             onClick={challenge}
@@ -339,7 +338,7 @@ export default function TeamChallenge({
               <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
             </svg>
-            {copied ? "Link copied!" : "Challenge a friend"}
+            {copied ? t.linkCopied : t.challengeFriend}
           </button>
         </div>
       </div>
@@ -362,7 +361,7 @@ export default function TeamChallenge({
       {/* Challenge team */}
       <div>
         <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-poke-dim">
-          {isOwner ? "🫵 Your challenge team" : "🏳️ The challenge"} · {chBst} BST
+          {isOwner ? t.ownerTeamLabel : t.challengeLabel} · {chBst} BST
         </h3>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {team.map((p) => (
@@ -380,7 +379,7 @@ export default function TeamChallenge({
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
-            Add all to Team
+            {t.addAllToTeam}
           </button>
         </div>
       </div>
@@ -396,11 +395,11 @@ export default function TeamChallenge({
             </span>
             <span className="text-poke-dim">vs</span>
             <span className="text-poke-ink">
-              The challenge <span className="text-poke-red">{chBst} BST</span>
+              {t.theChallenge} <span className="text-poke-red">{chBst} BST</span>
             </span>
           </div>
           <p className="mt-2 text-lg font-extrabold text-poke-red">{result}</p>
-          <p className="mt-1 text-xs text-poke-dim">Higher total base stats wins.</p>
+          <p className="mt-1 text-xs text-poke-dim">{t.higherWins}</p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={shareResult}
@@ -414,10 +413,10 @@ export default function TeamChallenge({
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
             </svg>
             {cardBusy
-              ? "Rendering…"
+              ? t.rendering
               : resultCopied
-                ? "Link copied!"
-                : "Share result"}
+                ? t.linkCopied
+                : t.shareResult}
           </button>
           <button
             onClick={downloadResult}
@@ -429,7 +428,7 @@ export default function TeamChallenge({
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" x2="12" y1="15" y2="3" />
             </svg>
-            Download card
+            {t.downloadCard}
           </button>
           <ShowdownCopyButton
             getText={loadBothText}
@@ -465,7 +464,7 @@ export default function TeamChallenge({
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
-              Add all to Team
+              {t.addAllToTeam}
             </button>
           </div>
         </div>

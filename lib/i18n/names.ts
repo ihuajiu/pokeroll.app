@@ -1,6 +1,9 @@
 import type { Locale } from "./config";
 import namesDe from "@/data/names-de.json";
 import namesFr from "@/data/names-fr.json";
+import abilitiesEs from "@/data/abilities-es.json";
+import abilitiesDe from "@/data/abilities-de.json";
+import abilitiesFr from "@/data/abilities-fr.json";
 
 /* ------------------------------------------------------------------ */
 /*  Localized Pokémon terminology                                       */
@@ -26,6 +29,36 @@ export function localizedDisplayName(
   locale: Locale,
 ): string {
   return LOCALIZED_NAMES[locale]?.[pokemon.name] ?? pokemon.displayName;
+}
+
+/* Ability display names: es/de/fr have official game-localized terms in
+ * data/abilities-{es,de,fr}.json (keyed by slug, each entry keeps the English
+ * display name); pt has no official localization, so pt/en keep English. */
+type AbilityEntry = { en: string; name: string };
+
+function buildAbilityIndex(table: Record<string, AbilityEntry>) {
+  const byEn: Record<string, string> = {};
+  for (const [slug, v] of Object.entries(table)) {
+    byEn[v.en] = v.name;
+    // Also index the slug so API values ("unaware") resolve too.
+    byEn[slug] = v.name;
+  }
+  return byEn;
+}
+
+const LOCALIZED_ABILITIES: Partial<Record<Locale, Record<string, string>>> = {
+  es: buildAbilityIndex(abilitiesEs as Record<string, AbilityEntry>),
+  de: buildAbilityIndex(abilitiesDe as Record<string, AbilityEntry>),
+  fr: buildAbilityIndex(abilitiesFr as Record<string, AbilityEntry>),
+};
+
+/**
+ * Localized ability display name. Accepts either the English display string
+ * ("Flame Body", carried by Pokemon.abilities) or the slug ("flame-body",
+ * returned by /api/variant); anything missing falls back to the input.
+ */
+export function localizedAbility(englishOrSlug: string, locale: Locale): string {
+  return LOCALIZED_ABILITIES[locale]?.[englishOrSlug] ?? englishOrSlug;
 }
 
 export const TYPE_NAMES: Record<Locale, Record<string, string>> = {

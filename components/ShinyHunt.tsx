@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import type { Pokemon } from "@/lib/types";
 import { downloadShinyCard, shareShinyCard } from "@/lib/shareCard";
+import { useI18n } from "@/components/I18nProvider";
 
 export interface WildMon {
   dexNumber: number;
@@ -68,6 +69,8 @@ export default function ShinyHunt({
   onFound?: () => void;
 }) {
   const [count, setCount] = useState(startFound ? encounters : 0);
+  const { dict } = useI18n();
+  const s = dict.shinyHunt;
   const [current, setCurrent] = useState<WildMon | null>(null);
   const [imgBusy, setImgBusy] = useState(false);
   const [shareDone, setShareDone] = useState<
@@ -129,6 +132,17 @@ export default function ShinyHunt({
     target.shinyArtwork || target.shinySprite || target.artwork || target.sprite;
   const actualOdds = odds ?? FALLBACK_ODDS;
   const progress = found ? 1 : Math.min(1, count / actualOdds);
+  // UI verdict for the on-screen found card. The share-card payload keeps
+  // the English verdict() above — share assets stay English.
+  const luckRatio = encounters / actualOdds;
+  const verdictText =
+    luckRatio <= 0.25
+      ? s.verdicts.absurdlyLucky
+      : luckRatio <= 1
+        ? s.verdicts.lucky
+        : luckRatio <= 2
+          ? s.verdicts.overOdds
+          : s.verdicts.brutal;
 
   /** Card payload shared by the image-share and download entries. */
   function buildCardData() {
@@ -159,7 +173,7 @@ export default function ShinyHunt({
           {/* Card head: SHINY tag + difficulty/odds chips */}
           <div className="relative flex items-center justify-between gap-3 px-6 pt-4">
             <span className="tcg-gold-text inline-flex items-center gap-2 text-sm font-extrabold tracking-[0.28em]">
-              ✦ SHINY
+              {s.shinyTag}
             </span>
             <div className="flex items-center gap-2">
               {difficulty && (
@@ -168,8 +182,8 @@ export default function ShinyHunt({
               <span className="tcg-chip-odds inline-flex items-center gap-1.5">
                 ✦{" "}
                 {pity
-                  ? `1 / ${actualOdds.toLocaleString()} · GUARANTEED`
-                  : `ODDS 1 / ${actualOdds.toLocaleString()}`}
+                  ? s.oddsGuaranteed.replace("{odds}", actualOdds.toLocaleString())
+                  : s.oddsLabel.replace("{odds}", actualOdds.toLocaleString())}
               </span>
             </div>
           </div>
@@ -177,7 +191,7 @@ export default function ShinyHunt({
           {/* HUD: counter + full gold bar */}
           <div className="relative px-6 pt-3">
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/45">
-              Encounters
+              {s.encountersLabel}
             </div>
             <div className="mt-0.5 font-display text-3xl font-extrabold tabular-nums leading-none text-white">
               {count.toLocaleString()}
@@ -209,7 +223,7 @@ export default function ShinyHunt({
             />
             <img
               src={shinyImg}
-              alt={`Shiny ${target.displayName}`}
+              alt={s.shinyName.replace("{name}", target.displayName)}
               className="relative h-44 w-44 animate-[tcg-float_3.6s_ease-in-out_infinite] object-contain drop-shadow-[0_0_34px_rgba(250,204,21,0.55)] sm:h-[260px] sm:w-[260px]"
             />
             {/* Ambient twinkles */}
@@ -244,14 +258,15 @@ export default function ShinyHunt({
           {/* Info */}
           <div className="relative px-6 pb-1 text-center">
             <div className="tcg-gold-text font-display text-2xl font-extrabold leading-tight sm:text-[32px]">
-              Shiny {target.displayName}
+              {s.shinyName.replace("{name}", target.displayName)}
             </div>
             <p className="mt-1.5 text-sm text-white/60">
-              Found after{" "}
+              {s.foundAfterPre}
               <strong className="font-bold text-amber-200">
-                {encounters.toLocaleString()} encounters
-              </strong>{" "}
-              — {verdict(encounters, actualOdds)}
+                {s.foundAfterCount.replace("{n}", encounters.toLocaleString())}
+              </strong>
+              {s.foundAfterSep}
+              {verdictText}
             </p>
           </div>
 
@@ -269,8 +284,8 @@ export default function ShinyHunt({
                   }
                 }}
                 disabled={imgBusy}
-                aria-label="Share your shiny"
-                title="Share your shiny"
+                aria-label={s.shareAria}
+                title={s.shareTitle}
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-poke-btn text-white shadow-glow transition hover:bg-poke-btnHover active:scale-95 disabled:opacity-60"
               >
                 <svg
@@ -301,8 +316,8 @@ export default function ShinyHunt({
                   }
                 }}
                 disabled={imgBusy}
-                aria-label="Download card"
-                title="Download card"
+                aria-label={dict.heroCard.downloadCard}
+                title={dict.heroCard.downloadCard}
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white/85 transition hover:border-amber-300 hover:text-amber-300 active:scale-95 disabled:opacity-60"
               >
                 <svg
@@ -323,8 +338,8 @@ export default function ShinyHunt({
               {onNewHunt && (
                 <button
                   onClick={onNewHunt}
-                  aria-label="Start your own hunt"
-                  title="Start your own hunt"
+                  aria-label={s.newHuntAria}
+                  title={s.newHuntTitle}
                   className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white/85 transition hover:border-amber-300 hover:text-amber-300 active:scale-95"
                 >
                   <svg
@@ -352,15 +367,15 @@ export default function ShinyHunt({
               className="mt-1.5 min-h-4 text-center text-xs font-semibold text-amber-200"
             >
               {imgBusy
-                ? "Rendering…"
+                ? s.rendering
                 : shareDone === "shared"
-                  ? "Shared!"
+                  ? dict.heroCard.shared
                   : shareDone === "copied"
-                    ? "Link copied!"
+                    ? dict.heroCard.linkCopied
                     : shareDone === "downloaded"
-                      ? "Image saved!"
+                      ? dict.heroCard.imageSavedBang
                       : dlDone
-                        ? "Image saved!"
+                        ? dict.heroCard.imageSavedBang
                         : ""}
             </p>
           </div>
@@ -389,7 +404,7 @@ export default function ShinyHunt({
         <div className="relative flex items-end justify-between gap-4 px-7 pt-6">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-poke-dim">
-              Encounters
+              {s.encountersLabel}
             </div>
             <div className="mt-0.5 font-display text-4xl font-extrabold tabular-nums leading-none text-poke-ink">
               {count.toLocaleString()}
@@ -404,8 +419,8 @@ export default function ShinyHunt({
             <span className="inline-flex items-center gap-1.5 rounded-full bg-poke-chip px-3.5 py-1.5 text-xs font-bold text-poke-ink">
               <span aria-hidden="true">✦</span>
               {pity
-                ? `1 / ${actualOdds.toLocaleString()} · guaranteed`
-                : `odds 1 / ${actualOdds.toLocaleString()}`}
+                ? s.oddsGuaranteedLower.replace("{odds}", actualOdds.toLocaleString())
+                : s.oddsLabelLower.replace("{odds}", actualOdds.toLocaleString())}
             </span>
           </div>
         </div>
@@ -458,9 +473,9 @@ export default function ShinyHunt({
                 className="mx-auto h-52 w-52 object-contain"
               />
               <div className="mt-4 text-base font-semibold text-poke-ink">
-                A wild {current.displayName} appeared…
+                {s.wildAppeared.replace("{name}", current.displayName)}
               </div>
-              <div className="mt-1 text-sm text-poke-dim">not shiny</div>
+              <div className="mt-1 text-sm text-poke-dim">{s.notShiny}</div>
             </div>
           ) : (
             <div className="relative py-8">
@@ -468,7 +483,7 @@ export default function ShinyHunt({
                 🌿
               </div>
               <p className="mt-4 text-sm text-poke-dim">
-                Tall grass rustles… start encountering to hunt your shiny.
+                {s.emptyState}
               </p>
             </div>
           )}
@@ -480,7 +495,7 @@ export default function ShinyHunt({
             <span aria-hidden="true" className="text-xl leading-none">
               ✦
             </span>
-            Encounter!
+            {s.encounter}
           </button>
         </div>
       </div>

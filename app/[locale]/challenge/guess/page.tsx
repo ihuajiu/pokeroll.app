@@ -11,32 +11,64 @@ import {
   type ChallengeDifficulty,
 } from "@/lib/challenge";
 import { DIFFICULTIES } from "@/lib/adventure-types";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  pageHref,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Guess the Pokémon — Silhouette Challenge",
-  description:
-    "Guess hidden Pokémon from their silhouettes, reveal them one by one to check, then share the seeded link to challenge a friend. Free fan-made tool.",
-  keywords: [
-    "guess the pokemon",
-    "pokemon guessing game",
-    "pokemon quiz",
-    "who's that pokemon",
-  ],
-  alternates: { canonical: "/challenge/guess" },
+const PATH = "/challenge/guess";
+
+// Mirrors maxCountForDifficulty in lib/challenge.ts so the header copy shows
+// the same clamped count the challenge actually rolls.
+const MAX_BY_DIFFICULTY: Record<string, number> = {
+  Easy: 12,
+  Normal: 10,
+  Hard: 8,
+  Extreme: 6,
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.guess;
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, PATH),
+      languages: languageAlternates(PATH),
+    },
+  };
+}
 
 type SP = Record<string, string | string[] | undefined>;
 const get = (sp: SP, k: string) =>
   Array.isArray(sp[k]) ? (sp[k] as string[])[0] : (sp[k] as string | undefined);
 
 export default async function GuessChallengePage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<SP>;
 }) {
-  const sp = await searchParams;
+  const [{ locale: rawLocale }, sp] = await Promise.all([params, searchParams]);
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.guess;
   const countRaw = Number(get(sp, "count"));
   // No count param = default of 4 until the user picks another value.
   const count = countRaw ? Math.min(12, Math.max(1, countRaw)) : 4;
@@ -61,54 +93,51 @@ export default async function GuessChallengePage({
     difficulty,
   };
   const challenge = await getChallenge(config);
+  challenge.pokemon = challenge.pokemon.map((p) =>
+    withLocalizedFlavor(p, locale),
+  );
+  // getChallenge clamps the count to the difficulty cap — mirror that here so
+  // the header copy matches the rolled lineup.
+  const clamped = Math.max(
+    1,
+    Math.min(count, MAX_BY_DIFFICULTY[difficulty] ?? 12),
+  );
 
   return (
     <main className="pt-6 pb-10">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
-          { label: "Challenges", href: "/#browse" },
-          { label: "Guess the Pokémon" },
+          { label: dict.common.home, href: pageHref(locale, "/") },
+          {
+            label: dict.tools.groups.challenge.title,
+            href: pageHref(locale, "/#browse"),
+          },
+          { label: d.breadcrumbLabel },
         ]}
       />
       <PageHeader
         compact
-        title={challenge.title}
-        description={challenge.description}
+        title={d.headerTitle}
+        description={d.headerDesc.replace("{count}", String(clamped))}
       />
       <p className="mb-6 text-sm text-poke-dim">
-        Prefer one quick mystery card instead?{" "}
+        {d.promoS1}
         <Link
-          href="/no-names"
-          title="Mystery Pokémon"
+          href={pageHref(locale, "/no-names")}
+          title={dict.tools.items.mystery.label}
           className="font-semibold text-[#ee3b3b] underline underline-offset-2"
         >
-          Mystery Pokémon →
+          {d.promoLink}
         </Link>
       </p>
 
       <GuideSteps
         className="mb-6"
-        steps={[
-          {
-            n: "1",
-            t: "Study the silhouettes",
-            d: "Shape, size and the Easy type hint are all you've got — lock in your guess.",
-          },
-          {
-            n: "2",
-            t: "Flip to reveal",
-            d: "Click a card to flip it and see if you named the Pokémon right.",
-          },
-          {
-            n: "3",
-            t: "Share & compare",
-            d: "The seed in the link recreates the same lineup — share it and race a friend.",
-          },
-        ]}
+        title={d.guideTitle}
+        steps={d.steps.map((s, i) => ({ n: String(i + 1), ...s }))}
       />
       <ChallengeGenerator challenge={challenge} />
-      <RelatedTools current="/challenge/guess" />
+      <RelatedTools current="/challenge/guess" locale={locale} />
     </main>
   );
 }

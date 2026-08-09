@@ -14,6 +14,7 @@ import {
   type Locale,
 } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
@@ -88,6 +89,7 @@ export default async function RandomGeneratorPage({
   } else {
     initial = await getRandomPokemon();
   }
+  initial = withLocalizedFlavor(initial, locale);
 
   return (
     <main className="pt-4 pb-10">

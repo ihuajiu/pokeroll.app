@@ -5,55 +5,68 @@ import FaqSection from "@/components/FaqSection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getRandomPokemon } from "@/lib/pokeapi";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  pageHref,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Pokémon Fusion Generator | PokeRoll",
-  description:
-    "Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats — roll again for a stranger pair, then copy the fusion to Showdown.",
-  keywords: [
-    "pokemon fusion generator",
-    "random pokemon fusion generator",
-    "pokemon fusion maker",
-    "pokemon fusion creator",
-  ],
-  alternates: { canonical: "/fusion" },
-};
+const PATH = "/fusion";
 
-export default async function FusionPage() {
-  const [a, b] = await Promise.all([getRandomPokemon(), getRandomPokemon()]);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.fusion;
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, PATH),
+      languages: languageAlternates(PATH),
+    },
+  };
+}
+
+export default async function FusionPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.fusion;
+  const [a, b] = await Promise.all([getRandomPokemon(), getRandomPokemon()]).then(
+    (ps) => ps.map((p) => withLocalizedFlavor(p, locale)),
+  );
   return (
     <main className="pt-6 pb-10">
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
-          { label: "Tools", href: "/#browse" },
-          { label: "Fusion Tool" },
+          { label: dict.common.home, href: pageHref(locale, "/") },
+          { label: dict.tools.groups.tool.title, href: pageHref(locale, "/#browse") },
+          { label: d.breadcrumbLabel },
         ]}
       />
       <PageHeader
-        title="Pokémon Fusion Generator"
-        description="Fuse two random Pokémon into a brand-new hybrid with a combined name, type and stats — then copy the fusion to Showdown."
+        title={d.headerTitle}
+        description={d.headerDesc}
       />
       <FusionGenerator initial={{ a, b }} />
-      <FaqSection
-        items={[
-          {
-            q: "How does the fusion generator work?",
-            a: "Each roll picks two random Pokémon and fuses them into one hybrid — a blended name plus combined types and stats from both parents.",
-          },
-          {
-            q: "Can I share or keep a fusion?",
-            a: "Yes. The Share button copies a link that reproduces the exact same fusion, and Download saves the fusion card as an image.",
-          },
-          {
-            q: "Is this an official Pokémon tool?",
-            a: "No — PokeRoll is a fan-made project. Pokémon data comes from PokéAPI; fusion results are generated for fun and are not official designs.",
-          },
-        ]}
-      />
-      <RelatedTools current="/fusion" />
+      <FaqSection items={d.faqs} locale={locale} />
+      <RelatedTools current="/fusion" locale={locale} />
     </main>
   );
 }

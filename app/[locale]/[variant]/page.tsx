@@ -15,6 +15,7 @@ import {
   type Locale,
 } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
@@ -83,7 +84,7 @@ export default async function VariantPage({
   ];
 
   if (variant === "starter") {
-    const pokemon = await getRandomPokemon(getStarters());
+    const pokemon = withLocalizedFlavor(await getRandomPokemon(getStarters()), locale);
     return (
       <main className="pt-6 pb-10">
         <Breadcrumbs items={crumbs} />
@@ -98,7 +99,7 @@ export default async function VariantPage({
   }
 
   if (variant === "no-names") {
-    const pokemon = await getRandomPokemon();
+    const pokemon = withLocalizedFlavor(await getRandomPokemon(), locale);
     const promo = META.noNamesPromo;
     return (
       <main className="pt-6 pb-10">

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
+import { useI18n } from "@/components/I18nProvider";
+import LocalizedLink from "@/components/LocalizedLink";
 import HeroCard from "./HeroCard";
 import GenerateButton from "./GenerateButton";
 import { useTeam } from "./useTeam";
@@ -31,6 +32,8 @@ export default function WheelGenerator({
   const [results, setResults] = useState<{ player: number; pokemon: Pokemon }[]>([]);
   const [addedNotice, setAddedNotice] = useState<string | null>(null);
   const [sharedPokemon, setSharedPokemon] = useState<Pokemon[] | null>(null);
+  const { dict, locale } = useI18n();
+  const w = dict.wheelGenerator;
 
   // Shrink the wheel on small screens so it never overflows the viewport.
   const [scaleK, setScaleK] = useState(1);
@@ -90,8 +93,8 @@ export default function WheelGenerator({
     });
     setAddedNotice(
       added > 0
-        ? `Added ${added} to your team.`
-        : "All landed Pokémon are already in your team.",
+        ? w.addedNotice.replace("{count}", String(added))
+        : w.alreadyInTeam,
     );
     setTimeout(() => setAddedNotice(null), 2000);
   }
@@ -102,7 +105,7 @@ export default function WheelGenerator({
     let cancelled = false;
     Promise.all(
       shared.dexes.map((d) =>
-        fetch(`/api/pokemon/${d}`)
+        fetch(`/api/pokemon/${d}?locale=${locale}`)
           .then((r) => (r.ok ? r.json() : null))
           .catch(() => null),
       ),
@@ -112,13 +115,13 @@ export default function WheelGenerator({
     return () => {
       cancelled = true;
     };
-  }, [shared]);
+  }, [shared, locale]);
 
   async function regenerate() {
     setSpinning(false);
     setWinner(null);
     try {
-      const res = await fetch("/api/wheel");
+      const res = await fetch(`/api/wheel?locale=${locale}`);
       if (res.ok) setItems((await res.json()).items);
     } catch {
       // keep previous wheel on error
@@ -140,11 +143,14 @@ export default function WheelGenerator({
     return (
       <div className="mx-auto w-full max-w-[1100px] px-4">
         <div className="mb-5 text-center">
-          <p className="text-lg font-semibold text-poke-ink">Wheel round result</p>
+          <p className="text-lg font-semibold text-poke-ink">{w.sharedTitle}</p>
           <p className="text-sm text-poke-dim">
             {loaded && sharedLeader
-              ? `Player ${sharedLeader.player} won with ${sharedLeader.pokemon.displayName} (${sharedLeader.pokemon.bst} BST)!`
-              : `A ${shared.players}-player round shared on PokeRoll`}
+              ? w.sharedWinner
+                  .replace("{player}", String(sharedLeader.player))
+                  .replace("{name}", sharedLeader.pokemon.displayName)
+                  .replace("{bst}", String(sharedLeader.pokemon.bst))
+              : w.sharedSubtitle.replace("{count}", String(shared.players))}
           </p>
         </div>
         {loaded ? (
@@ -154,10 +160,10 @@ export default function WheelGenerator({
                 <div key={`${i}-${p.dexNumber}`} className="relative">
                   <div className="mb-1 flex items-center justify-center gap-2">
                     <span className="rounded-full bg-poke-chip px-2.5 py-0.5 text-xs font-bold text-poke-ink">
-                      Player {i + 1}
+                      {w.playerLabel.replace("{n}", String(i + 1))}
                     </span>
                     {sharedLeader && sharedLeader.player === i + 1 && (
-                      <span className="text-base" aria-label="Round leader">
+                      <span className="text-base" aria-label={w.roundLeader}>
                         👑
                       </span>
                     )}
@@ -167,16 +173,16 @@ export default function WheelGenerator({
               ))}
             </div>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link
-                href="/wheel" title="Spin your own wheel"
+              <LocalizedLink
+                href="/wheel" title={w.spinYourOwn}
                 className="rounded-xl bg-poke-btn px-6 py-2.5 font-semibold text-white shadow-glow transition hover:bg-poke-btnHover"
               >
-                Spin your own wheel
-              </Link>
+                {w.spinYourOwn}
+              </LocalizedLink>
             </div>
           </>
         ) : (
-          <p className="py-10 text-center text-sm text-poke-dim">Loading results…</p>
+          <p className="py-10 text-center text-sm text-poke-dim">{w.loadingResults}</p>
         )}
       </div>
     );
@@ -184,8 +190,8 @@ export default function WheelGenerator({
   return (
     <div className="mx-auto w-full max-w-[1100px] px-4">
       <div className="mb-4 text-center">
-        <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
-        <p className="text-sm text-poke-dim">Up to 6 players take turns spinning — every landing stacks in the results below.</p>
+        <p className="text-lg font-semibold text-poke-ink">{w.welcome}</p>
+        <p className="text-sm text-poke-dim">{w.intro}</p>
       </div>
 
       <div className="relative mx-auto" style={{ width: SIZE * scaleK, height: SIZE * scaleK }}>
@@ -294,10 +300,12 @@ export default function WheelGenerator({
 
       <p className="mt-5 text-center text-sm font-semibold text-poke-dim">
         {roundComplete
-          ? "Round complete — check the results below!"
+          ? w.roundComplete
           : playerCount === 1
-            ? "Spin the wheel"
-            : `Player ${currentPlayer} of ${playerCount} — spin the wheel`}
+            ? w.spinWheel
+            : w.playerTurn
+                .replace("{current}", String(currentPlayer))
+                .replace("{count}", String(playerCount))}
       </p>
 
       <div className="mt-2 flex flex-wrap justify-center gap-3">
@@ -307,7 +315,7 @@ export default function WheelGenerator({
           disabled={spinning || roundComplete}
           className="rounded-xl bg-poke-btn px-6 py-2.5 font-semibold text-white shadow-glow transition hover:bg-poke-btnHover disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {spinning ? "Spinning…" : roundComplete ? "Round complete" : "Spin!"}
+          {spinning ? w.spinning : roundComplete ? w.roundCompleteButton : w.spinButton}
         </button>
         <GenerateButton onClick={regenerate} loading={false} />
         {results.length > 0 && (
@@ -316,14 +324,14 @@ export default function WheelGenerator({
             onClick={newRound}
             className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
           >
-            New round
+            {w.newRound}
           </button>
         )}
       </div>
 
       {/* Players selector */}
       <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-        <span className="text-sm font-semibold text-poke-dim">Players</span>
+        <span className="text-sm font-semibold text-poke-dim">{w.playersLabel}</span>
         {[1, 2, 3, 4, 5, 6].map((n) => (
           <button
             key={n}
@@ -345,15 +353,20 @@ export default function WheelGenerator({
         <div className="mt-8">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-xs font-bold uppercase tracking-wide text-poke-dim">
-              Round results · {results.length}/{playerCount}
+              {w.roundResults
+                .replace("{current}", String(results.length))
+                .replace("{count}", String(playerCount))}
             </h3>
             {roundComplete && leader ? (
               <span className="text-sm font-bold text-amber-500">
-                👑 Player {leader.player} wins with {leader.pokemon.displayName} ({leader.pokemon.bst} BST)!
+                {w.winnerLine
+                  .replace("{player}", String(leader.player))
+                  .replace("{name}", leader.pokemon.displayName)
+                  .replace("{bst}", String(leader.pokemon.bst))}
               </span>
             ) : (
               <span className="text-sm text-poke-dim">
-                Player {currentPlayer} still to spin
+                {w.stillToSpin.replace("{n}", String(currentPlayer))}
               </span>
             )}
           </div>
@@ -362,10 +375,10 @@ export default function WheelGenerator({
               <div key={`${r.player}-${i}`} className="relative">
                 <div className="mb-1 flex items-center justify-center gap-2">
                   <span className="rounded-full bg-poke-chip px-2.5 py-0.5 text-xs font-bold text-poke-ink">
-                    Player {r.player}
+                    {w.playerLabel.replace("{n}", String(r.player))}
                   </span>
                   {roundComplete && leader && leader.player === r.player && (
-                    <span className="text-base" aria-label="Round leader">
+                    <span className="text-base" aria-label={w.roundLeader}>
                       👑
                     </span>
                   )}
@@ -389,7 +402,7 @@ export default function WheelGenerator({
                   ? `Player ${leader.player} won the PokeRoll wheel round with ${leader.pokemon.displayName} (${leader.pokemon.bst} BST)!`
                   : undefined
               }
-              label="Share results"
+              label={w.shareResults}
               className="rounded-xl bg-amber-500 px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-amber-600"
             />
             <button
@@ -397,14 +410,14 @@ export default function WheelGenerator({
               onClick={addAllToTeam}
               className="rounded-xl bg-poke-btn px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-poke-btnHover"
             >
-              Add all to Team
+              {w.addAllToTeam}
             </button>
-            <Link
-              href="/team" title="View your team"
+            <LocalizedLink
+              href="/team" title={dict.common.viewYourTeam}
               className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
             >
-              Build Team
-            </Link>
+              {dict.variantGenerator.buildTeam}
+            </LocalizedLink>
           </div>
         </div>
       )}

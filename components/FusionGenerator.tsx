@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import type { Pokemon } from "@/lib/types";
+import { useI18n } from "@/components/I18nProvider";
+import LocalizedLink from "@/components/LocalizedLink";
 import HeroCard from "./HeroCard";
 import AddToTeamButton from "./AddToTeamButton";
 
@@ -52,12 +53,14 @@ function buildFusion(a: Pokemon, b: Pokemon): Pokemon {
 export default function FusionGenerator({ initial }: { initial: FusionPayload }) {
   const [data, setData] = useState<FusionPayload>(initial);
   const [loading, setLoading] = useState(false);
+  const { dict, locale } = useI18n();
+  const f = dict.fusionGenerator;
   const fused = buildFusion(data.a, data.b);
 
   async function regenerate() {
     setLoading(true);
     try {
-      const res = await fetch("/api/fusion");
+      const res = await fetch(`/api/fusion?locale=${locale}`);
       if (!res.ok) throw new Error("failed");
       setData(await res.json());
     } catch {
@@ -70,8 +73,8 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
   return (
     <div className="mx-auto max-w-[1040px]">
       <div className="mb-4 text-center">
-        <p className="text-lg font-semibold text-poke-ink">Welcome Trainer!</p>
-        <p className="text-sm text-poke-dim">Fuse two random Pokémon into a new hybrid — tap Add to Team to keep it.</p>
+        <p className="text-lg font-semibold text-poke-ink">{f.welcome}</p>
+        <p className="text-sm text-poke-dim">{f.intro}</p>
       </div>
 
       <div className="fusion-stage grid grid-cols-1 items-center gap-4 sm:grid-cols-[1fr_auto_1fr]">
@@ -94,19 +97,19 @@ export default function FusionGenerator({ initial }: { initial: FusionPayload })
 
       <div className="my-5 text-center text-3xl font-bold text-poke-red">=</div>
 
-      <p className="mb-2 text-center text-sm text-poke-dim">Your fusion is…</p>
+      <p className="mb-2 text-center text-sm text-poke-dim">{f.yourFusion}</p>
       <div className="card-stage mx-auto flex max-w-[640px] justify-center">
         <HeroCard pokemon={fused} loading={loading} onRoll={regenerate} variant="wide" favoritable />
       </div>
 
       <div className="mt-4 flex flex-wrap justify-center gap-3">
         <AddToTeamButton pokemon={fused} />
-        <Link
-          href="/team" title="View your team"
+        <LocalizedLink
+          href="/team" title={dict.common.viewYourTeam}
           className="rounded-xl border border-poke-border bg-poke-surface px-5 py-2.5 font-semibold text-poke-ink shadow-sm transition hover:border-poke-red hover:text-poke-red"
         >
-          Build Team
-        </Link>
+          {dict.variantGenerator.buildTeam}
+        </LocalizedLink>
       </div>
     </div>
   );

@@ -4,26 +4,48 @@ import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 import { getPokemonByIdLocal } from "@/lib/pokedex";
 import type { Pokemon } from "@/lib/types";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { withLocalizedFlavor } from "@/lib/i18n/flavor";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Your Pokémon Favorites | PokeRoll",
-  description: "Save the Pokémon you love and build your favorites collection — share the list with a link, and copy any card to Showdown. Free fan-made tool.",
-  keywords: [
-    "pokemon favorites",
-    "favorite pokemon list",
-    "share pokemon collection",
-  ],
-  alternates: { canonical: "/favorites" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.favorites;
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, "/favorites"),
+      languages: languageAlternates("/favorites"),
+    },
+  };
+}
 
 export default async function FavoritesPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ m?: string }>;
 }) {
-  const sp = await searchParams;
+  const [{ locale: rawLocale }, sp] = await Promise.all([params, searchParams]);
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.favorites;
 
   // Snapshot mode: decode the dex list from `?m=` and resolve each entry
   // from the local pokedex. Invalid/unknown ids are skipped.
@@ -36,18 +58,16 @@ export default async function FavoritesPage({
       .filter((n) => Number.isFinite(n) && n > 0);
     shared = ids
       .map((id) => getPokemonByIdLocal(id))
-      .filter((p): p is Pokemon => !!p);
+      .filter((p): p is Pokemon => !!p)
+      .map((p) => withLocalizedFlavor(p, locale));
     sharedInvalid = shared.length === 0;
   }
 
   return (
     <main className="pt-6 pb-10">
-      <PageHeader
-        title="Pokémon Favorites"
-        description="Keep the Pokémon you love in one place — then share the whole list with a single link."
-      />
+      <PageHeader title={d.headerTitle} description={d.headerDesc} />
       <FavoritesClient shared={shared} sharedInvalid={sharedInvalid} />
-      <RelatedTools current="/favorites" />
+      <RelatedTools current="/favorites" locale={locale} />
     </main>
   );
 }

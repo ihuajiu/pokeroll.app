@@ -1,53 +1,74 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import {
+  isLocale,
+  languageAlternates,
+  localePath,
+  pageHref,
+  type Locale,
+} from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
-export const metadata: Metadata = {
-  title: "Disclaimer & Affiliate Notice — Fan-made Pokémon Tool",
-  description:
-    "PokeRoll is a fan-made, unofficial site and is not affiliated with Nintendo, Game Freak or The Pokémon Company. Read the disclaimer and affiliate disclosure.",
-  keywords: [
-    "pokemon fan site disclaimer",
-    "pokemon affiliate disclosure",
-    "unofficial pokemon site",
-  ],
-  alternates: { canonical: "/disclaimer" },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.disclaimer;
+  return {
+    title: d.metaTitle,
+    description: d.metaDescription,
+    keywords: d.keywords,
+    alternates: {
+      canonical: localePath(locale, "/disclaimer"),
+      languages: languageAlternates("/disclaimer"),
+    },
+  };
+}
 
-export default function DisclaimerPage() {
+export default async function DisclaimerPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale: rawLocale } = await params;
+  const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
+  const dict = await getDictionary(locale);
+  const d = dict.pages.disclaimer;
+  const linkCls = "underline text-poke-red";
+
   return (
     <main className="mx-auto max-w-2xl py-10">
-      <PageHeader title="Disclaimer" />
+      <PageHeader title={d.headerTitle} />
       <div className="space-y-4 text-sm leading-relaxed text-poke-dim">
+        <p>{d.intro}</p>
         <p>
-          This site is a fan-made, unofficial tool. It is not affiliated with,
-          endorsed by, or sponsored by Nintendo, Game Freak or The Pokémon
-          Company. Pokémon names, characters and artwork are trademarks of their
-          respective owners and are used here for informational and
-          entertainment purposes only.
-        </p>
-        <p>
-          All Pokémon data (names, types, abilities, stats, sprites) is fetched
-          from the public{" "}
+          {d.dataSources.s1}
           <a
             href="https://pokeapi.co/"
-            title="PokéAPI"
+            title={dict.footer.pokeApi}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline text-poke-red"
+            className={linkCls}
           >
-            PokéAPI
+            {d.dataSources.l1}
           </a>
-          . Sprites are © their respective rights holders.
+          {d.dataSources.s2}
         </p>
         <p>
-          <strong>Affiliate disclosure:</strong> As an Amazon Associate we earn
-          from qualifying purchases made through the shopping links on this
-          site. This does not affect the tool, which remains free to use.
+          <strong>{d.affiliate.h}</strong> {d.affiliate.p}
         </p>
         <p>
-          <Link href="/" title="PokeRoll home" className="font-semibold text-poke-red underline">
-            ← Back to the generator
+          <Link
+            href={pageHref(locale, "/")}
+            title={dict.nav.homeTitle}
+            className="font-semibold text-poke-red underline"
+          >
+            {d.backLink}
           </Link>
         </p>
       </div>

@@ -2,8 +2,9 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { useTeam } from "./useTeam";
+import LocalizedLink from "./LocalizedLink";
+import { useI18n } from "./I18nProvider";
 
 // Header entry for the current team: icon button with a live count badge,
 // opening a small tray that lists the selected members and links to /team.
@@ -11,6 +12,8 @@ export default function TeamTray() {
   const { team, max } = useTeam();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const { dict } = useI18n();
+  const t = dict.teamTray;
 
   useEffect(() => {
     if (!open) return;
@@ -28,9 +31,11 @@ export default function TeamTray() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        aria-label={`Your team (${team.length}/${max})`}
+        aria-label={t.ariaLabel
+          .replace("{count}", String(team.length))
+          .replace("{max}", String(max))}
         aria-expanded={open}
-        title="Your team"
+        title={t.title}
         className="game-btn game-btn-ghost fav-entry inline-flex h-9 w-9 items-center justify-center"
       >
         <span className="relative inline-flex">
@@ -62,7 +67,7 @@ export default function TeamTray() {
         <div className="absolute right-0 top-11 z-40 w-64 rounded-xl border border-poke-border bg-poke-surface p-3 shadow-lg">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wide text-poke-dim">
-              Your Team
+              {t.heading}
             </span>
             <span className="text-xs font-semibold text-poke-dim">
               {team.length}/{max}
@@ -70,14 +75,14 @@ export default function TeamTray() {
           </div>
           {team.length === 0 ? (
             <p className="py-3 text-center text-sm text-poke-dim">
-              No Pokémon selected yet.
+              {t.empty}
             </p>
           ) : (
             <ul className="space-y-1">
               {team.map((p) => (
                 <li key={p.dexNumber}>
-                  <Link
-                    href="/team" title="View your team"
+                  <LocalizedLink
+                    href="/team" title={dict.common.viewYourTeam}
                     onClick={() => setOpen(false)}
                     className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition hover:bg-poke-bg"
                   >
@@ -93,18 +98,18 @@ export default function TeamTray() {
                     <span className="ml-auto text-xs text-poke-dim">
                       #{p.dexNumber}
                     </span>
-                  </Link>
+                  </LocalizedLink>
                 </li>
               ))}
             </ul>
           )}
-          <Link
-            href="/team" title="View your team"
+          <LocalizedLink
+            href="/team" title={dict.common.viewYourTeam}
             onClick={() => setOpen(false)}
             className="mt-2 inline-block w-full rounded-lg border border-poke-border px-3 py-1.5 text-center text-xs font-semibold text-poke-ink transition hover:border-[#ee3b3b] hover:text-[#ee3b3b]"
           >
-            {team.length === 0 ? "Build a Team" : "Open Team"}
-          </Link>
+            {team.length === 0 ? t.buildTeam : t.openTeam}
+          </LocalizedLink>
         </div>
       )}
     </div>

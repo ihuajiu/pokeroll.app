@@ -74,6 +74,7 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
     setLoading(true);
     try {
       const p = new URLSearchParams();
+      p.set("locale", locale);
       if (gen) p.set("gen", gen);
       if (region) p.set("region", region);
       if (type) p.set("type", type);

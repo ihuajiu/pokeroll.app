@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import HeroCard from "@/components/HeroCard";
@@ -6,6 +6,7 @@ import GuideSteps from "./GuideSteps";
 import LogoMark from "./LogoMark";
 import TeamShowdownExport from "@/components/TeamShowdownExport";
 import { useTeam } from "@/components/useTeam";
+import { useI18n } from "@/components/I18nProvider";
 import { TYPES } from "@/lib/seo";
 import type { Pokemon } from "@/lib/types";
 
@@ -66,6 +67,8 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
    *  slot index (not dexNumber) so duplicate Pokémon each get their own lock. */
   const [locks, setLocks] = useState<ReadonlySet<number>>(new Set());
   const { add, team, max } = useTeam();
+  const { dict, locale } = useI18n();
+  const t = dict.teamGenerator;
 
   function flash(msg: string) {
     setNotice(msg);
@@ -106,6 +109,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
     setRolling(true);
     try {
       const p = new URLSearchParams();
+      p.set("locale", locale);
       if (gen) p.set("gen", gen);
       if (region) p.set("region", region);
       if (type) p.set("type", type);
@@ -142,7 +146,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
           window.history.replaceState(null, "", `/team/random?${qp.toString()}`);
         }
         if (data.pokemon.length === 0) {
-          flash("No Pokémon match those filters — try widening them.");
+          flash(dict.randomGenerator.noMatch);
         }
       }
     } catch {
@@ -158,15 +162,19 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
     const fresh = rolled.filter((p) => !inTeam.has(p.dexNumber));
     const slots = max - team.length;
     if (slots <= 0) {
-      flash(`Team is full (${team.length}/${max}). Remove some first.`);
+      flash(
+        t.teamFull
+          .replace("{count}", String(team.length))
+          .replace("{max}", String(max)),
+      );
       return;
     }
     if (fresh.length === 0) {
-      flash("All rolled Pokémon are already in your team.");
+      flash(t.alreadyInTeam);
       return;
     }
     fresh.slice(0, slots).forEach((p) => add(p));
-    flash(`Added ${Math.min(fresh.length, slots)} to your team.`);
+    flash(t.addedToTeam.replace("{count}", String(Math.min(fresh.length, slots))));
   }
 
   const gearIcon = (
@@ -195,9 +203,9 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
 
       {/* CTA hero — like the challenge page's "ready" panel */}
       <div className="mb-6 rounded-2xl border border-poke-border bg-poke-surface px-6 py-6 text-center shadow-sm">
-        <h2 className="text-xl font-extrabold text-poke-ink">Your random team is ready</h2>
+        <h2 className="text-xl font-extrabold text-poke-ink">{t.readyTitle}</h2>
         <p className="mt-1 text-sm text-poke-dim">
-          Roll a filtered squad — lock favourites, re-roll the rest, then add them to your team or export to Showdown.
+          {t.readyDesc}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <button
@@ -206,24 +214,24 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
             disabled={rolling || (rolled != null && locks.size >= rolled.length)}
             title={
               rolled != null && locks.size >= rolled.length
-                ? "All cards are locked — unlock one to roll"
+                ? t.allLockedTitle
                 : undefined
             }
             className="game-btn game-btn-primary px-8 py-3.5 text-base font-extrabold"
           >
             <LogoMark className="h-5 w-5" />
             {rolling
-              ? "Rolling…"
+              ? t.rolling
               : rolled && locks.size > 0 && locks.size < rolled.length
-                ? `Roll (${rolled.length - locks.size})`
-                : "Roll"}
+                ? t.rollCount.replace("{count}", String(rolled.length - locks.size))
+                : t.roll}
           </button>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
-            aria-label={open ? "Collapse filters" : "Filters"}
-            title={open ? "Collapse filters" : "Filters"}
+            aria-label={open ? t.collapseFilters : t.filtersAria}
+            title={open ? t.collapseFilters : t.filtersAria}
             className={`flex h-11 w-11 items-center justify-center text-poke-dim transition hover:text-poke-red ${open ? "" : "breathe"}`}
           >
             {gearIcon}
@@ -234,22 +242,11 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
       {/* How to play */}
       <GuideSteps
         className="mx-auto mb-6 max-w-[1100px] px-4"
+        title={t.guideTitle}
         steps={[
-          {
-            n: "1",
-            t: "Roll a squad",
-            d: "One tap draws a fresh random team — lock cards you like, then re-roll just the rest.",
-          },
-          {
-            n: "2",
-            t: "Filter the pool",
-            d: "Restrict by generation, region, type or team size before rolling.",
-          },
-          {
-            n: "3",
-            t: "Share, save or export",
-            d: "Copy the squad as Showdown sets, flip any card to view its set, share the link, or tap Add to Team to keep favourites.",
-          },
+          { n: "1", t: t.guide1T, d: t.guide1D },
+          { n: "2", t: t.guide2T, d: t.guide2D },
+          { n: "3", t: t.guide3T, d: t.guide3D },
         ]}
       />
 
@@ -259,7 +256,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
           <div className="w-fit max-w-full rounded-xl border border-poke-border bg-poke-surface p-3 shadow-sm">
 <div className="grid flex-1 grid-cols-2 gap-2.5 sm:grid-cols-4 lg:flex lg:flex-initial">
                 <label className={labelCls}>
-                  Generation
+                  {t.generationLabel}
                   <select
                     value={gen}
                     onChange={(e) => {
@@ -269,16 +266,16 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
                     }}
                     className={selectCls}
                   >
-                    <option value="">Random</option>
+                    <option value="">{t.optionRandom}</option>
                     {GENERATIONS.map((g) => (
                       <option key={g} value={String(g)}>
-                        Gen {g}
+                        {dict.common.genShort.replace("{n}", String(g))}
                       </option>
                     ))}
                   </select>
                 </label>
                 <label className={labelCls}>
-                  Region
+                  {t.regionLabel}
                   <select
                     value={region}
                     onChange={(e) => {
@@ -288,7 +285,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
                     }}
                     className={selectCls}
                   >
-                    <option value="">Random</option>
+                    <option value="">{t.optionRandom}</option>
                     {REGIONS.map((r) => (
                       <option key={r} value={r}>
                         {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -297,22 +294,22 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
                   </select>
                 </label>
                 <label className={labelCls}>
-                  Type
+                  {t.typeLabel}
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                     className={selectCls}
                   >
-                    <option value="">Random</option>
-                    {TYPES.map((t) => (
-                      <option key={t} value={t}>
-                        {t.charAt(0).toUpperCase() + t.slice(1)}
+                    <option value="">{t.optionRandom}</option>
+                    {TYPES.map((ty) => (
+                      <option key={ty} value={ty}>
+                        {ty.charAt(0).toUpperCase() + ty.slice(1)}
                       </option>
                     ))}
                   </select>
                 </label>
                 <label className={labelCls}>
-                  Team Size
+                  {t.teamSizeLabel}
                   <select
                     value={size}
                     onChange={(e) => {
@@ -325,7 +322,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
                     }}
                     className={selectCls}
                   >
-                    <option value="">Random</option>
+                    <option value="">{t.optionRandom}</option>
                     {TEAM_SIZES.map((c) => (
                       <option key={c} value={String(c)}>
                         {c}
@@ -361,7 +358,7 @@ export default function TeamGenerator({ initial }: { initial?: Pokemon[] }) {
               onClick={addAll}
               className="game-btn game-btn-primary px-4 py-2 text-sm font-semibold"
             >
-              Add all to Team
+              {t.addAllToTeam}
               <span className="ml-1.5 rounded-full bg-white/20 px-1.5 text-xs leading-5">
                 {team.length}/{max}
               </span>

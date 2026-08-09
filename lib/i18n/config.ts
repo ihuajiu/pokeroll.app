@@ -34,21 +34,10 @@ export const LOCALE_LABEL: Record<Locale, string> = {
   fr: "Français",
 };
 
-// Pages not yet translated — a locale-prefixed visit (e.g. /es/team) 308s to
-// the English URL (middleware), and pageHref keeps their links unprefixed so
-// users don't bounce through that redirect. Shrinks as pages get localized
-// (see lib/i18n docs / M3 plan).
+// Pages not yet translated — a locale-prefixed visit (e.g. /es/random-pokemon)
+// 308s to the English URL (middleware), and pageHref keeps their links
+// unprefixed so users don't bounce through that redirect.
 export const UNTRANSLATED_PREFIXES = [
-  "/team",
-  "/wheel",
-  "/fusion",
-  "/adventure",
-  "/challenge",
-  "/favorites",
-  "/contact",
-  "/privacy",
-  "/terms",
-  "/disclaimer",
   // English-only synonym landers — they exist to rank for English synonym
   // keywords, a locale version has no search purpose.
   "/random-pokemon",

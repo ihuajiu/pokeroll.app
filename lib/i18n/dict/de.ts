@@ -370,6 +370,374 @@ export default {
     heading: "Ähnliche Tools",
   },
 
+  adventureView: {
+    /** Template: {seed} = adventure seed code. */
+    seedLine: "Seed {seed} — teile diesen Link, um exakt dasselbe Abenteuer erneut zu spielen.",
+    difficultyLabel: "Schwierigkeit",
+    addAllToTeam: "Alle zum Team hinzufügen",
+    shareAdventure: "Abenteuer teilen",
+    rollAgain: "Erneut würfeln",
+    manifest: "Abenteuer-Manifest",
+    /** Template: {difficulty} = difficulty label. */
+    manifestDifficulty: "Schwierigkeit · {difficulty}",
+    /** Template: {seed} = adventure seed code. */
+    manifestSeed: "Seed · {seed}",
+    trainerProfile: "Trainer-Profil",
+    /** Template: {style} = trainer style. */
+    styleLine: "Stil · {style}",
+    challenge: "Challenge",
+    goal: "Ziel",
+    /** Template: {n} = team size. */
+    teamCompanions: "Team · {n} unbekannte Begleiter",
+    yourStarter: "Dein Starter",
+    yourRival: "Dein Rivale",
+    /** Templates: {name} = rival name, {type} = rival starter type. */
+    rivalCounter: "{name} hat einen Starter vom Typ {type} gewählt, um deinen zu kontern.",
+    /** Template: {n} = team size. */
+    yourTeam: "Dein Team ({n})",
+    gymJourney: "Arena-Reise",
+    legendaryEncounter: "Legendäre Begegnung",
+    /** Templates: {count} = current team size, {max} = team capacity. */
+    teamFull: "Das Team ist voll ({count}/{max}). Entferne welche, um neue Pokémon hinzuzufügen.",
+    alreadyInTeam: "Alle diese Pokémon sind bereits in deinem Team.",
+    /** Templates: {added} = number added, {max} = team capacity. */
+    addedFull: "{added} hinzugefügt — das Team ist jetzt voll ({max}/{max}).",
+    /** Templates: {added} = number added, {count} = new team size, {max} = capacity. */
+    addedToTeam: "{added} zu deinem Team hinzugefügt ({count}/{max}).",
+  },
+
+  challengeGenerator: {
+    hints: {
+      guess: "Namen versteckt — aufdecken zum Prüfen",
+      shiny: "Wie viele Begegnungen bis zu einem Shiny?",
+    },
+    createChallenge: "Challenge erstellen",
+    shareChallenge: "Challenge teilen",
+    filtersAria: "Filter",
+    filtersTitle: "Filter",
+    collapseAria: "Filter einklappen",
+    collapseTitle: "Filter einklappen",
+    difficulty: "Schwierigkeit",
+    random: "Zufällig",
+    /** Template: {max} = count cap for the current difficulty. */
+    countMax: "Anzahl (max. {max})",
+    typeFilter: "Typ-Filter",
+    regionFilter: "Regions-Filter",
+    /** Templates: {revealed} = flipped cards, {total} = total cards. */
+    revealedProgress: "Aufgedeckt {revealed} / {total}",
+    hideAll: "Alle verbergen",
+    revealAll: "Alle aufdecken",
+    silhouetteAlt: "Versteckte Pokémon-Silhouette",
+    /** Template: {types} = " · "-joined type hint list. */
+    typeHint: "Hinweis: {types}",
+    whosThat: "Wer ist dieses Pokémon?",
+  },
+
+  shinyHunt: {
+    shinyTag: "✦ SHINY",
+    /** Template: {odds} = odds denominator (localized number). */
+    oddsGuaranteed: "1 / {odds} · GARANTIERT",
+    /** Template: {odds}. */
+    oddsLabel: "CHANCE 1 / {odds}",
+    /** Template: {odds}. */
+    oddsGuaranteedLower: "1 / {odds} · garantiert",
+    /** Template: {odds}. */
+    oddsLabelLower: "Chance 1 / {odds}",
+    encountersLabel: "Begegnungen",
+    /** Template: {name} = Pokémon display name. */
+    shinyName: "Shiny {name}",
+    foundAfterPre: "Gefunden nach ",
+    /** Template: {n} = encounter count (localized number). */
+    foundAfterCount: "{n} Begegnungen",
+    foundAfterSep: " — ",
+    verdicts: {
+      absurdlyLucky: "Absurd viel Glück — das ist eine Geschichte zum Erzählen.",
+      lucky: "Glück gehabt! Unter der Quote.",
+      overOdds: "Über der Quote — aber du hast es geschafft.",
+      brutal: "Brutale Jagd. Dieses hat sich sein Funkeln verdient.",
+    },
+    shareAria: "Teile dein Shiny",
+    shareTitle: "Teile dein Shiny",
+    newHuntAria: "Starte deine eigene Jagd",
+    newHuntTitle: "Starte deine eigene Jagd",
+    rendering: "Wird erstellt…",
+    /** Template: {name} = wild Pokémon display name. */
+    wildAppeared: "Ein wildes {name} erscheint…",
+    notShiny: "kein Shiny",
+    emptyState: "Das hohe Gras raschelt… starte Begegnungen, um dein Shiny zu jagen.",
+    encounter: "Begegnung!",
+  },
+
+  favoritesClient: {
+    /** navigator.share title for the favorites snapshot link. */
+    shareTitle: "Meine Pokémon-Favoriten",
+    sharedTitle: "Geteilte Favoriten",
+    yourTitle: "Deine Favoriten",
+    sharedDesc: "Eine mit dir geteilte Favoriten-Ansicht — schreibgeschützt",
+    yourDesc: "Pokémon, die du auf diesem Gerät favorisiert hast",
+    /** Template: {count} = number of favorites. */
+    slotsUsed: "{count} / 15 Plätze belegt",
+    /** Template: {count} = number of favorites; shown when the cap is hit. */
+    slotsMax: "{count} / 15 — Maximum erreicht",
+    /** Template: {count} = Pokémon in the shared snapshot. */
+    sharedCount: "{count} Pokémon in dieser geteilten Ansicht",
+    copyLink: "Link kopieren",
+    saveToMine: "In meinen Favoriten speichern",
+    /** Template: {added} = " (+n)" when the merge added entries, else "". */
+    savedViewMine: "Gespeichert{added} — Meine ansehen",
+    /** Suffix after the bolded favorites count. */
+    favoritedSuffix: " favorisiert",
+    clearAll: "Alle entfernen",
+    invalidLink: "Dieser Favoriten-Link ist ungültig oder abgelaufen.",
+    goToMine: "Zu meinen Favoriten",
+    emptyState:
+      "Noch keine Favoriten. Würfle ein Pokémon und tippe auf das Herz, um es hier zu speichern.",
+    rollPokemon: "Pokémon würfeln",
+    /** Template: {name} = Pokémon display name. */
+    removeAria: "{name} aus Favoriten entfernen",
+    remove: "Entfernen",
+    shareFavorites: "Favoriten teilen",
+  },
+
+  /* ---------------------------------------------------------------- */
+  /*  Component-level UI strings (camelCase, keyed by component)        */
+  /* ---------------------------------------------------------------- */
+
+  teamClient: {
+    readyTitle: "Dein Pokémon-Team ist bereit",
+    readyDesc: "Verwalte deine Truppe — teile sie oder exportiere jedes Set nach Showdown.",
+    sharedTitle: "Ein mit dir geteiltes Team",
+    linkCopied: "Link kopiert!",
+    shareTeam: "Team teilen",
+    clearTeam: "Team leeren",
+    copyLink: "Link kopieren",
+    backToGenerator: "Zurück zum Generator",
+    guideTitle: "So funktioniert's",
+    guide1T: "Würfeln & hinzufügen",
+    guide1D: "Generiere Pokémon in jedem Tool und tippe auf „Zum Team hinzufügen“, um sie hier zu speichern.",
+    guide2T: "Verwalte deine Truppe",
+    guide2D: "Wähle Pokémon zum Entfernen oder Leeren aus — dein Team fasst bis zu 6.",
+    guide3T: "Teilen oder exportieren",
+    guide3D: "Kopiere den Team-Link für Freunde oder kopiere jedes Set als Showdown-Text für Kämpfe.",
+    /** Segment: followed by the selected count, then selectedSep + team size. */
+    selectedPre: "Ausgewählt ",
+    /** Segment: between the selected count and the team size. */
+    selectedSep: " / ",
+    clearSelection: "Auswahl aufheben",
+    selectAll: "Alle auswählen",
+    remove: "Entfernen",
+    /** Template: {count} = number of selected Pokémon. */
+    removeCount: "Entfernen ({count})",
+    empty: "Noch keine Pokémon. Generiere welche und tippe auf „Zum Team hinzufügen“.",
+  },
+
+  teamTray: {
+    /** Template: {count} = current team size, {max} = max team size. */
+    ariaLabel: "Dein Team ({count}/{max})",
+    title: "Dein Team",
+    heading: "Dein Team",
+    empty: "Noch keine Pokémon ausgewählt.",
+    buildTeam: "Team bauen",
+    openTeam: "Team öffnen",
+  },
+
+  teamGenerator: {
+    /** Template: {count} = current team size, {max} = max team size. */
+    teamFull: "Das Team ist voll ({count}/{max}). Entferne zuerst welche.",
+    alreadyInTeam: "Alle gewürfelten Pokémon sind bereits in deinem Team.",
+    /** Template: {count} = number added. */
+    addedToTeam: "{count} zu deinem Team hinzugefügt.",
+    readyTitle: "Dein Zufalls-Team ist bereit",
+    readyDesc:
+      "Würfle eine gefilterte Truppe — sperre Favoriten, würfle den Rest neu, dann füge sie deinem Team hinzu oder exportiere nach Showdown.",
+    rolling: "Würfle…",
+    roll: "Würfeln",
+    /** Template: {count} = unlocked slots that will be re-rolled. */
+    rollCount: "Würfeln ({count})",
+    allLockedTitle: "Alle Karten sind gesperrt — entsperre eine zum Würfeln",
+    filtersAria: "Filter",
+    collapseFilters: "Filter einklappen",
+    guideTitle: "So funktioniert's",
+    guide1T: "Truppe würfeln",
+    guide1D: "Ein Tippen zieht ein frisches Zufalls-Team — sperre Karten, die dir gefallen, und würfle nur den Rest neu.",
+    guide2T: "Pool filtern",
+    guide2D: "Grenze vor dem Würfeln nach Generation, Region, Typ oder Team-Größe ein.",
+    guide3T: "Teilen, speichern oder exportieren",
+    guide3D: "Kopiere die Truppe als Showdown-Sets, wende eine Karte, um ihr Set zu sehen, teile den Link oder tippe auf „Zum Team hinzufügen“, um Favoriten zu behalten.",
+    generationLabel: "Generation",
+    regionLabel: "Region",
+    typeLabel: "Typ",
+    teamSizeLabel: "Team-Größe",
+    optionRandom: "Zufällig",
+    addAllToTeam: "Alle zum Team hinzufügen",
+  },
+
+  teamCoachUi: {
+    /** Template: {max} = most picks the user can keep (count - 1). */
+    keepLimit: "Behalte höchstens {max} — lass mindestens 1 Platz für den Coach frei.",
+    generateFailed: "Generierung fehlgeschlagen — versuche es erneut.",
+    /** Template: {count} = number added. */
+    addedToTeam: "{count} zu deinem Team hinzugefügt.",
+    alreadyInTeam: "Diese Pokémon sind bereits in deinem Team.",
+    readyTitle: "Dein balanciertes Team ist bereit",
+    readyDesc:
+      "Sperre die Pokémon, die du bereits gewählt hast, und fülle den Rest mit Typ-Abdeckung — dann füge sie deinem Team hinzu oder exportiere nach Showdown.",
+    rerollUnlocked: "Entsperrte neu würfeln",
+    generateTeam: "Team generieren",
+    viewMyTeam: "Mein Team ansehen",
+    guideTitle: "So funktioniert's",
+    guide1T: "Picks hinzufügen (optional)",
+    guide1D: "Suche oder importiere aus Favoriten / deinem Team — oder überspringe es und lass den Coach alle 6 würfeln.",
+    guide2T: "Team generieren",
+    guide2D: "Der Team-Coach füllt das Team mit balancierten Typen und Rollen.",
+    guide3T: "Sperren & neu würfeln",
+    guide3D: "Sperre Pokémon, die dir gefallen, würfle den Rest neu, dann füge alle hinzu, teile den Link oder kopiere die Sets nach Showdown.",
+    yourTeamHeading: "Dein Team",
+    /** Template: {kept} = locked picks, {count} = target team size. */
+    lockedTarget: "{kept} gesperrt · Ziel {count}",
+    searchPlaceholder: "Pokémon suchen (optional)…",
+    importFavorites: "Favoriten importieren",
+    importTeam: "Team importieren",
+    filtersAria: "Filter",
+    collapseFilters: "Filter einklappen",
+    teamSizeLabel: "Team-Größe",
+    generationLabel: "Generation",
+    regionLabel: "Region",
+    typeLabel: "Typ",
+    optionAny: "Beliebig",
+    allLockedHint: "Alles ist gesperrt — entsperre eine Karte zum Neu-Würfeln.",
+    /** Template: {count} = unlocked slots. */
+    rerollHint: "Würfelt {count} entsperrte Plätze neu",
+    /** Template: {count} = slots the coach will fill. */
+    fillHint: "Füllt {count} Plätze mit balancierter Abdeckung",
+    fullRollHint: "Würfelt ein komplettes balanciertes Team",
+    emptyHint:
+      "Füge einen Pick hinzu oder generiere direkt ein komplettes Team — der Coach balanciert Typen und Rollen.",
+    pickerFavTitle: "Aus Favoriten",
+    pickerTeamTitle: "Aus deinem Team",
+    favEmpty: "Noch keine Favoriten — tippe zuerst in einem Generator auf das Herz.",
+    teamEmpty: "Dein Team ist leer — füge zuerst in einem Generator Pokémon hinzu.",
+    addAllToTeam: "Alle zum Team hinzufügen",
+  },
+
+  teamChallengeUi: {
+    /** Template: {count} = current team size, {max} = max team size. */
+    teamFull: "Das Team ist voll ({count}/{max}). Entferne zuerst welche.",
+    alreadyInTeam: "Alle diese Pokémon sind bereits in deinem Team.",
+    /** Template: {count} = number added. */
+    addedToTeam: "{count} zu deinem Team hinzugefügt.",
+    idleTitle: "Bereit für eine Team-Challenge?",
+    idleDesc:
+      "Klicke unten, um ein zufälliges 6-Pokémon-Challenge-Team zu generieren — dann würfle deine eigene Truppe und sieh, wessen Basiswert-Summe höher ist.",
+    generateChallenge: "Challenge generieren",
+    howToTitle: "So nutzt du die Team-Challenge",
+    howTo1T: "1. Das Challenge-Team.",
+    howTo1D:
+      "Diese Seite zeigt immer eine geseedete 6-Pokémon-Truppe — jeder, der denselben Link öffnet, sieht exakt dieselbe Aufstellung (das ist die „Challenge“).",
+    howTo2T: "2. Würfle deins.",
+    /** Segment: before the howTo2Em link-styled term. */
+    howTo2S1: "Tippe auf",
+    howTo2Em: "Mein Team würfeln",
+    /** Segment: after the howTo2Em term. */
+    howTo2S2:
+      ", um deine eigene 6-Pokémon-Truppe zu generieren — ein Wurf pro Challenge, also kein Wiederholen, bis du gewinnst.",
+    howTo3T: "3. Vergleichen.",
+    howTo3D:
+      "Beide Teams werden mit ihrer Basiswert-Summe (BST) gezeigt — die höhere Summe gewinnt, Unentschieden ist möglich.",
+    howTo4T: "4. Teilen.",
+    howTo4Em: "Freund herausfordern",
+    howTo4D:
+      "kopiert einen Link mit demselben Challenge-Team, damit ein Freund die identische Aufstellung zum Schlagen bekommt.",
+    howTo5T: "5. Ergebnis exportieren.",
+    howTo5Em1: "Ergebniskarte teilen",
+    /** Segment: between howTo5Em1 and howTo5Em2. */
+    howTo5S: "oder",
+    howTo5Em2: "Karte herunterladen",
+    howTo5D:
+      "erstellt ein Bild des Duells (mit QR-Code) — ideal zum Posten in deiner Community.",
+    howTo6T: "6. Starte deine eigene.",
+    howTo6Em: "Eigene Challenge starten",
+    howTo6D:
+      "macht dich zum Gastgeber — du würfelst das Challenge-Team neu und teilst es mit einem Freund, statt erneut gegen deine eigene Truppe anzutreten.",
+    ownerHeading: "Dein Challenge-Team ist bereit",
+    yoursHeading: "Hier ist deine Chance — versuche, es zu schlagen!",
+    takeHeading: "Nimm die Challenge an — würfle dein Team",
+    ownerDesc:
+      "Teile den Link — ein Freund würfelt sein eigenes Team, um dieses zu schlagen.",
+    yoursDesc:
+      "Ein Wurf pro Challenge — starte deine eigene Challenge zum Teilen mit einem Freund.",
+    takeDesc:
+      "Du bekommst 6 zufällige Pokémon — eine höhere Basiswert-Summe als das Challenge-Team gewinnt.",
+    rerollChallenge: "Challenge neu würfeln",
+    startOwn: "Eigene Challenge starten",
+    rollMine: "Mein Team würfeln",
+    linkCopied: "Link kopiert!",
+    challengeFriend: "Freund herausfordern",
+    step1T: "Team würfeln",
+    step1D: "Das ist die Aufstellung, mit der du herausforderst.",
+    step2T: "Link teilen",
+    step2D: "Ein Freund öffnet exakt dasselbe Team.",
+    step3T: "Sie würfeln & vergleichen",
+    step3D: "Die BST-Summe entscheidet, wer gewinnt — exportiere eines der Teams nach Showdown.",
+    ownerTeamLabel: "🫵 Dein Challenge-Team",
+    challengeLabel: "🏳️ Die Challenge",
+    yourTeamLabel: "Dein Team",
+    theirTeamLabel: "Ihr Team",
+    theChallenge: "Die Challenge",
+    youWin: "Du gewinnst!",
+    theirWin: "Ihr Team gewinnt!",
+    challengeWins: "Die Challenge gewinnt!",
+    tie: "Unentschieden!",
+    higherWins: "Die höhere Basiswert-Summe gewinnt.",
+    rendering: "Wird erstellt…",
+    shareResult: "Ergebnis teilen",
+    downloadCard: "Karte herunterladen",
+    addAllToTeam: "Alle zum Team hinzufügen",
+  },
+
+  wheelGenerator: {
+    welcome: "Willkommen, Trainer!",
+    intro:
+      "Bis zu 6 Spieler drehen abwechselnd — jeder Treffer landet unten in den Ergebnissen.",
+    roundComplete: "Runde komplett — sieh dir die Ergebnisse unten an!",
+    spinWheel: "Rad drehen",
+    /** Template: {current} = current player number, {count} = total players. */
+    playerTurn: "Spieler {current} von {count} — dreh das Rad",
+    spinning: "Dreht…",
+    roundCompleteButton: "Runde komplett",
+    spinButton: "Drehen!",
+    newRound: "Neue Runde",
+    playersLabel: "Spieler",
+    /** Template: {current} = spins so far, {count} = total players. */
+    roundResults: "Rundenergebnisse · {current}/{count}",
+    /** Template: {player} = winning player number, {name} = Pokémon name, {bst} = base stat total. */
+    winnerLine: "👑 Spieler {player} gewinnt mit {name} ({bst} BST)!",
+    /** Template: {n} = player number still to spin. */
+    stillToSpin: "Spieler {n} muss noch drehen",
+    /** Template: {n} = player number. */
+    playerLabel: "Spieler {n}",
+    roundLeader: "Rundenführer",
+    shareResults: "Ergebnisse teilen",
+    addAllToTeam: "Alle zum Team hinzufügen",
+    /** Template: {count} = number of Pokémon added to the team. */
+    addedNotice: "{count} zu deinem Team hinzugefügt.",
+    alreadyInTeam: "Alle gelandeten Pokémon sind bereits in deinem Team.",
+    // Shared round result view (result=1 link).
+    sharedTitle: "Ergebnis der Glücksrad-Runde",
+    /** Template: {player} = winning player number, {name} = Pokémon name, {bst} = base stat total. */
+    sharedWinner: "Spieler {player} hat mit {name} ({bst} BST) gewonnen!",
+    /** Template: {count} = number of players in the shared round. */
+    sharedSubtitle: "Eine {count}-Spieler-Runde, geteilt auf PokeRoll",
+    spinYourOwn: "Dreh dein eigenes Rad",
+    loadingResults: "Lade Ergebnisse…",
+  },
+
+  fusionGenerator: {
+    welcome: "Willkommen, Trainer!",
+    intro: "Fusioniere zwei zufällige Pokémon zu einem neuen Hybrid — tippe auf „Zum Team hinzufügen“, um ihn zu behalten.",
+    yourFusion: "Deine Fusion ist…",
+  },
+
   /* ---------------------------------------------------------------- */
   /*  Page-level metadata + copy (app/[locale]/…)                      */
   /*  English values are verbatim from the pre-i18n pages; dynamic     */
@@ -721,6 +1089,475 @@ export default {
       headerDesc:
         "Nur Legendäre Pokémon in diesem Pool — tippe auf „Erneut generieren“ für den nächsten legendären Wurf.",
       note: "Tippe auf „Erneut generieren“, um ein weiteres Legendäres zu würfeln — „Zum Team hinzufügen“ behält es in deinem Team.",
+    },
+    adventure: {
+      metaTitle: "Pokémon-Abenteuer-Generator",
+      /** Template: {diff} = difficulty label (Easy / Normal / Hard / Extreme). */
+      metaTitleDiff: "Pokémon-Abenteuer-Generator — Schwierigkeit {diff}",
+      metaDescription:
+        "Würfle ein Pokémon-Abenteuer mit einem Tippen — Trainer, Rivale, Region, Starter, Sechser-Team, Challenge und legendäre Begegnung. Teile es oder kopiere jede Karte nach Showdown.",
+      keywords: [
+        "pokemon abenteuer generator",
+        "zufalls pokemon abenteuer generator",
+        "pokemon reise generator",
+      ],
+      headerTitle: "Würfle dein Pokémon-Abenteuer",
+      headerDesc:
+        "Ein Tippen würfelt Trainer, Region, Starter, Team, Challenge und Ziel — jedes Mal ein komplettes Pokémon-Abenteuer.",
+      guideTitle: "So funktioniert's",
+      steps: [
+        {
+          n: "1",
+          t: "Würfle dein Abenteuer",
+          d: "Ein Tippen würfelt Trainer, Rivalen, Region, Starter, Sechser-Team, Challenge, Legendäres und Ziel.",
+        },
+        {
+          n: "2",
+          t: "Wähle eine Schwierigkeit",
+          d: "Einfach, Normal, Schwer oder Extrem — je höher, desto wilder die Reise.",
+        },
+        {
+          n: "3",
+          t: "Teile es",
+          d: "Kopiere den geseedeten Link, damit Freunde exakt dasselbe Abenteuer erneut spielen — oder füge das Team deinem hinzu.",
+        },
+      ],
+      faqs: [
+        {
+          q: "Was umfasst ein Abenteuer?",
+          a: "Einen Trainer-Namen, Rolle und Stil, einen Rivalen, eine Region, deinen Starter, ein Sechser-Team, eine Challenge, eine Arena-Reise, eine legendäre Begegnung und ein finales Ziel — alles mit einem Tippen gewürfelt.",
+        },
+        {
+          q: "Was ist der Seed im Link?",
+          a: "Ein 8-stelliger Code, der den Wurf steuert. Derselbe Seed und dieselbe Schwierigkeit erzeugen immer exakt dasselbe Abenteuer — jeder Link ist reproduzierbar.",
+        },
+        {
+          q: "Was ändert die Schwierigkeit?",
+          a: "Die Schwierigkeit skaliert das Abenteuer von Einfach bis Extrem — sie formt die Challenges, denen du begegnest, etwa Shiny-Chancen und Begegnungsregeln.",
+        },
+        {
+          q: "Kann ich mein Abenteuer teilen?",
+          a: "Ja — kopiere den Seiten-Link. Er enthält Seed und Schwierigkeit, sodass Freunde das identische Abenteuer-Manifest öffnen.",
+        },
+      ],
+    },
+
+    guess: {
+      metaTitle: "Errate das Pokémon — Silhouetten-Challenge",
+      metaDescription:
+        "Errate versteckte Pokémon anhand ihrer Silhouetten, decke sie nacheinander zum Prüfen auf und teile dann den geseedeten Link, um einen Freund herauszufordern. Kostenloses Fan-Tool.",
+      keywords: [
+        "errate das pokemon",
+        "pokemon ratespiel",
+        "pokemon quiz",
+        "wer ist dieses pokemon",
+      ],
+      breadcrumbLabel: "Errate das Pokémon",
+      headerTitle: "Errate das Pokémon",
+      /** Template: {count} = hidden Pokémon count, clamped to the difficulty cap. */
+      headerDesc:
+        "Wir haben die Namen von {count} Zufalls-Pokémon versteckt. Decke sie nacheinander auf und teste dein Poké-Wissen!",
+      promoS1: "Lieber eine schnelle Mystery-Karte? ",
+      promoLink: "Mystery-Pokémon →",
+      guideTitle: "So funktioniert's",
+      steps: [
+        {
+          t: "Studiere die Silhouetten",
+          d: "Form, Größe und der Typ-Hinweis auf Einfach sind alles, was du hast — lege deine Vermutung fest.",
+        },
+        {
+          t: "Wenden zum Aufdecken",
+          d: "Klicke eine Karte, um sie zu wenden und zu sehen, ob du das Pokémon richtig genannt hast.",
+        },
+        {
+          t: "Teilen & vergleichen",
+          d: "Der Seed im Link erzeugt dieselbe Aufstellung — teile ihn und miss dich mit einem Freund.",
+        },
+      ],
+    },
+
+    shiny: {
+      metaTitle: "Zufalls-Pokémon-Generator Shiny-Jagd | PokeRoll",
+      metaDescription:
+        "Der Shiny-Pokémon-Generator mit echten Jagd-Chancen: Klicke auf Begegnung, finde dein Shiny und teile die Karte. Der Einfach-Modus garantiert ein Shiny innerhalb von 204 Zügen.",
+      keywords: [
+        "zufalls pokemon generator shiny",
+        "zufalls pokemon generator shiny chance",
+        "shiny pokemon generator",
+      ],
+      breadcrumbLabel: "Shiny-Jagd",
+      headerTitle: "Shiny-Jagd-Challenge",
+      headerDescEasy:
+        "Einfach-Modus — jeder Klick ist ein 1-zu-204-Zug und dein Shiny ist innerhalb von 204 Begegnungen garantiert. Teile den Link und vergleiche mit einem Freund.",
+      headerDescDefault:
+        "Klicke auf Begegnung und sieh, wie lange es bis zu deinem Shiny dauert — dieselbe 1/4.096-Chance wie in den Spielen. Teile den Link und vergleiche mit einem Freund.",
+      guideTitle: "So funktioniert's",
+      steps: [
+        {
+          t: "Klicke auf Begegnung",
+          d: "Jeder Klick ist ein Zug — 1 zu 204 auf Einfach, sonst 1 zu 4.096, und Einfach garantiert ein Shiny innerhalb von 204 Klicks.",
+        },
+        {
+          t: "Finde dein Shiny",
+          d: "Wenn es funkelt, schaltet die gefundene Karte Teilen und Herunterladen frei.",
+        },
+        {
+          t: "Teile die Jagd",
+          d: "Teile die Karte oder den geseedeten Link — Freunde sehen dein Ergebnis und starten dann ihre eigene Jagd.",
+        },
+      ],
+      faqs: [
+        {
+          q: "Wie hoch sind die Shiny-Chancen?",
+          a: "Normal, Schwer und Extrem nutzen dieselbe 1-zu-4.096-Rate wie die Hauptspiele. Der Einfach-Modus erhöht sie auf 1 zu 204 pro Klick.",
+        },
+        {
+          q: "Was ist der Einfach-Modus?",
+          a: "Eine freundlichere Jagd: 1-zu-204-Chance pro Begegnung, und dein Shiny erscheint garantiert innerhalb von 204 Zügen — keine endlosen Pechsträhnen.",
+        },
+        {
+          q: "Was passiert, wenn ich ein Shiny finde?",
+          a: "Die gefundene Karte schaltet Teilen und Herunterladen frei. Der geteilte Link öffnet direkt auf deinem gefundenen Shiny, und die heruntergeladene Karte trägt einen QR-Code, den Freunde scannen können, um ihre eigene Jagd zu starten.",
+        },
+      ],
+    },
+
+    favorites: {
+      metaTitle: "Deine Pokémon-Favoriten | PokeRoll",
+      metaDescription:
+        "Speichere die Pokémon, die du liebst, und baue deine Favoriten-Sammlung — teile die Liste mit einem Link und kopiere jede Karte nach Showdown. Kostenloses Fan-Tool.",
+      keywords: [
+        "pokemon favoriten",
+        "pokemon favoriten liste",
+        "pokemon sammlung teilen",
+      ],
+      headerTitle: "Pokémon-Favoriten",
+      headerDesc:
+        "Bewahre die Pokémon, die du liebst, an einem Ort — und teile die ganze Liste mit einem einzigen Link.",
+    },
+
+    contact: {
+      metaTitle: "Kontakt | PokeRoll",
+      metaDescription:
+        "Kontaktiere das PokeRoll-Team — schreibe eine E-Mail an hello@pokeroll.app für Feedback und Fehlermeldungen, sag hallo auf X @JoeyChou2024 oder öffne ein Issue auf GitHub. Wir antworten schnell.",
+      keywords: [
+        "pokeroll kontakt",
+        "pokemon generator feedback",
+        "pokeroll support",
+      ],
+      headerTitle: "Kontakt",
+      headerDesc:
+        "Fragen, Ideen oder ein Fehler zu melden? Wähle den Kanal, der dir passt — jede Nachricht erreicht den Macher direkt.",
+      channels: [
+        {
+          title: "E-Mail",
+          handle: "hello@pokeroll.app",
+          desc: "Feedback, Fehlermeldungen oder geschäftliche Anfragen — wir lesen alles.",
+          action: "E-Mail senden",
+        },
+        {
+          title: "X (Twitter)",
+          handle: "@JoeyChou2024",
+          desc: "Die schnellsten Antworten. Tägliche Build-in-Public-Updates zu dem, was als Nächstes kommt.",
+          action: "Auf X folgen",
+        },
+        {
+          title: "GitHub",
+          handle: "ihuajiu/pokeroll.app",
+          desc: "Open Source. Einen Fehler gefunden? Öffne ein Issue, dann wird er verfolgt.",
+          action: "Issue öffnen",
+        },
+      ],
+      soloNote:
+        "PokeRoll ist ein Solo-Fan-Projekt — nicht mit Nintendo oder The Pokémon Company verbunden. Antworten kommen meist innerhalb von 48 Stunden.",
+      backLink: "← Zurück zum Generator",
+    },
+
+    privacy: {
+      metaTitle: "Datenschutzerklärung — PokeRoll",
+      metaDescription:
+        "PokeRoll-Datenschutzerklärung — wir nutzen anonymes Google Analytics, speichern Favoriten und Theme nur im localStorage deines Browsers und erheben niemals persönliche Daten.",
+      keywords: [
+        "pokeroll datenschutzerklärung",
+        "pokemon tool datenschutz",
+        "fan seite datenschutz",
+      ],
+      headerTitle: "Datenschutzerklärung",
+      intro:
+        "PokeRoll ist eine kostenlose, von Fans gebaute Pokémon-Toolbox. Wir halten die Datenerhebung auf ein absolutes Minimum — du kannst jedes Tool ohne Konto nutzen, und wir fragen niemals persönliche Daten ab.",
+      analytics: {
+        h: "Analyse:",
+        p: "Wir nutzen Google Analytics, um den Gesamt-Traffic zu verstehen (welche Seiten besucht werden, ungefähr wie viele Besucher). Diese Daten sind aggregiert und anonym — wir nutzen sie nicht, um einzelne Nutzer zu identifizieren.",
+      },
+      storage: {
+        h: "Browser-Speicher:",
+        p: "Deine Favoriten, Team-Picks und Theme-Einstellungen werden nur im localStorage deines Browsers gespeichert. Diese Daten verlassen dein Gerät nie und werden niemals auf unsere Server hochgeladen.",
+      },
+      personal: {
+        h: "Persönliche Daten:",
+        p: "Wir erheben keine Namen, E-Mail-Adressen oder andere persönliche Daten. Es gibt keine Registrierung und kein Tracking über die oben beschriebene anonyme Analyse hinaus.",
+      },
+      // s1/l1/s2 are the segments around the /disclaimer link.
+      affiliate: {
+        h: "Affiliate-Links:",
+        s1: "Einige Shopping-Links auf dieser Seite sind Affiliate-Links — Details siehe ",
+        l1: "Haftungsausschluss",
+        s2: ". Affiliate-Partner können eigene Cookies gemäß ihren eigenen Datenschutzerklärungen verwenden.",
+      },
+      // s1/l1/s2 are the segments around the mailto link.
+      contact: {
+        h: "Kontakt:",
+        s1: "Fragen zu dieser Erklärung? Schreibe an ",
+        l1: "hello@pokeroll.app",
+        s2: ".",
+      },
+      backLink: "← Zurück zum Generator",
+    },
+
+    terms: {
+      metaTitle: "Nutzungsbedingungen — PokeRoll",
+      metaDescription:
+        "PokeRoll-Nutzungsbedingungen — eine inoffizielle, von Fans gebaute Pokémon-Toolbox, bereitgestellt wie besehen. Pokémon ist eine Marke von Nintendo, Game Freak und The Pokémon Company.",
+      keywords: [
+        "pokeroll nutzungsbedingungen",
+        "pokemon fan seite bedingungen",
+        "inoffizielles pokemon tool",
+      ],
+      headerTitle: "Nutzungsbedingungen",
+      intro:
+        "PokeRoll ist eine inoffizielle, von Fans gebaute Pokémon-Toolbox. Mit der Nutzung dieser Seite stimmst du den folgenden Bedingungen zu.",
+      unofficial: {
+        h: "Inoffizielles Fan-Projekt:",
+        p: "Diese Seite steht in keiner Verbindung zu Nintendo, Game Freak oder The Pokémon Company und wird von diesen weder unterstützt noch gesponsert. Pokémon und alle zugehörigen Namen, Charaktere und Artworks sind Marken von Nintendo, Game Freak und The Pokémon Company und werden hier nur zu Informations- und Unterhaltungszwecken verwendet.",
+      },
+      asIs: {
+        h: "Bereitstellung wie besehen:",
+        p: "Die Tools und Inhalte auf dieser Seite werden „wie besehen“ bereitgestellt, ohne Gewährleistung jeglicher Art. Zufallsergebnisse dienen dem Spaß; wir übernehmen keine Garantie für Verfügbarkeit, Genauigkeit oder Eignung für einen bestimmten Zweck.",
+      },
+      // s1/l1/s2 are the segments around the PokéAPI link.
+      dataSources: {
+        h: "Datenquellen:",
+        s1: "Pokémon-Daten (Namen, Typen, Werte, Fähigkeiten, Sprites) stammen aus der öffentlichen ",
+        l1: "PokéAPI",
+        s2: ". Sprites sind © ihrer jeweiligen Rechteinhaber.",
+      },
+      // s1/l1/s2 are the segments around the /disclaimer link.
+      affiliate: {
+        h: "Affiliate-Links:",
+        s1: "Als Amazon-Partner verdienen wir an qualifizierten Käufen über die Shopping-Links auf dieser Seite. Das beeinflusst die Tools nicht — sie bleiben kostenlos. Die vollständige Offenlegung findest du im ",
+        l1: "Haftungsausschluss",
+        s2: ".",
+      },
+      // s1/l1/s2 are the segments around the mailto link.
+      contact: {
+        h: "Kontakt:",
+        s1: "Fragen zu diesen Bedingungen? Schreibe an ",
+        l1: "hello@pokeroll.app",
+        s2: ".",
+      },
+      backLink: "← Zurück zum Generator",
+    },
+
+    disclaimer: {
+      metaTitle: "Haftungsausschluss & Affiliate-Hinweis — Fan-Pokémon-Tool",
+      metaDescription:
+        "PokeRoll ist eine inoffizielle Fan-Seite und steht in keiner Verbindung zu Nintendo, Game Freak oder The Pokémon Company. Lies den Haftungsausschluss und die Affiliate-Offenlegung.",
+      keywords: [
+        "pokemon fan seite haftungsausschluss",
+        "pokemon affiliate offenlegung",
+        "inoffizielle pokemon seite",
+      ],
+      headerTitle: "Haftungsausschluss",
+      intro:
+        "Diese Seite ist ein inoffizielles Fan-Tool. Sie steht in keiner Verbindung zu Nintendo, Game Freak oder The Pokémon Company und wird von diesen weder unterstützt noch gesponsert. Pokémon-Namen, -Charaktere und -Artworks sind Marken ihrer jeweiligen Eigentümer und werden hier nur zu Informations- und Unterhaltungszwecken verwendet.",
+      // s1/l1/s2 are the segments around the PokéAPI link.
+      dataSources: {
+        s1: "Alle Pokémon-Daten (Namen, Typen, Fähigkeiten, Werte, Sprites) werden aus der öffentlichen ",
+        l1: "PokéAPI",
+        s2: " abgerufen. Sprites sind © ihrer jeweiligen Rechteinhaber.",
+      },
+      affiliate: {
+        h: "Affiliate-Offenlegung:",
+        p: "Als Amazon-Partner verdienen wir an qualifizierten Käufen über die Shopping-Links auf dieser Seite. Das beeinflusst das Tool nicht — es bleibt kostenlos nutzbar.",
+      },
+      backLink: "← Zurück zum Generator",
+    },
+
+    randomPokemon: {
+      metaTitle: "Zufalls-Pokémon — Jetzt würfeln | PokeRoll",
+      metaDescription:
+        "Erhalte ein Zufalls-Pokémon mit einem Tippen — jeder Wurf kommt mit Name, Typ, Fähigkeit, Basiswerten und offiziellem Artwork, bereit zum Kopieren nach Showdown. Kostenloses Fan-Tool.",
+      keywords: [
+        "zufalls pokemon generator",
+        "pokemon generator",
+        "zufalls pokemon",
+        "zufälliges pokemon generieren",
+        "zufalls pokemon erhalten",
+      ],
+    },
+    randomPokemonPicker: {
+      metaTitle: "Zufalls-Pokémon-Picker | PokeRoll",
+      metaDescription:
+        "Wähle ein Zufalls-Pokémon mit einem Tippen — jeder Pick kommt mit Name, Typ, Fähigkeit, Basiswerten und offiziellem Artwork, bereit zum Kopieren nach Showdown. Kostenloses Fan-Tool.",
+      keywords: [
+        "zufalls pokemon picker",
+        "pokemon generator",
+        "zufalls pokemon",
+        "zufälliges pokemon generieren",
+        "zufalls pokemon auswählen",
+      ],
+    },
+    pokemonRandomizer: {
+      metaTitle: "Pokémon-Randomizer | PokeRoll",
+      metaDescription:
+        "Würfle ein zufälliges Pokémon mit einem Tippen — jeder Wurf kommt mit Name, Typ, Fähigkeit, Basiswerten und offiziellem Artwork, bereit zum Kopieren nach Showdown. Kostenloses Fan-Tool.",
+      keywords: [
+        "pokemon randomizer",
+        "pokemon generator",
+        "zufalls pokemon",
+        "zufälliges pokemon generieren",
+        "zufalls pokemon erhalten",
+      ],
+    },
+
+    team: {
+      metaTitle: "Dein Pokémon-Team | PokeRoll",
+      metaDescription:
+        "Deine gespeicherte Truppe aus zufällig generierten Pokémon — teile den Link mit Freunden oder kopiere jedes Set nach Showdown für Kämpfe. Kostenloses Fan-Tool.",
+      keywords: [
+        "pokemon team builder",
+        "zufalls pokemon team builder",
+        "zufalls pokemon team generator",
+        "pokemon team planer",
+      ],
+      headerTitle: "Dein Pokémon-Team",
+      headerDesc:
+        "Deine gespeicherte Truppe — füge Pokémon aus jedem Generator hinzu, dann baue und teile.",
+    },
+
+    teamRandom: {
+      metaTitle: "Zufalls-Pokémon-Team-Generator | PokeRoll",
+      metaDescription:
+        "Generiere ein Zufalls-Team aus 6 Pokémon mit einem Tippen — sperre Favoriten, würfle den Rest neu, dann exportiere jedes Set nach Showdown oder teile den Link. Kostenloses Fan-Tool.",
+      keywords: [
+        "zufalls pokemon team generator",
+        "pokemon team generator",
+        "zufalls pokemon team",
+        "zufälliges pokemon team erstellen",
+      ],
+      headerTitle: "Zufalls-Pokémon-Team",
+      headerDesc:
+        "Würfle eine gefilterte Truppe aus Zufalls-Pokémon — dann füge deine Favoriten zu deinem Team hinzu.",
+      faqs: [
+        {
+          q: "Wie werden Teams generiert?",
+          a: "Jeder Wurf zieht sechs zufällige Pokémon auf einmal. Öffne die Filter, um den Pool vor dem Würfeln nach Generation, Region, Typ oder Kategorie (wie Legendär oder Starter) einzugrenzen.",
+        },
+        {
+          q: "Warum habe ich weniger als sechs Pokémon bekommen?",
+          a: "Sehr enge Filter können einen passenden Pool kleiner als sechs hinterlassen. Erweitere einen der Filter — oder stelle einen zurück auf Zufällig — und würfle erneut.",
+        },
+        {
+          q: "Kann ich ein Team speichern oder teilen?",
+          a: "Teile den Seiten-Link — die URL enthält die gewürfelte Truppe, also sehen Freunde beim Öffnen dieselben sechs. Tippe auf einer Karte auf „Zum Team hinzufügen“, um Favoriten seitenweit in deinem Team zu behalten.",
+        },
+      ],
+    },
+
+    teamCoach: {
+      metaTitle: "Pokémon-Team-Coach — Fülle den Rest deines Teams",
+      metaDescription:
+        "Sperre die Pokémon, die du bereits gewählt hast, und lass den Team-Coach den Rest mit Typ-Abdeckung und balancierten Rollen füllen — dann kopiere das Team nach Showdown. Kostenloses Fan-Tool.",
+      keywords: [
+        "pokemon team builder",
+        "pokemon team ergänzen",
+        "pokemon team coach",
+        "automatischer team builder pokemon",
+      ],
+      breadcrumbLabel: "Team-Coach",
+      headerTitle: "Pokémon-Team-Coach",
+      headerDesc:
+        "Sperre die Pokémon, die du bereits gewählt hast, und fülle den Rest mit Typ-Abdeckung und balancierten Rollen.",
+    },
+
+    teamChallenge: {
+      metaTitle: "Pokémon-Team-Challenge — Würfle ein Team, fordere einen Freund heraus",
+      metaDescription:
+        "Würfle ein geseedetes Team aus 6 Pokémon, teile den Link und fordere einen Freund heraus — die BST-Summe bestimmt den Gewinner, dann exportiere eines der Teams nach Showdown. Kostenloses Fan-Tool.",
+      keywords: [
+        "pokemon team challenge",
+        "zufalls pokemon team generator",
+        "zufalls pokemon team",
+        "pokemon team generator",
+      ],
+      breadcrumbLabel: "Team-Challenge",
+      headerTitle: "Pokémon-Team-Challenge",
+      headerDesc:
+        "Würfle ein 6-Pokémon-Challenge-Team, teile den Link und lass die BST-Summe einen Gewinner gegen deine Freunde bestimmen.",
+    },
+
+    wheel: {
+      metaTitle: "Zufalls-Pokémon-Generator Glücksrad | PokeRoll",
+      metaDescription:
+        "Dreh das Rad für ein Zufalls-Pokémon — ein lustiges Glückspiel über den ganzen Pokédex. Sieh zu, wie es landet, und kopiere deinen Pick nach Showdown. Kostenloses Fan-Tool.",
+      keywords: [
+        "zufalls pokemon generator glücksrad",
+        "pokemon glücksrad generator",
+        "zufalls pokemon glücksrad",
+        "pokemon picker glücksrad",
+      ],
+      breadcrumbLabel: "Rad drehen",
+      headerTitle: "Pokémon-Glücksrad-Generator",
+      headerDesc:
+        "Dreh das Rad für ein Zufalls-Pokémon — ein lustiges Glückspiel über den Pokédex — und kopiere deinen Pick nach Showdown.",
+      guideTitle: "So funktioniert's",
+      steps: [
+        {
+          n: "1",
+          t: "Wähle deine Spieler",
+          d: "Wähle 2-6 Spieler — jeder dreht einmal am Rad.",
+        },
+        {
+          n: "2",
+          t: "Drehen & landen",
+          d: "Jede Drehung landet auf einem Pokémon und stapelt sich unten in den Rundenergebnissen.",
+        },
+        {
+          n: "3",
+          t: "Kämpfen & teilen",
+          d: "Der höchste BST gewinnt die Runde — teile das Ergebnis, um Freunde herauszufordern.",
+        },
+      ],
+    },
+
+    fusion: {
+      metaTitle: "Pokémon-Fusions-Generator | PokeRoll",
+      metaDescription:
+        "Fusioniere zwei zufällige Pokémon zu einem brandneuen Hybrid mit kombiniertem Namen, Typ und Werten — würfle erneut für ein seltsameres Paar und kopiere die Fusion nach Showdown.",
+      keywords: [
+        "pokemon fusion generator",
+        "zufalls pokemon fusion generator",
+        "pokemon fusion tool",
+        "pokemon fusion erstellen",
+      ],
+      breadcrumbLabel: "Fusions-Tool",
+      headerTitle: "Pokémon-Fusions-Generator",
+      headerDesc:
+        "Fusioniere zwei zufällige Pokémon zu einem brandneuen Hybrid mit kombiniertem Namen, Typ und Werten — dann kopiere die Fusion nach Showdown.",
+      faqs: [
+        {
+          q: "Wie funktioniert der Fusions-Generator?",
+          a: "Jeder Wurf wählt zwei zufällige Pokémon und fusioniert sie zu einem Hybrid — ein gemischter Name plus kombinierte Typen und Werte beider Elternteile.",
+        },
+        {
+          q: "Kann ich eine Fusion teilen oder behalten?",
+          a: "Ja. Der Teilen-Button kopiert einen Link, der exakt dieselbe Fusion reproduziert, und Herunterladen speichert die Fusionskarte als Bild.",
+        },
+        {
+          q: "Ist das ein offizielles Pokémon-Tool?",
+          a: "Nein — PokeRoll ist ein Fan-Projekt. Pokémon-Daten stammen von PokéAPI; Fusionsergebnisse werden zum Spaß generiert und sind keine offiziellen Designs.",
+        },
+      ],
     },
   },
 };
