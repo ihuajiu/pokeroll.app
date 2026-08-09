@@ -34,6 +34,15 @@ export const LOCALE_LABEL: Record<Locale, string> = {
   fr: "Français",
 };
 
+/** Flag icon per locale — /flags/<code>.svg (language → primary country). */
+export const LOCALE_FLAG: Record<Locale, string> = {
+  en: "us",
+  es: "es",
+  pt: "br",
+  de: "de",
+  fr: "fr",
+};
+
 // Pages not yet translated — a locale-prefixed visit (e.g. /es/random-pokemon)
 // 308s to the English URL (middleware), and pageHref keeps their links
 // unprefixed so users don't bounce through that redirect.

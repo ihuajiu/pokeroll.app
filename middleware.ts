@@ -53,6 +53,6 @@ export function middleware(req: NextRequest) {
 // Run on every page path; skip API, Next internals and public assets.
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|icon.svg|favicon.ico|robots.txt|sitemap.xml|llms.txt|fonts|pokemon).*)",
+    "/((?!api|_next/static|_next/image|icon.svg|favicon.ico|robots.txt|sitemap.xml|llms.txt|fonts|flags|pokemon).*)",
   ],
 };

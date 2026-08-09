@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   DEFAULT_LOCALE,
+  LOCALE_FLAG,
   LOCALE_LABEL,
   LOCALES,
   isLocale,
@@ -47,20 +48,13 @@ export default function NavLanguageMenu() {
         title={dict.nav.languageAria}
         className="game-btn game-btn-ghost inline-flex h-9 items-center justify-center gap-1 px-2"
       >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-5 w-5"
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/flags/${LOCALE_FLAG[locale]}.svg`}
+          alt=""
           aria-hidden="true"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <path d="M2 12h20" />
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-        </svg>
+          className="h-3.5 w-[18px] rounded-[3px] object-cover"
+        />
         <span className="text-xs font-bold uppercase">{locale}</span>
       </button>
 
@@ -82,7 +76,16 @@ export default function NavLanguageMenu() {
                         : "text-poke-ink hover:bg-poke-chip"
                     }`}
                   >
-                    {LOCALE_LABEL[l]}
+                    <span className="flex items-center gap-2">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={`/flags/${LOCALE_FLAG[l]}.svg`}
+                        alt=""
+                        aria-hidden="true"
+                        className="h-3.5 w-[18px] rounded-[2px] object-cover"
+                      />
+                      {LOCALE_LABEL[l]}
+                    </span>
                     {active && (
                       <svg
                         viewBox="0 0 24 24"
