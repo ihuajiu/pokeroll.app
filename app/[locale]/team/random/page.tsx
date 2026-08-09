@@ -61,7 +61,7 @@ export default async function RandomTeamPage({
       <TeamGenerator initial={localized} />
 
 
-      <FaqSection items={d.faqs} />
+      <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/team/random" locale={locale} />
     </main>
   );

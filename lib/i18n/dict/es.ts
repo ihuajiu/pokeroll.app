@@ -1432,6 +1432,12 @@ export default {
       headerTitle: "Tu equipo Pokémon",
       headerDesc:
         "Tu equipo guardado — añade Pokémon desde cualquier generador, luego arma y comparte.",
+      faqs: [
+        {
+          q: "¿Cómo uso este equipo en Pokémon Showdown?",
+          a: "Toca Copy Sets bajo el equipo (el botón con la insignia Showdown) para copiar el equipo en el formato de texto de Showdown. Luego abre play.pokemonshowdown.com/teambuilder, elige Import/Export y pega el texto — cada set se carga con sus movimientos, habilidad, objeto, naturaleza y EVs, listo para combatir o ajustar.",
+        },
+      ],
     },
 
     teamRandom: {
@@ -1460,6 +1466,10 @@ export default {
           q: "¿Puedo guardar o compartir un equipo?",
           a: "Comparte el enlace de la página — la URL lleva el equipo generado, así que los amigos que lo abran verán los mismos seis. Toca «Añadir al equipo» en cualquier carta para conservar favoritos en Tu equipo en todo el sitio.",
         },
+        {
+          q: "¿Cómo uso este equipo en Pokémon Showdown?",
+          a: "Toca Copy Sets bajo el equipo (el botón con la insignia Showdown) para copiar el equipo en el formato de texto de Showdown. Luego abre play.pokemonshowdown.com/teambuilder, elige Import/Export y pega el texto — cada set se carga con sus movimientos, habilidad, objeto, naturaleza y EVs, listo para combatir o ajustar.",
+        },
       ],
     },
 
@@ -1477,6 +1487,12 @@ export default {
       headerTitle: "Entrenador de equipo Pokémon",
       headerDesc:
         "Bloquea los Pokémon que ya elegiste y completa el resto con cobertura de tipos y roles equilibrados.",
+      faqs: [
+        {
+          q: "¿Cómo uso este equipo en Pokémon Showdown?",
+          a: "Toca Copy Sets bajo el equipo (el botón con la insignia Showdown) para copiar el equipo en el formato de texto de Showdown. Luego abre play.pokemonshowdown.com/teambuilder, elige Import/Export y pega el texto — cada set se carga con sus movimientos, habilidad, objeto, naturaleza y EVs, listo para combatir o ajustar.",
+        },
+      ],
     },
 
     teamChallenge: {
@@ -1493,6 +1509,12 @@ export default {
       headerTitle: "Desafío de equipo Pokémon",
       headerDesc:
         "Genera un equipo de desafío de 6 Pokémon, comparte el enlace y deja que el BST total decida un ganador contra tus amigos.",
+      faqs: [
+        {
+          q: "¿Cómo uso este equipo en Pokémon Showdown?",
+          a: "Toca Copy Sets bajo el equipo (el botón con la insignia Showdown) para copiar el equipo en el formato de texto de Showdown. Luego abre play.pokemonshowdown.com/teambuilder, elige Import/Export y pega el texto — cada set se carga con sus movimientos, habilidad, objeto, naturaleza y EVs, listo para combatir o ajustar.",
+        },
+      ],
     },
 
     wheel: {

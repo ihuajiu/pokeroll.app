@@ -1423,6 +1423,12 @@ export default {
       headerTitle: "Your Pokémon Team",
       headerDesc:
         "Your saved squad — add Pokémon from any generator, then build and share.",
+      faqs: [
+        {
+          q: "How do I use this team in Pokémon Showdown?",
+          a: "Tap Copy Sets below the team (the button with the Showdown badge) to copy the squad in Showdown's text format. Then open play.pokemonshowdown.com/teambuilder, choose Import/Export and paste the text — every set loads with its moves, ability, item, nature and EVs, ready to battle or fine-tune.",
+        },
+      ],
     },
 
     teamRandom: {
@@ -1451,6 +1457,10 @@ export default {
           q: "Can I save or share a team?",
           a: "Share the page link — the URL carries the rolled squad, so friends opening it see the same six. Tap Add to Team on any card to keep favourites in Your Team across the whole site.",
         },
+        {
+          q: "How do I use this team in Pokémon Showdown?",
+          a: "Tap Copy Sets below the team (the button with the Showdown badge) to copy the squad in Showdown's text format. Then open play.pokemonshowdown.com/teambuilder, choose Import/Export and paste the text — every set loads with its moves, ability, item, nature and EVs, ready to battle or fine-tune.",
+        },
       ],
     },
 
@@ -1468,6 +1478,12 @@ export default {
       headerTitle: "Pokémon Team Coach",
       headerDesc:
         "Lock the Pokémon you already picked, fill the rest with type coverage and balanced roles.",
+      faqs: [
+        {
+          q: "How do I use this team in Pokémon Showdown?",
+          a: "Tap Copy Sets below the team (the button with the Showdown badge) to copy the squad in Showdown's text format. Then open play.pokemonshowdown.com/teambuilder, choose Import/Export and paste the text — every set loads with its moves, ability, item, nature and EVs, ready to battle or fine-tune.",
+        },
+      ],
     },
 
     teamChallenge: {
@@ -1484,6 +1500,12 @@ export default {
       headerTitle: "Pokémon Team Challenge",
       headerDesc:
         "Roll a 6-Pokémon challenge team, share the link, and let total BST pick a winner against your friends.",
+      faqs: [
+        {
+          q: "How do I use this team in Pokémon Showdown?",
+          a: "Tap Copy Sets below the team (the button with the Showdown badge) to copy the squad in Showdown's text format. Then open play.pokemonshowdown.com/teambuilder, choose Import/Export and paste the text — every set loads with its moves, ability, item, nature and EVs, ready to battle or fine-tune.",
+        },
+      ],
     },
 
     wheel: {

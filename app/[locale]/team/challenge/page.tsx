@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import TeamChallenge from "@/components/TeamChallenge";
 import RelatedTools from "@/components/RelatedTools";
+import FaqSection from "@/components/FaqSection";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getRandomTeam } from "@/lib/team";
@@ -91,6 +92,7 @@ export default async function TeamChallengePage({
         resultView={resultView}
         isOwner={isOwner}
       />
+      <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/team/challenge" locale={locale} />
     </main>
   );

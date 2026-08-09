@@ -1433,6 +1433,12 @@ export default {
       headerTitle: "Sua equipe Pokémon",
       headerDesc:
         "Sua equipe salva — adicione Pokémon de qualquer gerador, depois monte e compartilhe.",
+      faqs: [
+        {
+          q: "Como uso esta equipe no Pokémon Showdown?",
+          a: "Toque em Copy Sets abaixo da equipe (o botão com o selo Showdown) para copiar a equipe no formato de texto do Showdown. Depois abra play.pokemonshowdown.com/teambuilder, escolha Import/Export e cole o texto — cada set carrega com golpes, habilidade, item, natureza e EVs, pronto para batalhar ou ajustar.",
+        },
+      ],
     },
 
     teamRandom: {
@@ -1461,6 +1467,10 @@ export default {
           q: "Posso salvar ou compartilhar uma equipe?",
           a: "Compartilhe o link da página — a URL carrega a equipe sorteada, então os amigos que a abrirem veem os mesmos seis. Toque em «Adicionar à equipe» em qualquer card para guardar os favoritos na Sua equipe em todo o site.",
         },
+        {
+          q: "Como uso esta equipe no Pokémon Showdown?",
+          a: "Toque em Copy Sets abaixo da equipe (o botão com o selo Showdown) para copiar a equipe no formato de texto do Showdown. Depois abra play.pokemonshowdown.com/teambuilder, escolha Import/Export e cole o texto — cada set carrega com golpes, habilidade, item, natureza e EVs, pronto para batalhar ou ajustar.",
+        },
       ],
     },
 
@@ -1478,6 +1488,12 @@ export default {
       headerTitle: "Técnico de equipe Pokémon",
       headerDesc:
         "Trave os Pokémon que você já escolheu, preencha o resto com cobertura de tipos e papéis equilibrados.",
+      faqs: [
+        {
+          q: "Como uso esta equipe no Pokémon Showdown?",
+          a: "Toque em Copy Sets abaixo da equipe (o botão com o selo Showdown) para copiar a equipe no formato de texto do Showdown. Depois abra play.pokemonshowdown.com/teambuilder, escolha Import/Export e cole o texto — cada set carrega com golpes, habilidade, item, natureza e EVs, pronto para batalhar ou ajustar.",
+        },
+      ],
     },
 
     teamChallenge: {
@@ -1494,6 +1510,12 @@ export default {
       headerTitle: "Desafio de equipe Pokémon",
       headerDesc:
         "Sorteie uma equipe de desafio de 6 Pokémon, compartilhe o link e deixe o BST total decidir o vencedor contra seus amigos.",
+      faqs: [
+        {
+          q: "Como uso esta equipe no Pokémon Showdown?",
+          a: "Toque em Copy Sets abaixo da equipe (o botão com o selo Showdown) para copiar a equipe no formato de texto do Showdown. Depois abra play.pokemonshowdown.com/teambuilder, escolha Import/Export e cole o texto — cada set carrega com golpes, habilidade, item, natureza e EVs, pronto para batalhar ou ajustar.",
+        },
+      ],
     },
 
     wheel: {
