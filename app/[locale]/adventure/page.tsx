@@ -3,6 +3,7 @@ import AdventureView from "@/components/AdventureView";
 import GuideSteps from "@/components/GuideSteps";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
+import PlayGuide from "@/components/PlayGuide";
 import PageHeader from "@/components/PageHeader";
 import { rollAdventure } from "@/lib/adventure";
 import { DIFFICULTIES, randomSeed } from "@/lib/adventure-types";
@@ -74,6 +75,7 @@ export default async function AdventurePage({
           steps={d.steps}
         />
         <AdventureView initial={adventure} />
+        <PlayGuide guide={d.guide} />
         <FaqSection
           items={d.faqs}
           locale={locale}

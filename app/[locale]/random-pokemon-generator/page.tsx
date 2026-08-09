@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import RandomGenerator from "@/components/RandomGenerator";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
+import PlayGuide from "@/components/PlayGuide";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getPokemonById, getRandomPokemon } from "@/lib/pokeapi";
@@ -108,6 +109,7 @@ export default async function RandomGeneratorPage({
       </div>
       <RandomGenerator initial={initial} />
       <div className="mx-auto max-w-[1080px] px-0 lg:px-6">
+        <PlayGuide guide={d.guide} />
         <FaqSection items={d.faqs} locale={locale} />
         <RelatedTools current="/random-pokemon-generator" locale={locale} />
       </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import GuideSteps from "@/components/GuideSteps";
+import PlayGuide from "@/components/PlayGuide";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -137,6 +138,7 @@ export default async function GuessChallengePage({
         steps={d.steps.map((s, i) => ({ n: String(i + 1), ...s }))}
       />
       <ChallengeGenerator challenge={challenge} />
+      <PlayGuide guide={d.guide} />
       <RelatedTools current="/challenge/guess" locale={locale} />
     </main>
   );

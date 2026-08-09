@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
+import PlayGuide, { fillGuide } from "@/components/PlayGuide";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -114,6 +115,13 @@ export default async function GenPage({
         {d.introS5}
       </p>
       <FilteredGenerator query={`gen=${gen}`} initial={initial} />
+      <PlayGuide
+        guide={fillGuide(d.guide, {
+          genLabel: gl,
+          region: titleCase(region),
+          regionSlug: region,
+        })}
+      />
       <RelatedTools
         hrefs={["/random-pokemon-generator", "/starter", "/type", "/adventure"]}
         locale={locale}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import TeamGenerator from "@/components/TeamGenerator";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
+import PlayGuide from "@/components/PlayGuide";
 import PageHeader from "@/components/PageHeader";
 import { getRandomTeam, type TeamRandomParams } from "@/lib/team";
 import {
@@ -60,7 +61,7 @@ export default async function RandomTeamPage({
 
       <TeamGenerator initial={localized} />
 
-
+      <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/team/random" locale={locale} />
     </main>

@@ -853,6 +853,48 @@ export default {
           a: "Alle Arten-Daten stammen von PokéAPI und sind lokal mit der Seite gebündelt, sodass jeder Wurf sofort da ist.",
         },
       ],
+      guide: {
+        introTitle: "Warum ein Zufalls-Pokémon würfeln?",
+        intro:
+          "Ein Zufallswurf ist der schnellste Weg raus aus dem „immer dieselben sechs Favoriten“-Denken. Ein Tippen gibt dir eine Art, die du nicht gewählt hast — mit Werten, Typen und Artwork — und schon tüftelst du an einem Moveset für ein Pokémon, das du selbst nie genommen hättest. Nutze es als Draft-Pick, als Zeichenvorlage, als Nuzlocke-Begegnungstabelle oder als ersten Slot eines brandneuen Teams.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Challenge-Starter",
+            d: "Würfle einmal und mache das Ergebnis zum Starter deines nächsten Durchlaufs — egal, was kommt. Dann baue den Run darum herum.",
+          },
+          {
+            t: "Draft & Duell",
+            d: "Würfelt abwechselnd mit einem Freund — jeder behält, was er würfelt, sechs Würfe pro Person, dann treten die beiden Truppen auf Showdown gegeneinander an.",
+          },
+          {
+            t: "Kunst- & Schreib-Prompt",
+            d: "Nutze den Wurf als kreatives Briefing: Zeichne das Pokémon in deinem Stil oder schreibe den Trainer, der es bei sich tragen würde.",
+          },
+          {
+            t: "Team-Grundstein",
+            d: "Gefällt dir dein Wurf? Tippe auf Add to Team und würfle weiter — sechs Tipps später hast du eine Truppe, die sich selbst gewählt hat.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Zufall funktioniert am besten mit einer Regel. Nur Kanto? Öffne die Filter und sperre die Generation. Keine Legendären? Schließe die Kategorie vorher aus. Ein einziger Typ für einen Theme-Run? Sperre ihn vor dem ersten Tippen — die Filter sind das Regelbuch, der Wurf ist der Würfel.",
+          "Spielst du mit anderen? Sprecht die Regeln laut ab, bevor jemand würfelt: wie viele Neuwürfe jeder bekommt (einer ist ein guter Standard), ob alternative Formen zählen und was bei einem Doppelgänger passiert.",
+          "Der Spaß liegt darin, sich auf das Ergebnis festzulegen — ein Wurf, den du endlos rückgängig machen kannst, ist nur Stöbern mit Extra-Schritten.",
+        ],
+        sampleTitle: "Ein Beispielwurf",
+        sample:
+          "Angenommen, die Würfel geben dir Aromatisse — ein reines Fee-Pokémon mit 101 KP und 29 Initiative, das du nie in ein ernstes Team packen würdest. Jetzt die interessante Frage: Bizarro-Raum-Anker? Aromakur-Support? Plötzlich liest du eine Moveset-Seite für ein Pokémon, an dem du ein Jahrzehnt vorbeigelaufen bist. Genau darum geht es beim Wurf.",
+        linksTitle: "Lust auf einen kleineren Pool?",
+        linksTextBefore: "Würfle stattdessen eine einzelne Scheibe des Pokédex — probiere den",
+        links: [
+          { label: "Gen-1-Generator", href: "/gen/1" },
+          { label: "Drachen-Typ-Generator", href: "/type/dragon" },
+          { label: "Legendären-Generator", href: "/legendary" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— dieselben Würfel, kleinerer Teich.",
+      },
     },
 
     type: {
@@ -888,6 +930,47 @@ export default {
       linkTitleBrowseRegion: "Region {region} durchstöbern",
       linkTitleType: "Typ-Generator",
       linkTitleRandom: "Zufalls-Pokémon-Generator",
+      guide: {
+        introTitle: "Warum Pokémon vom Typ {type} würfeln?",
+        intro:
+          "Der Pool vom Typ {type} hält alles bereit, von Klassikern der ersten Stunde bis zu den neuesten Veröffentlichungen — und diese Seite gibt dir eines per Zufall, mit Werten, Fähigkeit und Artwork. Ein Tippen, ein {type}, kein Durchscrollen des Dex.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Mono-{type}-Run",
+            d: "Würfle eines und es verankert deine Mono-{type}-Challenge — der erste Slot steht fest, fünf fehlen noch.",
+          },
+          {
+            t: "Typ-Studie",
+            d: "Würfle dich durch den Pool und notiere die Wertemuster — Pokémon vom Typ {type} teilen eine Designphilosophie, die es zu lernen lohnt.",
+          },
+          {
+            t: "Draft-Bedingung",
+            d: "Alle draften nur aus dem {type}-Pool — gleicher Typ, völlig unterschiedliche Truppen.",
+          },
+          {
+            t: "Kunst-Prompt",
+            d: "Zeichne den heutigen {type}-Wurf — tägliche Skizzen fallen leichter, wenn die Würfel das Motiv wählen.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Ein Mono-{type}-Run steht und fällt mit den gemeinsamen Schwächen — prüfe, was {type} resistiert und fürchtet, bevor du dich festlegst.",
+          "„Der erste Wurf zählt“ ist die sauberste Regel; ein angekündigter Neuwurf pro Session ist die nachsichtige. Entscheide dich, bevor du tippst.",
+          "Doppeltypen zählen: Trägt es {type}, ist es im Pool — Hybriden sind das Überlebensrezept von Mono-Runs.",
+        ],
+        sampleTitle: "Ein Beispielwurf",
+        sample:
+          "Ein Tippen kann dir einen {type}-Veteranen geben, den du schon dutzendmal trainiert hast — oder ein {type}, das du buchstäblich nie benutzt hast, und genau das ist das Interessante. Der Pool entscheidet.",
+        linksTitle: "Mehr Würfel, mehr Themen?",
+        linksTextBefore: "Probier den",
+        links: [
+          { label: "Typ-Generator", href: "/type" },
+          { label: "Zufalls-Team-Generator", href: "/team/random" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— und komm zurück, wenn das Thema wieder nach {type} ruft.",
+      },
     },
 
     gen: {
@@ -921,6 +1004,47 @@ export default {
       linkTitleBrowseRegion: "Region {region} durchstöbern",
       linkTitleType: "Typ-Generator",
       linkTitleRandom: "Zufalls-Pokémon-Generator",
+      guide: {
+        introTitle: "Warum Pokémon der {genLabel} würfeln?",
+        intro:
+          "{genLabel} ist eine eigene Ära — eigener Dex, eigene Designsprache, eigene Nostalgie. Diese Seite würfelt nur innerhalb der {genLabel}: Jedes Tippen ist ein Wiedersehen mit dieser Generation, von ihren Maskottchen bis zum vergessendsten Routen-Futter.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Nostalgie-Run",
+            d: "Würfle eines und es verankert einen Nur-{genLabel}-Rerun — die Würfel wählen, du baust den Run drumherum.",
+          },
+          {
+            t: "Dex-Quiz",
+            d: "Würfle und nenne Typen und Entwicklungslinie des Pokémon aus dem Gedächtnis, bevor du die Karte prüfst.",
+          },
+          {
+            t: "Mono-Gen-Draft",
+            d: "Jeder Spieler draftet nur aus der {genLabel} — eine Generation, sechs Picks, endlose Debatten über ihr Meta.",
+          },
+          {
+            t: "Ära-Debatte",
+            d: "Würfle fünf und bewerte sie — ist die {genLabel} heimlich die beste Generation? Die Würfel liefern die Beweise.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Leg dich auf die Ära fest: In einem Nur-{genLabel}-Run muss jeder Slot aus diesem Dex kommen — genau da liegt die Challenge.",
+          "Der erste Wurf zählt; der Charme einer einzelnen Generation liegt darin, ihre Sonderlinge zusammen mit ihren Stars zu nehmen.",
+          "Formen aus späteren Generationen zählen nicht, es sei denn, eure Hausregeln sagen es — entscheide vor dem Run, nicht nach dem Wurf.",
+        ],
+        sampleTitle: "Ein Beispielwurf",
+        sample:
+          "Ein Tippen und du starrst einen {genLabel}-Stammgast an, den du komplett vergessen hattest — sein Ruf, seine Route, der NPC, der es gegen dich eingesetzt hat. Generationen sind nicht nur Listen; sie sind Erinnerungen mit Werten.",
+        linksTitle: "Mehr Wege zurück?",
+        linksTextBefore: "Durchstöbere die",
+        links: [
+          { label: "Region {region}", href: "/by/{regionSlug}" },
+          { label: "Typ-Generator", href: "/type" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— oder würfle komplett zufällig über alle neun Generationen.",
+      },
     },
 
     region: {
@@ -959,6 +1083,47 @@ export default {
       introRandomLink: "komplett zufälligen Generator",
       introS3: ".",
       linkTitleRandom: "Zufalls-Pokémon-Generator",
+      guide: {
+        introTitle: "Warum Pokémon aus {region} würfeln?",
+        intro:
+          "{region} ist mehr als eine Karte — es ist der Dex von Pokémon {game}, mit eigenen Startern, Legenden und Routen-Stammgästen. Diese Seite würfelt nur innerhalb von {region}: ein Tippen, ein Einheimisches, direkt aus den Spielen, die es berühmt gemacht haben.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Heimkehr-Run",
+            d: "Würfle eines und es verankert einen Nur-{region}-Rerun — baue das Team, das der Dex der Region erlaubt.",
+          },
+          {
+            t: "Lokal-Dex-Quiz",
+            d: "Würfle und verorte das Pokémon auf der Karte: welche Route, welche Arena, welche Edition?",
+          },
+          {
+            t: "Regional-Draft",
+            d: "Jeder Spieler draftet sechs nur aus {region} — eine Region, sehr unterschiedliche Truppen.",
+          },
+          {
+            t: "Editions-Debatte",
+            d: "Würfle fünf und beurteile sie — hält {region} heute noch stand, oder spricht da die Nostalgie?",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Regionale Runs funktionieren, weil der Pool geschlossen ist: Was nicht im {region}-Dex steht, kommt nicht ins Team.",
+          "Der erste Wurf zählt — die Region gibt, das Team passt sich an. Ein angekündigter Neuwurf pro Session, wenn eure Gruppe weich ist.",
+          "Entscheide früh, ob Post-Game- und DLC-Zugänge als {region}-Einheimische zählen — Hausregeln verhindern Streit um Routenfragen.",
+        ],
+        sampleTitle: "Ein Beispielwurf",
+        sample:
+          "Ein Tippen und da ist ein Gesicht aus Pokémon {game}, an das du seit Jahren nicht gedacht hast — sofort spielt das Routen-Thema in deinem Kopf. Regionen sind keine Pools; sie sind Orte.",
+        linksTitle: "Weiter stöbern?",
+        linksTextBefore: "Probier den",
+        links: [
+          { label: "Pokédex der {genLabel}", href: "/gen/{gen}" },
+          { label: "Typ-Generator", href: "/type" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— oder würfle komplett zufällig über alle Regionen.",
+      },
     },
 
     variants: {
@@ -971,6 +1136,47 @@ export default {
           "pokemon typ generator",
           "random pokemon type generator",
         ],
+        guide: {
+          introTitle: "Warum einen zufälligen Typ würfeln?",
+          intro:
+            "Achtzehn Typen, ein Tippen. Ein zufälliger Typ ist der schnellste Weg zu einem Thema: Mono-Typ-Runs, Draft-Bedingungen, Quiz-Kategorien — die Würfel wählen, du legst dich fest.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Mono-Typ-Entscheider",
+              d: "Würfle einmal und das ist der Typ deines nächsten Mono-Runs — kein Lobbyieren für einen Neuwurf, nur weil du Drache wolltest.",
+            },
+            {
+              t: "Draft-Bedingung",
+              d: "Jeder Spieler würfelt vor dem Draft einen Typ — deine ganze Truppe muss ihn tragen.",
+            },
+            {
+              t: "Themen-Challenge",
+              d: "Würfle einen Typ und baue dann ein Team, das seine Schwächen abdeckt, ohne sie zu teilen.",
+            },
+            {
+              t: "Lerne die Tabelle",
+              d: "Teste dich zu den Resistenzen des gewürfelten Typs, bevor du nachschaust — die Tabelle bleibt schneller hängen, wenn sie ein Spiel ist.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Der Typ-Wurf funktioniert nur als Verbindlichkeit: Entscheide vorher, dass das erste Ergebnis zählt. Ein Typ, den du neu würfeln kannst, ist nur ein Vorschlag.",
+            "Spielst du mit anderen? Alle würfeln offen, Doppelte bekommen einen Neuwurf, und das war's — die Einschränkung ist der Spaß.",
+            "Kombiniere den Wurf mit den Filtern der anderen Generatoren: Sperre dort den Typ und die Würfel bleiben die ganze Session in deinem Thema.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Das Rad sagt Gestein. Plötzlich planst du um eine gemeinsame Wasser- und Boden-Schwäche herum, hast Sandsturm-Nutzer im Blick und erinnerst dich, dass Gestein selbst vier Resistenzen hat. Ein Tippen, und der heutige Run hat eine Persönlichkeit.",
+          linksTitle: "Lust, tiefer zu gehen?",
+          linksTextBefore: "Durchstöbere einen bestimmten Typ wie",
+          links: [
+            { label: "Drache", href: "/type/dragon" },
+            { label: "Feuer", href: "/type/fire" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— oder nimm das Ergebnis direkt mit in den Team-Generator.",
+        },
       },
       ability: {
         title: "Zufalls-Pokémon-Fähigkeiten-Generator | PokeRoll",
@@ -981,6 +1187,47 @@ export default {
           "zufalls pokemon fähigkeiten generator",
           "zufällige pokemon fähigkeit generieren",
         ],
+        guide: {
+          introTitle: "Warum eine zufällige Fähigkeit würfeln?",
+          intro:
+            "Fähigkeiten entscheiden, wie ein Pokémon wirklich spielt — und die meisten von uns kennen nur die berühmten zwanzig. Würfle eine per Zufall, lerne ein Pokémon kennen, das sie trägt, und entdecke, was der lange Schweif der Fähigkeiten-Liste draufhat.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Build-around-Prompt",
+              d: "Würfle eine Fähigkeit und skizziere ein Set, das sie ausnutzt — je seltsamer die Fähigkeit, desto besser die Übung.",
+            },
+            {
+              t: "Draft-Bedingung",
+              d: "Jeder Spieler würfelt eine Fähigkeit und muss ein Pokémon draften, das sie hat — sofortige Knappheit, sofortiges Drama.",
+            },
+            {
+              t: "Lerne die Liste",
+              d: "Lies den Effekt der gewürfelten Fähigkeit, bevor du spickst — ein leises Quiz, das sich in Kämpfen auszahlt.",
+            },
+            {
+              t: "Team-Kitt",
+              d: "Fehlt deiner Truppe etwas? Würfle Fähigkeiten, bis eine dein Problem löst, und notiere dann, welche Pokémon sie tragen.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Entscheide vor dem Start, ob versteckte Fähigkeiten zählen — sie sind die seltensten Funde und die lautesten Streitpunkte.",
+            "Ein Wurf, eine Verbindlichkeit ist das gesunde Format: Bau um das, was du bekommst, statt nach den guten zu angeln.",
+            "Ist eine Fähigkeit an eine Generation gebunden, betrachte es als Geschichtsstunde und würfle den Kontext mit, nicht nur den Effekt.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Du würfelst Levitate und die Karte zeigt ein Pokémon, an dem du hundertmal vorbeigegangen bist — nur dass es jetzt genau der bodenimmune Pivot ist, den dein Team brauchte. Das ist die Fähigkeiten-Lotterie: Die Antwort war immer da, du hast nur nie die Frage gestellt.",
+          linksTitle: "Weiterbauen?",
+          linksTextBefore: "Kombiniere sie mit dem",
+          links: [
+            { label: "Attacken-Generator", href: "/move" },
+            { label: "Statuswerte-Generator", href: "/bst" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— Fähigkeit, Attacken und Zahlen sind drei Seiten desselben Sets.",
+        },
       },
       move: {
         title: "Zufalls-Pokémon-Attacken-Generator | PokeRoll",
@@ -990,6 +1237,47 @@ export default {
           "zufalls pokemon attacken generator",
           "pokemon attacken generator",
         ],
+        guide: {
+          introTitle: "Warum eine zufällige Attacke würfeln?",
+          intro:
+            "Hunderte Attacken, und gewonnen werden Kämpfe von den seltsamen. Würfle eine zufällige Attacke, sieh ein Pokémon, das sie lernt, und stell die einzige Frage, die zählt: Könnte das wirklich funktionieren?",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Moveset-Roulette",
+              d: "Würfle vier Attacken und mach ein Set draus — Splash inklusive. Die besten Spieler lassen alles spielbar aussehen.",
+            },
+            {
+              t: "Draft-Bedingung",
+              d: "Würfle eine Attacke und drafte dann ein Team, in dem sie jemand einsetzen muss — Support-Attacken bekommen endlich ihren Moment.",
+            },
+            {
+              t: "Lerne die Bibliothek",
+              d: "Stärke, Genauigkeit, Effekt — lies die gewürfelte Attacke, bevor du nachschaust. Attacken-Wissen ist gratis Elo.",
+            },
+            {
+              t: "Kampf-Prompt",
+              d: "Würfle eine Attacke und entwirf die Situation, in der sie dir das Spiel gewinnt — Theorycrafting mit Startwert.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Beim Moveset-Roulette wird nicht getauscht: vier Würfe, ein Set, und Status-Attacken zählen. Die Einschränkung ist das ganze Spiel.",
+            "Einigt euch, ob Z-Attacken, Dynamax-Attacken und Signature-Attacken im Pool sind, bevor jemand würfelt — Hausregeln verhindern Schmollen.",
+            "Eine Attacke ist nur so gut wie ihr Anwender — beurteile also das Paar, nicht die Attacke allein.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Die Würfel geben dir Belch — eine Gift-Attacke mit Stärke 120, die nur funktioniert, wenn man vorher eine Beere gegessen hat. Nutzlos? Dann fällt dir auf, wer sie lernt, und plötzlich wohnt ein Beeren-Saft-Set die ganze Woche mietfrei in deinem Kopf.",
+          linksTitle: "Das Set vollenden?",
+          linksTextBefore: "Runde es ab mit dem",
+          links: [
+            { label: "Fähigkeiten-Generator", href: "/ability" },
+            { label: "Statuswerte-Generator", href: "/bst" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— und nimm dann das Ganze mit zu Showdown.",
+        },
       },
       bst: {
         title: "Zufalls-Pokémon-Statuswerte-Generator (BST) | PokeRoll",
@@ -1000,6 +1288,47 @@ export default {
           "pokemon generator mit statuswerten",
           "pokemon zufalls generator werte",
         ],
+        guide: {
+          introTitle: "Warum eine zufällige Basiswert-Summe würfeln?",
+          intro:
+            "Die Basiswert-Summe ist die Abkürzung, die jeder Spieler benutzt und über die sich niemand einig ist. Würfle eine Zahl, lerne das Pokémon dahinter kennen und finde heraus, wie ein 480er oder 600er in freier Wildbahn wirklich aussieht.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Das Pokémon erraten",
+              d: "Sieh dir zuerst die Zahl an und nenne jedes Pokémon, das deiner Meinung nach auf dieser Basiswert-Summe sitzt — und prüfe dann, wie falsch du lagst.",
+            },
+            {
+              t: "Draft nach Zahlen",
+              d: "Jeder Spieler würfelt eine Basiswert-Summe und muss ein Pokémon mit exakt dieser Summe draften — Knappheit macht seltsame Stars.",
+            },
+            {
+              t: "Limit-Challenge",
+              d: "Baue eine Truppe, in der jedes Mitglied unter einem gewürfelten Limit bleibt — maximal 500 macht Team-Building zu echtem Design.",
+            },
+            {
+              t: "Werte-Quiz",
+              d: "Rate, wie die sechs Basiswerte verteilt sind, bevor aufgedeckt wird — Min-Maxer und Wände liest man sehr unterschiedlich.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Die Basiswert-Summe ist ein Budget, kein Ranking: ein gut investierter 480er schlägt einen faulen 540er — bewerte also die Verteilung, nicht nur die Summe.",
+            "Bei Limit-Challenges legst du das Limit fest, bevor du das Team würfelst — erst würfeln und später verhandeln macht Limits bedeutungslos.",
+            "Megas, Ur-Formen und alternative Formen haben eigene Summen — entscheide vor dem Draft, welche Formen zählen.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Die Zahl ist 600. Ein Pseudo-Legendäres? Diesmal nicht — es ist ein Mythisches Pokémon, und die Verteilung ist über alle sechs Werte perfekt ausgeglichen, was dir genau nichts darüber verrät, wie es kämpft. Zahlen eröffnen das Gespräch; sie beenden es nie.",
+          linksTitle: "Mehr Zahlenspiele?",
+          linksTextBefore: "Probier den",
+          links: [
+            { label: "Nummern-Generator", href: "/number" },
+            { label: "Fähigkeiten-Generator", href: "/ability" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— oder jage die großen Summen auf der Legendär-Seite.",
+        },
       },
       number: {
         title: "Zufalls-Pokémon-Nummern-Generator | PokeRoll",
@@ -1009,6 +1338,47 @@ export default {
           "pokemon nummern generator",
           "zufalls pokemon nummern generator",
         ],
+        guide: {
+          introTitle: "Warum eine zufällige Pokédex-Nummer würfeln?",
+          intro:
+            "Eine Zahl zwischen 1 und 1025, ein Pokémon daran gebunden. Der Nummern-Wurf ist die reinste Lotterie der Seite — keine Filter, keine Themen, nur die ganze Geschichte des Franchise in einem einzigen Zug.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Dex-Roulette",
+              d: "Würfle eine Zahl, und das ist deine nächste Begegnung, dein Teamkollege oder dein Zeichenmotiv — ganz egal, was der Dex sagt.",
+            },
+            {
+              t: "Vorher erraten",
+              d: "Nenne das Pokémon nur anhand der Zahl, bevor du hinschaust — die Dex-Reihenfolge im Kopf ist eine echte Fähigkeit.",
+            },
+            {
+              t: "Nuzlocke-Wähler",
+              d: "Nutze die gewürfelte Zahl modulo des lokalen Dex, um Begegnungen fair zu bestimmen — Würfel lassen sich nicht bestechen.",
+            },
+            {
+              t: "Party-Spiel",
+              d: "Die höchste Zahl gewinnt die Runde — das einfachste Spiel der Seite, die lautesten Diskussionen.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Entscheide, was die Zahl bedeutet, bevor du würfelst: nationaler Dex oder auf den Regional-Dex eines Spiels gemappt? Andere Spiele, andere Schicksale.",
+            "Ein Wurf pro Entscheidung ist das ehrliche Format — neu würfeln, bis dein Favorit kommt, ist nur Auswählen mit Extra-Schritten.",
+            "Formen teilen sich Dex-Nummern — legt also vor dem Wurf fest, wie ihr damit umgeht, nicht danach.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "#387. Jemand am Tisch ruft Chelast, noch bevor die Karte lädt — und ausnahmsweise liegt er richtig. Ein Sinnoh-Run, frisch vorherbestimmt. Der Dex gibt — und nimmt.",
+          linksTitle: "Mehr Zahlenspiele?",
+          linksTextBefore: "Probier den",
+          links: [
+            { label: "Statuswerte-Generator", href: "/bst" },
+            { label: "Spitznamen-Generator", href: "/nickname" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— Zahlen, Namen und Werte erzählen alle verschiedene Geschichten.",
+        },
       },
       starter: {
         title: "Zufalls-Starter-Pokémon-Generator | PokeRoll",
@@ -1019,6 +1389,47 @@ export default {
           "pokemon starter generator",
           "zufälliger starter pokemon picker",
         ],
+        guide: {
+          introTitle: "Warum einen zufälligen Starter würfeln?",
+          intro:
+            "Der erste Partner bestimmt den Ton eines ganzen Durchlaufs — und sich selbst zu entscheiden kostet vierzig Minuten Forenthreads. Lass die Würfel aus den Startern jeder Generation wählen, von Kanto bis Paldea, und starte den Run endlich.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Starter-Entscheider",
+              d: "Würfle einmal, und das ist dein Partner für den nächsten Run — die Entscheidung ist gefallen, das Abenteuer kann beginnen.",
+            },
+            {
+              t: "Nuzlocke-Auftakt",
+              d: "Lass den Wurf den Starter wählen, dann bestimmt das Strecken-Glück den Rest — volle Verbindlichkeit, null Voreingenommenheit.",
+            },
+            {
+              t: "Diskussions-Schlichter",
+              d: "Diesmal Feuer, Wasser oder Pflanze? Würfel haben keine Nostalgie und keine Favoriten — perfekter Schiedsrichter.",
+            },
+            {
+              t: "Team-Thema",
+              d: "Würfle einen Starter und baue ein Team, das seine Endentwicklung unterstützt — sofortige Struktur für eine lockere Truppe.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Der Starter-Pakt ist heilig: Das erste Ergebnis zählt. Ein Veto, nur weil du den Frosch wolltest, verfehlt den ganzen Sinn.",
+            "Leg zuerst den Pool fest — alle neun Generationen oder nur die Spiele, die du besitzt? Ein kleinerer Pool ist trotzdem ein fairer Wurf.",
+            "Bei Gruppen-Runs würfelt jeder offen, und Tauschen ist genau einmal erlaubt — das ist das ganze Meta-Spiel.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Die Würfel sagen Panflam, und dein Sinnoh-Run hat plötzlich eine Persönlichkeit: schnell, laut und leicht am Brennen. Über Plinfa hättest du es nie gewählt — genau deshalb wird dieser Durchlauf unvergesslich.",
+          linksTitle: "Run am Laufen halten?",
+          linksTextBefore: "Würfle den Rest der Truppe auf dem",
+          links: [
+            { label: "Zufalls-Team-Generator", href: "/team/random" },
+            { label: "Typ-Generator", href: "/type" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— der Starter hat gewählt, jetzt braucht das Team sechs.",
+        },
       },
       "no-names": {
         title: "Zufalls-Pokémon-Generator ohne Namen — Ratespiel",
@@ -1030,6 +1441,47 @@ export default {
           "pokemon mystery quiz",
           "zufalls pokemon generator ohne namen",
         ],
+        guide: {
+          introTitle: "Warum ein geheimnisvolles Pokémon erraten?",
+          intro:
+            "Eine Karte, komplette Werte, offizielles Artwork — und kein Name. Der Mystery-Generator ist ein Quiz im Taschenformat: Alles, was du brauchst, um das Pokémon zu erkennen, steht auf der Karte — nur die Antwort fehlt.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Solo-Quiz",
+              d: "Rate anhand von Artwork und Werten und wende die Karte zum Prüfen — tracke deine Serie über zehn Karten.",
+            },
+            {
+              t: "Party-Raten",
+              d: "Zeig die Karte im Call, die erste richtige Antwort gewinnt den Punkt — Schnelligkeit zählt mehr als Genauigkeit.",
+            },
+            {
+              t: "Stream-Warm-up",
+              d: "Fünf Mystery-Karten vor dem eigentlichen Content — der Chat ist sofort laut, garantiert.",
+            },
+            {
+              t: "Silhouetten-Training",
+              d: "Nutze es als Aufwärmrunde für die Rate-Challenge mit Seed, wo das Quiz schwerer wird und die Scores geteilt werden.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Nicht mit dem Cursor über dem Wenden-Knopf hängen: eine verbindliche Antwort pro Karte, laut ausgesprochen, wenn andere mitspielen. Selbstvertrauen ist das Spiel.",
+            "Die Werte sind fair — eine Basiswert-Summe von 600 grenzt das Feld schnell ein, und das zu wissen ist Können, kein Betrug.",
+            "Den Überblick verloren? Zehn Karten, je ein Punkt, keine Minuspunkte — das sauberste Format.",
+          ],
+          sampleTitle: "Eine Beispielkarte",
+          sample:
+            "Gelbe Backen, Elektro-Typ, winzige Werte — du legst dich mit voller Brust fest: Pikachu. Das Aufdecken sagt Pachirisu, und plötzlich diskutiert der ganze Raum über regionale Nager. Zehn Karten mehr, bitte.",
+          linksTitle: "Lust auf ein schwereres Quiz?",
+          linksTextBefore: "Steig auf zur",
+          links: [
+            { label: "Rate-Challenge", href: "/challenge/guess" },
+            { label: "Spitznamen-Generator", href: "/nickname" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— dasselbe Wissen, höhere Einsätze.",
+        },
       },
       cute: {
         title: "Zufalls-Generator für niedliche Pokémon | PokeRoll",
@@ -1039,6 +1491,47 @@ export default {
           "niedliche pokemon generator",
           "zufalls niedliche pokemon generator",
         ],
+        guide: {
+          introTitle: "Warum ein niedliches Pokémon würfeln?",
+          intro:
+            "Nicht jeder Wurf muss kompetitiv sein. Der Niedlich-Generator zieht aus den weichen, flauschigen und runden Ecken des Pokédex — die Pokémon, die du wirklich als Haustier haben wolltest, einen Tipp nach dem anderen.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Wohlfühl-Wurf",
+              d: "Ein Tipp, ein hinreißendes Pokémon — die günstigste Stimmungsaufhellung im Internet.",
+            },
+            {
+              t: "Kunst-Prompt",
+              d: "Zeichne das gewürfelte Schnuckelchen in deinem Stil — kleine Pokémon sind die beste tägliche Skizzenübung.",
+            },
+            {
+              t: "Nur-niedlich-Run",
+              d: "Baue ein Durchlauf-Team, in dem jedes Mitglied den Niedlichkeitstest besteht — überraschend spielbar, meistens Normal-Typen.",
+            },
+            {
+              t: "Debatte beenden",
+              d: "Jeder Spieler würfelt einmal, die Gruppe stimmt über das Niedlichste ab — die Würfel schlichten das älteste Argument des Fandoms.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Niedlichkeit ist subjektiv, aber der Wurf ist endgültig — kein Neuwurf, nur weil du dich als Fluffeluff-Haushalt siehst.",
+            "Für Nur-niedlich-Runs definierst du den Standard, bevor du startest: nur die erste Entwicklungsstufe? Unter einem Meter groß? Flauschig? Das Regelwerk zählt.",
+            "Entwickeln ist erlaubt — zu lieben, was daraus wird, ist die Fortgeschrittenen-Herausforderung.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Die Würfel geben dir einen kugelrunden Vogel, der quietscht, und deine Produktivität für die nächsten zehn Minuten ist dahin. Jetzt schaust du dir Plüschtiere an. Es hätte nie einen anderen Weg gegeben.",
+          linksTitle: "Mehr gute Laune?",
+          linksTextBefore: "Probier den",
+          links: [
+            { label: "Mysteriös-Generator", href: "/mythical" },
+            { label: "Spitznamen-Generator", href: "/nickname" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— selten und hinreißend ist die beste Kombination.",
+        },
       },
       mythical: {
         title: "Zufalls-Generator für Mysteriöse Pokémon | PokeRoll",
@@ -1048,6 +1541,47 @@ export default {
           "zufalls mysteriöse pokemon generator",
           "mysteriöse pokemon generator",
         ],
+        guide: {
+          introTitle: "Warum ein Mythisches Pokémon würfeln?",
+          intro:
+            "Mythische Pokémon sind die Event-Seltenheiten — Mew, Celebi, Jirachi und ihre Erben, die Pokémon, die ganze Generationen von Spielern nie besaßen. Würfle eins und borge dir ein wenig von dieser Seltenheit.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Traumteam-Draft",
+              d: "Würfle sechs Mythische Pokémon und baue die Fantasie-Truppe, die du nie auf legalem Weg zusammenstellen könntest.",
+            },
+            {
+              t: "Was-wäre-wenn-Kampf",
+              d: "Würfle eins, kopiere es zu Showdown und teste, ob die schwer erreichbaren wirklich gut sind — manche sind es, manche sind Jirachi.",
+            },
+            {
+              t: "Sammel-Checkliste",
+              d: "Verfolge, welche Mythischen Pokémon dir die Würfel gezeigt haben — ein langsamer, kostenloser Weg, die ganze Gruppe kennenzulernen.",
+            },
+            {
+              t: "Glücks-Ritual",
+              d: "Ein Wurf vor Ranked-Sessions — ein Mythisches Pokémon ist ein gutes Omen, und Aberglaube ist kostenlos.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Mythisch und Legendär sind verschiedene Clubs — der Mythische-Pool enthält nur Event-Verteilungen, und genau das macht ihn besonders.",
+            "Bei Traum-Drafts verlangen Doppelte einen Neuwurf; alles andere bleibt, wie es gefallen ist.",
+            "Denk daran, dass die meisten Mythischen Pokémon dieselbe gleichmäßige 600er-Verteilung haben — ihre Tricks stecken in Attacken und Fähigkeiten, nicht in den Werten.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Die Würfel geben dir Jirachi, Wunscherfüller, Veteran von genau einem Wochenende-Event im Jahr 2003. Du hast es nie gefangen. Das wirst du wahrscheinlich auch nie. Aber heute, auf dieser Seite, ging der Wunsch in Erfüllung.",
+          linksTitle: "Mehr seltene Würfel?",
+          linksTextBefore: "Probier den",
+          links: [
+            { label: "Legendär-Generator", href: "/legendary" },
+            { label: "Mega-Generator", href: "/mega" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— Seltenheit kommt in mehreren Geschmacksrichtungen.",
+        },
       },
       mega: {
         title: "Zufalls-Mega-Pokémon-Generator | PokeRoll",
@@ -1057,6 +1591,47 @@ export default {
           "zufalls mega pokemon generator",
           "mega pokemon generator",
         ],
+        guide: {
+          introTitle: "Warum eine Mega-Entwicklung würfeln?",
+          intro:
+            "Mega-Entwicklungen und Ur-Formen sind die lautesten Was-wäre-wenn der Reihe — zeitlich begrenzte Transformationen mit erhöhten Werten, neuen Fähigkeiten und Designs, die alles gegeben haben. Würfle eine und besuche die Ära, in der sich alles weiterentwickeln konnte.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Was-wäre-wenn-Meta",
+              d: "Würfle eine Mega-Entwicklung und bewerte sie ehrlich: Würde das Ding einen Platz in einem modernen Team verdienen?",
+            },
+            {
+              t: "Draft-Entscheider",
+              d: "Jeder Spieler würfelt eine Mega-Entwicklung — der Wurf entscheidet, um welchen Trumpf deine Truppe gebaut wird.",
+            },
+            {
+              t: "Design-Studie",
+              d: "Vergleiche die Mega-Entwicklung mit ihrer Grundform und finde heraus, was die Designer verstärkt haben — eine kostenlose Design-Lektion.",
+            },
+            {
+              t: "Kampf-Prompt",
+              d: "Kopiere das Set zu Showdown und spiele das Was-wäre-wenn richtig aus — Nostalgie trifft härter bei 150 Basis-Angriff.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Eine Mega-Entwicklung pro Team ist aus gutem Grund die klassische Regel — dein Wurf ist dein Trumpf, also baue um ihn herum, nicht neben ihm.",
+            "Ur-Formen zählen für den Pool als Mega-Entwicklungen — entscheidet das mit eurer Gruppe vor dem ersten Wurf.",
+            "Bewerte das Gesamtpaket: +100 Werte bedeuten nichts, wenn die Fähigkeit die Stärken der Grundform verrät.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Die Würfel geben dir Mega-Bibor — eine Käfer/Gift-Glaskanone mit Flexibilität und einem Traum. Du hattest vergessen, dass es existiert. Jetzt kalkulierst du Giftstachel in dein nächstes Team ein — genau dafür ist dieser Generator da.",
+          linksTitle: "Mehr Transformationen?",
+          linksTextBefore: "Probier den",
+          links: [
+            { label: "Legendär-Generator", href: "/legendary" },
+            { label: "Fusions-Tool", href: "/fusion" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— offiziell oder improvisiert, Hybride machen Spaß.",
+        },
       },
       nickname: {
         title: "Zufalls-Pokémon-Namen- & Spitznamen-Generator | PokeRoll",
@@ -1067,6 +1642,47 @@ export default {
           "zufalls pokemon spitznamen generator",
           "zufälligen pokemon namen generieren",
         ],
+        guide: {
+          introTitle: "Warum einen Spitznamen würfeln?",
+          intro:
+            "Ein Spitzname macht aus einer Spezies einen Charakter. Der Spitznamen-Generator kombiniert ein zufälliges Pokémon mit einem Namen, den man wirklich eintippen will — für Nuzlockes, Durchläufe und jeden Spielstand, in dem die Truppe Besseres verdient als „GARCHOMP“.",
+          waysTitle: "So kannst du spielen",
+          ways: [
+            {
+              t: "Nuzlocke-Namen",
+              d: "Die Regeln sagen, du musst alles benennen — lass den Wurf das übernehmen, und die Bindung kommt gratis dazu.",
+            },
+            {
+              t: "Durchlauf-Flair",
+              d: "Benenne deine ganze Truppe mit gewürfelten Namen um — ein thematischer Spielstand liest sich wie eine Geschichte.",
+            },
+            {
+              t: "Party-Spiel",
+              d: "Würfle ein Pokémon, jeder wirft einen Spitznamen ein, der Lustigste gewinnt — der gewürfelte Name ist der, den es zu schlagen gilt.",
+            },
+            {
+              t: "Schreib-Prompt",
+              d: "Ein Pokémon plus ein Name ist eine Charakterskizze — schreib den Trainer, der ihn benutzen würde.",
+            },
+          ],
+          rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+          rules: [
+            "Der Nuzlocke-Pakt: Der erste gewürfelte Name ist endgültig. Die Bindung ist der Punkt, und Bindungen werden nicht kuratiert.",
+            "Themen-Namen erhöhen den Einsatz — Essensnamen, Musikernamen, Sternbildnamen; wähle eine Linie, bevor der Run startet.",
+            "Ehr die Gefallenen: Wenn ein benanntes Pokémon ohnmächtig wird, tritt der Name mit ihm ab. Das ist das ganze Herz des Formats.",
+          ],
+          sampleTitle: "Ein Beispielwurf",
+          sample:
+            "Route 2, erster Fang, ein gewöhnlicher Vogel — und die Würfel nennen ihn Captain Krümel. Er wird drei Team-Wipes überleben, als Legende abtreten und länger in Erinnerung bleiben als die meisten Champions. Das ist die Macht eines guten Namens.",
+          linksTitle: "Die ganze Crew benennen?",
+          linksTextBefore: "Würfle die Truppe zuerst auf dem",
+          links: [
+            { label: "Zufalls-Team-Generator", href: "/team/random" },
+            { label: "Nummern-Generator", href: "/number" },
+          ],
+          linksJoinOr: "oder",
+          linksTextAfter: "— und komm dann zurück und gib ihnen allen Namen.",
+        },
       },
       noNamesPromo: {
         s1: "Lust auf ein Quiz mit mehreren Karten und Seed zum Teilen? ",
@@ -1089,6 +1705,47 @@ export default {
       headerDesc:
         "Nur Legendäre Pokémon in diesem Pool — tippe auf „Erneut generieren“ für den nächsten legendären Wurf.",
       note: "Tippe auf „Erneut generieren“, um ein weiteres Legendäres zu würfeln — „Zum Team hinzufügen“ behält es in deinem Team.",
+      guide: {
+        introTitle: "Warum ein Legendäres Pokémon würfeln?",
+        intro:
+          "Dieser Pool ist nur für Legenden — die Cover-Götter, die Umherstreifer, die Trios. Jeder Wurf landet auf einem Pokémon, das man früher nur über ein Event, eine Höhle oder eine 40-minütige Zwischensequenz treffen konnte.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Traumteam",
+            d: "Würfle sechs Legendäre und stell die Truppe zusammen, von der jedes zehnjährige Kind schwor, sie sei unschlagbar.",
+          },
+          {
+            t: "Boss-Rush-Draft",
+            d: "Jeder Spieler würfelt drei — die höchste kombinierte Basiswert-Summe gewinnt, und die Angeberei hält die ganze Woche.",
+          },
+          {
+            t: "Was-wäre-wenn-Kampf",
+            d: "Kopiere ein gewürfeltes Legendäres zu Showdown und teste den Mythos — manche Götter haben sehr sterbliche Movesets.",
+          },
+          {
+            t: "Sammel-Wurf",
+            d: "Ein Wurf pro Tag, bis dir die Würfel jedes Legendäre gezeigt haben — der langsamste, günstigste Abschluss-Run.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Das erste Ergebnis zählt — ein Legendäres, das du neu würfeln kannst, ist nur ein starkes Pokémon, und die Mystik ist der ganze Punkt.",
+          "Legendär und Mythisch sind verschiedene Pools: Diese Seite hält den Club exklusiv, Mythische wohnen nebenan.",
+          "Bei Drafts gibt es pro Spieler einen Neuwurf, angekündigt, bevor die Würfel fallen — Hausregeln halten Götter ehrlich.",
+        ],
+        sampleTitle: "Ein Beispielwurf",
+        sample:
+          "Ein Tipp: Rayquaza, Himmelsgott, der Run schreibt sich von selbst. Nächster Tipp: Regigigas, dessen Lahm-Start dafür sorgt, dass der Gott fünf Züge lang nur zuschaut. Legenden haben viele Seiten.",
+        linksTitle: "Mehr seltene Würfel?",
+        linksTextBefore: "Probier den",
+        links: [
+          { label: "Mysteriös-Generator", href: "/mythical" },
+          { label: "Shiny-Jagd", href: "/challenge/shiny" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— Seltenheit im Quadrat.",
+      },
     },
     adventure: {
       metaTitle: "Pokémon-Abenteuer-Generator",
@@ -1140,6 +1797,48 @@ export default {
           a: "Ja — kopiere den Seiten-Link. Er enthält Seed und Schwierigkeit, sodass Freunde das identische Abenteuer-Manifest öffnen.",
         },
       ],
+      guide: {
+        introTitle: "Warum ein Abenteuer würfeln?",
+        intro:
+          "Der Abenteuer-Modus würfelt mit einem Tippen einen ganzen Durchlauf: einen Trainer, einen Starter, ein Team, eine Challenge und ein Ziel, alles an einen einzigen Seed gebunden. Er ist ein Kampagnen-Generator — die Würfel schreiben die Prämisse, du spielst die Geschichte.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Sofort-Challenge-Run",
+            d: "Würfle ein Abenteuer und nimm seine Regeln als bindend — das Team, das es dir gibt, ist das Team, das der Run erlaubt.",
+          },
+          {
+            t: "Challenge-Kalender",
+            d: "Würfle jede Woche ein neues Abenteuer und streame oder protokolliere die Versuche — gleiches Seed-Format, vergleichbare Geschichten.",
+          },
+          {
+            t: "Koop-Prämisse",
+            d: "Teile den Seed mit einem Freund: identisches Abenteuer, getrennte Durchläufe, Wettrennen zum Ziel.",
+          },
+          {
+            t: "Story-Idee",
+            d: "Nutze den gewürfelten Trainer und das Ziel als Fan-Fiction- oder Tabletop-Prompts — die Würfel sind überraschend gut in Plot-Hooks.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Wähle den Schwierigkeitsgrad, bevor du würfelst, nicht nachdem du das Ergebnis gesehen hast — Extrem zu wählen, wenn du das Team schon kennst, ist nur Verhandeln mit dir selbst.",
+          "Ein Abenteuer funktioniert, weil es bindend ist: maximal ein Neuwurf pro Run, und nur bevor du irgendetwas gefangen hast.",
+          "Teile den Seed, keine Screenshots — der Link spielt exakt dasselbe Abenteuer ab, was Rennen und Vergleiche fair macht.",
+        ],
+        sampleTitle: "Ein Beispiel-Abenteuer",
+        sample:
+          "Ein einziger Seed könnte verfügen: eine Göre aus Hoenn, ein Chimchar-Starter, eine Keine-Items-Challenge und das Ziel, die Liga unterlevelt zu schlagen. Diesen Run hättest du nie selbst aufgesetzt — und genau deshalb wirst du dich daran erinnern.",
+        linksTitle: "Willst du das Abenteuer ausrüsten?",
+        linksTextBefore: "Würfel-Nachschub für den Run gibt es hier:",
+        links: [
+          { label: "Zufalls-Team-Generator", href: "/team/random" },
+          { label: "Rate-Challenge", href: "/challenge/guess" },
+          { label: "Shiny-Jagd", href: "/challenge/shiny" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— jede gute Kampagne braucht Nebenquests.",
+      },
     },
 
     guess: {
@@ -1174,6 +1873,48 @@ export default {
           d: "Der Seed im Link erzeugt dieselbe Aufstellung — teile ihn und miss dich mit einem Freund.",
         },
       ],
+      guide: {
+        introTitle: "Warum dein Pokédex-Gedächtnis testen?",
+        intro:
+          "Die Rate-Challenge ist der reinste Test deines Pokédex-Wissens: eine feste Aufstellung, Hinweise, die mit dem Schwierigkeitsgrad schrumpfen, und dein Punktestand am Ende. Derselbe Seed für alle — die Ergebnisse sind also wirklich vergleichbar.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Tägliches Duell",
+            d: "Teile den Seed mit einem Freund und vergleicht eure Punkte — gleiche Aufstellung, keine Ausreden.",
+          },
+          {
+            t: "Schwierigkeitsleiter",
+            d: "Starte auf Einfach mit großzügigen Hinweisen und klettere Richtung Extrem, wo die Sprites gezoomt sind und die Hinweise weg.",
+          },
+          {
+            t: "Filter-Spießrutenlauf",
+            d: "Sperre eine einzelne Generation oder einen Typ und beweise, dass du diese Scheibe des Dex wirklich kennst — nicht nur die berühmten Teile.",
+          },
+          {
+            t: "Party-Quiz",
+            d: "Lies die Karten in einem Anruf laut vor und wetteifert beim Rufen der Antwort — Tempo zählt.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Wähle Anzahl und Schwierigkeit vor der ersten Aufdeckung — zwölf auf Einfach und sechs auf Extrem sind völlig unterschiedliche Prüfungen.",
+          "Keine Filterwechsel mitten im Run: Eine Mono-Wasser-Runde und eine Gesamt-Dex-Runde messen unterschiedliches Wissen.",
+          "Ein Versuch pro Seed ist das ehrliche Format — der Seed hält die Aufstellung fest, ein zweiter Versuch ist also nur Auswendiglernen.",
+        ],
+        sampleTitle: "Eine Beispielrunde",
+        sample:
+          "Eine Schwer-Runde zoomt in eine Spirale aus blaugrauem Panzer. Cloyster? Omastar? Du legst dich voller Überzeugung auf Kabutops fest, und die Auflösung sagt … Shellder. Irgendwo lacht ein Rivale — und dein Revanche-Seed ist nur ein Tippen entfernt.",
+        linksTitle: "Lust auf mehr Prüfungen?",
+        linksTextBefore: "Weitere Prüfungen gibt es hier:",
+        links: [
+          { label: "Mystery-Karten-Modus", href: "/no-names" },
+          { label: "Shiny-Jagd", href: "/challenge/shiny" },
+          { label: "Abenteuer-Modus", href: "/adventure" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— andere Würfel, dieselben Prahlereien.",
+      },
     },
 
     shiny: {
@@ -1220,6 +1961,48 @@ export default {
           a: "Die gefundene Karte schaltet Teilen und Herunterladen frei. Der geteilte Link öffnet direkt auf deinem gefundenen Shiny, und die heruntergeladene Karte trägt einen QR-Code, den Freunde scannen können, um ihre eigene Jagd zu starten.",
         },
       ],
+      guide: {
+        introTitle: "Warum ein Shiny jagen?",
+        intro:
+          "Die Shiny-Jagd simuliert das älteste Glücksspiel in Pokémon: Begegnung um Begegnung, wartend auf das Funkeln. Wähle einen Schwierigkeitsgrad, klicke dich durch den wilden Pool und sieh, wie tief die Jagd geht — das Pity-System hält es ehrlich, aber nie leicht.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Glückstest",
+            d: "Starte eine Jagd und sieh, wie viele Begegnungen dein Shiny braucht — unter den Odds läufst du heiß, über den Odds schuldet dir der Pool eins.",
+          },
+          {
+            t: "Wettrennen gegen einen Freund",
+            d: "Teile den Jagd-Seed und liefere dir ein Rennen bis zur Aufdeckung — die wenigsten Begegnungen gewinnen, und der Link beweist es.",
+          },
+          {
+            t: "Geduldstraining",
+            d: "Nutze den Extrem-Modus als Meditation: Hunderte Klicks, ein Funkeln, keine Abkürzungen.",
+          },
+          {
+            t: "Stream-Segment",
+            d: "Ein Live-Shiny-Rennen ist fertiger Content — der Chat wählt den Schwierigkeitsgrad, du lieferst die Verzweiflung.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Der Schwierigkeitsgrad ist hier das ganze Spiel: Einfach garantiert einen Pity-Wurf, damit eine erste Jagd immer zu Ende geht; höhere Stufen lassen dich es verdienen.",
+          "Entscheide vor dem Start, was zählt — beendet das erste Shiny die Jagd, oder hältst du auf eine bestimmte Art durch?",
+          "Teile den Aufdeckungs-Link, keinen Screenshot: Er öffnet direkt auf der gefundenen Karte, also kann niemand ein Erste-Begegnung-Shiny fälschen.",
+        ],
+        sampleTitle: "Eine Beispieljagd",
+        sample:
+          "Begegnung 1: Pidgey. Begegnung 47: Pidgey. Begegnung 213: Pidgey. Du fängst an, die Odds anzuzweifeln, den Seed, deine Lebensentscheidungen — und dann funkelt Begegnung 214 golden. Jeder echte Jäger weiß genau, wie sich das anfühlt.",
+        linksTitle: "Willst du die Serie am Laufen halten?",
+        linksTextBefore: "Weiter geht es mit:",
+        links: [
+          { label: "Rate-Challenge", href: "/challenge/guess" },
+          { label: "Abenteuer-Modus", href: "/adventure" },
+          { label: "Zufalls-Pokémon-Generator", href: "/random-pokemon-generator" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— die Würfel schlafen nie.",
+      },
     },
 
     favorites: {
@@ -1439,6 +2222,48 @@ export default {
           a: "Tippe unter dem Team auf Copy Sets (die Schaltfläche mit dem Showdown-Badge), um das Team im Showdown-Textformat zu kopieren. Öffne dann play.pokemonshowdown.com/teambuilder, wähle Import/Export und füge den Text ein — jedes Set wird mit Attacken, Fähigkeit, Item, Wesen und EVs geladen, bereit zum Kämpfen oder Anpassen.",
         },
       ],
+      guide: {
+        introTitle: "Warum ein gespeichertes Team führen?",
+        intro:
+          "Dein Team ist der Ort, wo Zufallsergebnisse aufhören, Wegwerfware zu sein. Jede Karte, auf der du Add to Team tippst, landet hier — aus jedem Generator der Seite — und so setzt sich langsam eine Truppe aus Würfen zusammen, die dir wirklich gefielen.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Best-of-Sammlung",
+            d: "Würfle weiter im Team-Generator und füge nur die Züge hinzu, die es wert sind, behalten zu werden — diese Seite wird deine Ruhmeshalle.",
+          },
+          {
+            t: "Draft-Kuration",
+            d: "Würfle mehr als sechs, behalte die besten sechs hier und streiche den Rest — dein ganz persönlicher Draft-Tag.",
+          },
+          {
+            t: "Showdown-Vorbereitung",
+            d: "Wenn sich die sechs richtig anfühlen, exportiere die ganze Truppe mit Copy Sets und füge sie direkt in den Showdown-Teambuilder ein.",
+          },
+          {
+            t: "Truppe teilen",
+            d: "Der Teilen-Link trägt deine exakte Aufstellung — schick ihn einem Freund, und er sieht dieselben sechs, inklusive Artwork.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Ein gespeichertes Team verdient ein Thema. Es muss nicht kompetitiv sein — „nur Pokémon, die ich in einem Durchlauf wirklich benutzen würde“ ist ein Thema. „Eins pro Generation“ auch, oder „nichts über 500 BST“.",
+          "Behandle Entfernungen als endgültig. Wenn du dich dabei ertappst, denselben Slot fünfmal zu tauschen, will dieser Slot eine andere Rolle, nicht ein anderes Pokémon.",
+          "Sechs ist nicht umsonst die klassische Obergrenze: klein genug, dass jedes Mitglied seinen Platz rechtfertigen muss.",
+        ],
+        sampleTitle: "Eine Beispieltruppe",
+        sample:
+          "Eine typische gespeicherte Truppe könnte als „die sechs, die meinen Smaragd-Run getragen haben“ anfangen — Swampert, Gardevoir, Aggron, Manectric, Altaria und ein VM-Maultier, das sich seinen Ruhestand verdient hat. Die Seite urteilt nicht; sie erinnert sich nur.",
+        linksTitle: "Lust auf frisches Blut?",
+        linksTextBefore: "Neue Kandidaten würfelst du hier:",
+        links: [
+          { label: "Zufalls-Team-Generator", href: "/team/random" },
+          { label: "Team Coach", href: "/team/coach" },
+          { label: "Team Challenge", href: "/team/challenge" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— und füge die Keeper hier wieder hinzu.",
+      },
     },
 
     teamRandom: {
@@ -1472,6 +2297,49 @@ export default {
           a: "Tippe unter dem Team auf Copy Sets (die Schaltfläche mit dem Showdown-Badge), um das Team im Showdown-Textformat zu kopieren. Öffne dann play.pokemonshowdown.com/teambuilder, wähle Import/Export und füge den Text ein — jedes Set wird mit Attacken, Fähigkeit, Item, Wesen und EVs geladen, bereit zum Kämpfen oder Anpassen.",
         },
       ],
+      guide: {
+        introTitle: "Warum ein Zufalls-Team würfeln?",
+        intro:
+          "Ein Zufalls-Team nimmt die Entscheidungslähmung aus dem Teambau. Statt eine Stunde lang den Pokédex zu durchscrollen, bekommst du sechs Slots hingestellt — und dann fängt der interessante Teil an: sie zusammenarbeiten zu lassen. Nutze das Ergebnis als Challenge-Run, als freundschaftlichen Draft, als Übungstruppe oder als pure Inspiration für deinen nächsten Durchlauf.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Challenge-Run",
+            d: "Verpflichte dich auf die sechs, die du für deinen nächsten Durchlauf würfelst — keine Neuwürfe. Baue um das herum, was du bekommst, inklusive unangenehmer Typ-Überschneidungen.",
+          },
+          {
+            t: "Draft mit Freunden",
+            d: "Teile den Seiten-Link — die URL trägt die exakte Truppe, also starten alle mit denselben sechs. Würfle deine eigene Antwort darauf, dann kämpft und vergleicht.",
+          },
+          {
+            t: "Showdown-Übung",
+            d: "Copy Sets gibt dir komplette Sets mit Attacken, Items und EVs. Füge sie in den Showdown-Teambuilder ein und klettere die Leiter mit einem Team, über das du nicht zu viel nachgedacht hast.",
+          },
+          {
+            t: "Themen-Bau",
+            d: "Sperre einen Typ, eine Generation oder eine Kategorie in den Filtern und würfle innerhalb deiner eigenen Einschränkung — eine Mono-Wasser-Truppe, eine Gen-3-Reunion, ein Nur-Starter-Run.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Ein Zufalls-Team fühlt sich besser an, wenn die Regeln zuerst kommen. Legendäre erlaubt? Wenn nicht, öffne die Filter und schließe die Kategorie aus, bevor du den Würfel-Button berührst. Mono-Typ-Run? Sperre den Typ. Nur die Spiele, mit denen du aufgewachsen bist? Sperre die Generation. Die Filter sind dein Regelbuch — stelle sie einmal ein und lebe dann mit dem, was die Würfel sagen.",
+          "Im lockeren Spiel nimm eine unangenehme Überschneidung als Teil der Challenge an — drei Pokémon mit derselben Schwäche sind ein Rätsel, kein Bug. Bei einem Draft sprecht die Bans mit eurer Gruppe ab, bevor jemand würfelt. Bei einem Story-Run gönne dir ein Veto, wenn eine Art in deinem Spiel schlicht nicht fangbar ist.",
+          "Es geht um ein Team, das du wirklich spielen würdest — nicht darum, so lange neu zu würfeln, bis es perfekt aussieht.",
+        ],
+        sampleTitle: "Ein Beispielwurf",
+        sample:
+          "Ein Tippen könnte dir Gengar, Donphan, Togekiss, Ferrothorn, Volcarona und Pelipper geben — eine voll spielbare Truppe, nur dass drei davon gegen Gestein einknicken. Diese geteilte Schwäche ist die Challenge: Flickst du sie mit Items und Attacken, oder akzeptierst du sie und bist einfach schneller als alles? Der Wurf gibt dir eine Einschränkung; was du darum herum baust, ist das Spiel.",
+        linksTitle: "Lust auf einen kleineren Pool?",
+        linksTextBefore: "Würfle stattdessen innerhalb einer einzelnen Scheibe des Pokédex — probiere den",
+        links: [
+          { label: "Gen-1-Generator", href: "/gen/1" },
+          { label: "Drachen-Typ-Generator", href: "/type/dragon" },
+          { label: "Legendären-Generator", href: "/legendary" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter:
+          "— dann komm zurück und würfle ein komplettes Team innerhalb deiner Lieblingseinschränkung.",
+      },
     },
 
     teamCoach: {
@@ -1494,6 +2362,48 @@ export default {
           a: "Tippe unter dem Team auf Copy Sets (die Schaltfläche mit dem Showdown-Badge), um das Team im Showdown-Textformat zu kopieren. Öffne dann play.pokemonshowdown.com/teambuilder, wähle Import/Export und füge den Text ein — jedes Set wird mit Attacken, Fähigkeit, Item, Wesen und EVs geladen, bereit zum Kämpfen oder Anpassen.",
         },
       ],
+      guide: {
+        introTitle: "Warum einen Team-Coach nutzen?",
+        intro:
+          "Der Team Coach ist für den Moment, in dem du vier Pokémon hast, die du liebst, und keine Ahnung, was in die letzten zwei Slots gehört. Sperre deine Picks, und er füllt den Rest mit Typ-Abdeckung und balancierten Rollen — nicht einfach mehr von dem, was du schon hast.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Draft vollenden",
+            d: "Deine Favoriten gesperrt? Lass den Coach die sechs mit der Abdeckung vervollständigen, die dir fehlt — dann würfle nur die Slots neu, die dir nicht gefallen.",
+          },
+          {
+            t: "Schwäche beheben",
+            d: "Wenn deine Truppe gegen einen Typ einknickt, sperre die Keeper und generiere — der Coach gewichtet bei seiner Wahl die defensive Abdeckung.",
+          },
+          {
+            t: "Teambau lernen",
+            d: "Beobachte, warum er wählt, was er wählt: Jeder Vorschlag kommt mit einer Begründung — das ist unauffällig eine Teambau-Lektion.",
+          },
+          {
+            t: "Importieren & polieren",
+            d: "Hol dein gespeichertes Team oder deine Favoriten herein, wirf die schwachen Glieder raus und lass den Coach Ersatz vorsprechen.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Sperre ehrlich. Der Coach kann nur um das herum balancieren, was du ihm gibst — sperre die Pokémon, zu denen du wirklich stehst, nicht die ganze Wunschliste.",
+          "Lies die Begründung, bevor du neu würfelst. „New coverage“ und „tanky pivot“ verraten dir, was deiner Truppe gefehlt hat; taucht dieselbe Begründung immer wieder auf, ist das das echte Problem deines Teams.",
+          "Ein Neuwurf pro Slot ist eine gute Hausregel — endlose Neuwürfe machen den Coach zu einem langsamen Zufallsgenerator.",
+        ],
+        sampleTitle: "Eine Beispielreparatur",
+        sample:
+          "Sperre Garchomp, Rotom-Wash und Corviknight, und der Coach könnte mit einem Feuer-Typ für das Stahl-Matchup, einer Boden-Immunität für die geteilte Schwäche und einer Wildcard „für neue Abdeckung“ antworten — genau das Gespräch, das ein guter Teammate mit dir führen würde.",
+        linksTitle: "Lust auf einen anderen Ausgangspunkt?",
+        linksTextBefore: "Eine frische Truppe würfelst du hier:",
+        links: [
+          { label: "Zufalls-Team-Generator", href: "/team/random" },
+          { label: "dein gespeichertes Team", href: "/team" },
+          { label: "Team Challenge", href: "/team/challenge" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— dann bring das Ergebnis zum Fertigstellen hierher zurück.",
+      },
     },
 
     teamChallenge: {
@@ -1516,6 +2426,48 @@ export default {
           a: "Tippe unter dem Team auf Copy Sets (die Schaltfläche mit dem Showdown-Badge), um das Team im Showdown-Textformat zu kopieren. Öffne dann play.pokemonshowdown.com/teambuilder, wähle Import/Export und füge den Text ein — jedes Set wird mit Attacken, Fähigkeit, Item, Wesen und EVs geladen, bereit zum Kämpfen oder Anpassen.",
         },
       ],
+      guide: {
+        introTitle: "Warum einen Freund herausfordern?",
+        intro:
+          "Die Team Challenge macht aus einem Zufallswurf eine Anzeigetafel. Die Seite generiert eine geseedete Truppe, du teilst den Link, und alle, die ihn öffnen, stellen sich exakt demselben Team — die BST-Summe krönt den Gewinner.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Freunde-Duell",
+            d: "Teile den Challenge-Link in deinem Gruppenchat — alle würfeln ihre eigene Antwort auf dieselbe Truppe, die höchste BST gewinnt die Runde.",
+          },
+          {
+            t: "Stream-Segment",
+            d: "Würfle live ein Challenge-Team und lass den Chat versuchen, es zu schlagen — der Link hält alle ehrlich, weil sich die Truppe nicht ändern kann.",
+          },
+          {
+            t: "Solo-Benchmark",
+            d: "Schlage deine eigenen Würfe: Halte das Challenge-Team fest und würfle deine Seite neu, bis du seine BST mit einer Truppe toppst, die du wirklich benutzen würdest.",
+          },
+          {
+            t: "Draft-Night-Entscheider",
+            d: "Nutze eine Challenge-Runde, um zu klären, wer zuerst pickt — keine Diskussionen, die Zahlen stehen auf der Seite.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Legt das Format vor dem Teilen fest: je ein Wurf, oder Best-of-Three? Der Seed bedeutet, dass die Challenge selbst feststeht — die einzige Variable ist, was du dagegen würfelst.",
+          "BST entscheidet hier den Gewinner, aber Hausregeln können überstimmen: nur Mono-Typ-Antworten, keine Legendären in deiner Antwort oder „niedrigste BST gewinnt“ für eine Chaos-Runde.",
+          "Exportiere danach beide Seiten nach Showdown, wenn du die echte Antwort willst — BST ist eine Anzeigetafel, kein Kampfergebnis.",
+        ],
+        sampleTitle: "Eine Beispiel-Challenge",
+        sample:
+          "Die Challenge würfelt Blissey, Shedinja, Magikarp, Regidrago, Applin und Salamence — eine Monster-Summe, getragen von drei echten Pokémon und drei Witzen. Schlägst du sie mit sechs Mittelklässlern, hast du dir die Prahlerei verdient; verlierst du gegen sie, wirst du die ganze Woche von Magikarp hören.",
+        linksTitle: "Lust auf mehr Wettbewerbe?",
+        linksTextBefore: "Weitere Wettbewerbe gibt es hier:",
+        links: [
+          { label: "Glücksrad", href: "/wheel" },
+          { label: "Rate-Challenge", href: "/challenge/guess" },
+          { label: "Zufalls-Team-Generator", href: "/team/random" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— dieselben Würfel, andere Anzeigetafel.",
+      },
     },
 
     wheel: {
@@ -1550,6 +2502,48 @@ export default {
           d: "Der höchste BST gewinnt die Runde — teile das Ergebnis, um Freunde herauszufordern.",
         },
       ],
+      guide: {
+        introTitle: "Warum ein Rad drehen?",
+        intro:
+          "Das Rad ist der ehrlichste Zufalls-Picker, den es gibt: Alle sehen, wie dieselbe Drehung auf demselben Segment landet. Dreht euch ab, stapelt die Ergebnisse, und die höchste BST gewinnt die Runde — kein Setup, kein Verhandeln mit den Würfeln.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Party-PK",
+            d: "Zwei bis sechs Spieler, je eine Drehung — die höchste BST gewinnt die Runde. Der Verlierer legt den nächsten Einsatz fest.",
+          },
+          {
+            t: "Draft-Starter",
+            d: "Drehe sechsmal und schreib jedes Ergebnis auf — das ist deine Truppe für einen Challenge-Run, mit Wiederholungen und allem.",
+          },
+          {
+            t: "Entscheidungshilfe",
+            d: "Du kannst keinen Typ für deinen Mono-Run oder kein Spiel für den Abend wählen? Leg die Optionen aufs Rad und lass es landen.",
+          },
+          {
+            t: "Stream-Content",
+            d: "Ein sich drehendes Rad sieht vor der Kamera großartig aus — dreh für deine nächste Begegnung, deinen nächsten Teammate oder deine nächste Strafe.",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du drehst",
+        rules: [
+          "Einigt euch vor der ersten Drehung auf die Anzahl: je eine Drehung, oder Drehen-bis-es-passt? Räder machen mehr Spaß, wenn niemand für eine Neu-Drehung lobbyieren kann.",
+          "Bei PK-Runden gehören Gleichstände zum Charme — legt vorher fest, ob Gleichstehende ein Stechen drehen oder sich die Krone teilen.",
+          "Teile den Runden-Link, wenn es vorbei ist: Die URL trägt die Ergebnisse, also sind die Prahlerechte des Gewinners überprüfbar.",
+        ],
+        sampleTitle: "Eine Beispielrunde",
+        sample:
+          "Nach sechs Drehungen steht auf dem Board: ein Pseudo-Legendäres mit 670 BST, zwei Route-1-Vögel, ein Magikarp — und das selbstgefällige Gesicht deines Freundes, wenn seine letzte Drehung auf Arceus landet. Das Rad gibt — und der Runden-Link beweist es.",
+        linksTitle: "Lust auf Struktur um die Drehungen?",
+        linksTextBefore: "Eine komplette Truppe würfelst du im",
+        links: [
+          { label: "Zufalls-Team-Generator", href: "/team/random" },
+          { label: "Zufalls-Pokémon-Generator", href: "/random-pokemon-generator" },
+          { label: "Legendären-Generator", href: "/legendary" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— dann komm zurück und dreh für die Entscheidung.",
+      },
     },
 
     fusion: {
@@ -1580,6 +2574,48 @@ export default {
           a: "Nein — PokeRoll ist ein Fan-Projekt. Pokémon-Daten stammen von PokéAPI; Fusionsergebnisse werden zum Spaß generiert und sind keine offiziellen Designs.",
         },
       ],
+      guide: {
+        introTitle: "Warum Pokémon fusionieren?",
+        intro:
+          "Der Fusions-Generator beantwortet die Frage, die jeder Pokédex irgendwann stellt: Wie würden diese beiden als eins aussehen? Jeder Wurf wählt zwei zufällige Arten und mischt Name, Typen und Werte zu einem Hybrid, den es sonst nirgendwo gibt.",
+        waysTitle: "So kannst du spielen",
+        ways: [
+          {
+            t: "Kunst-Prompt",
+            d: "Würfle eine Fusion und zeichne sie — der gemischte Name und die Typen sind ein fertiges Design-Briefing.",
+          },
+          {
+            t: "Errate die Eltern",
+            d: "Zeig die Fusionskarte, versteck das Ergebnis und lass Freunde raten, welche zwei Pokémon sie erzeugt haben.",
+          },
+          {
+            t: "Eigener Dex",
+            d: "Führe eine Liste deiner Lieblingsfusionen — nach zwanzig Würfen hast du den Anfang des Pokédex deiner eigenen Region.",
+          },
+          {
+            t: "Kampf-Was-wäre-wenns",
+            d: "Kopiere das Set der Fusion nach Showdown und tüftle: Würde dieser Hybrid wirklich einen Team-Slot verdienen?",
+          },
+        ],
+        rulesTitle: "Lege deine Regeln fest, bevor du würfelst",
+        rules: [
+          "Beurteile eine Fusion nach ihren eigenen Maßstäben: Die besten sind die, die du wirklich zeichnen oder benutzen würdest, nicht die mit den höchsten Werten.",
+          "Beim Errate-die-Eltern hält ein Hinweis pro Rater das Spiel in Gang — der Typ ist der klassische Gratistipp.",
+          "Würfle frei neu, bis ein Paar etwas auslöst; Fusionen sind billig, Inspiration nicht.",
+        ],
+        sampleTitle: "Eine Beispielfusion",
+        sample:
+          "Ein Wurf könnte Gengar mit Snorlax zu einer Geist/Normal-Wand mit einem Namen fusionieren, über den du eine Woche lachst — und dann ertappst du dich dabei, wie du ernsthaft über seine EV-Verteilung nachdenkst. Das ist der Moment, in dem eine Fusion aufhört, ein Witz zu sein, und anfängt, ein Design zu sein.",
+        linksTitle: "Lust auf besseres Rohmaterial?",
+        linksTextBefore: "Neue Eltern holst du dir hier:",
+        links: [
+          { label: "Zufalls-Pokémon-Generator", href: "/random-pokemon-generator" },
+          { label: "Glücksrad", href: "/wheel" },
+          { label: "Zufalls-Team-Generator", href: "/team/random" },
+        ],
+        linksJoinOr: "oder",
+        linksTextAfter: "— dann fusioniere die Keeper.",
+      },
     },
   },
 };

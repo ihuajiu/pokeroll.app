@@ -853,6 +853,48 @@ export default {
           a: "Todos os dados das espécies vêm da PokéAPI e ficam embutidos localmente no site, então cada sorteio é instantâneo.",
         },
       ],
+      guide: {
+        introTitle: "Por que sortear um Pokémon aleatório?",
+        intro:
+          "Um sorteio aleatório é o jeito mais rápido de sair da lógica dos «mesmos seis favoritos». Um toque te entrega uma espécie que você não escolheu — com estatísticas, tipagem e arte — e de repente você está teorizando um moveset para um Pokémon que nunca teria escolhido sozinho. Use como escolha de draft, tema de desenho, tabela de encontros de Nuzlocke ou o primeiro slot de uma equipe novinha em folha.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Inicial de desafio",
+            d: "Sorteie uma vez e trave o resultado como o inicial da sua próxima jornada — seja qual for. Depois construa a run em volta dele.",
+          },
+          {
+            t: "Draft e duelo",
+            d: "Alterne sorteios com um amigo — cada um fica com o que sorteia, seis sorteios para cada, e depois batalhem com as duas equipes no Showdown.",
+          },
+          {
+            t: "Tema de arte e escrita",
+            d: "Use o sorteio como briefing criativo: desenhe o Pokémon no seu estilo ou escreva o treinador que o carregaria.",
+          },
+          {
+            t: "Semente de equipe",
+            d: "Gostou do que sorteou? Toque em Add to Team e sorteie de novo — seis toques depois, você tem uma equipe que se escolheu sozinha.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "O aleatório funciona melhor com uma regra atrelada. Só Kanto? Abra os filtros e trave a geração. Sem lendários? Exclua a categoria antes. Um único tipo para uma run temática? Trave antes do primeiro toque — os filtros são o livro de regras, o sorteio é o dado.",
+          "Jogando com outras pessoas? Combinem as regras em voz alta antes de qualquer sorteio: quantos re-sorteios cada jogador tem (um é um bom padrão), se formas alternativas contam e o que acontece em caso de repetido.",
+          "A graça é se comprometer com o que saiu — um sorteio que dá para desfazer sem fim é só navegar com passos extras.",
+        ],
+        sampleTitle: "Um sorteio de exemplo",
+        sample:
+          "Digamos que os dados te entreguem Aromatisse — um Fairy puro com 101 de HP e 29 de Speed que você nunca colocaria numa equipe séria. Agora a pergunta interessante: âncora de Trick Room? Suporte de Aromatherapy? De repente você está lendo uma página de moveset de um Pokémon que ignorou por uma década. É para isso que serve o sorteio.",
+        linksTitle: "Quer um grupo mais enxuto?",
+        linksTextBefore: "Sorteie uma única fatia da Pokédex — experimente o",
+        links: [
+          { label: "gerador da Gen 1", href: "/gen/1" },
+          { label: "gerador do tipo Dragon", href: "/type/dragon" },
+          { label: "gerador de Lendários", href: "/legendary" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— mesmo dado, lago menor.",
+      },
     },
 
     type: {
@@ -888,6 +930,47 @@ export default {
       linkTitleBrowseRegion: "Explorar a região de {region}",
       linkTitleType: "Gerador de tipos",
       linkTitleRandom: "Gerador de Pokémon aleatório",
+      guide: {
+        introTitle: "Por que sortear Pokémon do tipo {type}?",
+        intro:
+          "O grupo do tipo {type} reúne de tudo, dos clássicos do primeiro dia aos lançamentos mais recentes — e esta página te entrega um ao acaso, com estatísticas, habilidade e arte incluídos. Um toque, um {type}, sem rolar a dex.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Run mono-{type}",
+            d: "Sorteie um e ele ancora seu desafio mono-{type} — o primeiro slot está decidido, faltam cinco.",
+          },
+          {
+            t: "Estudo de tipo",
+            d: "Sorteie pelo grupo e anote os padrões de estatísticas — os tipos {type} compartilham uma filosofia de design que vale a pena aprender.",
+          },
+          {
+            t: "Restrição de draft",
+            d: "Todo mundo faz draft só do grupo {type} — mesmo tipo, equipes completamente diferentes.",
+          },
+          {
+            t: "Tema de arte",
+            d: "Desenhe o {type} sorteado de hoje — os esboços diários ficam mais fáceis quando os dados escolhem o tema.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Uma run mono-{type} vive e morre pelas fraquezas compartilhadas — confira o que {type} resiste e teme antes de se comprometer.",
+          "«O primeiro sorteio vale» é a regra mais limpa; um re-sorteio anunciado por sessão é a versão tolerante. Decida antes de tocar.",
+          "Tipos duplos contam: se carrega {type}, está no grupo — os híbridos são o que mantém as mono-runs vivas.",
+        ],
+        sampleTitle: "Um sorteio de exemplo",
+        sample:
+          "Um toque pode te entregar um veterano {type} que você já treinou uma dúzia de vezes — ou um {type} que você literalmente nunca usou, e é esse o interessante. O grupo decide qual.",
+        linksTitle: "Mais dados, mais temas?",
+        linksTextBefore: "Experimente o",
+        links: [
+          { label: "gerador de tipos", href: "/type" },
+          { label: "gerador de equipe aleatória", href: "/team/random" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— e volte quando o tema pedir {type} de novo.",
+      },
     },
 
     gen: {
@@ -921,6 +1004,47 @@ export default {
       linkTitleBrowseRegion: "Explorar a região de {region}",
       linkTitleType: "Gerador de tipos",
       linkTitleRandom: "Gerador de Pokémon aleatório",
+      guide: {
+        introTitle: "Por que sortear Pokémon da {genLabel}?",
+        intro:
+          "A {genLabel} é uma era própria — sua própria dex, sua própria linguagem de design, sua própria nostalgia. Esta página sorteia só dentro da {genLabel}: cada toque é um reencontro com aquela geração, das mascotes ao Pokémon de rota mais esquecido.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Run nostálgica",
+            d: "Sorteie um e ele ancora um replay só da {genLabel} — os dados escolhem, você constrói a run em volta dele.",
+          },
+          {
+            t: "Quiz de dex",
+            d: "Sorteie e diga a tipagem e a linha evolutiva do Pokémon de memória antes de conferir o card.",
+          },
+          {
+            t: "Draft mono-gen",
+            d: "Cada jogador faz draft só da {genLabel} — uma geração, seis escolhas, discussões infinitas sobre o meta dela.",
+          },
+          {
+            t: "Debate de eras",
+            d: "Sorteie cinco e avalie — será que a {genLabel} é secretamente a melhor geração? Os dados trazem as evidências.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Comprometa-se com a era: numa run só da {genLabel}, todo slot precisa vir desta dex — é aí que mora o desafio.",
+          "O primeiro sorteio vale; o charme de uma única geração é aceitar os esquisitões junto com as estrelas.",
+          "Formas de gerações posteriores não contam, a menos que as regras da casa digam o contrário — decida antes da run, não depois do sorteio.",
+        ],
+        sampleTitle: "Um sorteio de exemplo",
+        sample:
+          "Um toque e você está encarando um velho conhecido da {genLabel} que tinha esquecido completamente — o grito dele, a rota dele, o NPC que usou ele contra você. Gerações não são só listas; são memórias com estatísticas.",
+        linksTitle: "Mais jeitos de voltar no tempo?",
+        linksTextBefore: "Explore a",
+        links: [
+          { label: "região de {region}", href: "/by/{regionSlug}" },
+          { label: "o gerador de tipos", href: "/type" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— ou vá totalmente aleatório pelas nove gerações.",
+      },
     },
 
     region: {
@@ -959,6 +1083,47 @@ export default {
       introRandomLink: "gerador totalmente aleatório",
       introS3: ".",
       linkTitleRandom: "Gerador de Pokémon aleatório",
+      guide: {
+        introTitle: "Por que sortear Pokémon de {region}?",
+        intro:
+          "{region} é mais que um mapa — é a dex de Pokémon {game}, com seus próprios iniciais, lendários e figurinhas carimbadas das rotas. Esta página sorteia só dentro de {region}: um toque, um local, direto dos jogos que a criaram.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Run de volta ao lar",
+            d: "Sorteie um e ele ancora um replay só de {region} — monte a equipe que a dex da região permite.",
+          },
+          {
+            t: "Quiz da dex local",
+            d: "Sorteie e localize o Pokémon no mapa: qual rota, qual ginásio, qual versão?",
+          },
+          {
+            t: "Draft regional",
+            d: "Cada jogador faz draft de seis só de {region} — uma região, equipes bem diferentes.",
+          },
+          {
+            t: "Debate de versões",
+            d: "Sorteie cinco e julgue — {region} ainda se sustenta, ou é a nostalgia falando?",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Runs regionais funcionam porque o grupo é fechado: se não está na dex de {region}, não entra na equipe.",
+          "O primeiro sorteio vale — a região dá, a equipe se adapta. Um re-sorteio anunciado por sessão, se o seu grupo for generoso.",
+          "Decida cedo se as adições de pós-jogo e DLC contam como locais de {region} — regras da casa evitam discussões de rota.",
+        ],
+        sampleTitle: "Um sorteio de exemplo",
+        sample:
+          "Um toque e aparece um rosto de Pokémon {game} em que você não pensava há anos — o tema da rota começa a tocar na sua cabeça na hora. Regiões não são grupos; são lugares.",
+        linksTitle: "Quer continuar explorando?",
+        linksTextBefore: "Experimente a",
+        links: [
+          { label: "Pokédex da {genLabel}", href: "/gen/{gen}" },
+          { label: "o gerador de tipos", href: "/type" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— ou vá totalmente aleatório por todas as regiões.",
+      },
     },
 
     variants: {
@@ -971,6 +1136,47 @@ export default {
           "gerador de tipos pokemon",
           "gerador de pokemon de tipo unico",
         ],
+        guide: {
+          introTitle: "Por que sortear um tipo aleatório?",
+          intro:
+            "Dezoito tipos, um toque. Um tipo aleatório é o jeito mais rápido de escolher um tema: runs mono-tipo, restrições de draft, categorias de quiz — os dados escolhem, você se compromete.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Decisor de mono-tipo",
+              d: "Sorteie uma vez e esse é o tipo da sua próxima mono-run — nada de fazer lobby por um re-sorteio porque você queria Dragon.",
+            },
+            {
+              t: "Restrição de draft",
+              d: "Cada jogador sorteia um tipo antes do draft — sua equipe inteira precisa carregá-lo.",
+            },
+            {
+              t: "Desafio de tema",
+              d: "Sorteie um tipo e monte uma equipe que cubra as fraquezas dele sem compartilhá-las.",
+            },
+            {
+              t: "Aprenda a tabela",
+              d: "Teste seus conhecimentos sobre as resistências do tipo sorteado antes de conferir — a tabela fixa mais rápido quando vira jogo.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "O sorteio de tipo só funciona como compromisso: decida de antemão que o primeiro resultado vale. Um tipo que dá para re-sortear é só uma sugestão.",
+            "Jogando com outras pessoas? Todo mundo sorteia abertamente, repetidos ganham um re-sorteio, e é isso — a restrição é a diversão.",
+            "Combine o sorteio com os filtros dos outros geradores: trave o tipo lá e os dados ficam dentro do seu tema a sessão inteira.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "O sorteio diz Rock. De repente você está planejando em volta de uma fraqueza compartilhada a Water e Ground, de olho em usuários de Sand Stream, e lembrando que Rock tem quatro resistências próprias. Um toque, e a run de hoje à noite ganhou personalidade.",
+          linksTitle: "Quer ir mais fundo?",
+          linksTextBefore: "Navegue por um tipo específico como",
+          links: [
+            { label: "Dragon", href: "/type/dragon" },
+            { label: "Fire", href: "/type/fire" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— ou leve o resultado direto para o gerador de equipes.",
+        },
       },
       ability: {
         title: "Gerador aleatório de habilidades de Pokémon | PokeRoll",
@@ -981,6 +1187,47 @@ export default {
           "gerador de habilidades pokemon aleatorio",
           "gerar habilidade pokemon aleatoria",
         ],
+        guide: {
+          introTitle: "Por que sortear uma habilidade aleatória?",
+          intro:
+            "As habilidades definem como um Pokémon realmente joga — e a maioria de nós só conhece as vinte famosas. Sorteie uma ao acaso, conheça um Pokémon que a carrega e descubra o que a longa cauda da lista de habilidades é capaz de fazer.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Tema para montar set",
+              d: "Sorteie uma habilidade e esboce um set que abuse dela — quanto mais estranha a habilidade, melhor o exercício.",
+            },
+            {
+              t: "Restrição de draft",
+              d: "Cada jogador sorteia uma habilidade e precisa draftar um Pokémon que a tenha — escassez instantânea, drama instantâneo.",
+            },
+            {
+              t: "Aprenda a lista",
+              d: "Leia o efeito da habilidade sorteada antes de espiar — um quiz silencioso que rende nas batalhas.",
+            },
+            {
+              t: "Cola de equipe",
+              d: "Falta algo na sua equipe? Sorteie habilidades até uma resolver seu problema, e anote quais Pokémon a carregam.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "Decida se habilidades ocultas contam antes de começar — são os resultados mais raros e as discussões mais barulhentas.",
+            "Um sorteio, um compromisso é o formato saudável: construa em volta do que saiu em vez de pescar as boas.",
+            "Se uma habilidade é exclusiva de uma geração, trate como aula de história e sorteie o contexto, não só o efeito.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "Você sorteia Levitate e o card mostra um Pokémon por quem você passou cem vezes — só que agora ele é o pivot imune a Ground que sua equipe precisava. É essa a loteria das habilidades: a resposta sempre esteve lá, você só nunca tinha feito a pergunta.",
+          linksTitle: "Quer continuar montando?",
+          linksTextBefore: "Combine com o",
+          links: [
+            { label: "gerador de golpes", href: "/move" },
+            { label: "gerador de estatísticas", href: "/bst" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— habilidade, golpes e números são três lados do mesmo set.",
+        },
       },
       move: {
         title: "Gerador aleatório de golpes de Pokémon | PokeRoll",
@@ -990,6 +1237,47 @@ export default {
           "gerador de golpes pokemon aleatorio",
           "gerador de golpes pokemon",
         ],
+        guide: {
+          introTitle: "Por que sortear um golpe aleatório?",
+          intro:
+            "Centenas de golpes, e as batalhas são vencidas pelos estranhos. Sorteie um golpe ao acaso, veja um Pokémon que o aprende e faça a única pergunta que importa: será que isso funciona de verdade?",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Roleta de moveset",
+              d: "Sorteie quatro golpes e monte um set com eles — Splash incluso. Os melhores jogadores fazem qualquer coisa parecer jogável.",
+            },
+            {
+              t: "Restrição de draft",
+              d: "Sorteie um golpe e drafte uma equipe em que alguém precise usá-lo — golpes de suporte finalmente têm seu momento.",
+            },
+            {
+              t: "Aprenda a biblioteca",
+              d: "Poder, precisão, efeito — leia o golpe sorteado antes de conferir. Conhecimento de golpes é Elo de graça.",
+            },
+            {
+              t: "Tema de batalha",
+              d: "Sorteie um golpe e projete a situação em que ele te vence o jogo — theorycrafting com uma seed.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "Na roleta de moveset, sem trocas: quatro sorteios, um set, e golpes de status contam. A restrição é o jogo inteiro.",
+            "Combinem se Z-moves, golpes Max e golpes exclusivos entram no grupo antes de qualquer sorteio — regras da casa evitam mau humor.",
+            "Um golpe vale tanto quanto seu usuário, então julgue a dupla, não o golpe sozinho.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "Os dados te entregam Belch — um golpe Poison de 120 de poder que só funciona depois de comer uma Berry. Inútil? Aí você repara quem o aprende, e de repente tem um set de suco de Berry morando de graça na sua cabeça a semana inteira.",
+          linksTitle: "Quer fechar o set?",
+          linksTextBefore: "Complete com o",
+          links: [
+            { label: "gerador de habilidades", href: "/ability" },
+            { label: "gerador de estatísticas", href: "/bst" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— depois leve tudo para o Showdown.",
+        },
       },
       bst: {
         title: "Gerador aleatório de estatísticas de Pokémon (BST) | PokeRoll",
@@ -1000,6 +1288,47 @@ export default {
           "gerador de pokemon aleatorio com estatisticas",
           "gerador pokemon aleatorio estatisticas",
         ],
+        guide: {
+          introTitle: "Por que sortear um BST aleatório?",
+          intro:
+            "O total de estatísticas base é o atalho que todo jogador usa e ninguém concorda. Sorteie um número, conheça o Pokémon por trás dele e aprenda como um 480 ou um 600 realmente se parecem na natureza.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Adivinhe o mon",
+              d: "Veja o número primeiro e nomeie todos os Pokémon que você acha que ficam naquele BST — depois confira o quanto errou.",
+            },
+            {
+              t: "Draft por números",
+              d: "Cada jogador sorteia um BST e precisa draftar um Pokémon com exatamente aquele total — a escassez cria estrelas estranhas.",
+            },
+            {
+              t: "Desafio de tier",
+              d: "Monte uma equipe em que todos os membros fiquem abaixo de um teto sorteado — máximo de 500 transforma a montagem de equipe em design de verdade.",
+            },
+            {
+              t: "Quiz de estatísticas",
+              d: "Adivinhe como as seis estatísticas estão distribuídas antes da revelação — min-maxers e paredes se leem de formas bem diferentes.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "BST é orçamento, não ranking: um 480 bem gasto vence um 540 preguiçoso, então julgue a distribuição antes do total.",
+            "Em desafios de teto, defina o teto antes de sortear a equipe — sortear primeiro e negociar depois é como os tetos perdem o sentido.",
+            "Megas, formas Primitivas e formas alternativas têm seus próprios totais — decida quais formas contam antes do draft começar.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "O número é 600. Pseudo-lendário? Na verdade, desta vez é um Mítico — e a distribuição é perfeitamente igual nas seis estatísticas, o que não te diz absolutamente nada sobre como ele luta. Números abrem a conversa; nunca a fecham.",
+          linksTitle: "Mais jogos de números?",
+          linksTextBefore: "Experimente o",
+          links: [
+            { label: "gerador de números da Pokédex", href: "/number" },
+            { label: "gerador de habilidades", href: "/ability" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— ou cace os totais gigantes na página de Lendários.",
+        },
       },
       number: {
         title: "Gerador aleatório de números de Pokémon | PokeRoll",
@@ -1009,6 +1338,47 @@ export default {
           "gerador de numeros pokemon",
           "gerador de numeros pokemon aleatorio",
         ],
+        guide: {
+          introTitle: "Por que sortear um número aleatório da Pokédex?",
+          intro:
+            "Um número entre 1 e 1025, um Pokémon grudado nele. O sorteio de número da dex é a loteria mais pura do site — sem filtros, sem temas, só a história inteira da franquia em um único sorteio.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Roleta da dex",
+              d: "Sorteie um número e ele vira seu próximo encontro, companheiro de equipe ou tema de desenho — o que a dex mandar.",
+            },
+            {
+              t: "Adivinhe antes de revelar",
+              d: "Chute o Pokémon só pelo número antes de olhar — decorar a ordem da dex é uma habilidade de verdade.",
+            },
+            {
+              t: "Seletor de Nuzlocke",
+              d: "Use o número sorteado em módulo com a dex local para escolher encontros com justiça — dado não aceita suborno.",
+            },
+            {
+              t: "Jogo de festa",
+              d: "Maior número vence a rodada — o jogo mais simples do site e as discussões mais barulhentas.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "Decida o que o número significa antes de sortear: dex nacional ou mapeado na dex regional de um jogo? Jogos diferentes, destinos diferentes.",
+            "Um sorteio por decisão é o formato honesto — re-sortear até cair no seu favorito é só escolher com passos extras.",
+            "Formas compartilham o número na dex, então combinem como lidar com elas antes do sorteio, não depois.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "#387. Alguém na mesa grita Turtwig antes mesmo de o card carregar — e desta vez está certo. Uma run de Sinnoh recém-determinada. A dex dá.",
+          linksTitle: "Quer mais jogos de número?",
+          linksTextBefore: "Experimente o",
+          links: [
+            { label: "gerador de estatísticas", href: "/bst" },
+            { label: "gerador de apelidos", href: "/nickname" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— números, nomes e estatísticas contam histórias diferentes.",
+        },
       },
       starter: {
         title: "Gerador aleatório de Pokémon iniciais | PokeRoll",
@@ -1019,6 +1389,47 @@ export default {
           "gerador de pokemon iniciais",
           "seletor de pokemon inicial aleatorio",
         ],
+        guide: {
+          introTitle: "Por que sortear um inicial aleatório?",
+          intro:
+            "O primeiro parceiro define o tom de uma jornada inteira — e escolher um sozinho leva quarenta minutos de tópicos de fórum. Deixe os dados escolherem entre os iniciais de todas as gerações, de Kanto a Paldea, e comece logo a run.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Decisor de inicial",
+              d: "Sorteie uma vez e ele é seu parceiro na próxima run — decisão tomada, a aventura pode começar.",
+            },
+            {
+              t: "Abertura de Nuzlocke",
+              d: "Deixe o sorteio escolher o inicial e a sorte da rota decide o resto — compromisso total, viés zero.",
+            },
+            {
+              t: "Desempatador de debate",
+              d: "Fire, Water ou Grass desta vez? Os dados não têm nostalgia nem favoritos — o árbitro perfeito.",
+            },
+            {
+              t: "Tema de equipe",
+              d: "Sorteie um inicial e monte uma equipe que apoie a evolução final dele — estrutura instantânea para um time casual.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "O pacto do inicial é sagrado: vale o primeiro sorteio. Vetar o resultado porque você queria o sapo acaba com o sentido da brincadeira.",
+            "Decida o grupo primeiro — as nove gerações inteiras ou só os jogos que você tem? Um grupo menor ainda é um sorteio justo.",
+            "Em runs em grupo, todo mundo sorteia às claras e as trocas são permitidas exatamente uma vez — esse é o meta-jogo inteiro.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "Os dados dizem Chimchar e sua run de Sinnoh de repente tem personalidade: rápido, barulhento e levemente em chamas. Você nunca o escolheria no lugar de Piplup — e é exatamente por isso que essa jornada vai ser memorável.",
+          linksTitle: "Quer seguir com a run?",
+          linksTextBefore: "Sorteie o resto do time no",
+          links: [
+            { label: "gerador de equipe aleatória", href: "/team/random" },
+            { label: "gerador de tipos", href: "/type" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— o inicial escolheu; agora o time precisa de seis.",
+        },
       },
       "no-names": {
         title: "Gerador de Pokémon aleatório sem nomes — Jogo de adivinhação",
@@ -1030,6 +1441,47 @@ export default {
           "quiz de pokemon misterioso",
           "gerador de pokemon aleatorio sem nomes",
         ],
+        guide: {
+          introTitle: "Por que adivinhar um Pokémon misterioso?",
+          intro:
+            "Um card, estatísticas completas, arte oficial — e nenhum nome. O gerador sem nomes é um quiz de bolso: tudo o que você precisa para identificar o Pokémon está no card, menos a resposta.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Quiz solo",
+              d: "Adivinhe pela arte e pelas estatísticas e depois vire para conferir — acompanhe sua sequência de acertos ao longo de dez cards.",
+            },
+            {
+              t: "Grito de festa",
+              d: "Mostre o card numa chamada de vídeo; o primeiro grito certo ganha o ponto — velocidade importa mais que precisão.",
+            },
+            {
+              t: "Aquecimento de stream",
+              d: "Rode cinco cards misteriosos antes do conteúdo de verdade — a chat enlouquece na hora, garantido.",
+            },
+            {
+              t: "Treino de silhuetas",
+              d: "Use como aquecimento para o desafio de adivinhação com seed, onde o quiz fica mais difícil e as pontuações são compartilhadas.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "Nada de ficar em cima do botão de virar: um palpite comprometido por card, em voz alta se tiver mais gente jogando. Confiança é o jogo.",
+            "Estatísticas valem — um BST de 600 encurta o leque rapidinho, e saber disso é habilidade, não trapaça.",
+            "Perdeu a conta da pontuação? Dez cards, um ponto cada, sem negativos — o formato mais limpo.",
+          ],
+          sampleTitle: "Um card de exemplo",
+          sample:
+            "Bochechas amarelas, tipagem Electric, estatísticas minúsculas — você chuta com o peito aberto: Pikachu. O card vira e diz Pachirisu, e agora a sala inteira debate roedores regionais. Mais dez cards, por favor.",
+          linksTitle: "Quer um quiz mais difícil?",
+          linksTextBefore: "Avance para o",
+          links: [
+            { label: "desafio de adivinhação", href: "/challenge/guess" },
+            { label: "gerador de apelidos", href: "/nickname" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— o mesmo conhecimento, apostas mais altas.",
+        },
       },
       cute: {
         title: "Gerador aleatório de Pokémon fofos | PokeRoll",
@@ -1039,6 +1491,47 @@ export default {
           "gerador de pokemon fofos",
           "gerador de pokemon fofos aleatorio",
         ],
+        guide: {
+          introTitle: "Por que sortear um Pokémon fofo?",
+          intro:
+            "Nem todo sorteio precisa ser competitivo. O gerador de fofos puxa dos cantos macios, peludos e redondos da Pokédex — os Pokémon que você de verdade teria como bicho de estimação, um toque por vez.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Sorteio de conforto",
+              d: "Um toque, um Pokémon adorável — a melhora de humor mais barata da internet.",
+            },
+            {
+              t: "Prompt de arte",
+              d: "Desenhe o fofinho sorteado no seu estilo — Pokémon pequenos são a melhor prática diária de esboço.",
+            },
+            {
+              t: "Run só de fofos",
+              d: "Monte uma equipe de jornada em que todo membro precisa passar no teste da fofura — surpreendentemente viável, na maioria tipos Normal.",
+            },
+            {
+              t: "Desempate de debate",
+              d: "Cada jogador sorteia uma vez e o grupo vota no mais fofo — os dados arbitram a discussão mais antiga do fandom.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "Fofura é subjetiva, mas o sorteio é final — nada de re-sortear só porque na sua casa o padrão é Jigglypuff.",
+            "Em runs só de fofos, defina o padrão antes de começar: só a primeira evolução? Menos de um metro? Peludo? O livro de regras importa.",
+            "Evoluir sua escolha fofa é permitido — amar no que ela se transforma é o desafio avançado.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "Os dados te entregam um pássaro esférico que guincha, e sua produtividade dos próximos dez minutos foi embora. Agora você está olhando pelúcias. Não havia outro caminho possível.",
+          linksTitle: "Quer mais boas vibrações?",
+          linksTextBefore: "Experimente o",
+          links: [
+            { label: "gerador de míticos", href: "/mythical" },
+            { label: "gerador de apelidos", href: "/nickname" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— raro e adorável é a melhor combinação.",
+        },
       },
       mythical: {
         title: "Gerador aleatório de Pokémon míticos | PokeRoll",
@@ -1048,6 +1541,47 @@ export default {
           "gerador de pokemon miticos aleatorio",
           "gerador de pokemon miticos",
         ],
+        guide: {
+          introTitle: "Por que sortear um Pokémon mítico?",
+          intro:
+            "Míticos são as raridades só de evento — Mew, Celebi, Jirachi e seus herdeiros, os Pokémon que gerações inteiras de jogadores nunca tiveram. Sorteie um e pegue emprestada um pouco dessa raridade para você.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Draft do time dos sonhos",
+              d: "Sorteie seis míticos e monte a equipe de fantasia que você nunca conseguiria montar de verdade.",
+            },
+            {
+              t: "Batalha de e se",
+              d: "Sorteie um, copie no Showdown e teste se os esquivos são bons de verdade — alguns são, outros são Jirachi.",
+            },
+            {
+              t: "Checklist de coleção",
+              d: "Anote quais míticos os dados já te mostraram — um jeito lento e grátis de conhecer o conjunto inteiro.",
+            },
+            {
+              t: "Ritual de sorte",
+              d: "Um sorteio antes de sessões ranqueadas — puxar um mítico é um bom presságio, e superstição é grátis.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "Mítico e Lendário são clubes diferentes — o grupo dos míticos é só de distribuições de evento, e é isso que o torna especial.",
+            "Em drafts de sonho, repetidos exigem re-sorteio; todo o resto vale como saiu.",
+            "Lembre-se de que a maioria dos míticos divide o mesmo total de 600 — o truque deles está nos golpes e habilidades, não nas estatísticas.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "Os dados te entregam Jirachi, o realizador de desejos, veterano de exatamente um evento de fim de semana em 2003. Você nunca o capturou. Provavelmente nunca vai. Mas hoje, nesta página, o desejo foi atendido.",
+          linksTitle: "Quer mais dados raros?",
+          linksTextBefore: "Experimente o",
+          links: [
+            { label: "gerador de Lendários", href: "/legendary" },
+            { label: "gerador de megas", href: "/mega" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— raridade vem em vários sabores.",
+        },
       },
       mega: {
         title: "Gerador aleatório de mega Pokémon | PokeRoll",
@@ -1057,6 +1591,47 @@ export default {
           "gerador de mega pokemon aleatorio",
           "gerador de mega pokemon",
         ],
+        guide: {
+          introTitle: "Por que sortear uma megaevolução?",
+          intro:
+            "Megaevoluções e reversões primitivas são os «e se» mais barulhentos da franquia — transformações temporárias com estatísticas turbinadas, habilidades novas e designs que apostaram tudo. Sorteie uma e revisite a era em que qualquer coisa podia evoluir ainda mais.",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Meta do e se",
+              d: "Sorteie uma Mega e julgue com honestidade: essa coisa ganharia um lugar numa equipe moderna?",
+            },
+            {
+              t: "Decisor de draft",
+              d: "Cada jogador sorteia uma Mega — o sorteio decide em torno de qual ás sua equipe é construída.",
+            },
+            {
+              t: "Estudo de design",
+              d: "Compare a Mega com a forma base e veja o que os designers amplificaram — uma aula de design grátis.",
+            },
+            {
+              t: "Prompt de batalha",
+              d: "Copie o set no Showdown e jogue o e se de verdade — a nostalgia bate mais forte com 150 de Ataque base.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "Uma Mega por equipe é a regra clássica por um motivo — seu sorteio é seu ás, então construa em volta dele, não ao lado.",
+            "Primais contam como Megas para o grupo — combinem com o pessoal antes do primeiro sorteio.",
+            "Julgue o pacote inteiro: +100 em estatísticas não significa nada se a habilidade trai os pontos fortes da forma base.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "Os dados te entregam Mega Beedrill — um canhão de vidro Bug/Poison com Adaptability e um sonho. Você tinha esquecido que ele existia. Agora está encaixando Fell Stinger na sua próxima equipe, que é exatamente para isso que este gerador serve.",
+          linksTitle: "Quer mais transformações?",
+          linksTextBefore: "Experimente o",
+          links: [
+            { label: "gerador de Lendários", href: "/legendary" },
+            { label: "ferramenta de fusão", href: "/fusion" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— oficiais ou improvisados, híbridos são divertidos.",
+        },
       },
       nickname: {
         title: "Gerador aleatório de nomes e apelidos de Pokémon | PokeRoll",
@@ -1067,6 +1642,47 @@ export default {
           "gerador de apelidos pokemon aleatorio",
           "gerar nome de pokemon aleatorio",
         ],
+        guide: {
+          introTitle: "Por que sortear um apelido?",
+          intro:
+            "Um apelido transforma uma espécie em um personagem. O gerador de apelidos junta um Pokémon aleatório a um nome que vale digitar — para Nuzlockes, jornadas e todo save file em que a equipe merece mais do que «GARCHOMP».",
+          waysTitle: "Formas de jogar",
+          ways: [
+            {
+              t: "Nomes de Nuzlocke",
+              d: "As regras dizem que você precisa apelidar tudo — deixe o sorteio cuidar disso, e o apego vem de graça.",
+            },
+            {
+              t: "Sabor de jornada",
+              d: "Renomeie a equipe inteira com nomes sorteados — um save file temático lê como uma história.",
+            },
+            {
+              t: "Jogo de festa",
+              d: "Sorteie um Pokémon, todo mundo manda um apelido, o mais engraçado vence — o nome sorteado é o alvo a ser batido.",
+            },
+            {
+              t: "Prompt de escrita",
+              d: "Um Pokémon mais um nome é um esboço de personagem — escreva o treinador que o usaria.",
+            },
+          ],
+          rulesTitle: "Defina suas regras antes de sortear",
+          rules: [
+            "O pacto do Nuzlocke: o primeiro nome sorteado é o final. O vínculo é o objetivo, e vínculos não se escolhem a dedo.",
+            "Nomes temáticos aumentam a aposta — nomes de comida, de músicos, de constelações; escolha uma linha antes de a run começar.",
+            "Honre os caídos: quando um Pokémon nomeado desmaia, o nome se aposenta junto. Esse é o coração do formato.",
+          ],
+          sampleTitle: "Um sorteio de exemplo",
+          sample:
+            "Rota 2, primeira captura, um pássaro comum — e os dados o batizam de Capitão Migalha. Ele vai sobreviver a três wipes de equipe, se aposentar como lenda e ser lembrado por mais tempo que a maioria dos Campeões. Esse é o poder de um bom nome.",
+          linksTitle: "Vai nomear a equipe inteira?",
+          linksTextBefore: "Sorteie o time primeiro no",
+          links: [
+            { label: "gerador de equipe aleatória", href: "/team/random" },
+            { label: "gerador de números da Pokédex", href: "/number" },
+          ],
+          linksJoinOr: "ou",
+          linksTextAfter: "— depois volte e dê nome a todos.",
+        },
       },
       noNamesPromo: {
         s1: "Quer um quiz de vários cards com seed para compartilhar? ",
@@ -1089,6 +1705,47 @@ export default {
       headerDesc:
         "Só Pokémon lendários neste grupo — toque em «Gerar de novo» para outro sorteio lendário.",
       note: "Toque em «Gerar de novo» para sortear outro lendário — «Adicionar à equipe» guarda ele na sua equipe.",
+      guide: {
+        introTitle: "Por que sortear um lendário?",
+        intro:
+          "Este grupo é só de lendas — os deuses das capas, os errantes, os trios. Todo sorteio cai num Pokémon que um dia exigiu um evento, uma caverna ou uma cutscene de 40 minutos para ser encontrado.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Time dos sonhos",
+            d: "Sorteie seis lendários e monte a equipe que todo moleque de dez anos jurava ser imbatível.",
+          },
+          {
+            t: "Draft de chefes",
+            d: "Cada jogador sorteia três — o maior BST combinado vence, e o direito de se gabar dura a semana inteira.",
+          },
+          {
+            t: "Batalha de e se",
+            d: "Copie um lendário sorteado no Showdown e teste o mito — alguns deuses têm movesets bem mortais.",
+          },
+          {
+            t: "Sorteio de coleção",
+            d: "Um sorteio por dia até os dados te mostrarem todo lendário — a run de completar mais lenta e mais barata.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Vale o primeiro sorteio — um lendário que dá para re-sortear é só um Pokémon forte, e o mistério é o ponto.",
+          "Lendário e Mítico são grupos diferentes: esta página mantém o clube exclusivo; os míticos moram ao lado.",
+          "Em drafts, um re-sorteio por jogador, anunciado antes de os dados caírem — regras de casa mantêm os deuses honestos.",
+        ],
+        sampleTitle: "Um sorteio de exemplo",
+        sample:
+          "Um toque: Rayquaza, o deus dos céus, a run se escreve sozinha. Próximo toque: Regigigas, cuja Slow Start faz o deus passar cinco turnos como espectador. Lendas contêm multidões.",
+        linksTitle: "Quer mais dados raros?",
+        linksTextBefore: "Experimente o",
+        links: [
+          { label: "gerador de míticos", href: "/mythical" },
+          { label: "caça shiny", href: "/challenge/shiny" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— raridade ao quadrado.",
+      },
     },
     adventure: {
       metaTitle: "Gerador de aventura Pokémon",
@@ -1140,6 +1797,48 @@ export default {
           a: "Sim — copie o link da página. Ele carrega a seed e a dificuldade, então os amigos abrem o manifesto de aventura idêntico.",
         },
       ],
+      guide: {
+        introTitle: "Por que sortear uma aventura?",
+        intro:
+          "O modo aventura sorteia uma jornada inteira em um toque: um treinador, um inicial, uma equipe, um desafio e um objetivo, tudo amarrado a uma única seed. É um gerador de campanha — os dados escrevem a premissa, você joga a história.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Run de desafio instantânea",
+            d: "Sorteie uma aventura e tome as regras dela como vinculantes — a equipe que ela te entrega é a equipe que a run permite.",
+          },
+          {
+            t: "Calendário de desafios",
+            d: "Sorteie uma aventura nova por semana e faça stream ou registre as tentativas — mesmo formato de seed, histórias comparáveis.",
+          },
+          {
+            t: "Premissa cooperativa",
+            d: "Compartilhe a seed com um amigo: aventura idêntica, jornadas separadas, corrida até o objetivo.",
+          },
+          {
+            t: "Semente de história",
+            d: "Use o treinador e o objetivo sorteados como tema de fanfic ou de RPG de mesa — os dados são surpreendentemente bons em ganchos de enredo.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Escolha a dificuldade antes de sortear, não depois de ver o resultado — escolher Extrema quando você já conhece a equipe é só negociar consigo mesmo.",
+          "Uma aventura funciona porque é vinculante: no máximo um re-sorteio por run, e só antes de você capturar qualquer coisa.",
+          "Compartilhe a seed, não prints — o link reproduz a aventura exata, o que torna corridas e comparações justas.",
+        ],
+        sampleTitle: "Uma aventura de exemplo",
+        sample:
+          "Uma única seed pode decretar: uma Lass de Hoenn, um Chimchar inicial, um desafio sem itens e o objetivo de vencer a liga com o nível abaixo. Você nunca teria montado essa run sozinho — e é exatamente por isso que vai se lembrar dela.",
+        linksTitle: "Quer equipar a aventura?",
+        linksTextBefore: "Arme a run com dados do",
+        links: [
+          { label: "gerador de equipe aleatória", href: "/team/random" },
+          { label: "desafio de adivinhação", href: "/challenge/guess" },
+          { label: "caça shiny", href: "/challenge/shiny" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— toda boa campanha precisa de missões secundárias.",
+      },
     },
 
     guess: {
@@ -1174,6 +1873,48 @@ export default {
           d: "A seed no link recria a mesma formação — compartilhe e dispute com um amigo.",
         },
       ],
+      guide: {
+        introTitle: "Por que testar sua memória da Pokédex?",
+        intro:
+          "O desafio de adivinhação é o teste mais puro de conhecimento da Pokédex: uma formação fixa, dicas que encolhem com a dificuldade e sua pontuação no final. A mesma seed para todo mundo — então as pontuações são genuinamente comparáveis.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Duelo diário",
+            d: "Compartilhe a seed com um amigo e compare as pontuações — mesma formação, sem desculpas.",
+          },
+          {
+            t: "Escada de dificuldade",
+            d: "Comece no Fácil com dicas generosas, depois suba rumo ao Extremo, onde os sprites são ampliados e as dicas somem.",
+          },
+          {
+            t: "Maratona de filtros",
+            d: "Trave uma única geração ou tipo e prove que você conhece mesmo aquela fatia da dex — não só as partes famosas.",
+          },
+          {
+            t: "Quiz de festa",
+            d: "Leia os cards em voz alta numa chamada e corra para gritar a resposta — velocidade conta.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Escolha quantidade e dificuldade antes da primeira revelação — doze no Fácil e seis no Extremo são provas completamente diferentes.",
+          "Nada de mudar os filtros no meio da rodada: uma rodada mono-Water e uma rodada com a dex inteira medem conhecimentos diferentes.",
+          "Uma tentativa por seed é o formato honesto — a seed mantém a formação fixa, então uma segunda tentativa é só memorização.",
+        ],
+        sampleTitle: "Uma rodada de exemplo",
+        sample:
+          "Uma rodada no Difícil amplia uma espiral de casco azul-acinzentado. Cloyster? Omastar? Você aposta em Kabutops com total confiança, e a revelação diz... Shellder. Em algum lugar, um rival está rindo — e sua seed de revanche está a um toque de distância.",
+        linksTitle: "Quer mais provas?",
+        linksTextBefore: "Experimente o",
+        links: [
+          { label: "modo de card misterioso", href: "/no-names" },
+          { label: "caça shiny", href: "/challenge/shiny" },
+          { label: "modo aventura", href: "/adventure" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— dados diferentes, o mesmo direito de se gabar.",
+      },
     },
 
     shiny: {
@@ -1220,6 +1961,48 @@ export default {
           a: "O card encontrado libera Compartilhar e Baixar. O link compartilhado abre direto no seu shiny encontrado, e a imagem do card baixada traz um QR code que os amigos podem escanear para começar a própria caçada.",
         },
       ],
+      guide: {
+        introTitle: "Por que caçar um shiny?",
+        intro:
+          "A caça shiny simula a aposta mais antiga de Pokémon: encontro após encontro, esperando o brilho. Escolha uma dificuldade, clique pelo grupo de selvagens e veja quão fundo a caçada vai — as regras de garantia a mantêm honesta, mas nunca fácil.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Teste de sorte",
+            d: "Comece uma caçada e veja em quantos encontros seu shiny aparece — abaixo das chances e você está quente, acima e o grupo te deve uma.",
+          },
+          {
+            t: "Corra com um amigo",
+            d: "Compartilhe a seed da caçada e corra até a revelação — quem tiver menos encontros vence, e o link prova.",
+          },
+          {
+            t: "Treino de paciência",
+            d: "Use a dificuldade Extrema como meditação: centenas de cliques, um brilho, sem atalhos.",
+          },
+          {
+            t: "Quadro de stream",
+            d: "Uma corrida de shiny ao vivo é conteúdo pronto — o chat escolhe a dificuldade, você fornece o desespero.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "A dificuldade é o jogo inteiro aqui: o Fácil garante um sorteio de garantia para que a primeira caçada sempre termine; os níveis mais altos fazem você merecer.",
+          "Decida o que conta antes de começar — o primeiro shiny encerra a caçada, ou você está segurando até uma espécie específica?",
+          "Compartilhe o link da revelação, não um print: ele abre direto no card encontrado, então ninguém consegue fingir um shiny de primeiro encontro.",
+        ],
+        sampleTitle: "Uma caçada de exemplo",
+        sample:
+          "Encontro 1: Pidgey. Encontro 47: Pidgey. Encontro 213: Pidgey. Você começa a questionar as chances, a seed, suas escolhas de vida — e então o encontro 214 brilha dourado. Todo caçador de verdade sabe exatamente como é isso.",
+        linksTitle: "Quer manter a sequência?",
+        linksTextBefore: "Experimente o",
+        links: [
+          { label: "desafio de adivinhação", href: "/challenge/guess" },
+          { label: "modo aventura", href: "/adventure" },
+          { label: "gerador de Pokémon aleatório", href: "/random-pokemon-generator" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— os dados nunca dormem.",
+      },
     },
 
     favorites: {
@@ -1439,6 +2222,48 @@ export default {
           a: "Toque em Copy Sets abaixo da equipe (o botão com o selo Showdown) para copiar a equipe no formato de texto do Showdown. Depois abra play.pokemonshowdown.com/teambuilder, escolha Import/Export e cole o texto — cada set carrega com golpes, habilidade, item, natureza e EVs, pronto para batalhar ou ajustar.",
         },
       ],
+      guide: {
+        introTitle: "Por que manter uma equipe salva?",
+        intro:
+          "Sua equipe é onde os resultados aleatórios deixam de ser descartáveis. Todo card em que você toca Add to Team vem parar aqui — de qualquer gerador do site — então uma equipe vai se montando aos poucos a partir de sorteios de que você realmente gostou.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Coleção dos melhores",
+            d: "Continue sorteando no gerador de equipes e adicione só os que valem a pena guardar — esta página vira seu hall da fama.",
+          },
+          {
+            t: "Curadoria de draft",
+            d: "Sorteie mais de seis, guarde os seis melhores aqui e corte o resto — seu próprio dia de draft particular.",
+          },
+          {
+            t: "Preparação para o Showdown",
+            d: "Quando os seis parecerem certos, exporte a equipe inteira com Copy Sets e cole direto no teambuilder do Showdown.",
+          },
+          {
+            t: "Compartilhe a equipe",
+            d: "O link de compartilhamento carrega sua formação exata — mande para um amigo e ele verá os mesmos seis, arte e tudo.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Uma equipe salva merece um tema. Não precisa ser competitiva — «só Pokémon que eu usaria de verdade numa jornada» já é um tema. «Um por geração» também, ou «nada acima de 500 de BST».",
+          "Trate remoções como definitivas. Se você se pegar trocando o mesmo slot cinco vezes, aquele slot quer um papel diferente, não um Pokémon diferente.",
+          "Seis é o limite clássico por uma razão: pequeno o bastante para que cada membro precise justificar seu lugar.",
+        ],
+        sampleTitle: "Uma equipe de exemplo",
+        sample:
+          "Uma equipe salva típica pode começar como «os seis que carregaram minha run de Emerald» — Swampert, Gardevoir, Aggron, Manectric, Altaria e um mula de HM que mereceu a aposentadoria. A página não julga; ela só lembra.",
+        linksTitle: "Quer sangue novo?",
+        linksTextBefore: "Sorteie novos candidatos no",
+        links: [
+          { label: "gerador de equipe aleatória", href: "/team/random" },
+          { label: "Team Coach", href: "/team/coach" },
+          { label: "Team Challenge", href: "/team/challenge" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— depois adicione os escolhidos de volta aqui.",
+      },
     },
 
     teamRandom: {
@@ -1472,6 +2297,49 @@ export default {
           a: "Toque em Copy Sets abaixo da equipe (o botão com o selo Showdown) para copiar a equipe no formato de texto do Showdown. Depois abra play.pokemonshowdown.com/teambuilder, escolha Import/Export e cole o texto — cada set carrega com golpes, habilidade, item, natureza e EVs, pronto para batalhar ou ajustar.",
         },
       ],
+      guide: {
+        introTitle: "Por que sortear uma equipe aleatória?",
+        intro:
+          "Uma equipe aleatória tira a paralisia de decisão da montagem de equipes. Em vez de rolar a Pokédex por uma hora, você recebe seis slots de bandeja — e é aí que a parte interessante começa: fazê-los funcionar juntos. Use o resultado como run de desafio, draft entre amigos, equipe de treino ou pura inspiração para sua próxima jornada.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Run de desafio",
+            d: "Comprometa-se com os seis que sortear na sua próxima jornada — sem re-sorteios. Construa em volta do que saiu, incluindo a sobreposição de tipos estranha.",
+          },
+          {
+            t: "Draft com amigos",
+            d: "Compartilhe o link da página — a URL carrega a equipe exata, então todo mundo começa dos mesmos seis. Sorteie sua própria resposta, depois batalhe e compare.",
+          },
+          {
+            t: "Treino no Showdown",
+            d: "O Copy Sets te dá sets completos com golpes, itens e EVs. Cole no teambuilder do Showdown e suba no ladder com uma equipe que você não pensou demais.",
+          },
+          {
+            t: "Build temática",
+            d: "Trave um tipo, geração ou categoria nos filtros e sorteie dentro de uma restrição sua — uma equipe mono-Water, uma reunião da Gen 3, uma run só de Iniciais.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Uma equipe aleatória fica melhor quando as regras vêm primeiro. Lendários permitidos? Se não, abra os filtros e exclua a categoria antes de tocar no botão de sortear. Run mono-tipo? Trave o tipo. Só os jogos da sua infância? Trave a geração. Os filtros são seu livro de regras — defina uma vez e depois conviva com o que os dados disserem.",
+          "No jogo casual, aceite uma sobreposição estranha como parte do desafio — três Pokémon dividindo uma fraqueza são um quebra-cabeça, não um bug. Num draft, combinem os bans com o grupo antes de qualquer sorteio. Numa run de história, permita-se um veto quando uma espécie simplesmente não pode ser capturada no seu jogo.",
+          "O objetivo é uma equipe que você jogaria de verdade — não re-sortear até ela parecer perfeita.",
+        ],
+        sampleTitle: "Um sorteio de exemplo",
+        sample:
+          "Um toque pode te entregar Gengar, Donphan, Togekiss, Ferrothorn, Volcarona e Pelipper — uma equipe perfeitamente jogável, só que três deles caem para Rock. Essa fraqueza compartilhada é o desafio: você remenda com itens e golpes, ou assume e passa por cima de tudo na velocidade? O sorteio te dá uma restrição; o que você constrói em volta dela é o jogo.",
+        linksTitle: "Quer um grupo mais enxuto?",
+        linksTextBefore: "Sorteie dentro de uma única fatia da Pokédex — experimente o",
+        links: [
+          { label: "gerador da Gen 1", href: "/gen/1" },
+          { label: "gerador do tipo Dragon", href: "/type/dragon" },
+          { label: "gerador de Lendários", href: "/legendary" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter:
+          "— depois volte e sorteie uma equipe inteira dentro da sua restrição favorita.",
+      },
     },
 
     teamCoach: {
@@ -1494,6 +2362,48 @@ export default {
           a: "Toque em Copy Sets abaixo da equipe (o botão com o selo Showdown) para copiar a equipe no formato de texto do Showdown. Depois abra play.pokemonshowdown.com/teambuilder, escolha Import/Export e cole o texto — cada set carrega com golpes, habilidade, item, natureza e EVs, pronto para batalhar ou ajustar.",
         },
       ],
+      guide: {
+        introTitle: "Por que usar um técnico de equipe?",
+        intro:
+          "O Team Coach é para aquele momento em que você tem quatro Pokémon que ama e nenhuma ideia do que pertence aos dois últimos slots. Trave suas escolhas e ele preenche o resto com cobertura de tipos e papéis equilibrados — não apenas mais do que você já tem.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Complete um draft",
+            d: "Travou seus favoritos? Deixe o técnico completar os seis com a cobertura que está faltando — depois re-sorteie só os slots de que não gostou.",
+          },
+          {
+            t: "Corrija uma fraqueza",
+            d: "Se sua equipe cai para um único tipo, trave os que ficam e gere — o técnico pesa a cobertura defensiva ao escolher.",
+          },
+          {
+            t: "Aprenda a montar equipes",
+            d: "Observe por que ele escolhe o que escolhe: toda sugestão vem com um motivo, o que é, discretamente, uma aula de teambuilding.",
+          },
+          {
+            t: "Importe e refine",
+            d: "Puxe sua equipe salva ou favoritos, corte os elos fracos e deixe o técnico testar substitutos.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Trave com honestidade. O técnico só consegue equilibrar em volta do que você dá a ele — trave os Pokémon aos quais você está realmente comprometido, não a lista de desejos inteira.",
+          "Leia o motivo antes de re-sortear. «New coverage» e «tanky pivot» estão te dizendo o que faltava na sua equipe; se o mesmo motivo continua aparecendo, esse é o problema real do seu time.",
+          "Um re-sorteio por slot é uma boa regra da casa — re-sorteios sem fim transformam o técnico num gerador aleatório lento.",
+        ],
+        sampleTitle: "Uma correção de exemplo",
+        sample:
+          "Trave Garchomp, Rotom-Wash e Corviknight e o técnico pode responder com um tipo Fire para o confronto contra Steel, um imune a Ground para a fraqueza compartilhada e um coringa «para nova cobertura» — exatamente a conversa que um bom companheiro de equipe teria com você.",
+        linksTitle: "Quer um ponto de partida diferente?",
+        linksTextBefore: "Sorteie uma equipe nova no",
+        links: [
+          { label: "gerador de equipe aleatória", href: "/team/random" },
+          { label: "sua equipe salva", href: "/team" },
+          { label: "Team Challenge", href: "/team/challenge" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— depois traga o resultado de volta aqui para finalizá-lo.",
+      },
     },
 
     teamChallenge: {
@@ -1516,6 +2426,48 @@ export default {
           a: "Toque em Copy Sets abaixo da equipe (o botão com o selo Showdown) para copiar a equipe no formato de texto do Showdown. Depois abra play.pokemonshowdown.com/teambuilder, escolha Import/Export e cole o texto — cada set carrega com golpes, habilidade, item, natureza e EVs, pronto para batalhar ou ajustar.",
         },
       ],
+      guide: {
+        introTitle: "Por que desafiar um amigo?",
+        intro:
+          "O Team Challenge transforma um sorteio aleatório em placar. A página gera uma equipe com seed, você compartilha o link e todo mundo que o abre enfrenta exatamente a mesma equipe — o BST total coroa o vencedor.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Duelo de amigos",
+            d: "Compartilhe o link do desafio no grupo — cada um sorteia sua própria resposta à mesma equipe, e o maior BST leva a rodada.",
+          },
+          {
+            t: "Quadro de stream",
+            d: "Sorteie uma equipe de desafio ao vivo e deixe o chat tentar vencê-la — o link mantém todos honestos porque a equipe não pode mudar.",
+          },
+          {
+            t: "Referência solo",
+            d: "Vença seus próprios sorteios: mantenha a equipe de desafio fixa e re-sorteie o seu lado até superar o BST dela com uma equipe que você usaria de verdade.",
+          },
+          {
+            t: "Desempate da noite de draft",
+            d: "Use uma rodada de desafio para decidir quem escolhe primeiro — sem discussão, os números estão na página.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Decidam o formato antes de compartilhar: um sorteio cada, ou melhor de três? A seed significa que o desafio em si é fixo — a única variável é o que você sorteia contra ele.",
+          "O BST decide o vencedor aqui, mas regras da casa podem sobrepor: só respostas mono-tipo, nada de lendários na sua resposta, ou «menor BST vence» para uma rodada do caos.",
+          "Exporte os dois lados para o Showdown depois, se quiser a resposta de verdade — BST é um placar, não um resultado de batalha.",
+        ],
+        sampleTitle: "Um desafio de exemplo",
+        sample:
+          "O desafio sorteia Blissey, Shedinja, Magikarp, Regidrago, Applin e Salamence — um total monstruoso carregado por três Pokémon de verdade e três piadas. Vença com seis medianos e você mereceu o direito de se gabar; perca para isso e vai ouvir falar do Magikarp a semana inteira.",
+        linksTitle: "Quer mais jeitos de competir?",
+        linksTextBefore: "Experimente o",
+        links: [
+          { label: "modo roleta", href: "/wheel" },
+          { label: "desafio de adivinhação", href: "/challenge/guess" },
+          { label: "gerador de equipe aleatória", href: "/team/random" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— mesmo dado, placar diferente.",
+      },
     },
 
     wheel: {
@@ -1550,6 +2502,48 @@ export default {
           d: "O maior BST vence a rodada — compartilhe o resultado para desafiar os amigos.",
         },
       ],
+      guide: {
+        introTitle: "Por que girar uma roleta?",
+        intro:
+          "A roleta é o seletor aleatório mais honesto que existe: todo mundo vê o mesmo giro parar na mesma fatia. Alternem as vezes, acumulem os resultados e o maior BST leva a rodada — sem preparação, sem discutir com os dados.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "PK de festa",
+            d: "De dois a seis jogadores, um giro cada — o maior BST vence a rodada. O perdedor escolhe a próxima aposta.",
+          },
+          {
+            t: "Início de draft",
+            d: "Gire seis vezes e anote cada resultado — essa é sua equipe para uma run de desafio, com repetições e tudo.",
+          },
+          {
+            t: "Tomador de decisões",
+            d: "Não consegue escolher um tipo para sua mono-run ou um jogo para a noite? Coloque as opções na roleta e deixe ela parar.",
+          },
+          {
+            t: "Conteúdo de stream",
+            d: "Uma roleta girando fica ótima na câmera — gire para seu próximo encontro, seu próximo companheiro de equipe ou sua próxima punição.",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de girar",
+        rules: [
+          "Combinem a quantidade antes do primeiro giro: um giro cada, ou girar-até-gostar? Roletas são mais divertidas quando ninguém pode fazer lobby por um re-giro.",
+          "Nas rodadas de PK, empates fazem parte do charme — decidam antes se os jogadores empatados giram o desempate ou dividem a coroa.",
+          "Compartilhe o link da rodada quando terminar: a URL carrega os resultados, então o direito de se gabar do vencedor é verificável.",
+        ],
+        sampleTitle: "Uma rodada de exemplo",
+        sample:
+          "Seis giros depois, o placar mostra: um pseudo-lendário de 670 de BST, dois pássaros de rota inicial, um Magikarp — e a cara de convencido do seu amigo quando o último giro dele para em Arceus. A roleta dá — e o link da rodada prova.",
+        linksTitle: "Quer estrutura em volta dos giros?",
+        linksTextBefore: "Sorteie uma equipe inteira no",
+        links: [
+          { label: "gerador de equipe aleatória", href: "/team/random" },
+          { label: "gerador de Pokémon aleatório", href: "/random-pokemon-generator" },
+          { label: "gerador de Lendários", href: "/legendary" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— depois volte para girar o desempate.",
+      },
     },
 
     fusion: {
@@ -1580,6 +2574,48 @@ export default {
           a: "Não — o PokeRoll é um projeto feito por fãs. Os dados de Pokémon vêm da PokéAPI; os resultados de fusão são gerados por diversão e não são designs oficiais.",
         },
       ],
+      guide: {
+        introTitle: "Por que fundir Pokémon?",
+        intro:
+          "O gerador de fusões responde à pergunta que toda Pokédex acaba fazendo: como esses dois ficariam como um só? Cada sorteio escolhe duas espécies aleatórias e mistura nome, tipagem e estatísticas num híbrido que não existe em nenhum outro lugar.",
+        waysTitle: "Formas de jogar",
+        ways: [
+          {
+            t: "Tema de arte",
+            d: "Sorteie uma fusão e desenhe — o nome e a tipagem misturados são um briefing de design pronto.",
+          },
+          {
+            t: "Adivinhe os pais",
+            d: "Mostre o card da fusão, esconda o resultado e deixe os amigos adivinharem quais dois Pokémon a criaram.",
+          },
+          {
+            t: "Dex personalizada",
+            d: "Mantenha uma lista das suas fusões favoritas — depois de vinte sorteios, você tem o começo da Pokédex da sua própria região.",
+          },
+          {
+            t: "E se... de batalha",
+            d: "Copie o set da fusão para o Showdown e teorize: esse híbrido realmente mereceria um slot na equipe?",
+          },
+        ],
+        rulesTitle: "Defina suas regras antes de sortear",
+        rules: [
+          "Julgue uma fusão pelos próprios méritos: as melhores são as que você desenharia ou usaria de verdade, não as de estatísticas mais altas.",
+          "No adivinhe-os-pais, uma dica por adivinhador mantém o jogo andando — a tipagem é a dica clássica de graça.",
+          "Re-sorteie à vontade até um par despertar algo; fusões são baratas, inspiração não.",
+        ],
+        sampleTitle: "Uma fusão de exemplo",
+        sample:
+          "Um sorteio pode fundir Gengar com Snorlax numa muralha Ghost/Normal com um nome que vai te fazer rir por uma semana — e então você se pega genuinamente pensando no EV spread dele. É quando uma fusão deixa de ser piada e começa a ser design.",
+        linksTitle: "Quer matéria-prima melhor?",
+        linksTextBefore: "Puxe novos pais de",
+        links: [
+          { label: "um gerador de Pokémon aleatório", href: "/random-pokemon-generator" },
+          { label: "uma roleta", href: "/wheel" },
+          { label: "um gerador de equipe aleatória", href: "/team/random" },
+        ],
+        linksJoinOr: "ou",
+        linksTextAfter: "— depois funda os escolhidos.",
+      },
     },
   },
 };

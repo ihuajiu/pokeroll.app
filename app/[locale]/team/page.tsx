@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import TeamClient from "@/components/TeamClient";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
+import PlayGuide from "@/components/PlayGuide";
 import PageHeader from "@/components/PageHeader";
 import {
   isLocale,
@@ -55,6 +56,7 @@ export default async function TeamPage({
 
       <TeamClient sharedNames={sp.team ?? null} />
 
+      <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/team" locale={locale} />
     </main>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import TeamCoach from "@/components/TeamCoach";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
+import PlayGuide from "@/components/PlayGuide";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { completeTeam } from "@/lib/teamCoach";
@@ -132,6 +133,7 @@ export default async function TeamCoachPage({
 
       <TeamCoach initial={initial} initialLocked={initialLocked} />
 
+      <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/team/coach" locale={locale} />
     </main>

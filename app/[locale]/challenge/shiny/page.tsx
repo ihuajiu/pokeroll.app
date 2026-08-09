@@ -3,6 +3,7 @@ import ChallengeGenerator from "@/components/ChallengeGenerator";
 import GuideSteps from "@/components/GuideSteps";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
+import PlayGuide from "@/components/PlayGuide";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import {
@@ -114,6 +115,7 @@ export default async function ShinyChallengePage({
         wildPool={wildPool}
         startFound={reveal}
       />
+      <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/challenge/shiny" locale={locale} />
     </main>

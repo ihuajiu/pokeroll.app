@@ -852,6 +852,48 @@ export default {
           a: "All species data comes from PokéAPI and is bundled locally with the site, so every roll is instant.",
         },
       ],
+      guide: {
+        introTitle: "Why roll a random Pokémon?",
+        intro:
+          "A random roll is the fastest way out of 'same six favourites' thinking. One tap hands you a species you didn't choose — with stats, typing and artwork — and suddenly you're theorycrafting a moveset for a Pokémon you'd never have picked yourself. Use it as a draft pick, a drawing prompt, a Nuzlocke encounter table, or the first slot of a brand-new team.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Challenge starter",
+            d: "Roll once and lock the result as your next playthrough's starter — whatever it is. Then build the run around it.",
+          },
+          {
+            t: "Draft & duel",
+            d: "Take turns rolling with a friend — each of you keeps what you roll, six rolls each, then battle the two squads on Showdown.",
+          },
+          {
+            t: "Art & writing prompt",
+            d: "Use the roll as a creative brief: draw the Pokémon in your style, or write the trainer who would carry it.",
+          },
+          {
+            t: "Team seed",
+            d: "Like what you rolled? Tap Add to Team and roll again — six taps later you have a squad that chose itself.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Random works best with a rule attached. Only Kanto? Open the filters and lock the generation. No legendaries? Exclude the category first. A single type for a theme run? Lock it before the first tap — the filters are the rulebook, the roll is the dice.",
+          "Playing with others? Agree the rules out loud before anyone rolls: how many rerolls each player gets (one is a good default), whether alternate forms count, and what happens on a duplicate.",
+          "The fun is committing to what you get — a roll you can endlessly undo is just browsing with extra steps.",
+        ],
+        sampleTitle: "A sample roll",
+        sample:
+          "Say the dice hand you Aromatisse — a pure Fairy with 101 HP and 29 Speed that you'd never put on a serious team. Now the interesting question: Trick Room anchor? Aromatherapy support? Suddenly you're reading a moveset page for a Pokémon you walked past for a decade. That's the point of the roll.",
+        linksTitle: "Want a narrower pool?",
+        linksTextBefore: "Roll a single slice of the Pokédex instead — try the",
+        links: [
+          { label: "Gen 1 generator", href: "/gen/1" },
+          { label: "Dragon-type generator", href: "/type/dragon" },
+          { label: "Legendary generator", href: "/legendary" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— same dice, smaller pond.",
+      },
     },
 
     type: {
@@ -887,6 +929,47 @@ export default {
       linkTitleBrowseRegion: "Browse {region} region",
       linkTitleType: "Type generator",
       linkTitleRandom: "Random Pokémon Generator",
+      guide: {
+        introTitle: "Why roll {type}-type Pokémon?",
+        intro:
+          "The {type}-type pool holds everything from day-one classics to the newest releases — and this page hands you one at random, stats, ability and artwork included. One tap, one {type}, no scrolling the dex.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Mono-{type} run",
+            d: "Roll one and it anchors your mono-{type} challenge — the first slot is decided, five to go.",
+          },
+          {
+            t: "Type study",
+            d: "Roll through the pool and note the stat patterns — {type}-types share a design philosophy worth learning.",
+          },
+          {
+            t: "Draft constraint",
+            d: "Everyone drafts from the {type} pool only — same type, wildly different squads.",
+          },
+          {
+            t: "Art prompt",
+            d: "Draw today's {type} roll — daily sketches are easier when the dice choose the subject.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "A mono-{type} run lives and dies by its shared weaknesses — check what {type} resists and fears before you commit.",
+          "First roll stands is the cleanest rule; one announced re-roll per session is the forgiving one. Pick before you tap.",
+          "Dual-types count: if it carries {type}, it's in the pool — hybrids are how mono-runs survive.",
+        ],
+        sampleTitle: "A sample roll",
+        sample:
+          "One tap might hand you a {type} veteran you've trained a dozen times — or a {type} you've literally never used, and that's the interesting one. The pool decides which.",
+        linksTitle: "More dice, more themes?",
+        linksTextBefore: "Try the",
+        links: [
+          { label: "type generator", href: "/type" },
+          { label: "random team generator", href: "/team/random" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— then come back when the theme calls for {type} again.",
+      },
     },
 
     gen: {
@@ -920,6 +1003,47 @@ export default {
       linkTitleBrowseRegion: "Browse {region} region",
       linkTitleType: "Type generator",
       linkTitleRandom: "Random Pokémon Generator",
+      guide: {
+        introTitle: "Why roll {genLabel} Pokémon?",
+        intro:
+          "{genLabel} is its own era — its own dex, its own design language, its own nostalgia. This page rolls only within {genLabel}: every tap is a reunion with that generation, from its mascots to its most forgotten route fodder.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Nostalgia run",
+            d: "Roll one and it anchors a {genLabel}-only replay — the dice pick, you build the run around it.",
+          },
+          {
+            t: "Dex quiz",
+            d: "Roll and name the Pokémon's typing and evolution line from memory before you check the card.",
+          },
+          {
+            t: "Mono-gen draft",
+            d: "Each player drafts from {genLabel} only — one generation, six picks, endless arguments about its meta.",
+          },
+          {
+            t: "Era debate",
+            d: "Roll five and rate them — is {genLabel} secretly the best generation? The dice provide the evidence.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Commit to the era: in a {genLabel}-only run, every slot must come from this dex — that's where the challenge lives.",
+          "First roll stands; the charm of a single generation is taking its weirdos with its stars.",
+          "Forms from later generations don't count unless your house rules say so — decide before the run, not after the roll.",
+        ],
+        sampleTitle: "A sample roll",
+        sample:
+          "One tap and you're staring at a {genLabel} regular you'd completely forgotten — its cry, its route, the NPC who used it against you. Generations aren't just lists; they're memories with stats.",
+        linksTitle: "More ways back?",
+        linksTextBefore: "Browse the",
+        links: [
+          { label: "{region} region", href: "/by/{regionSlug}" },
+          { label: "type generator", href: "/type" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— or go fully random across all nine generations.",
+      },
     },
 
     region: {
@@ -958,6 +1082,47 @@ export default {
       introRandomLink: "fully random generator",
       introS3: " instead.",
       linkTitleRandom: "Random Pokémon Generator",
+      guide: {
+        introTitle: "Why roll {region} Pokémon?",
+        intro:
+          "{region} is more than a map — it's the dex of Pokémon {game}, with its own starters, legends and route regulars. This page rolls only within {region}: one tap, one local, straight from the games that made it.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Homecoming run",
+            d: "Roll one and it anchors a {region}-only replay — build the team the region's dex allows.",
+          },
+          {
+            t: "Local dex quiz",
+            d: "Roll and place the Pokémon on the map: which route, which gym, which version?",
+          },
+          {
+            t: "Regional draft",
+            d: "Each player drafts six from {region} only — one region, very different squads.",
+          },
+          {
+            t: "Version debate",
+            d: "Roll five and judge them — does {region} still hold up, or is it nostalgia talking?",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Regional runs work because the pool is closed: if it isn't in the {region} dex, it isn't on the team.",
+          "First roll stands — the region gives, the team adapts. One announced re-roll per session if your group is soft.",
+          "Decide early whether post-game and DLC additions count as {region} locals — house rules prevent route arguments.",
+        ],
+        sampleTitle: "A sample roll",
+        sample:
+          "One tap and there's a face from Pokémon {game} you haven't thought about in years — the route theme starts playing in your head immediately. Regions aren't pools; they're places.",
+        linksTitle: "Keep exploring?",
+        linksTextBefore: "Try the",
+        links: [
+          { label: "{genLabel} Pokédex", href: "/gen/{gen}" },
+          { label: "type generator", href: "/type" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— or go fully random across every region.",
+      },
     },
 
     variants: {
@@ -970,6 +1135,47 @@ export default {
           "pokemon type generator",
           "random pokemon single type generator",
         ],
+        guide: {
+          introTitle: "Why roll a random type?",
+          intro:
+            "Eighteen types, one tap. A random type is the fastest way to pick a theme: mono-type runs, draft constraints, quiz categories — the dice choose, you commit.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Mono-type decider",
+              d: "Roll once and that's the type of your next mono-run — no lobbying for a re-roll because you wanted Dragon.",
+            },
+            {
+              t: "Draft constraint",
+              d: "Every player rolls a type before drafting — your whole squad must carry it.",
+            },
+            {
+              t: "Theme challenge",
+              d: "Roll a type, then build a team that covers its weaknesses without sharing them.",
+            },
+            {
+              t: "Learn the chart",
+              d: "Quiz yourself on the rolled type's resistances before you check — the chart sticks faster when it's a game.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "The type roll only works as a commitment device: decide beforehand that the first result stands. A type you can reroll is just a suggestion.",
+            "Playing with others? Everyone rolls in the open, duplicates get one re-roll, and that's it — the constraint is the fun.",
+            "Pair the roll with the filters on other generators: lock the type there and the dice stay inside your theme all session.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "The wheel says Rock. Suddenly you're planning around a shared Water and Ground weakness, eyeing Sand Stream users, and remembering that Rock has four resistances of its own. One tap, and tonight's run has a personality.",
+          linksTitle: "Want to go deeper?",
+          linksTextBefore: "Browse a specific type like",
+          links: [
+            { label: "Dragon", href: "/type/dragon" },
+            { label: "Fire", href: "/type/fire" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— or take the result straight to the team generator.",
+        },
       },
       ability: {
         title: "Random Pokémon Ability Generator | PokeRoll",
@@ -980,12 +1186,94 @@ export default {
           "random pokemon ability generator",
           "generate random pokemon ability",
         ],
+        guide: {
+          introTitle: "Why roll a random ability?",
+          intro:
+            "Abilities decide how a Pokémon actually plays — and most of us only know the famous twenty. Roll one at random, meet a Pokémon that carries it, and discover what the long tail of the ability list can do.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Build-around prompt",
+              d: "Roll an ability and sketch a set that abuses it — the weirder the ability, the better the exercise.",
+            },
+            {
+              t: "Draft constraint",
+              d: "Each player rolls an ability and must draft a Pokémon that has it — instant scarcity, instant drama.",
+            },
+            {
+              t: "Learn the list",
+              d: "Read the rolled ability's effect before you peek — a quiet quiz that pays off in battles.",
+            },
+            {
+              t: "Team glue",
+              d: "Missing something in your squad? Roll abilities until one solves your problem, then note which Pokémon carry it.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "Decide whether hidden abilities count before you start — they're the rarest pulls and the loudest arguments.",
+            "One roll, one commitment is the healthy format: build around what you get rather than fishing for the good ones.",
+            "If an ability is generation-locked, treat it as a history lesson and roll the context, not just the effect.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "You roll Levitate and the card shows a Pokémon you've passed a hundred times — except now it's the Ground-immune pivot your team needed. That's the ability lottery: the answer was always there, you just never asked the question.",
+          linksTitle: "Keep building?",
+          linksTextBefore: "Pair it with the",
+          links: [
+            { label: "move generator", href: "/move" },
+            { label: "stats generator", href: "/bst" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— ability, moves and numbers are three sides of the same set.",
+        },
       },
       move: {
         title: "Random Pokémon Move Generator | PokeRoll",
         description:
           "Discover a random Pokémon move and a Pokémon that can learn it — check its power, accuracy and typing, then copy the set to Showdown. Fan-made tool.",
         keywords: ["random pokemon move generator", "pokemon move generator"],
+        guide: {
+          introTitle: "Why roll a random move?",
+          intro:
+            "Hundreds of moves, and battles are won by the weird ones. Roll a random move, see a Pokémon that learns it, and ask the only question that matters: could this actually work?",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Moveset roulette",
+              d: "Roll four moves and make a set out of them — Splash and all. The best players make anything look playable.",
+            },
+            {
+              t: "Draft constraint",
+              d: "Roll a move, then draft a team where someone has to run it — support moves get their moment for once.",
+            },
+            {
+              t: "Learn the library",
+              d: "Power, accuracy, effect — read the rolled move before you check. Move knowledge is free Elo.",
+            },
+            {
+              t: "Battle prompt",
+              d: "Roll a move and design the situation where it wins you the game — theorycrafting with a seed.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "For moveset roulette, no swaps: four rolls, one set, and status moves count. The constraint is the whole game.",
+            "Agree whether Z-moves, Max moves and signature moves are in the pool before anyone rolls — house rules prevent sulking.",
+            "A move is only as good as its user, so judge the pair, not the move alone.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "The dice hand you Belch — a 120-power Poison move that only works after eating a Berry. Useless? Then you notice who learns it, and suddenly there's a Berry-juice set living rent-free in your head all week.",
+          linksTitle: "Finish the set?",
+          linksTextBefore: "Round it out with the",
+          links: [
+            { label: "ability generator", href: "/ability" },
+            { label: "stats generator", href: "/bst" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— then take the whole thing to Showdown.",
+        },
       },
       bst: {
         title: "Random Pokémon Stats Generator (BST) | PokeRoll",
@@ -996,6 +1284,47 @@ export default {
           "random pokemon generator with stats",
           "pokemon random generator stats",
         ],
+        guide: {
+          introTitle: "Why roll a random BST?",
+          intro:
+            "Base Stat Total is the shorthand every player uses and nobody agrees on. Roll a number, meet the Pokémon behind it, and learn what a 480 or a 600 really looks like in the wild.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Guess the mon",
+              d: "See the number first and name every Pokémon you think sits at that BST — then check how wrong you were.",
+            },
+            {
+              t: "Draft by numbers",
+              d: "Each player rolls a BST and must draft a Pokémon at exactly that total — scarcity makes strange stars.",
+            },
+            {
+              t: "Tier challenge",
+              d: "Build a squad where every member lands under a rolled cap — 500 max turns team building into real design.",
+            },
+            {
+              t: "Stat quiz",
+              d: "Guess how the six stats are distributed before the reveal — min-maxers and walls read very differently.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "BST is a budget, not a ranking: a well-spent 480 beats a lazy 540, so judge the spread before the total.",
+            "For cap challenges, set the cap before rolling the team — rolling first and negotiating later is how caps become meaningless.",
+            "Megas, Primals and alternate forms have their own totals — decide which forms count before the draft starts.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "The number is 600. Pseudo-legendary? Actually it's a Mythical this time — and the spread is perfectly even across all six stats, which tells you exactly nothing about how it fights. Numbers open the conversation; they never close it.",
+          linksTitle: "More numbers games?",
+          linksTextBefore: "Try the",
+          links: [
+            { label: "Pokédex number generator", href: "/number" },
+            { label: "ability generator", href: "/ability" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— or hunt the big totals on the Legendary page.",
+        },
       },
       number: {
         title: "Random Pokémon Number Generator | PokeRoll",
@@ -1005,6 +1334,47 @@ export default {
           "pokemon number generator",
           "random pokemon number generator",
         ],
+        guide: {
+          introTitle: "Why roll a random Pokédex number?",
+          intro:
+            "One number between 1 and 1025, one Pokémon attached to it. The dex number roll is the purest lottery on the site — no filters, no themes, just the whole history of the franchise in a single draw.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Dex roulette",
+              d: "Roll a number and that's your next encounter, teammate or drawing subject — whatever the dex says.",
+            },
+            {
+              t: "Guess before reveal",
+              d: "Call the Pokémon from the number alone before you look — dex-order memory is a real skill.",
+            },
+            {
+              t: "Nuzlocke picker",
+              d: "Use the rolled number modulo the local dex to pick encounters fairly — the dice can't be bribed.",
+            },
+            {
+              t: "Party game",
+              d: "Highest number wins the round — simplest game on the site, loudest arguments.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "Decide what the number means before you roll: national dex, or mapped onto a game's regional dex? Different games, different fates.",
+            "One roll per decision is the honest format — re-rolling until you hit a favourite is just picking with extra steps.",
+            "Forms share dex numbers, so agree how you handle them before the roll, not after.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "#387. Someone at the table yells Turtwig before the card even loads — and for once they're right. One Sinnoh run, freshly destined. The dex giveth.",
+          linksTitle: "More number games?",
+          linksTextBefore: "Try the",
+          links: [
+            { label: "BST generator", href: "/bst" },
+            { label: "nickname generator", href: "/nickname" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— numbers, names and stats all tell different stories.",
+        },
       },
       starter: {
         title: "Random Starter Pokémon Generator | PokeRoll",
@@ -1015,6 +1385,47 @@ export default {
           "pokemon starter generator",
           "random starter pokemon picker",
         ],
+        guide: {
+          introTitle: "Why roll a random starter?",
+          intro:
+            "The first partner sets the tone of an entire playthrough — and choosing one yourself takes forty minutes of forum threads. Let the dice pick from every generation's starters, from Kanto to Paldea, and start the run already.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Starter decider",
+              d: "Roll once and that's your partner for the next run — the decision is made, the adventure can start.",
+            },
+            {
+              t: "Nuzlocke opener",
+              d: "Let the roll choose the starter, then the route luck chooses everything else — full commitment, zero bias.",
+            },
+            {
+              t: "Debate settler",
+              d: "Fire, Water or Grass this time? The dice have no nostalgia and no favourites — perfect referee.",
+            },
+            {
+              t: "Team theme",
+              d: "Roll a starter and build a team that supports its final evolution — instant structure for a casual squad.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "The starter pact is sacred: first roll stands. Vetoing the result because you wanted the frog defeats the entire point.",
+            "Decide the pool first — all nine generations, or only the games you own? A smaller pool is still a fair roll.",
+            "For group runs, everyone rolls in the open and trades are allowed exactly once — that's the whole meta-game.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "The dice say Chimchar, and your Sinnoh run suddenly has a personality: fast, loud, and slightly on fire. You'd never have picked it over Piplup — which is exactly why this playthrough will be memorable.",
+          linksTitle: "Keep the run going?",
+          linksTextBefore: "Roll the rest of the squad on the",
+          links: [
+            { label: "random team generator", href: "/team/random" },
+            { label: "type generator", href: "/type" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— the starter has chosen, now the team needs six.",
+        },
       },
       "no-names": {
         title: "Random Pokémon Generator Without Names — Guessing Game",
@@ -1026,12 +1437,94 @@ export default {
           "pokemon mystery quiz",
           "random pokemon generator without names",
         ],
+        guide: {
+          introTitle: "Why guess a mystery Pokémon?",
+          intro:
+            "One card, full stats, official artwork — and no name. The no-names generator is a pocket-sized quiz: everything you need to identify the Pokémon is on the card except the answer.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Solo quiz",
+              d: "Guess from the artwork and stats, then flip to check — track your streak across ten cards.",
+            },
+            {
+              t: "Party shout-out",
+              d: "Show the card on a call, first correct shout wins the point — speed matters more than accuracy.",
+            },
+            {
+              t: "Stream warm-up",
+              d: "Run five mystery cards before the real content — chat gets loud immediately, guaranteed.",
+            },
+            {
+              t: "Silhouette training",
+              d: "Use it as warm-up for the seeded guess challenge, where the quiz gets harder and the scores get shared.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "No hovering the flip button: one committed guess per card, out loud if others are playing. Confidence is the game.",
+            "Stats are fair game — a 600 BST narrows the field fast, and knowing that is skill, not cheating.",
+            "Losing track of your score? Ten cards, one point each, no negatives — the cleanest format.",
+          ],
+          sampleTitle: "A sample card",
+          sample:
+            "Yellow cheeks, Electric typing, tiny stats — you commit with your whole chest: Pikachu. The flip says Pachirisu, and now the whole room is debating regional rodents. Ten more cards, please.",
+          linksTitle: "Want a harder quiz?",
+          linksTextBefore: "Graduate to the",
+          links: [
+            { label: "silhouette challenge", href: "/challenge/guess" },
+            { label: "nickname generator", href: "/nickname" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— same knowledge, higher stakes.",
+        },
       },
       cute: {
         title: "Random Cute Pokémon Generator | PokeRoll",
         description:
           "Get a random cute Pokémon — soft, fluffy and adorable picks from across the whole Pokédex. Roll again for another cutie, or copy it to Showdown.",
         keywords: ["cute pokemon generator", "random cute pokemon generator"],
+        guide: {
+          introTitle: "Why roll a cute Pokémon?",
+          intro:
+            "Not every roll needs to be competitive. The cute generator pulls from the soft, fluffy and round corners of the Pokédex — the Pokémon you'd actually want as a pet, one tap at a time.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Comfort roll",
+              d: "One tap, one adorable Pokémon — the cheapest mood improvement on the internet.",
+            },
+            {
+              t: "Art prompt",
+              d: "Draw the rolled cutie in your style — small Pokémon make the best daily sketch practice.",
+            },
+            {
+              t: "Cute-only run",
+              d: "Build a playthrough team where every member must pass the cute test — surprisingly viable, mostly Normal types.",
+            },
+            {
+              t: "Settle the debate",
+              d: "Each player rolls once, group votes on the cutest — the dice referee the oldest argument in the fandom.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "Cute is subjective, but the roll is final — no re-rolling because you think you're a Jigglypuff household.",
+            "For cute-only runs, define the standard before you start: first stage only? Under a metre tall? Fluffy? The rulebook matters.",
+            "Evolving your cute pick is allowed — loving what it becomes is the advanced challenge.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "The dice hand you a spherical bird that squeaks, and your productivity for the next ten minutes is gone. You're looking at plushies now. There was never another way this could go.",
+          linksTitle: "More good vibes?",
+          linksTextBefore: "Try the",
+          links: [
+            { label: "mythical generator", href: "/mythical" },
+            { label: "nickname generator", href: "/nickname" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— rare and adorable is the best combination.",
+        },
       },
       mythical: {
         title: "Random Mythical Pokémon Generator | PokeRoll",
@@ -1041,12 +1534,94 @@ export default {
           "random mythical pokemon generator",
           "mythical pokemon generator",
         ],
+        guide: {
+          introTitle: "Why roll a Mythical Pokémon?",
+          intro:
+            "Mythicals are the event-only rarities — Mew, Celebi, Jirachi and their heirs, the Pokémon entire generations of players never owned. Roll one and borrow a little of that rarity for yourself.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Dream team draft",
+              d: "Roll six Mythicals and build the fantasy squad you could never legitimately assemble.",
+            },
+            {
+              t: "What-if battle",
+              d: "Roll one, copy it to Showdown, and test whether the elusive ones are actually good — some are, some are Jirachi.",
+            },
+            {
+              t: "Collection checklist",
+              d: "Track which Mythicals the dice have shown you — a slow, free way to meet the full set.",
+            },
+            {
+              t: "Lucky pull ritual",
+              d: "One roll before ranked sessions — a Mythical pull is a good omen, and superstition is free.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "Mythical and Legendary are different clubs — the Mythical pool is event distributions only, and that's what makes it special.",
+            "For dream drafts, duplicates demand a re-roll; everything else stands as rolled.",
+            "Remember that most Mythicals share the same 600-even spread — their tricks are in their moves and abilities, not their stats.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "The dice hand you Jirachi, wish granter, veteran of exactly one weekend event in 2003. You never caught it. You probably never will. But today, on this page, the wish came through.",
+          linksTitle: "More rare dice?",
+          linksTextBefore: "Try the",
+          links: [
+            { label: "Legendary generator", href: "/legendary" },
+            { label: "Mega generator", href: "/mega" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— rarity comes in several flavours.",
+        },
       },
       mega: {
         title: "Random Mega Pokémon Generator | PokeRoll",
         description:
           "Spin a random Mega Evolution or Primal Reversion Pokémon — see its boosted stats and ability, then copy the set to Showdown. Free fan-made tool.",
         keywords: ["random mega pokemon generator", "mega pokemon generator"],
+        guide: {
+          introTitle: "Why roll a Mega Evolution?",
+          intro:
+            "Mega Evolutions and Primal Reversions are the franchise's loudest what-ifs — temporary transformations with boosted stats, new abilities, and designs that went all-in. Roll one and revisit the era when anything could evolve further.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "What-if meta",
+              d: "Roll a Mega and judge it honestly: would this thing earn a slot on a modern team?",
+            },
+            {
+              t: "Draft decider",
+              d: "Each player rolls a Mega — the roll decides which ace your squad is built around.",
+            },
+            {
+              t: "Design study",
+              d: "Compare the Mega with its base form and spot what the designers amplified — a free design lesson.",
+            },
+            {
+              t: "Battle prompt",
+              d: "Copy the set to Showdown and play the what-if for real — nostalgia hits harder at 150 base Attack.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "One Mega per team is the classic rule for a reason — your roll is your ace, so build around it, not beside it.",
+            "Primals count as Megas for pool purposes — decide with your group before the first roll.",
+            "Judge the whole package: +100 stats means nothing if the ability betrays the base form's strengths.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "The dice hand you Mega Beedrill — a Bug/Poison glass cannon with Adaptability and a dream. You forgot it existed. Now you're pricing Fell Stinger into your next team, which is exactly what this generator is for.",
+          linksTitle: "More transformations?",
+          linksTextBefore: "Try the",
+          links: [
+            { label: "Legendary generator", href: "/legendary" },
+            { label: "fusion tool", href: "/fusion" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— official or improvised, hybrids are fun.",
+        },
       },
       nickname: {
         title: "Random Pokémon Name & Nickname Generator | PokeRoll",
@@ -1057,6 +1632,47 @@ export default {
           "random pokemon nickname generator",
           "generate random pokemon name",
         ],
+        guide: {
+          introTitle: "Why roll a nickname?",
+          intro:
+            "A nickname turns a species into a character. The nickname generator pairs a random Pokémon with a name worth typing in — for Nuzlockes, playthroughs, and every save file where the squad deserves better than 'GARCHOMP'.",
+          waysTitle: "Ways to play",
+          ways: [
+            {
+              t: "Nuzlocke naming",
+              d: "The rules say you must nickname everything — let the roll handle it, and the attachment comes free.",
+            },
+            {
+              t: "Playthrough flavour",
+              d: "Rename your whole squad with rolled names — a themed save file reads like a story.",
+            },
+            {
+              t: "Party game",
+              d: "Roll a Pokémon, everyone pitches a nickname, funniest wins — the rolled name is the one to beat.",
+            },
+            {
+              t: "Writing prompt",
+              d: "A Pokémon plus a name is a character sketch — write the trainer who'd use it.",
+            },
+          ],
+          rulesTitle: "Set your rules before you roll",
+          rules: [
+            "The Nuzlocke pact: the first rolled name is final. The bond is the point, and bonds aren't curated.",
+            "Theme naming raises the stakes — food names, musician names, constellation names; pick a lane before the run starts.",
+            "Honour the fallen: when a named Pokémon faints, the name retires with it. That's the whole heart of the format.",
+          ],
+          sampleTitle: "A sample roll",
+          sample:
+            "Route 2, first catch, a common bird — and the dice name it Captain Crumb. He will outlive three team wipes, retire a legend, and be remembered longer than most Champions. That's the power of a good name.",
+          linksTitle: "Name the whole crew?",
+          linksTextBefore: "Roll the squad first on the",
+          links: [
+            { label: "random team generator", href: "/team/random" },
+            { label: "number generator", href: "/number" },
+          ],
+          linksJoinOr: "or",
+          linksTextAfter: "— then come back and give them all names.",
+        },
       },
       noNamesPromo: {
         s1: "Want a seeded multi-card quiz to share? ",
@@ -1079,6 +1695,47 @@ export default {
       headerDesc:
         "Only Legendary Pokémon in this pool — tap Generate Again for another legendary roll.",
       note: "Tap Generate Again to roll another Legendary — Add to Team keeps it in your squad.",
+      guide: {
+        introTitle: "Why roll a Legendary?",
+        intro:
+          "This pool is legends only — the box-art gods, the roamers, the trios. Every roll lands on a Pokémon that once required an event, a cave, or a 40-minute cutscene to meet.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Dream team",
+            d: "Roll six Legendaries and assemble the squad that every ten-year-old swore was unbeatable.",
+          },
+          {
+            t: "Boss rush draft",
+            d: "Each player rolls three — highest combined BST wins, and bragging rights last all week.",
+          },
+          {
+            t: "What-if battle",
+            d: "Copy a rolled Legend to Showdown and test the myth — some gods have very mortal movesets.",
+          },
+          {
+            t: "Collection roll",
+            d: "One roll a day until the dice have shown you every Legendary — the slowest, cheapest completion run.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "First roll stands — a Legendary you can reroll is just a strong Pokémon, and the mystique is the whole point.",
+          "Legendary and Mythical are different pools: this page keeps the club exclusive, Mythicals live next door.",
+          "For drafts, one re-roll per player, announced before the dice land — house rules keep gods honest.",
+        ],
+        sampleTitle: "A sample roll",
+        sample:
+          "One tap: Rayquaza, sky god, the run writes itself. Next tap: Regigigas, whose Slow Start means the god spends five turns as a spectator. Legends contain multitudes.",
+        linksTitle: "More rare dice?",
+        linksTextBefore: "Try the",
+        links: [
+          { label: "Mythical generator", href: "/mythical" },
+          { label: "shiny hunt", href: "/challenge/shiny" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— rarity squared.",
+      },
     },
     adventure: {
       metaTitle: "Pokémon Adventure Generator",
@@ -1130,6 +1787,48 @@ export default {
           a: "Yes — copy the page link. It carries the seed and difficulty, so friends open the identical adventure manifest.",
         },
       ],
+      guide: {
+        introTitle: "Why roll an adventure?",
+        intro:
+          "Adventure mode rolls an entire playthrough in one tap: a trainer, a starter, a team, a challenge and a goal, all tied to a single seed. It's a campaign generator — the dice write the premise, you play the story.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Instant challenge run",
+            d: "Roll an adventure and take its rules as binding — the team it hands you is the team the run allows.",
+          },
+          {
+            t: "Challenge calendar",
+            d: "Roll a new adventure each week and stream or log the attempts — same seed format, comparable stories.",
+          },
+          {
+            t: "Co-op premise",
+            d: "Share the seed with a friend: identical adventure, separate playthroughs, race to the goal.",
+          },
+          {
+            t: "Story seed",
+            d: "Use the rolled trainer and goal as fan-fiction or tabletop prompts — the dice are surprisingly good at plot hooks.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Pick the difficulty before you roll, not after you see the result — choosing Extreme once you know the team is just negotiating with yourself.",
+          "An adventure works because it's binding: one re-roll per run, maximum, and only before you've caught anything.",
+          "Share the seed, not screenshots — the link replays the exact adventure, which makes races and comparisons fair.",
+        ],
+        sampleTitle: "A sample adventure",
+        sample:
+          "A single seed might decree: a Lass from Hoenn, a Chimchar starter, a no-items challenge, and a goal of beating the league under-levelled. You'd never have set that run up yourself — and that's exactly why you'll remember it.",
+        linksTitle: "Want to stock the adventure?",
+        linksTextBefore: "Arm the run with dice from the",
+        links: [
+          { label: "random team generator", href: "/team/random" },
+          { label: "guess challenge", href: "/challenge/guess" },
+          { label: "shiny hunt", href: "/challenge/shiny" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— every good campaign needs side quests.",
+      },
     },
 
     guess: {
@@ -1164,6 +1863,48 @@ export default {
           d: "The seed in the link recreates the same lineup — share it and race a friend.",
         },
       ],
+      guide: {
+        introTitle: "Why test your Pokédex memory?",
+        intro:
+          "The guess challenge is the purest test of Pokédex knowledge: a fixed lineup, hints that shrink with the difficulty, and your score at the end. Same seed for everyone — so scores are genuinely comparable.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Daily duel",
+            d: "Share the seed with a friend and compare scores — same lineup, no excuses.",
+          },
+          {
+            t: "Difficulty ladder",
+            d: "Start on Easy with generous hints, then climb towards Extreme, where the sprites are zoomed and the hints are gone.",
+          },
+          {
+            t: "Filter gauntlet",
+            d: "Lock a single generation or type and prove you actually know that slice of the dex — not just the famous bits.",
+          },
+          {
+            t: "Party quiz",
+            d: "Read the cards aloud on a call and race to shout the answer — speed counts.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Pick count and difficulty before the first reveal — twelve on Easy and six on Extreme are completely different exams.",
+          "No mid-run filter changes: a mono-Water round and an all-dex round measure different knowledge.",
+          "One attempt per seed is the honest format — the seed keeps the lineup fixed, so a second try is just memorization.",
+        ],
+        sampleTitle: "A sample round",
+        sample:
+          "A Hard round zooms into a spiral of blue-grey shell. Cloyster? Omastar? You commit to Kabutops with full confidence, and the reveal says... Shellder. Somewhere a rival is laughing — and your rematch seed is one tap away.",
+        linksTitle: "Want more exams?",
+        linksTextBefore: "Try the",
+        links: [
+          { label: "mystery card mode", href: "/no-names" },
+          { label: "shiny hunt", href: "/challenge/shiny" },
+          { label: "adventure mode", href: "/adventure" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— different dice, same bragging rights.",
+      },
     },
 
     shiny: {
@@ -1210,6 +1951,48 @@ export default {
           a: "The found card unlocks Share and Download. The shared link opens straight on your found shiny, and the downloaded card image carries a QR code friends can scan to start their own hunt.",
         },
       ],
+      guide: {
+        introTitle: "Why hunt a shiny?",
+        intro:
+          "The shiny hunt simulates the oldest gamble in Pokémon: encounter after encounter, waiting for the sparkle. Pick a difficulty, click through the wild pool, and see how deep the hunt goes — the pity rules keep it honest but never easy.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Luck test",
+            d: "Start a hunt and see how many encounters your shiny takes — under odds and you're hot, over odds and the pool owes you one.",
+          },
+          {
+            t: "Race a friend",
+            d: "Share the hunt seed and race to the reveal — fewest encounters wins, and the link proves it.",
+          },
+          {
+            t: "Patience training",
+            d: "Use Extreme difficulty as meditation: hundreds of clicks, one sparkle, no shortcuts.",
+          },
+          {
+            t: "Stream segment",
+            d: "A live shiny race is ready-made content — chat picks the difficulty, you provide the despair.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Difficulty is the whole game here: Easy guarantees a pity draw so a first hunt always finishes; higher tiers make you earn it.",
+          "Decide what counts before you start — does the first shiny end the hunt, or are you holding out for a specific species?",
+          "Share the reveal link, not a screenshot: it opens straight on the found card, so nobody can fake a first-encounter shiny.",
+        ],
+        sampleTitle: "A sample hunt",
+        sample:
+          "Encounter 1: Pidgey. Encounter 47: Pidgey. Encounter 213: Pidgey. You start questioning the odds, the seed, your life choices — and then encounter 214 sparkles gold. Every real hunter knows exactly what that feels like.",
+        linksTitle: "Want to keep the streak going?",
+        linksTextBefore: "Try the",
+        links: [
+          { label: "guess challenge", href: "/challenge/guess" },
+          { label: "adventure mode", href: "/adventure" },
+          { label: "random Pokémon generator", href: "/random-pokemon-generator" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— the dice never sleep.",
+      },
     },
 
     favorites: {
@@ -1429,6 +2212,48 @@ export default {
           a: "Tap Copy Sets below the team (the button with the Showdown badge) to copy the squad in Showdown's text format. Then open play.pokemonshowdown.com/teambuilder, choose Import/Export and paste the text — every set loads with its moves, ability, item, nature and EVs, ready to battle or fine-tune.",
         },
       ],
+      guide: {
+        introTitle: "Why keep a saved team?",
+        intro:
+          "Your Team is where random results stop being disposable. Every card you tap Add to Team on lands here — from any generator on the site — so a squad slowly assembles itself out of rolls you actually liked.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Best-of collection",
+            d: "Keep rolling on the team generator and add only the pulls worth keeping — this page becomes your hall of fame.",
+          },
+          {
+            t: "Draft curation",
+            d: "Roll more than six, keep the best six here and cut the rest — your own personal draft day.",
+          },
+          {
+            t: "Showdown staging",
+            d: "Once the six feel right, export the whole squad with Copy Sets and paste it straight into the Showdown teambuilder.",
+          },
+          {
+            t: "Share the squad",
+            d: "The share link carries your exact lineup — send it to a friend and they see the same six, artwork and all.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "A saved team deserves a theme. It doesn't have to be competitive — 'only Pokémon I'd actually use on a playthrough' is a theme. So is 'one per generation', or 'nothing over 500 BST'.",
+          "Treat removals as final. If you catch yourself swapping the same slot five times, that slot wants a different role, not a different Pokémon.",
+          "Six is the classic cap for a reason: small enough that every member has to justify its place.",
+        ],
+        sampleTitle: "A sample squad",
+        sample:
+          "A typical saved squad might start as 'the six that carried my Emerald run' — Swampert, Gardevoir, Aggron, Manectric, Altaria, and an HM mule that earned its retirement. The page doesn't judge; it just remembers.",
+        linksTitle: "Want fresh blood?",
+        linksTextBefore: "Roll new candidates on the",
+        links: [
+          { label: "random team generator", href: "/team/random" },
+          { label: "Team Coach", href: "/team/coach" },
+          { label: "Team Challenge", href: "/team/challenge" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— then add the keepers back here.",
+      },
     },
 
     teamRandom: {
@@ -1462,6 +2287,49 @@ export default {
           a: "Tap Copy Sets below the team (the button with the Showdown badge) to copy the squad in Showdown's text format. Then open play.pokemonshowdown.com/teambuilder, choose Import/Export and paste the text — every set loads with its moves, ability, item, nature and EVs, ready to battle or fine-tune.",
         },
       ],
+      guide: {
+        introTitle: "Why roll a random team?",
+        intro:
+          "A random team takes the decision paralysis out of team building. Instead of scrolling the Pokédex for an hour, you get six slots handed to you — and that's when the interesting part starts: making them work together. Use the result as a challenge run, a friendly draft, a practice squad, or pure inspiration for your next playthrough.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Challenge run",
+            d: "Commit to the six you roll on your next playthrough — no rerolls. Build around what you get, awkward type overlap included.",
+          },
+          {
+            t: "Draft with friends",
+            d: "Share the page link — the URL carries the exact squad, so everyone starts from the same six. Roll your own answer to it, then battle and compare.",
+          },
+          {
+            t: "Showdown practice",
+            d: "Copy Sets gives you full sets with moves, items and EVs. Paste them into the Showdown teambuilder and ladder with a team you didn't overthink.",
+          },
+          {
+            t: "Theme build",
+            d: "Lock a type, generation or category in the filters and roll inside a constraint of your own — a mono-Water squad, a Gen 3 reunion, an all-Starters run.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "A random team feels better when the rules come first. Legendaries allowed? If not, open the filters and exclude the category before you touch the Roll button. Mono-type run? Lock the type. Only the games you grew up with? Lock the generation. The filters are your rulebook — set them once, then live with what the dice say.",
+          "For casual play, accept an awkward overlap as part of the challenge — three Pokémon sharing a weakness is a puzzle, not a bug. For a draft, agree the bans with your group before anyone rolls. For a story run, allow yourself one veto when a species simply can't be caught in your game.",
+          "The point is a team you would actually play — not rerolling until it looks perfect.",
+        ],
+        sampleTitle: "A sample roll",
+        sample:
+          "One tap might hand you Gengar, Donphan, Togekiss, Ferrothorn, Volcarona and Pelipper — a perfectly usable squad, except three of them fold to Rock. That shared weakness is the challenge: do you patch it with items and moves, or lean in and out-speed everything? The roll gives you a constraint; what you build around it is the game.",
+        linksTitle: "Want a narrower pool?",
+        linksTextBefore: "Roll inside a single slice of the Pokédex instead — try the",
+        links: [
+          { label: "Gen 1 generator", href: "/gen/1" },
+          { label: "Dragon-type generator", href: "/type/dragon" },
+          { label: "Legendary generator", href: "/legendary" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter:
+          "— then come back and roll a full team inside your favourite constraint.",
+      },
     },
 
     teamCoach: {
@@ -1484,6 +2352,48 @@ export default {
           a: "Tap Copy Sets below the team (the button with the Showdown badge) to copy the squad in Showdown's text format. Then open play.pokemonshowdown.com/teambuilder, choose Import/Export and paste the text — every set loads with its moves, ability, item, nature and EVs, ready to battle or fine-tune.",
         },
       ],
+      guide: {
+        introTitle: "Why use a team coach?",
+        intro:
+          "Team Coach is for the moment you have four Pokémon you love and no idea what belongs in the last two slots. Lock your picks, and it fills the rest with type coverage and balanced roles — not just more of what you already have.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Finish a draft",
+            d: "Locked in your favourites? Let the coach complete the six with the coverage you're missing — then re-roll just the slots you don't like.",
+          },
+          {
+            t: "Fix a weakness",
+            d: "If your squad folds to one type, lock the keepers and generate — the coach weighs defensive coverage when it picks.",
+          },
+          {
+            t: "Learn team building",
+            d: "Watch why it picks what it picks: every suggestion comes with a reason, which is quietly a teambuilding lesson.",
+          },
+          {
+            t: "Import & polish",
+            d: "Pull in your saved team or favourites, drop the weak links, and let the coach audition replacements.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Lock honestly. The coach can only balance around what you give it — lock the Pokémon you're actually committed to, not the whole wishlist.",
+          "Read the reason before you re-roll. 'New coverage' and 'tanky pivot' are telling you what your squad was missing; if the same reason keeps appearing, that's your team's real problem.",
+          "One re-roll per slot is a good house rule — endless re-rolls turn the coach into a slow random generator.",
+        ],
+        sampleTitle: "A sample fix",
+        sample:
+          "Lock Garchomp, Rotom-Wash and Corviknight and the coach might answer with a Fire type for the Steel matchup, a Ground immune for the shared weakness, and a wildcard 'for new coverage' — the exact conversation a good teammate would have with you.",
+        linksTitle: "Want a different starting point?",
+        linksTextBefore: "Roll a fresh squad on the",
+        links: [
+          { label: "random team generator", href: "/team/random" },
+          { label: "your saved team", href: "/team" },
+          { label: "Team Challenge", href: "/team/challenge" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— then bring the result back here to finish it.",
+      },
     },
 
     teamChallenge: {
@@ -1506,6 +2416,48 @@ export default {
           a: "Tap Copy Sets below the team (the button with the Showdown badge) to copy the squad in Showdown's text format. Then open play.pokemonshowdown.com/teambuilder, choose Import/Export and paste the text — every set loads with its moves, ability, item, nature and EVs, ready to battle or fine-tune.",
         },
       ],
+      guide: {
+        introTitle: "Why challenge a friend?",
+        intro:
+          "Team Challenge turns a random roll into a scoreboard. The page generates a seeded squad, you share the link, and everyone who opens it faces the exact same team — total BST crowns the winner.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Friend duel",
+            d: "Share the challenge link in your group chat — everyone rolls their own answer to the same squad, highest BST takes the round.",
+          },
+          {
+            t: "Stream segment",
+            d: "Roll a challenge team live and let chat try to beat it — the link keeps everyone honest because the squad can't change.",
+          },
+          {
+            t: "Solo benchmark",
+            d: "Beat your own rolls: keep the challenge team fixed and re-roll your side until you top its BST with a squad you'd actually use.",
+          },
+          {
+            t: "Draft night decider",
+            d: "Use a challenge round to settle who picks first — no arguments, the numbers are on the page.",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Decide the format before sharing: one roll each, or best of three? The seed means the challenge itself is fixed — the only variable is what you roll against it.",
+          "BST decides the winner here, but house rules can override: mono-type answers only, no legendaries in your response, or 'lowest BST wins' for a chaos round.",
+          "Export both sides to Showdown afterwards if you want the real answer — BST is a scoreboard, not a battle result.",
+        ],
+        sampleTitle: "A sample challenge",
+        sample:
+          "The challenge rolls Blissey, Shedinja, Magikarp, Regidrago, Applin and Salamence — a monster total carried by three real Pokémon and three jokes. Beat it with six mid-tiers and you've earned the bragging rights; lose to it and you'll hear about Magikarp all week.",
+        linksTitle: "Want more ways to compete?",
+        linksTextBefore: "Spin the",
+        links: [
+          { label: "wheel", href: "/wheel" },
+          { label: "guess challenge", href: "/challenge/guess" },
+          { label: "random team generator", href: "/team/random" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— same dice, different scoreboard.",
+      },
     },
 
     wheel: {
@@ -1540,6 +2492,48 @@ export default {
           d: "Highest BST wins the round — share the result to challenge friends.",
         },
       ],
+      guide: {
+        introTitle: "Why spin a wheel?",
+        intro:
+          "The wheel is the most honest random picker there is: everyone watches the same spin land on the same slice. Take turns, stack the results, and the highest BST takes the round — no setup, no arguing with the dice.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Party PK",
+            d: "Two to six players, one spin each — highest BST wins the round. Loser picks the next stake.",
+          },
+          {
+            t: "Draft starter",
+            d: "Spin six times and write each result down — that's your squad for a challenge run, repeats and all.",
+          },
+          {
+            t: "Decision maker",
+            d: "Can't pick a type for your mono-run or a game for the evening? Put the options on the wheel and let it land.",
+          },
+          {
+            t: "Stream content",
+            d: "A spinning wheel reads great on camera — spin for your next encounter, your next teammate, or your next punishment.",
+          },
+        ],
+        rulesTitle: "Set your rules before you spin",
+        rules: [
+          "Agree the count before the first spin: one spin each, or spin-until-you-like-it? Wheels are more fun when nobody can lobby for a re-spin.",
+          "For PK rounds, ties are part of the charm — decide beforehand whether tied players spin off or share the crown.",
+          "Share the round link when it's over: the URL carries the results, so the winner's bragging rights are verifiable.",
+        ],
+        sampleTitle: "A sample round",
+        sample:
+          "Six spins in, the board reads: a 670-BST pseudo-legendary, two route-one birds, a Magikarp — and your friend's smug face when their last spin lands on Arceus. The wheel giveth, and the round link proves it.",
+        linksTitle: "Want structure around the spins?",
+        linksTextBefore: "Roll a full squad on the",
+        links: [
+          { label: "random team generator", href: "/team/random" },
+          { label: "random Pokémon generator", href: "/random-pokemon-generator" },
+          { label: "Legendary generator", href: "/legendary" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— then come back to spin for the decider.",
+      },
     },
 
     fusion: {
@@ -1570,6 +2564,48 @@ export default {
           a: "No — PokeRoll is a fan-made project. Pokémon data comes from PokéAPI; fusion results are generated for fun and are not official designs.",
         },
       ],
+      guide: {
+        introTitle: "Why fuse Pokémon?",
+        intro:
+          "The fusion generator answers the question every Pokédex eventually asks: what would these two look like as one? Each roll picks two random species and blends name, typing and stats into a hybrid that doesn't exist anywhere else.",
+        waysTitle: "Ways to play",
+        ways: [
+          {
+            t: "Art prompt",
+            d: "Roll a fusion and draw it — the blended name and typing are a ready-made design brief.",
+          },
+          {
+            t: "Guess the parents",
+            d: "Show the fusion card, hide the result, and let friends guess which two Pokémon made it.",
+          },
+          {
+            t: "Custom dex",
+            d: "Keep a running list of your favourite fusions — after twenty rolls you have the start of your own region's Pokédex.",
+          },
+          {
+            t: "Battle what-ifs",
+            d: "Copy the fusion's set to Showdown and theorycraft: would this hybrid actually earn a team slot?",
+          },
+        ],
+        rulesTitle: "Set your rules before you roll",
+        rules: [
+          "Judge a fusion on its own terms: the best ones are the ones you'd genuinely draw or use, not the ones with the highest stats.",
+          "For guess-the-parents, one hint per guesser keeps the game moving — typing is the classic freebie.",
+          "Re-roll freely until a pair sparks something; fusions are cheap, inspiration isn't.",
+        ],
+        sampleTitle: "A sample fusion",
+        sample:
+          "One roll might fuse Gengar with Snorlax into a Ghost/Normal wall with a name you'll laugh at for a week — and then you catch yourself genuinely wondering about its EV spread. That's when a fusion stops being a joke and starts being a design.",
+        linksTitle: "Want better raw material?",
+        linksTextBefore: "Pull new parents from the",
+        links: [
+          { label: "random Pokémon generator", href: "/random-pokemon-generator" },
+          { label: "wheel", href: "/wheel" },
+          { label: "random team generator", href: "/team/random" },
+        ],
+        linksJoinOr: "or",
+        linksTextAfter: "— then fuse the keepers.",
+      },
     },
   },
 };

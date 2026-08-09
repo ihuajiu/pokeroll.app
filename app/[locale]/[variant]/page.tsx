@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import VariantGenerator from "@/components/VariantGenerator";
+import PlayGuide from "@/components/PlayGuide";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -93,6 +94,7 @@ export default async function VariantPage({
           kind="starter"
           initial={{ kind: "starter", pokemon }}
         />
+        <PlayGuide guide={m.guide} />
         <RelatedTools current={`/${variant}`} locale={locale} />
       </main>
     );
@@ -120,6 +122,7 @@ export default async function VariantPage({
           initial={{ kind: "no-names", pokemon }}
           mode="no-names"
         />
+        <PlayGuide guide={m.guide} />
         <RelatedTools current={`/${variant}`} locale={locale} />
       </main>
     );
@@ -131,6 +134,7 @@ export default async function VariantPage({
       <Breadcrumbs items={crumbs} />
       <PageHeader title={headerTitle} description={m.description} />
       <VariantGenerator kind={variant} initial={initial} />
+      <PlayGuide guide={m.guide} />
       <RelatedTools current={`/${variant}`} locale={locale} />
     </main>
   );
