@@ -2510,9 +2510,6 @@ body {
 
 /* Header responsive visibility — unlayered .game-btn display beats Tailwind's
    hidden/md:hidden utilities, so these explicit media rules take over. */
-@media (max-width: 639px) {
-  .hdr-cta { display: none; }
-}
 @media (min-width: 768px) {
   .hdr-burger { display: none; }
 }

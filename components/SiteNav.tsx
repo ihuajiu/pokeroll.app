@@ -9,6 +9,7 @@ import LocalizedLink from "@/components/LocalizedLink";
 import { GroupIcon } from "./ToolIcons";
 import LogoMark from "./LogoMark";
 import ThemeToggle from "@/components/ThemeToggle";
+import NavLanguageMenu from "@/components/NavLanguageMenu";
 import TeamTray from "@/components/TeamTray";
 import { useFavorites } from "@/components/useFavorites";
 
@@ -195,14 +196,7 @@ export default function SiteNav({ currentPath = "" }: { currentPath?: string }) 
           </LocalizedLink>
           <TeamTray />
           <ThemeToggle />
-
-          <LocalizedLink
-            href="/adventure"
-            title={dict.common.rollAdventure}
-            className="hdr-cta hidden game-btn game-btn-primary px-4 py-2 text-sm sm:inline-flex"
-          >
-            {dict.common.rollAdventure}
-          </LocalizedLink>
+          <NavLanguageMenu />
 
           <button
             type="button"

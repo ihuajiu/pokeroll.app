@@ -33,6 +33,7 @@ export default {
   nav: {
     homeTitle: "PokeRoll-Startseite",
     menuAria: "Menü",
+    languageAria: "Sprache",
     /** Template: {count} = number of favorites. */
     favoritesAria: "Favoriten ({count})",
     main: {
