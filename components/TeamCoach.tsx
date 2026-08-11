@@ -467,6 +467,7 @@ export default function TeamCoach({
                       variant="team"
                       favoritable
                       hideRoll
+                      showActions={false}
                       lockable
                       locked={keptDex.has(p.dexNumber)}
                       onToggleLock={() => toggleLock(p)}

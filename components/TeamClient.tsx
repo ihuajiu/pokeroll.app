@@ -200,11 +200,24 @@ export default function TeamClient({ sharedNames }: { sharedNames: string | null
               <div
                 key={p.dexNumber}
                 className={`relative ${!isShared ? "cursor-pointer" : ""}`}
-                onClick={!isShared ? () => toggleSelect(p.dexNumber) : undefined}
+                onClick={
+                  !isShared
+                    ? (e) => {
+                        // Action-bar buttons (favorite / team / share /
+                        // showdown) must not toggle card selection.
+                        const t = e.target as HTMLElement;
+                        if (t.closest("button, a, input, label, textarea, select"))
+                          return;
+                        toggleSelect(p.dexNumber);
+                      }
+                    : undefined
+                }
               >
                 <HeroCard
                   pokemon={p}
-                  showActions={false}
+                  showActions
+                  favoritable
+                  hideRoll
                   variant="team"
                   selectable={!isShared}
                   selected={selected}
