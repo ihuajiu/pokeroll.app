@@ -9,6 +9,18 @@ const GA_ID = 'G-M74KET4Y45';
 // GA4 data and triggers "additional domains detected" diagnostics.
 const PROD_HOSTS = new Set(['pokeroll.app', 'www.pokeroll.app']);
 
+/** Fire a GA4 event, but only from the production site (same guard as the
+ *  loader) so preview/localhost traffic never pollutes the data. */
+export function trackEvent(
+  action: string,
+  params: Record<string, unknown> = {},
+): void {
+  if (typeof window === "undefined") return;
+  if (!PROD_HOSTS.has(window.location.hostname)) return;
+  const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+  w.gtag?.("event", action, params);
+}
+
 export default function Analytics() {
   useEffect(() => {
     if (!PROD_HOSTS.has(window.location.hostname)) return;

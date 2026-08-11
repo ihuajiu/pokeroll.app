@@ -7,12 +7,20 @@ import { TYPE_HEX } from "@/lib/typeColors";
 import { typeName, localizedDisplayName, localizedAbility } from "@/lib/i18n/names";
 import { useI18n } from "@/components/I18nProvider";
 import { useFavorites } from "@/components/useFavorites";
+import { useTeam } from "@/components/useTeam";
 import ShowdownCopyButton from "@/components/ShowdownCopyButton";
+import { trackEvent } from "@/components/Analytics";
 import LogoMark from "@/components/LogoMark";
 import {
+  captureCardImage,
   downloadPokemonCard,
-  sharePokemonLink,
+  downloadWinnerCard,
+  pageModule,
+  renderPokemonCard,
+  renderWinnerCard,
+  type WinnerCardData,
 } from "@/lib/shareCard";
+import WinnerPopup from "@/components/WinnerPopup";
 
 // Stat row keys — display labels come from the dictionary (heroCard.stats).
 const STAT_KEYS: (keyof Pokemon["stats"])[] = ["hp", "atk", "def", "spa", "spd", "spe"];
@@ -110,8 +118,47 @@ export default function HeroCard({
   const [internalLoading, setInternalLoading] = useState(false);
   const { locale, dict } = useI18n();
   const h = dict.heroCard;
-  const [shareDone, setShareDone] = useState<"shared" | "copied" | null>(null);
   const [dlDone, setDlDone] = useState(false);
+  const [winnerDone, setWinnerDone] = useState(false);
+  const [winnerData, setWinnerData] = useState<WinnerCardData | null>(null);
+  const [cardPreview, setCardPreview] = useState<string | null>(null);
+  // Open the full WINNER share popup (preview + download + share platforms).
+  function openWinnerPopup() {
+    const base: WinnerCardData = {
+      name: data.displayName,
+      img: data.artwork,
+      url: cardData().url,
+      types: data.types,
+      module: pageModule(),
+      dex: data.dexNumber,
+    };
+    const el = cardRef.current;
+    const finish = (full: WinnerCardData) => {
+      renderWinnerCard(full)
+        .then((blob) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            setWinnerData({ ...full, preview: String(reader.result) });
+          };
+          reader.readAsDataURL(blob);
+        })
+        .catch(() => setWinnerData(full));
+    };
+    if (el) {
+      captureCardImage(el)
+        .then((cardImg) => finish({ ...base, cardImg }))
+        .catch(() => finish(base));
+      renderPokemonCard(el, cardData())
+        .then((blob) => {
+          const reader = new FileReader();
+          reader.onload = () => setCardPreview(String(reader.result));
+          reader.readAsDataURL(blob);
+        })
+        .catch(() => setCardPreview(null));
+    } else {
+      finish(base);
+    }
+  }
   const [favMsg, setFavMsg] = useState<string | null>(null);
   const [flipped, setFlipped] = useState(false);
   // Flip-hint visibility starts hidden (SSR-safe); an effect reveals it only
@@ -212,6 +259,14 @@ export default function HeroCard({
       setFavMsg(h.favLimit);
       setTimeout(() => setFavMsg(null), 2600);
     }
+  }
+
+  // Add / remove the current Pokémon from the team tray (max 6).
+  const { add: addTeam, remove: removeTeam, has: hasTeam } = useTeam();
+  const teamIn = hasTeam(data.dexNumber);
+  function handleTeamToggle() {
+    if (teamIn) removeTeam(data.dexNumber);
+    else addTeam(data);
   }
 
   // Long names shrink to fit one line (min 15px), wrapping only as a
@@ -356,8 +411,8 @@ export default function HeroCard({
       generation: data.generation,
       height: data.height,
       weight: data.weight,
-      // Page title carries the module name ("Random Pokémon Generator — …").
-      module: document.title.split("—")[0].trim(),
+      // Clean module label (strips the "| PokeRoll" suffix).
+      module: pageModule(),
       // Always carry the ?p= param so the shared link re-rolls this exact
       // Pokémon for whoever opens it. Use the live pathname — callers never
       // pass basePath, and parent-controlled cards may live anywhere.
@@ -365,18 +420,25 @@ export default function HeroCard({
     };
   }
 
-  async function handleShareLink() {
-    const how = await sharePokemonLink(cardData());
-    setShareDone(how);
-    setTimeout(() => setShareDone(null), 1800);
-  }
-
   async function handleDownload() {
+    trackEvent("share_card", { format: "tcg" });
     if (!cardRef.current) return;
     const ok = await downloadPokemonCard(cardRef.current, cardData());
     if (ok) {
       setDlDone(true);
       setTimeout(() => setDlDone(false), 1800);
+    }
+  }
+
+  async function handleWinner() {
+    trackEvent("share_card", { format: "winner" });
+    if (!cardRef.current) return;
+    // Right side of the WINNER card shows the actual card at roll time.
+    const cardImg = await captureCardImage(cardRef.current).catch(() => undefined);
+    const ok = await downloadWinnerCard({ ...cardData(), cardImg });
+    if (ok) {
+      setWinnerDone(true);
+      setTimeout(() => setWinnerDone(false), 1800);
     }
   }
 
@@ -608,27 +670,24 @@ export default function HeroCard({
           ) : null}
           <button
             type="button"
-            className="act-icon"
-            aria-label={shareDone ? h.linkShared : h.shareLink}
-            title={
-              shareDone === "copied"
-                ? h.linkCopied
-                : shareDone === "shared"
-                  ? h.shared
-                  : h.shareLink
-            }
-            onClick={handleShareLink}
+            className={`act-icon${teamIn ? " text-poke-red" : ""}`}
+            aria-pressed={teamIn}
+            aria-label={teamIn ? dict.addToTeam.removeAria : dict.addToTeam.addAria}
+            title={teamIn ? dict.addToTeam.removeAria : dict.addToTeam.addAria}
+            onClick={handleTeamToggle}
           >
-            {shareDone ? (
+            {teamIn ? (
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.4"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <polyline points="20 6 9 17 4 12" />
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="m16 11 2 2 4-4" />
               </svg>
             ) : (
               <svg
@@ -639,49 +698,49 @@ export default function HeroCard({
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <circle cx="18" cy="5" r="3" />
-                <circle cx="6" cy="12" r="3" />
-                <circle cx="18" cy="19" r="3" />
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <line x1="19" y1="8" x2="19" y2="14" />
+                <line x1="22" y1="11" x2="16" y2="11" />
               </svg>
             )}
           </button>
-          {!hideName ? (
-            <button
-              type="button"
-              className="act-icon"
-              aria-label={dlDone ? h.imageSaved : h.downloadCard}
-              title={dlDone ? h.imageSavedBang : h.downloadCard}
-              onClick={handleDownload}
+          <button
+            type="button"
+            className="act-icon"
+            aria-label={h.shareMenu}
+            title={h.shareMenu}
+            onClick={openWinnerPopup}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              {dlDone ? (
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              ) : (
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" x2="12" y1="15" y2="3" />
-                </svg>
-              )}
-            </button>
-          ) : null}
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+          </button>
+          {winnerData
+            ? createPortal(
+                <WinnerPopup
+                  open
+                  data={winnerData}
+                  onClose={() => setWinnerData(null)}
+                  cardPreview={cardPreview}
+                  onDownloadCard={handleDownload}
+                  onRollAgain={handleRoll}
+                  celebrate={false}
+                />,
+                document.body,
+              )
+            : null}
           <div
             ref={sdWrapRef}
             className="sd-preview-wrap"
