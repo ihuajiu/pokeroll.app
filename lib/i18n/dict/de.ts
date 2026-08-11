@@ -263,6 +263,23 @@ export default {
     downloadCard: "Karte herunterladen",
     imageSaved: "Bild gespeichert",
     imageSavedBang: "Bild gespeichert!",
+    winnerCard: "WINNER-Karte",
+    winnerSavedBang: "WINNER-Karte gespeichert!",
+    shareMenu: "Teilen",
+    shareCopyLink: "Link kopieren",
+    shareWinnerImage: "WINNER-Bild",
+    shareSaveCard: "Karte speichern",
+    winnerPopupTitle: "Dein Wurf ist ein WINNER!",
+    winnerShareText: "Ich habe {name} bei PokeRoll gewürfelt! Was bekommst du? 🎲",
+    winnerClose: "Schließen",
+    winnerOriginalCard: "Original-Karte",
+    winnerRollAgain: "Nochmal würfeln",
+    winnerCopyImage: "Bild kopieren",
+    winnerImageCopied: "Bild kopiert!",
+    winnerDownload: "Herunterladen",
+    winnerTcgDownload: "TCG-Download",
+    winnerLightMode: "Heller Modus",
+    winnerDarkMode: "Dunkler Modus",
     closeShowdown: "Showdown-Set schließen",
     backToCard: "Zurück zur Karte",
   },
@@ -1177,6 +1194,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— oder nimm das Ergebnis direkt mit in den Team-Generator.",
         },
+        faqs: [
+          {
+            q: "Was ist ein Zufalls-Typ-Generator?",
+            a: "Jeder Wurf wählt zufällig einen der 18 Pokémon-Typen — Normal, Feuer, Wasser und den Rest — und die Seite würfelt nur Pokémon dieses Typs, damit du ihn mit einem Tippen erkunden kannst.",
+          },
+          {
+            q: "Wie benutze ich ihn?",
+            a: "Würfle ein Thema, baue dann ein Mono-Typ-Team darum, drafte denselben Typ mit Freunden oder teste dich an der Typen-Tabelle.",
+          },
+          {
+            q: "Sind Doppeltypen enthalten?",
+            a: "Ja — Pokémon, die den gewürfelten Typ als einen ihrer zwei Typen tragen, sind im Pool.",
+          },
+          {
+            q: "Ist PokeRoll kostenlos?",
+            a: "Ja — kostenlos, ohne Anmeldung und ohne Download, wie jeder Generator auf der Seite.",
+          },
+        ],
       },
       ability: {
         title: "Zufalls-Pokémon-Fähigkeiten-Generator | PokeRoll",
@@ -1228,6 +1263,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— Fähigkeit, Attacken und Zahlen sind drei Seiten desselben Sets.",
         },
+        faqs: [
+          {
+            q: "Was ist eine Pokémon-Fähigkeit?",
+            a: "Eine Fähigkeit ist ein passiver Effekt, der den Kampf beeinflusst — wie Bedroher, das beim Einwechseln den Angriff des Gegners senkt, oder Schwebe, das Boden-Immunität verleiht. Jede Art hat mindestens eine.",
+          },
+          {
+            q: "Sind versteckte Fähigkeiten enthalten?",
+            a: "Ja. Würfe können auf Standard-, versteckte und Spezial-Fähigkeiten fallen. Die Karte zeigt den Effekttext der Fähigkeit, damit du genau weißt, womit du arbeitest.",
+          },
+          {
+            q: "Kann ich eine gewürfelte Fähigkeit in Showdown nutzen?",
+            a: "Absolut — der Fähigkeiten-Slot ist Teil des kopierfertigen Showdown-Sets, also kannst du sofort ein Set um den Wurf herum bauen.",
+          },
+          {
+            q: "Woher stammen die Fähigkeiten-Daten?",
+            a: "Alle Arten- und Fähigkeiten-Daten stammen von PokéAPI und sind mit der Seite gebündelt, sodass jeder Wurf sofort da ist.",
+          },
+        ],
       },
       move: {
         title: "Zufalls-Pokémon-Attacken-Generator | PokeRoll",
@@ -1278,6 +1331,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— und nimm dann das Ganze mit zu Showdown.",
         },
+        faqs: [
+          {
+            q: "Was ist ein Zufalls-Attacken-Generator?",
+            a: "Jeder Wurf wählt zufällig eine Pokémon-Attacke aus dem kompletten Attacken-Pool aller Generationen und zeigt Typ, Kategorie, Stärke, Genauigkeit, AP und Effekttext.",
+          },
+          {
+            q: "Welche Attacken sind enthalten?",
+            a: "Der Pool umfasst Standard-Level-Up-, TM-, TR- und Ei-Attacken aus jeder Generation. Reine Gimmick-Attacken wie Z-Moves und Max Moves fehlen, weil es sie in regulären Movesets nicht gibt.",
+          },
+          {
+            q: "Wie nutze ich eine gewürfelte Attacke?",
+            a: "Nutze den Kopieren-Button, um sie in ein Showdown-Set einzufügen, oder würfle ein paar und baue einen Moveset darum — als Teambuilding-Challenge.",
+          },
+          {
+            q: "Ist PokeRoll kostenlos?",
+            a: "Ja — kostenlos, ohne Anmeldung und ohne Download, wie jeder Generator auf der Seite.",
+          },
+        ],
       },
       bst: {
         title: "Zufalls-Pokémon-Statuswerte-Generator (BST) | PokeRoll",
@@ -1329,6 +1400,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— oder jage die großen Summen auf der Legendär-Seite.",
         },
+        faqs: [
+          {
+            q: "Was ist BST?",
+            a: "BST (Basiswert-Summe) ist die Summe der sechs Basiswerte eines Pokémon — KP, Angriff, Verteidigung, Sp. Ang., Sp. Ver. und Initiative. Ein grobes Maß dafür, wie stark eine Art auf dem Papier ist.",
+          },
+          {
+            q: "Welche Spanne kann ich würfeln?",
+            a: "Der ganze Dex ist im Pool — von frühen Routen-Pokémon mit niedrigem BST unter 300 bis zu Box-Art-Legenden und Mega-Formen jenseits von 600.",
+          },
+          {
+            q: "Kann ich nach BST-Spanne filtern?",
+            a: "Nicht auf dieser Seite — der Wurf deckt alles ab. Sie passt gut zum Team-Generator: würfeln, Werte prüfen, dann entscheiden, ob der Fang in deine Truppe passt.",
+          },
+          {
+            q: "Warum ist BST wichtig?",
+            a: "Es ist die schnellste Abkürzung für Stärke. Ein 600-BST-Wurf ist ein ernsthafter Kämpfer; ein 250-BST-Wurf ist ein Pick für Challenge-Runs. Die Würfel entscheiden, welche Art von Run du spielst.",
+          },
+        ],
       },
       number: {
         title: "Zufalls-Pokémon-Nummern-Generator | PokeRoll",
@@ -1379,6 +1468,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— Zahlen, Namen und Werte erzählen alle verschiedene Geschichten.",
         },
+        faqs: [
+          {
+            q: "Was ist der Pokédex-Nummern-Generator?",
+            a: "Jeder Wurf wählt eine Nationale-Pokédex-Nummer und zeigt dir die Art dahinter — von #001 Bisasam bis #1025 und weiter. Keine Kategorien, keine Filter, nur der Dex.",
+          },
+          {
+            q: "Kann ich direkt zu einer bestimmten Nummer?",
+            a: "Der Wurf ist zufällig, aber der Teilen-Link enthält die exakte Nummer — öffne ihn und jeder sieht dasselbe Pokémon.",
+          },
+          {
+            q: "Welcher Dex wird verwendet?",
+            a: "Der vollständige Nationale Pokédex über alle neun Generationen, mit offiziellem Artwork und Werten für jede Art.",
+          },
+          {
+            q: "Wofür kann ich ihn nutzen?",
+            a: "Dex-Vervollständigungs-Checklisten, Nuzlocke-Begegnungstabellen, Zeichen-Prompts — oder einfach, um Arten zu entdecken, die du nie zweimal angeschaut hast.",
+          },
+        ],
       },
       starter: {
         title: "Zufalls-Starter-Pokémon-Generator | PokeRoll",
@@ -1430,6 +1537,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— der Starter hat gewählt, jetzt braucht das Team sechs.",
         },
+        faqs: [
+          {
+            q: "Was zählt als Starter-Pokémon?",
+            a: "Starter sind die ersten Partner-Pokémon — das Trio aus Pflanze, Feuer und Wasser am Anfang jedes Hauptspiels, von Bisasam in Kanto bis Felori in Paldea.",
+          },
+          {
+            q: "Welche Generationen sind enthalten?",
+            a: "Alle — jeder regionale Starter von Generation I bis IX, einschließlich der Hisui- und Paldea-Varianten, wo es sie gibt.",
+          },
+          {
+            q: "Kann ich ein ganzes Team aus Startern würfeln?",
+            a: "Ja — würfle sechs und du hast eine Starter-only-Truppe für einen Challenge-Run oder ein Showdown-Thementeam.",
+          },
+          {
+            q: "Warum sollte ich einen zufälligen Starter nutzen?",
+            a: "Es beseitigt die Qual der Wahl: Die Würfel bestimmen den Partner für deinen nächsten Durchlauf, und du baust den Run um das, was du bekommst.",
+          },
+        ],
       },
       "no-names": {
         title: "Zufalls-Pokémon-Generator ohne Namen — Ratespiel",
@@ -1482,6 +1607,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— dasselbe Wissen, höhere Einsätze.",
         },
+        faqs: [
+          {
+            q: "Was ist die Mystery-Pokémon-Seite?",
+            a: "Sie zeigt eine vollständige Pokémon-Karte mit allem außer dem Namen — Werte, Typen, Fähigkeit und Artwork inklusive. Deine Aufgabe: herausfinden, wer es ist.",
+          },
+          {
+            q: "Ist die Karte vollständig?",
+            a: "Ja — nur der Name ist versteckt. Wenn du ein Pokémon allein anhand von Werten, Fähigkeit und Artwork erkennst, kennst du deinen Dex.",
+          },
+          {
+            q: "Wie unterscheidet sich das von der Rate-Challenge?",
+            a: "Die Rate-Challenge versteckt Namen hinter Silhouetten für ein Quiz mit Punkten; hier bekommst du jeweils eine Karte mit vollständigen Infos — perfekt für ein schnelles Rätsel.",
+          },
+          {
+            q: "Funktioniert es auch auf dem Handy?",
+            a: "Ja — Karte und Aufdecken funktionieren mit einem Tippen, also läuft es auf dem Smartphone genauso gut.",
+          },
+        ],
       },
       cute: {
         title: "Zufalls-Generator für niedliche Pokémon | PokeRoll",
@@ -1532,6 +1675,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— selten und hinreißend ist die beste Kombination.",
         },
+        faqs: [
+          {
+            q: "Was zählt als niedliches Pokémon?",
+            a: "Diese Seite würfelt aus einer handverlesenen Liste der niedlichsten des Dex — Evoli, Pummeluff, Pikachu und Hunderte Flauschbälle, Runde und Winzlinge, die Fans lieben.",
+          },
+          {
+            q: "Wie wurde die Liste erstellt?",
+            a: "Aus Community-Favoriten und Fan-Umfragen statt aus rohen Werten — wenn eine Art allgemein als niedlich gilt, ist sie auf der Liste.",
+          },
+          {
+            q: "Kann ich ein Team nur aus niedlichen Pokémon bauen?",
+            a: "Ja — würfle sechs und du hast eine entzückende Truppe für lockere Kämpfe oder einen thematischen Run. Einige von ihnen sind heimlich stark.",
+          },
+          {
+            q: "Ist das nur zum Spaß?",
+            a: "Meistens, aber niedliche Pokémon erobern Herzen — und gelegentlich echte Kämpfe. Nutze den Showdown-Export und lass den Flausch kämpfen.",
+          },
+        ],
       },
       mythical: {
         title: "Zufalls-Generator für Mysteriöse Pokémon | PokeRoll",
@@ -1582,6 +1743,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— Seltenheit kommt in mehreren Geschmacksrichtungen.",
         },
+        faqs: [
+          {
+            q: "Was zählt als Mysteriöses Pokémon?",
+            a: "Mysteriöse Pokémon sind die Nur-Event-Arten — Mew, Celebi, Jirachi, Darkrai, Magearna und ihresgleichen — Pokémon, die normalerweise ein Verteilungs-Event, einen Seriencode oder eine besondere Quest erfordern.",
+          },
+          {
+            q: "Wie unterscheiden sich Mysteriöse von Legendären?",
+            a: "Legendäre tauchen in der Story auf und sind meist im Spiel fangbar; Mysteriöse werden fast immer über Events verteilt. PokeRoll hält die beiden Pools getrennt — diese Seite würfelt nur Mysteriöse, die Legendär-Seite den Rest.",
+          },
+          {
+            q: "Kann ich ein Team um ein Mysteriöses Pokémon bauen?",
+            a: "Ja. Würfle eines, tippe auf „Zum Team hinzufügen“ und fülle die anderen fünf Plätze — oder würfle fünf weitere Mysteriöse für eine reine Event-Truppe.",
+          },
+          {
+            q: "Kann ich Mysteriöse in Pokémon Showdown nutzen?",
+            a: "Die meisten kannst du in lockeren oder Custom-Formaten nutzen, auch wenn einige in offiziellen Tiers eingeschränkt sind. Das kopierfertige Set exportiert trotzdem, also probiere sie überall dort, wo das Format es erlaubt.",
+          },
+        ],
       },
       mega: {
         title: "Zufalls-Mega-Pokémon-Generator | PokeRoll",
@@ -1632,6 +1811,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— offiziell oder improvisiert, Hybride machen Spaß.",
         },
+        faqs: [
+          {
+            q: "Was ist eine Mega-Entwicklung?",
+            a: "Die Mega-Entwicklung ist eine vorübergehende, nur im Kampf aktive Form, die bestimmte Pokémon mit einem Mega-Stein annehmen — gesteigerte Werte, oft ein neuer Typ oder eine neue Fähigkeit und ein neues Design.",
+          },
+          {
+            q: "Welche Pokémon können sich mega-entwickeln?",
+            a: "Rund 46 Arten haben Mega-Formen, plus Ur-Formen für Groudon und Kyogre. Diese Seite würfelt nur aus dieser Liste.",
+          },
+          {
+            q: "Kann ich ein Mega in Pokémon Showdown nutzen?",
+            a: "Ja — Mega-Formen sind in den meisten Showdown-Formaten Standard. Die Karte exportiert ein kopierfertiges Set, und der Mega-Stein steckt im Item-Slot.",
+          },
+          {
+            q: "Gibt es ein Limit für Megas pro Team?",
+            a: "Nach offiziellen Regeln kann pro Team und Kampf nur ein Pokémon eine Mega-Entwicklung nutzen. Der Generator würfelt einzeln, aber du kannst mit einer kompletten Mega-Truppe locker experimentieren.",
+          },
+        ],
       },
       nickname: {
         title: "Zufalls-Pokémon-Namen- & Spitznamen-Generator | PokeRoll",
@@ -1683,6 +1880,24 @@ export default {
           linksJoinOr: "oder",
           linksTextAfter: "— und komm dann zurück und gib ihnen allen Namen.",
         },
+        faqs: [
+          {
+            q: "Was macht der Spitznamen-Generator?",
+            a: "Er kombiniert ein gewürfeltes Pokémon mit einem thematischen Spitznamen — von niedlich und witzig bis kompetitiv und scharf — damit du nie wieder vor einem leeren Namensfeld sitzt.",
+          },
+          {
+            q: "Woher kommen die Spitznamen?",
+            a: "Aus thematischen Wortlisten für jeden Stil: Natur-Wortwitze, Essensnamen, Anime-Referenzen, Mythologie und mehr. Die Kombination ist bei jedem Wurf zufällig, also sind Doppelte selten.",
+          },
+          {
+            q: "Kann ich die Spitznamen in den Spielen nutzen?",
+            a: "Ja — die Namensregeln der Spiele gelten, und PokeRoll hält die Vorschläge sauber und kurz genug für jedes Hauptspiel.",
+          },
+          {
+            q: "Funktioniert es für jedes Pokémon?",
+            a: "Ja — der Generator würfelt über den ganzen Dex, also bekommt jede Art einen passenden Vorschlag, auch für Shiny-Jagd und Nuzlocke-Namen.",
+          },
+        ],
       },
       noNamesPromo: {
         s1: "Lust auf ein Quiz mit mehreren Karten und Seed zum Teilen? ",
@@ -1915,6 +2130,24 @@ export default {
         linksJoinOr: "oder",
         linksTextAfter: "— andere Würfel, dieselben Prahlereien.",
       },
+      faqs: [
+        {
+          q: "Wie funktioniert „Errate das Pokémon“?",
+          a: "Eine Reihe versteckter Pokémon wird als Silhouetten gezeigt. Lege deine Vermutungen fest, wende dann die Karten, um die Antworten aufzudecken — dein Punktestand richtet sich danach, wie viele du richtig benannt hast.",
+        },
+        {
+          q: "Was ändern die Schwierigkeitsgrade?",
+          a: "Einfach gibt größere Sprites und einen Typ-Hinweis pro Karte; Extrem zoomt hinein, entfernt die Hinweise und begrenzt die Aufstellung. Gleicher Seed, gleiche Aufstellung, schwerere Prüfung.",
+        },
+        {
+          q: "Kann ich einen Freund herausfordern?",
+          a: "Ja — der Teilen-Link enthält den Seed, also erzeugt das Öffnen exakt dieselbe Aufstellung. Vergleicht eure Punktestände und klärt, wer den Dex besser kennt.",
+        },
+        {
+          q: "Woher kommen die Silhouetten?",
+          a: "Offizielles Pokémon-Artwork und Sprites, die direkt in Silhouetten umgewandelt werden. Alles läuft in deinem Browser — kein Download, keine Anmeldung.",
+        },
+      ],
     },
 
     shiny: {
@@ -2054,6 +2287,24 @@ export default {
       soloNote:
         "PokeRoll ist ein Solo-Fan-Projekt — nicht mit Nintendo oder The Pokémon Company verbunden. Antworten kommen meist innerhalb von 48 Stunden.",
       backLink: "← Zurück zum Generator",
+      faqs: [
+        {
+          q: "Wie kontaktiere ich das PokeRoll-Team?",
+          a: "Auf drei Wegen: E-Mail an hello@pokeroll.app, @JoeyChou2024 auf X taggen oder ein Issue im GitHub-Repository eröffnen. Jeder Kanal erreicht den Macher direkt.",
+        },
+        {
+          q: "Wie schnell antwortet ihr?",
+          a: "Meist innerhalb von 48 Stunden. X bekommt die schnellsten Antworten, und GitHub-Issues werden bis zur Lösung verfolgt.",
+        },
+        {
+          q: "Kann ich einen Bug melden oder ein Feature anfragen?",
+          a: "Gern — Bugmeldungen und Feature-Ideen sind genau dafür da. GitHub-Issues sind für Bugs am besten, weil sie dort nachverfolgt bleiben.",
+        },
+        {
+          q: "Ist PokeRoll mit Nintendo oder The Pokémon Company verbunden?",
+          a: "Nein. PokeRoll ist ein Solo-Fan-Projekt, das PokéAPI-Daten nutzt. Alle Pokémon-Inhalte gehören ihren jeweiligen Eigentümern, und diese Seite wird von ihnen nicht unterstützt.",
+        },
+      ],
     },
 
     privacy: {

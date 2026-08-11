@@ -262,6 +262,23 @@ export default {
     downloadCard: "Download card",
     imageSaved: "Image saved",
     imageSavedBang: "Image saved!",
+    winnerCard: "WINNER card",
+    winnerSavedBang: "WINNER card saved!",
+    shareMenu: "Share",
+    shareCopyLink: "Copy link",
+    shareWinnerImage: "WINNER image",
+    shareSaveCard: "Save card",
+    winnerPopupTitle: "Your roll is a WINNER!",
+    winnerShareText: "I rolled {name} on PokeRoll — what will YOU get? 🎲",
+    winnerClose: "Close",
+    winnerOriginalCard: "Original card",
+    winnerRollAgain: "Roll again",
+    winnerCopyImage: "Copy image",
+    winnerImageCopied: "Image copied!",
+    winnerDownload: "Download",
+    winnerTcgDownload: "TCG Download",
+    winnerLightMode: "Light mode",
+    winnerDarkMode: "Dark mode",
     closeShowdown: "Close Showdown set",
     backToCard: "Back to card",
   },
@@ -1176,6 +1193,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— or take the result straight to the team generator.",
         },
+        faqs: [
+          {
+            q: "What is a random type generator?",
+            a: "Every roll picks one of the 18 Pokémon types at random — Normal, Fire, Water and the rest — and the page rolls only Pokémon of that type, so you can explore it in one tap.",
+          },
+          {
+            q: "How do I use it?",
+            a: "Roll for a theme, then build a mono-type team around it, draft with friends using the same type, or quiz yourself on the type chart.",
+          },
+          {
+            q: "Does it include dual types?",
+            a: "Yes — Pokémon that carry the rolled type as either of their two types are included in the pool.",
+          },
+          {
+            q: "Is PokeRoll free?",
+            a: "Yes — free, no sign-up and no download, like every generator on the site.",
+          },
+        ],
       },
       ability: {
         title: "Random Pokémon Ability Generator | PokeRoll",
@@ -1227,6 +1262,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— ability, moves and numbers are three sides of the same set.",
         },
+        faqs: [
+          {
+            q: "What is a Pokémon ability?",
+            a: "An ability is a passive skill that affects battle — like Intimidate lowering the foe's Attack on switch-in, or Levitate granting Ground immunity. Every species has one or more.",
+          },
+          {
+            q: "Does it include hidden abilities?",
+            a: "Yes. Rolls can land on standard, hidden and signature abilities. The card shows the ability's effect text so you know exactly what you're working with.",
+          },
+          {
+            q: "Can I use a rolled ability in Showdown?",
+            a: "Absolutely — the ability slot is part of the copy-ready Showdown set, so you can build a set around the roll immediately.",
+          },
+          {
+            q: "Where does the ability data come from?",
+            a: "All species and ability data comes from PokéAPI and is bundled with the site, so every roll is instant.",
+          },
+        ],
       },
       move: {
         title: "Random Pokémon Move Generator | PokeRoll",
@@ -1274,6 +1327,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— then take the whole thing to Showdown.",
         },
+        faqs: [
+          {
+            q: "What is a random move generator?",
+            a: "Every roll picks one Pokémon move at random from the full move pool across all generations and shows its type, category, power, accuracy, PP and effect text.",
+          },
+          {
+            q: "Which moves are included?",
+            a: "The pool covers standard level-up, TM, TR and egg moves from every generation. Gimmick-only moves such as Z-Moves and Max Moves are left out because they don't exist in regular movesets.",
+          },
+          {
+            q: "How do I use a rolled move?",
+            a: "Use the copy button to drop it into a Showdown set, or roll a few and build a moveset around them as a teambuilding challenge.",
+          },
+          {
+            q: "Is PokeRoll free?",
+            a: "Yes — free, no sign-up and no download, like every generator on the site.",
+          },
+        ],
       },
       bst: {
         title: "Random Pokémon Stats Generator (BST) | PokeRoll",
@@ -1325,6 +1396,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— or hunt the big totals on the Legendary page.",
         },
+        faqs: [
+          {
+            q: "What is BST?",
+            a: "BST (Base Stat Total) is the sum of a Pokémon's six base stats — HP, Attack, Defense, Sp. Atk, Sp. Def and Speed. It's a rough measure of how strong a species is on paper.",
+          },
+          {
+            q: "What range can I roll?",
+            a: "The whole dex is in the pool — from low-BST early-route Pokémon under 300 up to box-art legends and Mega forms pushing past 600.",
+          },
+          {
+            q: "Can I filter by BST range?",
+            a: "Not on this page — the roll covers everything. It pairs well with the Team Builder: roll, check the stats, then decide if the pull fits your squad.",
+          },
+          {
+            q: "Why does BST matter?",
+            a: "It's the fastest shorthand for power. A 600-BST pull is a serious battler; a 250-BST pull is a challenge-run pick. The dice decide which kind of run you're having.",
+          },
+        ],
       },
       number: {
         title: "Random Pokémon Number Generator | PokeRoll",
@@ -1375,6 +1464,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— numbers, names and stats all tell different stories.",
         },
+        faqs: [
+          {
+            q: "What is the Pokédex number generator?",
+            a: "Every roll picks a National Pokédex number and shows you the species behind it — from #001 Bulbasaur to #1025 and beyond. No categories, no filters, just the dex.",
+          },
+          {
+            q: "Can I go straight to a specific number?",
+            a: "The roll is random, but the share link carries the exact number — open it and anyone sees the same Pokémon.",
+          },
+          {
+            q: "Which dex is used?",
+            a: "The full National Pokédex across all nine generations, with official artwork and stats for every species.",
+          },
+          {
+            q: "What can I use it for?",
+            a: "Dex completion checklists, nuzlocke encounter tables, drawing prompts — or just to discover species you've never looked at twice.",
+          },
+        ],
       },
       starter: {
         title: "Random Starter Pokémon Generator | PokeRoll",
@@ -1426,6 +1533,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— the starter has chosen, now the team needs six.",
         },
+        faqs: [
+          {
+            q: "What counts as a starter Pokémon?",
+            a: "Starters are the first-partner Pokémon — the trio of Grass, Fire and Water offered at the start of each mainline game, from Bulbasaur in Kanto to Sprigatito in Paldea.",
+          },
+          {
+            q: "Which generations are included?",
+            a: "All of them — every regional starter from Generation I through IX, including the Hisui and Paldea variations where they exist.",
+          },
+          {
+            q: "Can I roll a full team of starters?",
+            a: "Yes — roll six and you have a starter-only squad for a challenge run or a Showdown theme team.",
+          },
+          {
+            q: "Why would I use a random starter?",
+            a: "It removes choice paralysis: the dice pick your next playthrough's partner, and you build the run around whatever you get.",
+          },
+        ],
       },
       "no-names": {
         title: "Random Pokémon Generator Without Names — Guessing Game",
@@ -1478,6 +1603,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— same knowledge, higher stakes.",
         },
+        faqs: [
+          {
+            q: "What is the Mystery Pokémon page?",
+            a: "It shows a full Pokémon card with everything except the name — stats, types, ability and artwork included. Your job: figure out who it is.",
+          },
+          {
+            q: "Is the card complete?",
+            a: "Yes — only the name is hidden. If you can identify a Pokémon from its stats, ability and artwork alone, you know your dex.",
+          },
+          {
+            q: "How is this different from the Guess challenge?",
+            a: "The Guess challenge hides names behind silhouettes for a scored quiz; here you get one card at a time with full info, perfect for a quick brain-teaser.",
+          },
+          {
+            q: "Does it work on mobile?",
+            a: "Yes — the card and reveal work with a tap, so it plays just as well on a phone.",
+          },
+        ],
       },
       cute: {
         title: "Random Cute Pokémon Generator | PokeRoll",
@@ -1525,6 +1668,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— rare and adorable is the best combination.",
         },
+        faqs: [
+          {
+            q: "What counts as a cute Pokémon?",
+            a: "This page rolls from a hand-picked list of the dex's cutest — Eevee, Jigglypuff, Pikachu and hundreds of fluffballs, round ones and tiny ones that fans love.",
+          },
+          {
+            q: "How was the list built?",
+            a: "From community favourites and fan polls rather than raw stats — if a species is universally called cute, it's on the list.",
+          },
+          {
+            q: "Can I build a cute-only team?",
+            a: "Yes — roll six and you have an adorable squad ready for casual battles or a themed run. Some of them are secretly strong.",
+          },
+          {
+            q: "Is it just for fun?",
+            a: "Mostly, but cute Pokémon win hearts — and occasionally real battles. Use the Showdown export and let the fluff fight.",
+          },
+        ],
       },
       mythical: {
         title: "Random Mythical Pokémon Generator | PokeRoll",
@@ -1575,6 +1736,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— rarity comes in several flavours.",
         },
+        faqs: [
+          {
+            q: "What counts as a Mythical Pokémon?",
+            a: "Mythicals are the event-only species — Mew, Celebi, Jirachi, Darkrai, Magearna and their peers — Pokémon that normally require a distribution event, a serial code or a special quest to obtain.",
+          },
+          {
+            q: "How is Mythical different from Legendary?",
+            a: "Legendaries appear in the story and can usually be caught in-game; Mythicals are almost always distributed as events. PokeRoll keeps the two pools separate — this page rolls Mythicals only, the Legendary page rolls the rest.",
+          },
+          {
+            q: "Can I build a team around a Mythical?",
+            a: "Yes. Roll one, tap Add to Team, then fill the other five slots — or roll five more Mythicals for a full event-only squad.",
+          },
+          {
+            q: "Can Mythicals be used on Pokémon Showdown?",
+            a: "Most can be used in casual or custom formats, though several are restricted in official tiers. The copy-ready set exports anyway, so you can try them wherever the format allows.",
+          },
+        ],
       },
       mega: {
         title: "Random Mega Pokémon Generator | PokeRoll",
@@ -1622,6 +1801,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— official or improvised, hybrids are fun.",
         },
+        faqs: [
+          {
+            q: "What is a Mega Evolution?",
+            a: "Mega Evolution is a temporary battle-only form that certain Pokémon take with a Mega Stone — boosted stats, often a new type or ability, and a redesigned look.",
+          },
+          {
+            q: "Which Pokémon can Mega Evolve?",
+            a: "Around 46 species have Mega forms, plus Primal Reversion for Groudon and Kyogre. This page rolls only from that list.",
+          },
+          {
+            q: "Can I use a Mega in Pokémon Showdown?",
+            a: "Yes — Mega forms are standard in most Showdown formats. The card exports a copy-ready set, and the Mega Stone is included in the item slot.",
+          },
+          {
+            q: "Is there any limit on Megas per team?",
+            a: "In official rules only one Pokémon per team can Mega Evolve per battle. The generator rolls one at a time, but you can experiment with a full Mega squad casually.",
+          },
+        ],
       },
       nickname: {
         title: "Random Pokémon Name & Nickname Generator | PokeRoll",
@@ -1673,6 +1870,24 @@ export default {
           linksJoinOr: "or",
           linksTextAfter: "— then come back and give them all names.",
         },
+        faqs: [
+          {
+            q: "What does the nickname generator do?",
+            a: "It pairs a rolled Pokémon with a themed nickname — from cute and punny to competitive and edgy — so you never stare at a blank nickname box again.",
+          },
+          {
+            q: "Where do the nicknames come from?",
+            a: "From themed word lists built for each style: nature puns, food names, anime references, mythology and more. The combination is random every roll, so duplicates are rare.",
+          },
+          {
+            q: "Can I use the nicknames in the games?",
+            a: "Yes — game nickname rules apply, and PokeRoll keeps suggestions clean and short enough to fit every mainline game.",
+          },
+          {
+            q: "Does it work for any Pokémon?",
+            a: "Yes — the generator rolls across the whole dex, so every species gets a fitting suggestion, including shiny hunting and Nuzlocke naming.",
+          },
+        ],
       },
       noNamesPromo: {
         s1: "Want a seeded multi-card quiz to share? ",
@@ -1905,6 +2120,24 @@ export default {
         linksJoinOr: "or",
         linksTextAfter: "— different dice, same bragging rights.",
       },
+      faqs: [
+        {
+          q: "How does Guess the Pokémon work?",
+          a: "A set of hidden Pokémon are shown as silhouettes. Lock in your guesses, then flip the cards to reveal the answers — your score is based on how many you named correctly.",
+        },
+        {
+          q: "What do difficulty levels change?",
+          a: "Easy gives bigger sprites and a type hint per card; Extreme zooms in, drops the hints and limits the lineup. Same seed, same lineup, harder exam.",
+        },
+        {
+          q: "Can I challenge a friend?",
+          a: "Yes — the share link carries the seed, so opening it recreates the exact same lineup. Compare scores and settle who knows the dex better.",
+        },
+        {
+          q: "Where do the silhouettes come from?",
+          a: "Official Pokémon artwork and sprites, converted to silhouettes on the fly. Everything runs in your browser — no downloads, no sign-up.",
+        },
+      ],
     },
 
     shiny: {
@@ -2044,6 +2277,24 @@ export default {
       soloNote:
         "PokeRoll is a solo fan-made project — not affiliated with Nintendo or The Pokémon Company. Replies usually land within 48 hours.",
       backLink: "← Back to the generator",
+      faqs: [
+        {
+          q: "How do I contact the PokeRoll team?",
+          a: "Three ways: email hello@pokeroll.app, tag @JoeyChou2024 on X, or open an issue on the GitHub repository. Every channel reaches the maker directly.",
+        },
+        {
+          q: "How fast do you reply?",
+          a: "Usually within 48 hours. X gets the fastest responses, and GitHub issues are tracked until resolved.",
+        },
+        {
+          q: "Can I report a bug or request a feature?",
+          a: "Please do — bug reports and feature ideas are exactly what the contact channels are for. GitHub issues are best for bugs because they stay tracked.",
+        },
+        {
+          q: "Is PokeRoll affiliated with Nintendo or The Pokémon Company?",
+          a: "No. PokeRoll is a solo fan-made project using PokéAPI data. All Pokémon content belongs to its respective owners, and this site is not endorsed by them.",
+        },
+      ],
     },
 
     privacy: {

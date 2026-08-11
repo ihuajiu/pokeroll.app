@@ -263,6 +263,23 @@ export default {
     downloadCard: "Baixar card",
     imageSaved: "Imagem salva",
     imageSavedBang: "Imagem salva!",
+    winnerCard: "Cartão WINNER",
+    winnerSavedBang: "Cartão WINNER salvo!",
+    shareMenu: "Compartilhar",
+    shareCopyLink: "Copiar link",
+    shareWinnerImage: "Imagem WINNER",
+    shareSaveCard: "Salvar card",
+    winnerPopupTitle: "Seu sorteio é um WINNER!",
+    winnerShareText: "Saquei {name} no PokeRoll! O que você vai tirar? 🎲",
+    winnerClose: "Fechar",
+    winnerOriginalCard: "Card original",
+    winnerRollAgain: "Sortear novamente",
+    winnerCopyImage: "Copiar imagem",
+    winnerImageCopied: "Imagem copiada!",
+    winnerDownload: "Baixar",
+    winnerTcgDownload: "Download TCG",
+    winnerLightMode: "Modo claro",
+    winnerDarkMode: "Modo escuro",
     closeShowdown: "Fechar set de Showdown",
     backToCard: "Voltar ao card",
   },
@@ -1177,6 +1194,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— ou leve o resultado direto para o gerador de equipes.",
         },
+        faqs: [
+          {
+            q: "O que é o gerador de tipos aleatórios?",
+            a: "Cada sorteio escolhe um dos 18 tipos de Pokémon ao acaso — Normal, Fire, Water e os demais — e a página sorteia apenas Pokémon desse tipo, para você explorá-lo com um toque.",
+          },
+          {
+            q: "Como eu uso?",
+            a: "Sorteie um tema e monte uma equipe mono-tipo em volta dele, faça um draft com amigos usando o mesmo tipo ou teste seus conhecimentos na tabela de tipos.",
+          },
+          {
+            q: "Ele inclui tipos duplos?",
+            a: "Sim — Pokémon que tenham o tipo sorteado em qualquer uma das duas tipagens entram no grupo.",
+          },
+          {
+            q: "O PokeRoll é gratuito?",
+            a: "Sim — gratuito, sem cadastro e sem download, como todos os geradores do site.",
+          },
+        ],
       },
       ability: {
         title: "Gerador aleatório de habilidades de Pokémon | PokeRoll",
@@ -1228,6 +1263,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— habilidade, golpes e números são três lados do mesmo set.",
         },
+        faqs: [
+          {
+            q: "O que é uma habilidade de Pokémon?",
+            a: "Uma habilidade é um talento passivo que afeta a batalha — como Intimidate, que reduz o Attack do oponente ao entrar, ou Levitate, que garante imunidade a Ground. Cada espécie tem uma ou mais.",
+          },
+          {
+            q: "Inclui habilidades ocultas?",
+            a: "Sim. Os sorteios podem cair em habilidades padrão, ocultas e exclusivas. O card mostra o texto do efeito da habilidade para você saber exatamente com o que está lidando.",
+          },
+          {
+            q: "Posso usar uma habilidade sorteada no Showdown?",
+            a: "Pode — a vaga de habilidade faz parte do set de Showdown pronto para copiar, então você monta um set em volta do sorteio na hora.",
+          },
+          {
+            q: "De onde vêm os dados das habilidades?",
+            a: "Todos os dados de espécies e habilidades vêm da PokéAPI e ficam embutidos no site, então cada sorteio é instantâneo.",
+          },
+        ],
       },
       move: {
         title: "Gerador aleatório de golpes de Pokémon | PokeRoll",
@@ -1278,6 +1331,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— depois leve tudo para o Showdown.",
         },
+        faqs: [
+          {
+            q: "O que é o gerador de golpes aleatórios?",
+            a: "Cada sorteio escolhe um golpe de Pokémon ao acaso do conjunto completo de golpes de todas as gerações e mostra tipo, categoria, poder, precisão, PP e texto do efeito.",
+          },
+          {
+            q: "Quais golpes estão incluídos?",
+            a: "O conjunto cobre golpes padrão de nível, TM, TR e de ovo de todas as gerações. Golpes exclusivos de mecânicas, como Z-Moves e Max Moves, ficam de fora porque não existem em movesets normais.",
+          },
+          {
+            q: "Como uso um golpe sorteado?",
+            a: "Use o botão de copiar para colocá-lo em um set de Showdown, ou sorteie alguns e monte um moveset em volta deles como um desafio de montagem de equipe.",
+          },
+          {
+            q: "O PokeRoll é gratuito?",
+            a: "Sim — gratuito, sem cadastro e sem download, como todos os geradores do site.",
+          },
+        ],
       },
       bst: {
         title: "Gerador aleatório de estatísticas de Pokémon (BST) | PokeRoll",
@@ -1329,6 +1400,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— ou cace os totais gigantes na página de Lendários.",
         },
+        faqs: [
+          {
+            q: "O que é BST?",
+            a: "BST (Total de Estatísticas Base) é a soma das seis estatísticas base de um Pokémon — PS, Ataque, Defesa, Ataque Especial, Defesa Especial e Velocidade. É uma medida aproximada de quão forte uma espécie é no papel.",
+          },
+          {
+            q: "Qual faixa posso sortear?",
+            a: "A Pokédex inteira está no grupo — de Pokémon de baixo BST das primeiras rotas, abaixo de 300, até lendários de capa e formas Mega passando de 600.",
+          },
+          {
+            q: "Posso filtrar por faixa de BST?",
+            a: "Não nesta página — o sorteio cobre tudo. Ele combina bem com o montador de equipes: sorteie, confira as estatísticas e decida se o resultado encaixa no seu time.",
+          },
+          {
+            q: "Por que o BST importa?",
+            a: "É o atalho mais rápido para poder. Um sorteio de 600 de BST é um batalhador sério; um de 250 é escolha de run de desafio. Os dados decidem que tipo de jornada você vai ter.",
+          },
+        ],
       },
       number: {
         title: "Gerador aleatório de números de Pokémon | PokeRoll",
@@ -1379,6 +1468,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— números, nomes e estatísticas contam histórias diferentes.",
         },
+        faqs: [
+          {
+            q: "O que é o gerador de números da Pokédex?",
+            a: "Cada sorteio escolhe um número da Pokédex Nacional e mostra a espécie por trás dele — de #001 Bulbasaur a #1025 e além. Sem categorias, sem filtros, só a Pokédex.",
+          },
+          {
+            q: "Posso ir direto para um número específico?",
+            a: "O sorteio é aleatório, mas o link de compartilhamento carrega o número exato — quem abrir verá o mesmo Pokémon.",
+          },
+          {
+            q: "Qual Pokédex é usada?",
+            a: "A Pokédex Nacional completa das nove gerações, com arte oficial e estatísticas de cada espécie.",
+          },
+          {
+            q: "Para que posso usar?",
+            a: "Checklists para completar a Pokédex, tabelas de encontros Nuzlocke, temas de desenho — ou só para descobrir espécies que você nunca olhou duas vezes.",
+          },
+        ],
       },
       starter: {
         title: "Gerador aleatório de Pokémon iniciais | PokeRoll",
@@ -1430,6 +1537,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— o inicial escolheu; agora o time precisa de seis.",
         },
+        faqs: [
+          {
+            q: "O que conta como um Pokémon inicial?",
+            a: "Iniciais são os primeiros parceiros — o trio de Grass, Fire e Water oferecido no começo de cada jogo principal, de Bulbasaur em Kanto a Sprigatito em Paldea.",
+          },
+          {
+            q: "Quais gerações estão incluídas?",
+            a: "Todas — todo inicial regional da Geração I à IX, incluindo as variações de Hisui e Paldea onde existem.",
+          },
+          {
+            q: "Posso sortear uma equipe inteira de iniciais?",
+            a: "Sim — sortei seis e você tem um time só de iniciais para uma run de desafio ou uma equipe temática no Showdown.",
+          },
+          {
+            q: "Por que usar um inicial aleatório?",
+            a: "Ele elimina a paralisia de escolha: os dados escolhem o parceiro da sua próxima jornada, e você monta a run em volta do que conseguir.",
+          },
+        ],
       },
       "no-names": {
         title: "Gerador de Pokémon aleatório sem nomes — Jogo de adivinhação",
@@ -1482,6 +1607,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— o mesmo conhecimento, apostas mais altas.",
         },
+        faqs: [
+          {
+            q: "O que é a página de Pokémon misterioso?",
+            a: "Ela mostra um card completo de Pokémon com tudo, menos o nome — estatísticas, tipos, habilidade e arte incluídos. Sua missão: descobrir quem é.",
+          },
+          {
+            q: "O card é completo?",
+            a: "Sim — só o nome fica oculto. Se você identifica um Pokémon só pelas estatísticas, habilidade e arte, você conhece a Pokédex.",
+          },
+          {
+            q: "Qual a diferença para o desafio de adivinhação?",
+            a: "O desafio de adivinhação esconde os nomes atrás de silhuetas em um quiz com pontuação; aqui você recebe um card por vez com informações completas, perfeito para um desafio rápido de raciocínio.",
+          },
+          {
+            q: "Funciona no celular?",
+            a: "Sim — o card e a revelação funcionam com um toque, então funciona igualmente bem no telefone.",
+          },
+        ],
       },
       cute: {
         title: "Gerador aleatório de Pokémon fofos | PokeRoll",
@@ -1532,6 +1675,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— raro e adorável é a melhor combinação.",
         },
+        faqs: [
+          {
+            q: "O que conta como um Pokémon fofo?",
+            a: "Esta página sorteia de uma lista escolhida a dedo dos mais fofos da Pokédex — Eevee, Jigglypuff, Pikachu e centenas de peludos, redondos e pequeninos que os fãs amam.",
+          },
+          {
+            q: "Como a lista foi montada?",
+            a: "A partir de favoritos da comunidade e enquetes de fãs, não de estatísticas — se uma espécie é universalmente chamada de fofa, ela está na lista.",
+          },
+          {
+            q: "Posso montar uma equipe só de fofos?",
+            a: "Sim — sortei seis e você tem um time adorável pronto para batalhas casuais ou uma run temática. Alguns são secretamente fortes.",
+          },
+          {
+            q: "É só por diversão?",
+            a: "Na maior parte, mas Pokémon fofos conquistam corações — e, de vez em quando, batalhas de verdade. Use a exportação do Showdown e deixe a fofura lutar.",
+          },
+        ],
       },
       mythical: {
         title: "Gerador aleatório de Pokémon míticos | PokeRoll",
@@ -1582,6 +1743,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— raridade vem em vários sabores.",
         },
+        faqs: [
+          {
+            q: "O que conta como um Pokémon mítico?",
+            a: "Míticos são as espécies exclusivas de evento — Mew, Celebi, Jirachi, Darkrai, Magearna e companhia — Pokémon que normalmente exigem um evento de distribuição, um código serial ou uma missão especial para serem obtidos.",
+          },
+          {
+            q: "Qual a diferença entre mítico e lendário?",
+            a: "Lendários aparecem na história e normalmente podem ser capturados no jogo; míticos quase sempre são distribuídos em eventos. O PokeRoll mantém os dois grupos separados — esta página sorteia apenas míticos, e a de Lendários sorteia o resto.",
+          },
+          {
+            q: "Posso montar uma equipe em volta de um mítico?",
+            a: "Sim. Sorteie um, toque em Adicionar à equipe e preencha as outras cinco vagas — ou sortei mais cinco míticos para um time completo só de eventos.",
+          },
+          {
+            q: "Míticos podem ser usados no Pokémon Showdown?",
+            a: "A maioria pode ser usada em formatos casuais ou personalizados, embora vários sejam restritos em tiers oficiais. O set pronto para copiar é exportado mesmo assim, para você testá-los onde o formato permitir.",
+          },
+        ],
       },
       mega: {
         title: "Gerador aleatório de mega Pokémon | PokeRoll",
@@ -1632,6 +1811,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— oficiais ou improvisados, híbridos são divertidos.",
         },
+        faqs: [
+          {
+            q: "O que é uma Megaevolução?",
+            a: "Megaevolução é uma forma temporária, apenas em batalha, que certos Pokémon assumem com uma Mega Stone — estatísticas maiores, muitas vezes um novo tipo ou habilidade, e uma aparência redesenhada.",
+          },
+          {
+            q: "Quais Pokémon podem Megaevoluir?",
+            a: "Cerca de 46 espécies têm formas Mega, além da Reversão Primitiva de Groudon e Kyogre. Esta página sorteia apenas dessa lista.",
+          },
+          {
+            q: "Posso usar um Mega no Pokémon Showdown?",
+            a: "Sim — formas Mega são padrão na maioria dos formatos do Showdown. O card exporta um set pronto para copiar, e a Mega Stone vem incluída na vaga de item.",
+          },
+          {
+            q: "Existe limite de Megas por equipe?",
+            a: "Nas regras oficiais, só um Pokémon por equipe pode Megaevoluir por batalha. O gerador sorteia um por vez, mas você pode experimentar um time cheio de Megas em batalhas casuais.",
+          },
+        ],
       },
       nickname: {
         title: "Gerador aleatório de nomes e apelidos de Pokémon | PokeRoll",
@@ -1683,6 +1880,24 @@ export default {
           linksJoinOr: "ou",
           linksTextAfter: "— depois volte e dê nome a todos.",
         },
+        faqs: [
+          {
+            q: "O que o gerador de apelidos faz?",
+            a: "Ele combina um Pokémon sorteado com um apelido temático — de fofo e engraçado a competitivo e descolado — para você nunca mais ficar olhando para um campo de apelido vazio.",
+          },
+          {
+            q: "De onde vêm os apelidos?",
+            a: "De listas de palavras temáticas criadas para cada estilo: trocadilhos de natureza, nomes de comida, referências de anime, mitologia e mais. A combinação é aleatória a cada sorteio, então duplicatas são raras.",
+          },
+          {
+            q: "Posso usar os apelidos nos jogos?",
+            a: "Sim — valem as regras de apelido dos jogos, e o PokeRoll mantém as sugestões limpas e curtas o bastante para caber em todos os jogos principais.",
+          },
+          {
+            q: "Funciona para qualquer Pokémon?",
+            a: "Sim — o gerador sorteia pela Pokédex inteira, então toda espécie recebe uma sugestão adequada, incluindo para caça shiny e apelidos de Nuzlocke.",
+          },
+        ],
       },
       noNamesPromo: {
         s1: "Quer um quiz de vários cards com seed para compartilhar? ",
@@ -1915,6 +2130,24 @@ export default {
         linksJoinOr: "ou",
         linksTextAfter: "— dados diferentes, o mesmo direito de se gabar.",
       },
+      faqs: [
+        {
+          q: "Como funciona o Adivinhe o Pokémon?",
+          a: "Um grupo de Pokémon ocultos aparece em silhuetas. Trave suas respostas e vire os cards para conferir — sua pontuação é baseada em quantos você acertou.",
+        },
+        {
+          q: "O que os níveis de dificuldade mudam?",
+          a: "O Fácil mostra sprites maiores e uma dica de tipo por card; o Extremo aproxima o zoom, tira as dicas e limita a lista. Mesma seed, mesma lista, prova mais difícil.",
+        },
+        {
+          q: "Posso desafiar um amigo?",
+          a: "Sim — o link de compartilhamento carrega a seed, então abri-lo recria exatamente a mesma lista. Comparem as pontuações e decidam quem conhece melhor a Pokédex.",
+        },
+        {
+          q: "De onde vêm as silhuetas?",
+          a: "Da arte e dos sprites oficiais de Pokémon, convertidos em silhuetas na hora. Tudo roda no seu navegador — sem downloads, sem cadastro.",
+        },
+      ],
     },
 
     shiny: {
@@ -2054,6 +2287,24 @@ export default {
       soloNote:
         "O PokeRoll é um projeto solo feito por fãs — não é afiliado à Nintendo nem à The Pokémon Company. As respostas costumam chegar em até 48 horas.",
       backLink: "← Voltar ao gerador",
+      faqs: [
+        {
+          q: "Como falo com a equipe do PokeRoll?",
+          a: "De três formas: e-mail para hello@pokeroll.app, marque @JoeyChou2024 no X ou abra uma issue no repositório do GitHub. Todos os canais chegam direto ao criador.",
+        },
+        {
+          q: "Quanto tempo demoram para responder?",
+          a: "Normalmente até 48 horas. O X recebe as respostas mais rápidas, e as issues do GitHub ficam acompanhadas até serem resolvidas.",
+        },
+        {
+          q: "Posso reportar um bug ou pedir um recurso?",
+          a: "Pode sim — relatos de bugs e ideias de recursos são exatamente para isso que os canais de contato existem. As issues do GitHub são melhores para bugs porque ficam rastreadas.",
+        },
+        {
+          q: "O PokeRoll é afiliado à Nintendo ou à The Pokémon Company?",
+          a: "Não. O PokeRoll é um projeto solo feito por fãs usando dados da PokéAPI. Todo o conteúdo de Pokémon pertence aos seus respectivos donos, e este site não é endossado por eles.",
+        },
+      ],
     },
 
     privacy: {
