@@ -1820,7 +1820,7 @@ export async function renderWinnerCard(data: WinnerCardData): Promise<Blob> {
 }
 
 function winnerFileName(name: string): string {
-  return "winner-" + name.toLowerCase().replace(/\s+/g, "-") + ".png";
+  return "pokeroll.app-winner-" + name.toLowerCase().replace(/\s+/g, "-") + ".png";
 }
 
 /** Renders the WINNER card and downloads the PNG straight away. */
