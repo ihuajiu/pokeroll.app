@@ -2,6 +2,15 @@
 
 import { useState } from "react";
 import HeroCard from "@/components/HeroCard";
+import WinnerPopup from "@/components/WinnerPopup";
+import {
+  captureCardImage,
+  downloadPokemonCard,
+  pageModule,
+  renderPokemonCard,
+  renderWinnerCard,
+} from "@/lib/shareCard";
+import type { PokemonCardData, WinnerCardData } from "@/lib/shareCard";
 import { TYPES } from "@/lib/seo";
 import { typeName } from "@/lib/i18n/names";
 import { useI18n } from "@/components/I18nProvider";
@@ -60,6 +69,8 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
   const [starter, setStarter] = useState(""); // "" any, "1" only
   const [excludeFav, setExcludeFav] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [winner, setWinner] = useState<WinnerCardData | null>(null);
+  const [cardPreview, setCardPreview] = useState<string | null>(null);
   const { favorites } = useFavorites();
   const { locale, dict } = useI18n();
   const r = dict.randomGenerator;
@@ -92,14 +103,91 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
       }
       if (!res.ok) throw new Error("roll failed");
       const next: Pokemon = await res.json();
+      // Preload the artwork so the card swap doesn't jump while it loads.
+      const pre = new Image();
+      pre.src = next.artwork;
       setPokemon(next);
       // Keep the URL in sync so the Share button copies a reproducible link.
       window.history.replaceState(null, "", `/random-pokemon-generator?p=${next.name}`);
+      // Capture the freshly-rolled card first, then open the WINNER popup with
+      // complete data — so the popup shows the final card once, with no flicker
+      // between the artwork fallback and the real card capture.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const base = {
+            name: next.displayName,
+            img: next.artwork,
+            url: `${window.location.origin}${window.location.pathname}?p=${next.name}`,
+            types: next.types,
+            module: pageModule(),
+            dex: next.dexNumber,
+          };
+          // Pre-render the WINNER card so the popup opens fully-formed
+          // (no empty-card flash while the canvas renders).
+          const finish = (full: WinnerCardData) => {
+            renderWinnerCard(full)
+              .then((blob) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                  setWinner({ ...full, preview: String(reader.result) });
+                };
+                reader.readAsDataURL(blob);
+              })
+              .catch(() => setWinner(full));
+          };
+          const el = document.querySelector(".random-stage .hero-card");
+          // Also pre-render the original (TCG) card so the popup can preview
+          // exactly what "Save card" downloads.
+          setCardPreview(null);
+          if (el instanceof HTMLElement) {
+            captureCardImage(el)
+              .then((cardImg) => finish({ ...base, cardImg }))
+              .catch(() => finish(base));
+            const cardData = toCardData(next);
+            renderPokemonCard(el, cardData)
+              .then((blob) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                  setCardPreview(String(reader.result));
+                };
+                reader.readAsDataURL(blob);
+              })
+              .catch(() => setCardPreview(null));
+          } else {
+            finish(base);
+          }
+        });
+      });
     } catch {
       // keep previous result on failure
     } finally {
       setLoading(false);
     }
+  }
+
+  /** Build the original-card payload for download / preview. */
+  function toCardData(p: Pokemon): PokemonCardData {
+    return {
+      name: p.displayName,
+      dex: p.dexNumber,
+      types: p.types,
+      img: p.artwork,
+      stats: p.stats,
+      bst: p.bst,
+      region: p.region,
+      generation: p.generation,
+      height: p.height,
+      weight: p.weight,
+      module: pageModule(),
+      url: `${window.location.origin}${window.location.pathname}?p=${p.name}`,
+    };
+  }
+
+  /** Download the original (TCG) card straight from the live card element. */
+  async function handleDownloadCard() {
+    const el = document.querySelector(".random-stage .hero-card");
+    if (!(el instanceof HTMLElement)) return;
+    await downloadPokemonCard(el, toCardData(pokemon));
   }
 
   const gearIcon = (
@@ -265,7 +353,18 @@ export default function RandomGenerator({ initial }: { initial: Pokemon }) {
 
       {/* Single centered card; desktop width is viewport-driven (3:4). */}
       <div className="random-stage grid items-start gap-6">
-        <HeroCard pokemon={pokemon} loading={loading} onRoll={roll} variant="wide" favoritable />
+        <HeroCard pokemon={pokemon} onRoll={roll} variant="wide" favoritable />
+        <WinnerPopup
+          open={winner !== null}
+          data={winner}
+          onClose={() => setWinner(null)}
+          cardPreview={cardPreview}
+          onDownloadCard={handleDownloadCard}
+          onRollAgain={() => {
+            setWinner(null);
+            void roll();
+          }}
+        />
       </div>
     </div>
   );
