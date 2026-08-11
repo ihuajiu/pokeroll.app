@@ -138,6 +138,7 @@ export async function buildOgImage(p?: string, origin?: string): Promise<ImageRe
     // Generic branded card — used by the home page and every non-Pokémon tool.
     // Middle: five iconic Pokémon in circular badges ("team lineup") to fill the card.
     const ICON_DEX = [25, 6, 133, 94, 448]; // Pikachu, Charizard, Eevee, Gengar, Lucario
+    const ICON_NAMES = ["Pikachu", "Charizard", "Eevee", "Gengar", "Lucario"];
     // Use the 475px artwork (converted webp -> PNG) so the lineup stays crisp;
     // fall back to the small sprite if conversion fails.
     const iconSrcs: string[] = [];
@@ -192,7 +193,7 @@ export async function buildOgImage(p?: string, origin?: string): Promise<ImageRe
               gap: 28,
             }}
           >
-            {iconSrcs.map((src) => (
+            {iconSrcs.map((src, i) => (
               <div
                 key={src}
                 style={{
@@ -209,6 +210,7 @@ export async function buildOgImage(p?: string, origin?: string): Promise<ImageRe
               >
                 <img
                   src={src}
+                  alt={ICON_NAMES[i]}
                   width={118}
                   height={118}
                   style={{ width: 118, height: 118, objectFit: "contain" }}

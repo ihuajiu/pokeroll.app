@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
+import FaqSection from "@/components/FaqSection";
 import {
   isLocale,
   languageAlternates,
@@ -135,6 +136,7 @@ export default async function ContactPage({
           {d.backLink}
         </Link>
       </p>
+      <FaqSection items={d.faqs} locale={locale} />
     </main>
   );
 }

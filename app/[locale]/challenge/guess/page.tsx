@@ -3,6 +3,7 @@ import Link from "next/link";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import GuideSteps from "@/components/GuideSteps";
 import PlayGuide from "@/components/PlayGuide";
+import FaqSection from "@/components/FaqSection";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -139,6 +140,7 @@ export default async function GuessChallengePage({
       />
       <ChallengeGenerator challenge={challenge} />
       <PlayGuide guide={d.guide} />
+      <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/challenge/guess" locale={locale} />
     </main>
   );
