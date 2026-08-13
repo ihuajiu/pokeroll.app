@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import WheelGenerator from "@/components/WheelGenerator";
 import GuideSteps from "@/components/GuideSteps";
 import PlayGuide from "@/components/PlayGuide";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -88,6 +89,7 @@ export default async function WheelPage({
   />
 )}
 <WheelGenerator initial={{ items }} shared={shared} />
+<PageFeedback pageKey={"/wheel"} />
       <PlayGuide guide={d.guide} />
       <RelatedTools current="/wheel" locale={locale} />
     </main>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import TeamGenerator from "@/components/TeamGenerator";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import PlayGuide from "@/components/PlayGuide";
@@ -60,6 +61,7 @@ export default async function RandomTeamPage({
       />
 
       <TeamGenerator initial={localized} />
+      <PageFeedback pageKey={"/team/random"} />
 
       <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />

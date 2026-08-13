@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ChallengeGenerator from "@/components/ChallengeGenerator";
 import GuideSteps from "@/components/GuideSteps";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import PlayGuide from "@/components/PlayGuide";
@@ -115,6 +116,7 @@ export default async function ShinyChallengePage({
         wildPool={wildPool}
         startFound={reveal}
       />
+      <PageFeedback pageKey={"/challenge/shiny"} />
       <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/challenge/shiny" locale={locale} />

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import PlayGuide, { fillGuide } from "@/components/PlayGuide";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -130,6 +131,7 @@ export default async function RegionPage({
         {d.introS3}
       </p>
       <FilteredGenerator query={`region=${region}`} initial={initial} />
+      <PageFeedback pageKey={`/by/${region}`} />
       <PlayGuide
         guide={fillGuide(d.guide, {
           region: r,

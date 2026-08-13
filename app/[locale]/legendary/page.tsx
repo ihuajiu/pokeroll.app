@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import PlayGuide from "@/components/PlayGuide";
+import PageFeedback from "@/components/PageFeedback";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
 import { getAllPokemon, getRandomPokemon } from "@/lib/pokeapi";
@@ -62,6 +63,7 @@ export default async function LegendaryPage({
       <PageHeader title={d.headerTitle} description={d.headerDesc} />
       <p className="mb-6 text-sm text-poke-dim">{d.note}</p>
       <FilteredGenerator query="legendary=1" initial={initial} />
+      <PageFeedback pageKey={"/legendary"} />
       <PlayGuide guide={d.guide} />
     </main>
   );

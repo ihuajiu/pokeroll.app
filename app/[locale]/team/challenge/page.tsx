@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import TeamChallenge from "@/components/TeamChallenge";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import PlayGuide from "@/components/PlayGuide";
@@ -93,6 +94,7 @@ export default async function TeamChallengePage({
         resultView={resultView}
         isOwner={isOwner}
       />
+      <PageFeedback pageKey={"/team/challenge"} />
       <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/team/challenge" locale={locale} />

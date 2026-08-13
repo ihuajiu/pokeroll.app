@@ -4,6 +4,7 @@ import ChallengeGenerator from "@/components/ChallengeGenerator";
 import GuideSteps from "@/components/GuideSteps";
 import PlayGuide from "@/components/PlayGuide";
 import FaqSection from "@/components/FaqSection";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -139,6 +140,7 @@ export default async function GuessChallengePage({
         steps={d.steps.map((s, i) => ({ n: String(i + 1), ...s }))}
       />
       <ChallengeGenerator challenge={challenge} />
+      <PageFeedback pageKey={"/challenge/guess"} />
       <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/challenge/guess" locale={locale} />

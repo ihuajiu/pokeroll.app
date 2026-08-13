@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import TeamClient from "@/components/TeamClient";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import PlayGuide from "@/components/PlayGuide";
@@ -55,6 +56,7 @@ export default async function TeamPage({
       />
 
       <TeamClient sharedNames={sp.team ?? null} />
+      <PageFeedback pageKey={"/team"} />
 
       <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />

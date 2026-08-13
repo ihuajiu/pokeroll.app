@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import VariantGenerator from "@/components/VariantGenerator";
 import PlayGuide from "@/components/PlayGuide";
 import FaqSection from "@/components/FaqSection";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -95,6 +96,7 @@ export default async function VariantPage({
           kind="starter"
           initial={{ kind: "starter", pokemon }}
         />
+        <PageFeedback pageKey={`/${variant}`} />
         <PlayGuide guide={m.guide} />
         <FaqSection items={m.faqs} locale={locale} />
         <RelatedTools current={`/${variant}`} locale={locale} />
@@ -124,6 +126,7 @@ export default async function VariantPage({
           initial={{ kind: "no-names", pokemon }}
           mode="no-names"
         />
+        <PageFeedback pageKey={`/${variant}`} />
         <PlayGuide guide={m.guide} />
         <FaqSection items={m.faqs} locale={locale} />
         <RelatedTools current={`/${variant}`} locale={locale} />
@@ -137,6 +140,7 @@ export default async function VariantPage({
       <Breadcrumbs items={crumbs} />
       <PageHeader title={headerTitle} description={m.description} />
       <VariantGenerator kind={variant} initial={initial} />
+      <PageFeedback pageKey={`/${variant}`} />
       <PlayGuide guide={m.guide} />
       <FaqSection items={m.faqs} locale={locale} />
       <RelatedTools current={`/${variant}`} locale={locale} />

@@ -386,6 +386,13 @@ export default {
     heading: "Outils associés",
   },
 
+  pageFeedback: {
+    prompt: "Cet outil vous a-t-il été utile ?",
+    thanks: "Merci pour votre retour !",
+    like: "J'aime cet outil",
+    dislike: "Je n'aime pas cet outil",
+  },
+
   adventureView: {
     /** Template: {seed} = adventure seed code. */
     seedLine: "Seed {seed} — partage ce lien pour rejouer exactement la même aventure.",

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import FavoritesClient from "@/components/FavoritesClient";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import PageHeader from "@/components/PageHeader";
 import { getPokemonByIdLocal } from "@/lib/pokedex";
@@ -67,6 +68,7 @@ export default async function FavoritesPage({
     <main className="pt-6 pb-10">
       <PageHeader title={d.headerTitle} description={d.headerDesc} />
       <FavoritesClient shared={shared} sharedInvalid={sharedInvalid} />
+      <PageFeedback pageKey={"/favorites"} />
       <RelatedTools current="/favorites" locale={locale} />
     </main>
   );

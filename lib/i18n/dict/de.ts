@@ -387,6 +387,13 @@ export default {
     heading: "Ähnliche Tools",
   },
 
+  pageFeedback: {
+    prompt: "War dieses Tool hilfreich?",
+    thanks: "Danke für dein Feedback!",
+    like: "Dieses Tool gefällt mir",
+    dislike: "Dieses Tool gefällt mir nicht",
+  },
+
   adventureView: {
     /** Template: {seed} = adventure seed code. */
     seedLine: "Seed {seed} — teile diesen Link, um exakt dasselbe Abenteuer erneut zu spielen.",

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import FusionGenerator from "@/components/FusionGenerator";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import PlayGuide from "@/components/PlayGuide";
@@ -66,6 +67,7 @@ export default async function FusionPage({
         description={d.headerDesc}
       />
       <FusionGenerator initial={{ a, b }} />
+      <PageFeedback pageKey={"/fusion"} />
       <PlayGuide guide={d.guide} />
       <FaqSection items={d.faqs} locale={locale} />
       <RelatedTools current="/fusion" locale={locale} />

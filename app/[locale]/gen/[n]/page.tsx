@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FilteredGenerator from "@/components/FilteredGenerator";
 import PlayGuide, { fillGuide } from "@/components/PlayGuide";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeader from "@/components/PageHeader";
@@ -115,6 +116,7 @@ export default async function GenPage({
         {d.introS5}
       </p>
       <FilteredGenerator query={`gen=${gen}`} initial={initial} />
+      <PageFeedback pageKey={`/gen/${gen}`} />
       <PlayGuide
         guide={fillGuide(d.guide, {
           genLabel: gl,

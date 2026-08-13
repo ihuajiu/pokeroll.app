@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AdventureView from "@/components/AdventureView";
 import GuideSteps from "@/components/GuideSteps";
+import PageFeedback from "@/components/PageFeedback";
 import RelatedTools from "@/components/RelatedTools";
 import FaqSection from "@/components/FaqSection";
 import PlayGuide from "@/components/PlayGuide";
@@ -75,6 +76,7 @@ export default async function AdventurePage({
           steps={d.steps}
         />
         <AdventureView initial={adventure} />
+        <PageFeedback pageKey={"/adventure"} />
         <PlayGuide guide={d.guide} />
         <FaqSection
           items={d.faqs}
