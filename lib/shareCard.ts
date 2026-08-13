@@ -1,8 +1,9 @@
 // Client-side share-card renderer (canvas → PNG). Flavors: the found shiny
 // card, the regular Pokémon card from HeroCard, the team-challenge VS card
-// and the single WINNER viral card. Cards carry a plain-URL footer by default
-// (gospinwheel lesson); a QR sticker is opt-in for offline / cross-device
-// sharing. Same-origin local artwork keeps the canvas untainted.
+// and the single WINNER viral card. The WINNER card stays plain-URL (no QR);
+// the Pokemon (TCG) card footer always pairs the readable link with a QR
+// sticker for offline / cross-device scanning. Same-origin local artwork
+// keeps the canvas untainted.
 import QRCode from "qrcode";
 import { TYPE_HEX } from "@/lib/typeColors";
 
@@ -383,8 +384,8 @@ export interface PokemonCardMeta {
   url: string;
   /** Module label for the footer, e.g. "Random Pokémon Generator". */
   module?: string;
-  /** Optional QR sticker for offline/cross-device sharing. Default: off —
-   *  the footer shows the plain URL instead (gospinwheel lesson). */
+  /** Legacy QR flag kept for API compatibility — the Pokemon (TCG) card now
+   *  always carries the QR sticker in its footer (see buildCardFooter). */
   withQR?: boolean;
 }
 
@@ -513,10 +514,10 @@ function getFontEmbedCSS(): Promise<string> {
   return fontCssPromise;
 }
 
-/** Slim footer strip appended inside the captured card — brand + readable
- *  page URL, theme-aware (reads the card's own surface color). Replaces the
- *  action-bar zone so downloads always carry the readable link without
- *  leaving a blank strip. */
+/** Slim footer strip appended inside the captured card — brand + tool name
+ *  on the left, QR sticker on the right. Theme-aware (reads the card's own
+ *  surface color); replaces the action-bar zone so downloads always carry the
+ *  brand mark and scannable link without leaving a blank strip. */
 function buildCardFooter(
   clone: HTMLElement,
   meta: PokemonCardMeta,
@@ -528,53 +529,26 @@ function buildCardFooter(
   const dark =
     document.documentElement.getAttribute("data-mode") === "dark";
   const border = dark ? "rgba(255,255,255,0.16)" : "rgba(31,36,48,0.12)";
-  const urlColor = dark ? "rgba(255,255,255,0.82)" : "rgba(31,36,48,0.82)";
   const brandColor = dark ? "rgba(255,255,255,0.94)" : "rgba(31,36,48,0.94)";
   const moduleColor = dark ? "rgba(255,255,255,0.5)" : "rgba(31,36,48,0.5)";
-  // Two generous left-aligned lines: link row, then brand + module row.
+  // Footer layout: left column carries the two text rows, a QR sticker sits
+  // on the right — so the TCG card always leads back to the reproducible
+  // link and is scannable offline / cross-device.
   f.style.cssText = [
     "display:flex",
-    "flex-direction:column",
-    "align-items:flex-start",
-    "gap:9px",
+    "flex-direction:row",
+    "align-items:center",
+    "justify-content:space-between",
+    "gap:14px",
     "grid-column:1 / -1",
     "margin-top:auto",
     "border-top:1px solid " + border,
     "padding:15px 2px 2px",
     "min-width:0",
   ].join(";");
-  // Line 1: chain-link icon + readable page link (full width). The icon is
-  // vertically centered on the text line. Page root link only - drop the ?p=
-  // query so the footer stays clean.
-  const urlRow = document.createElement("div");
-  urlRow.style.cssText = [
-    "display:flex",
-    "align-items:center",
-    "gap:8px",
-    "width:100%",
-    "min-width:0",
-  ].join(";");
-  urlRow.innerHTML =
-    '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" ' +
-    'stroke="' + urlColor + '" stroke-width="2.2" stroke-linecap="round" ' +
-    'stroke-linejoin="round" aria-hidden="true" ' +
-    'style="flex-shrink:0;display:block">' +
-    '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>' +
-    '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>' +
-    "</svg>";
-  const url = document.createElement("span");
-  url.textContent = meta.url.split("?")[0].replace(/^https?:\/\//, "");
-  url.style.cssText = [
-    "font:600 12px/1.3 Outfit, system-ui, sans-serif",
-    "color:" + urlColor,
-    "white-space:nowrap",
-    "min-width:0",
-  ].join(";");
-  urlRow.appendChild(url);
-  // Line 2: PokeRoll logo + brand domain | description. The description is
-  // the page module name with its own trailing "| PokeRoll" suffix stripped.
-  // Logo mirrors components/LogoMark (square dice-ball, brand red), hardcoded
-  // colors keep it on-theme in both day and night cards.
+  // Line 1: PokeRoll logo + brand domain. Logo mirrors components/LogoMark
+  // (square dice-ball, brand red), hardcoded colors keep it on-theme in both
+  // day and night cards.
   const brandRow = document.createElement("div");
   brandRow.style.cssText = [
     "display:flex",
@@ -605,27 +579,50 @@ function buildCardFooter(
     "flex-shrink:0",
   ].join(";");
   brandRow.appendChild(brand);
-  const sep = document.createElement("span");
-  sep.textContent = "|";
-  sep.style.cssText = [
-    "font:400 12px/1.2 Outfit, system-ui, sans-serif",
-    "color:" + moduleColor,
-    "flex-shrink:0",
-    "margin:0 2px",
+  // Line 2: tool description — the page's own name (the trailing "| PokeRoll"
+  // brand suffix from the title is stripped), e.g. "Random Pokémon Generator".
+  const descRow = document.createElement("div");
+  descRow.style.cssText = [
+    "display:flex",
+    "align-items:center",
+    "gap:8px",
+    "width:100%",
+    "min-width:0",
   ].join(";");
-  brandRow.appendChild(sep);
   const moduleName = document.createElement("span");
-  // Drop everything after the "|" in the description (the site's own
-  // "| PokeRoll" brand suffix) so it reads "PokeRoll.app | <tool name>".
-  moduleName.textContent = (meta.module || "").split("|")[0].trim();
+  moduleName.textContent = (meta.module || "Random Pokémon Generator").split("|")[0].trim();
   moduleName.style.cssText = [
     "font:400 11px/1.3 Outfit, system-ui, sans-serif",
     "color:" + moduleColor,
     "white-space:nowrap",
+    "overflow:hidden",
+    "text-overflow:ellipsis",
     "min-width:0",
   ].join(";");
-  brandRow.appendChild(moduleName);
-  f.append(urlRow, brandRow);
+  descRow.appendChild(moduleName);
+  // Left column: brand row + description row.
+  const left = document.createElement("div");
+  left.style.cssText = [
+    "display:flex",
+    "flex-direction:column",
+    "align-items:flex-start",
+    "gap:9px",
+    "min-width:0",
+    "flex:1",
+  ].join(";");
+  left.append(brandRow, descRow);
+  // Right: empty slot reserving the QR sticker's space. The QR is painted
+  // straight onto the captured canvas afterwards (html-to-image mis-scales
+  // embedded <img> QRs, so it is never part of the DOM capture).
+  const qrSlot = document.createElement("div");
+  qrSlot.setAttribute("data-qr-slot", "true");
+  qrSlot.style.cssText = [
+    "width:56px",
+    "height:56px",
+    "flex-shrink:0",
+    "display:block",
+  ].join(";");
+  f.append(left, qrSlot);
   return f;
 }
 
@@ -695,7 +692,24 @@ async function renderPokemonCardDom(
   // it in the DOM (instead of painting it onto the canvas afterwards) keeps the
   // layout honest: content fills above it and nothing overlaps.
   const hasFooter = actionsEl != null;
-  if (hasFooter) clone.appendChild(buildCardFooter(clone, meta));
+  // The QR slot's position inside the clone (layout px, holder scale undone)
+  // tells renderPokemonCardDom where to paint the QR on the final canvas.
+  let qrSlotPos: { x: number; y: number; w: number; h: number } | null = null;
+  if (hasFooter) {
+    const footer = buildCardFooter(clone, meta);
+    clone.appendChild(footer);
+    const slot = footer.querySelector<HTMLElement>("[data-qr-slot]");
+    if (slot) {
+      const cRect = clone.getBoundingClientRect();
+      const sRect = slot.getBoundingClientRect();
+      qrSlotPos = {
+        x: (sRect.left - cRect.left) / zoomFactor,
+        y: (sRect.top - cRect.top) / zoomFactor,
+        w: sRect.width / zoomFactor,
+        h: sRect.height / zoomFactor,
+      };
+    }
+  }
   // Legacy canvas band (QR + brand painted under the filtered action bar) is
   // only needed when there is no DOM footer. The clone is fully neutralized,
   // so rect math is safe here.
@@ -760,6 +774,30 @@ async function renderPokemonCardDom(
   const ctx = canvas.getContext("2d")!;
   ctx.drawImage(shot, -b.left, -b.top);
 
+  // Paint the QR sticker into the reserved footer slot. Drawing it directly
+  // (instead of embedding an <img>) keeps the modules pixel-exact, so the
+  // card scans reliably after the 3x upscale.
+  if (qrSlotPos) {
+    const q = Math.round(qrSlotPos.w * scale);
+    const qx = Math.round(qrSlotPos.x * scale) - b.left;
+    const qy = Math.round(qrSlotPos.y * scale) - b.top;
+    const qr = await QRCode.toDataURL(meta.url, {
+      margin: 0,
+      width: 168,
+      color: { dark: "#1f2430", light: "#ffffff" },
+    });
+    const qrImg = await loadImage(qr);
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.18)";
+    ctx.shadowBlur = 8 * u;
+    ctx.shadowOffsetY = 2 * u;
+    roundRect(ctx, qx, qy, q, q, 12 * u);
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.restore();
+    ctx.drawImage(qrImg, qx + 5 * u, qy + 5 * u, q - 10 * u, q - 10 * u);
+  }
+
   const bandTop = contentBottom + 6 * u;
   const bandBottom = cardH - 14 * u;
   const bandH = bandBottom - bandTop;
@@ -771,9 +809,10 @@ async function renderPokemonCardDom(
     // readable link so screenshots and reblogs still lead back to pokeroll.app.
     // Page root link only — drop the ?p= query so the footer stays clean.
   const plainUrl = meta.url.split("?")[0].replace(/^https?:\/\//, "");
-    // QR is opt-in for offline / cross-device sharing — off by default.
+    // TCG cards always carry the QR sticker (right) — scannable offline /
+    // cross-device backlink. The plain URL still renders on the left.
     let brandRight = cardW - padX;
-    if (meta.withQR) {
+    {
       // QR box (right), vertically centered in the band
       const q = Math.min(64 * u, bandH - 8 * u);
       const qx = cardW - padX - q;
